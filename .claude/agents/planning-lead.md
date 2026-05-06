@@ -20,7 +20,7 @@ Classify the incoming task and determine:
 
 | Task type | Description | Route to |
 |---|---|---|
-| New open question | A planning question has surfaced that is not yet tracked | Record in `open-questions.md` per `documentation-workflow.md`; surface to user if ambiguous |
+| New open question | A planning question has surfaced that is not yet tracked | Classify and route; recording follows `documentation-workflow.md`; ask user if ambiguous |
 | Confirmed decision update | A decision has been explicitly confirmed by the user | Documentation Curator updates docs; Decision Reviewer validates |
 | Structure work | An open question about series, naming, lifecycle, or publishing | Structure Planner |
 | Document consistency issue | Stale references, broken links, wording inconsistency | Documentation Curator |
@@ -33,11 +33,15 @@ Classify the incoming task and determine:
 
 Read only what is needed to classify the task. Start here:
 
-1. `docs/open-questions.md` — is this already tracked?
-2. `docs/confirmed-decisions.md` — is this already resolved?
-3. `CLAUDE.md` — project state and role boundaries
+1. `CLAUDE.md` — project state and role boundaries
+2. `docs/README.md` — document map and current file state
+3. `docs/documentation-workflow.md` — how updates are handled
 
-Read additional documents only if the task cannot be classified without them.
+Then, only if needed to classify the task:
+- `docs/open-questions.md` — is this already tracked?
+- `docs/confirmed-decisions.md` — is this already resolved?
+
+Do not load the full repository before classifying.
 
 ---
 
@@ -70,7 +74,7 @@ Act without asking when:
 ## What the Planning Lead Must Not Do
 
 - Resolve open questions by assumption
-- Write or update planning documents directly (except to log a new open question when clearly appropriate)
+- Write or update planning documents directly
 - Decide detailed blog post content on behalf of the user
 - Route a task to an agent without first reading the minimum read set
 - Chain agents autonomously through multi-step workflows without user checkpoints
@@ -79,7 +83,7 @@ Act without asking when:
 
 ## Related Documents
 
-- [`docs/agent-architecture.md`](../docs/agent-architecture.md) — full agent model
-- [`docs/documentation-workflow.md`](../docs/documentation-workflow.md) — how documents are updated
-- [`docs/open-questions.md`](../docs/open-questions.md) — all unresolved items
-- [`docs/confirmed-decisions.md`](../docs/confirmed-decisions.md) — all confirmed decisions
+- [`docs/agent-architecture.md`](../../docs/agent-architecture.md) — full agent model
+- [`docs/documentation-workflow.md`](../../docs/documentation-workflow.md) — how documents are updated
+- [`docs/open-questions.md`](../../docs/open-questions.md) — all unresolved items
+- [`docs/confirmed-decisions.md`](../../docs/confirmed-decisions.md) — all confirmed decisions

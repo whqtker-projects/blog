@@ -87,8 +87,8 @@ Do not apply corrections unilaterally to decision status. Propose them and wait 
 
 ## Related Documents
 
-- [`docs/agent-architecture.md`](../docs/agent-architecture.md) — full agent model
-- [`docs/confirmed-decisions.md`](../docs/confirmed-decisions.md) — all confirmed decisions
-- [`docs/open-questions.md`](../docs/open-questions.md) — all unresolved items
-- [`docs/decision-log.md`](../docs/decision-log.md) — chronological decision record
-- [`docs/documentation-workflow.md`](../docs/documentation-workflow.md) — how documents are updated
+- [`docs/agent-architecture.md`](../../docs/agent-architecture.md) — full agent model
+- [`docs/confirmed-decisions.md`](../../docs/confirmed-decisions.md) — all confirmed decisions
+- [`docs/open-questions.md`](../../docs/open-questions.md) — all unresolved items
+- [`docs/decision-log.md`](../../docs/decision-log.md) — chronological decision record
+- [`docs/documentation-workflow.md`](../../docs/documentation-workflow.md) — how documents are updated

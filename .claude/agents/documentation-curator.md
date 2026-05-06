@@ -83,6 +83,6 @@ Consult it when:
 
 ## Related Documents
 
-- [`docs/agent-architecture.md`](../docs/agent-architecture.md) — full agent model
-- [`docs/README.md`](../docs/README.md) — document map
-- [`docs/documentation-workflow.md`](../docs/documentation-workflow.md) — how documents are updated
+- [`docs/agent-architecture.md`](../../docs/agent-architecture.md) — full agent model
+- [`docs/README.md`](../../docs/README.md) — document map
+- [`docs/documentation-workflow.md`](../../docs/documentation-workflow.md) — how documents are updated

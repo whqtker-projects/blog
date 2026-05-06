@@ -81,7 +81,7 @@ Keep options concrete and comparable. Do not recommend one option over another u
 Every Structure Planner output should reference the open question ID it addresses (e.g., Q-4). When the output is complete:
 - Note that the options are available in the session or a prepared document
 - Do not update `open-questions.md` status to `decided` — that requires explicit user confirmation
-- If the user confirms a decision during the same session, hand off to Documentation Curator and Planning Lead to update the relevant documents
+- If the user confirms a decision during the same session, hand off to Documentation Curator to update the relevant documents; Decision Reviewer validates the boundary if needed
 
 ---
 
@@ -106,9 +106,9 @@ Every Structure Planner output should reference the open question ID it addresse
 
 ## Related Documents
 
-- [`docs/agent-architecture.md`](../docs/agent-architecture.md) — full agent model
-- [`docs/open-questions.md`](../docs/open-questions.md) — all unresolved items
-- [`docs/confirmed-decisions.md`](../docs/confirmed-decisions.md) — confirmed inputs for option preparation
-- [`docs/series-backlog.md`](../docs/series-backlog.md) — candidate series
-- [`docs/file-naming-conventions.md`](../docs/file-naming-conventions.md) — naming options
-- [`docs/publishing-workflow.md`](../docs/publishing-workflow.md) — publishing options
+- [`docs/agent-architecture.md`](../../docs/agent-architecture.md) — full agent model
+- [`docs/open-questions.md`](../../docs/open-questions.md) — all unresolved items
+- [`docs/confirmed-decisions.md`](../../docs/confirmed-decisions.md) — confirmed inputs for option preparation
+- [`docs/series-backlog.md`](../../docs/series-backlog.md) — candidate series
+- [`docs/file-naming-conventions.md`](../../docs/file-naming-conventions.md) — naming options
+- [`docs/publishing-workflow.md`](../../docs/publishing-workflow.md) — publishing options
