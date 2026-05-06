@@ -47,7 +47,6 @@ This document is the stable reference for decisions that have been explicitly ag
 | # | Decision |
 |---|---|
 | D-10 | Confirmed topic domains: CS fundamentals and algorithms, AI/ML/LLM, backend and systems, software engineering. |
-| D-11 | Additional domains may be added as the project grows. |
 
 ---
 
@@ -56,7 +55,7 @@ This document is the stable reference for decisions that have been explicitly ag
 | # | Decision |
 |---|---|
 | D-12 | The user decides the detailed content of each post personally. |
-| D-13 | Planning agents do not decide post content, series selection, or article outlines. |
+| D-13 | Planning agents support documentation, structure, decision tracking, and planning workflows, but do not decide detailed post content on behalf of the user. |
 
 ---
 
