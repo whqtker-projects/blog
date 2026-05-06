@@ -86,5 +86,5 @@ The following areas are not yet decided. See `open-questions.md` for the full li
 ## Related documents
 
 - [open-questions.md](open-questions.md) — unresolved planning items
-- [decision-log.md](decision-log.md) — chronological record of how decisions were reached *(planned)*
+- [decision-log.md](decision-log.md) — chronological record of how decisions were reached
 - [decisions/ADR-001-project-foundations.md](decisions/ADR-001-project-foundations.md) — foundational decision record

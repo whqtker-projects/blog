@@ -14,7 +14,7 @@ The repository is currently in the **planning and documentation stage**. No blog
 |---|---|
 | [open-questions.md](open-questions.md) | Source of truth for all unresolved planning items. Do not resolve these by assumption. |
 | [confirmed-decisions.md](confirmed-decisions.md) | Stable record of all confirmed project decisions. |
-| [decision-log.md](decision-log.md) | Chronological log of planning discussions and their outcomes. *(planned — see issue #4)* |
+| [decision-log.md](decision-log.md) | Chronological log of planning discussions and their outcomes. |
 | [project-overview.md](project-overview.md) | High-level purpose, scope, and current stage of the project. |
 | [documentation-workflow.md](documentation-workflow.md) | How future planning sessions should update these documents. *(planned — see issue #6)* |
 
