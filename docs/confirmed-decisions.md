@@ -76,12 +76,19 @@ This document is the stable reference for decisions that have been explicitly ag
 
 ---
 
+## Publishing
+
+| # | Decision |
+|---|---|
+| D-17 | The blog is published using Astro as the static site generator. |
+| D-18 | The Obsidian → blog conversion is automated via a script that converts wikilinks to standard Markdown links before the Astro build step. |
+
+---
+
 ## Future Decisions
 
 The following areas are not yet decided. See `open-questions.md` for the full list.
 
-- Publishing platform (Q-1)
-- Obsidian-to-blog conversion tooling (Q-2)
 - Series and category names within topic domains (Q-3)
 - Series boundary rules — single vs. multiple domain membership (Q-5)
 - Exact post template structure and section names (Q-6)

@@ -1,7 +1,8 @@
 # Publishing Workflow
 
-**Status:** Unresolved — this document captures open decisions around platform and conversion. No platform or tool has been chosen.  
-**Last updated:** 2026-05-06
+**Status:** Resolved — decisions recorded in `confirmed-decisions.md` (D-17, D-18) and `decision-log.md` (DL-003).  
+**Decided:** 2026-05-06  
+**Platform:** Astro (static site generator). **Conversion:** automated script (wikilinks → standard links).
 
 The publishing workflow covers two decisions: (1) which platform the blog is hosted on, and (2) how Obsidian documents are converted into publishable posts. Both are open. This document frames the constraints and evaluation criteria for a future decision discussion.
 

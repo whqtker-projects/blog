@@ -121,6 +121,39 @@ File naming affects Obsidian wikilink resolution, filesystem search, and the Obs
 
 ---
 
+## DL-003 — Publishing platform and conversion workflow (Q-1, Q-2)
+
+**Date:** 2026-05-06  
+**Status:** confirmed
+
+### Context
+
+Q-1 (publishing platform) and Q-2 (conversion tooling) were discussed together because they are coupled — the right conversion approach depends on the platform. The key confirmed constraints were: Obsidian Markdown source, local readability required (D-4), posts include code blocks, examples, and a quiz section (D-6, D-7, D-8), and the conversion path is direct Obsidian → blog (D-3).
+
+### Alternatives considered
+
+- **Obsidian Publish:** Wikilinks work natively, but limited layout control, subscription cost, and quiz rendering requires workarounds. Rejected.
+- **Hosted platform (Ghost, Hashnode, dev.to):** Lower operational burden, but Obsidian Markdown compatibility varies and rendering control is limited. Rejected.
+- **Hugo:** Fastest build times, but quiz section interactivity requires separate JS and lacks native component model. Not selected.
+- **Manual conversion:** No tooling setup required, but impractical as post count grows. Rejected in favor of automated script.
+
+### Decision
+
+- **Q-1:** Astro is the static site generator. Content collections manage posts; MDX support enables quiz component implementation; code highlighting is built in.
+- **Q-2:** Conversion is automated via a script that transforms Obsidian wikilinks to standard Markdown links before the Astro build step.
+
+### Follow-up
+
+- The specific conversion script design (language, trigger mechanism, wikilink edge cases) is not yet defined and will be addressed when implementation begins.
+- Quiz component rendering approach in Astro (MDX component vs. plain HTML/JS) is not yet specified — Q-7 (quiz format) remains open.
+
+### References
+
+- `confirmed-decisions.md`: D-17, D-18
+- `open-questions.md`: Q-1, Q-2 (both resolved)
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions

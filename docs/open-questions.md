@@ -17,8 +17,8 @@ Items that are not yet finalized. Do not resolve these by assumption — bring t
 
 | # | Status | Question | Notes |
 |---|---|---|---|
-| Q-1 | open | Which platform will the blog be published on? | Format is Obsidian Markdown. Local rendering in Obsidian is required. External platform TBD. See [publishing-workflow.md](publishing-workflow.md). |
-| Q-2 | open | Will the Obsidian → blog conversion be manual or automated? | Direct conversion is the intended path, but the tooling is not decided. |
+| Q-1 | decided | Which platform will the blog be published on? | Astro (static site generator). See `confirmed-decisions.md` D-17 and `decision-log.md` DL-003. |
+| Q-2 | decided | Will the Obsidian → blog conversion be manual or automated? | Automated script: wikilinks → standard links before Astro build. See `confirmed-decisions.md` D-18 and `decision-log.md` DL-003. |
 
 ---
 
