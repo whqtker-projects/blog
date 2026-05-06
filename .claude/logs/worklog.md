@@ -10,3 +10,11 @@ Created foundational planning documents from confirmed decisions discussed in th
 **Confirmed in this session:** content focus, audience range, post structure elements (definition → operational principle → examples → quiz), topic domains (CS, AI/ML/LLM, backend, software engineering), Obsidian-as-source-of-truth, direct conversion workflow, Obsidian Markdown format.
 
 **Unresolved:** publishing platform, series/category structure, post template formalization, file naming conventions, quiz format, length guidelines.
+
+## 2026-05-06 — GitHub issue workflow manual written
+
+Created `docs/github-issue-workflow.md` based on official Claude Code best practices docs.
+
+**Sources consulted:** `code.claude.com/docs/en/best-practices`, `code.claude.com/docs/en/github-actions`, `code.claude.com/docs/en/common-workflows`
+
+**Covers:** gh CLI setup, issue creation via Claude, issue structure convention, the explore→plan→implement→commit→PR flow, fix-issue skill definition, gh commands reference, GitHub Actions @claude integration, recommended label set for this project.

@@ -21,7 +21,7 @@ The current planning stage is focused on establishing structure, series organiza
 
 ## 2. Confirmed Decisions
 
-See [`docs/decisions/`](docs/decisions/) for individual decision records.
+See [`docs/decisions/`](docs/decisions/) for individual decision records. See [`docs/github-issue-workflow.md`](docs/github-issue-workflow.md) for the issue-driven development workflow.
 
 | Decision | Status |
 |---|---|
