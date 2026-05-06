@@ -22,7 +22,7 @@ The repository is currently in the **planning and documentation stage**. No blog
 
 | File | Purpose |
 |---|---|
-| [post-template.md](post-template.md) | Planning-level structure of a blog post. *(planned — see issue #7)* |
+| [post-template.md](post-template.md) | Planning-level structure of a blog post. |
 | [series-backlog.md](series-backlog.md) | Candidate series and topic domain organization. *(planned — see issue #8)* |
 | [status-lifecycle.md](status-lifecycle.md) | Status definitions for notes, drafts, and published posts. *(planned — see issue #11)* |
 
