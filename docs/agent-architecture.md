@@ -100,7 +100,8 @@ Incoming task
       ▼
 Planning Lead classifies
       │
-      ├─ New open question ──────────► Planning Lead logs in open-questions.md
+      ├─ New open question ──────────► Planning Lead classifies and routes;
+      │                               item recorded per documentation-workflow.md
       │
       ├─ Structure decision needed ──► Structure Planner prepares options
       │        │
@@ -133,9 +134,9 @@ Agents may propose and prepare, but may not decide anything in the user's domain
 
 ## Related Documents
 
-- [`.claude/agents/planning-lead.md`](../claude/agents/planning-lead.md) — Planning Lead role guide
-- [`.claude/agents/decision-reviewer.md`](../claude/agents/decision-reviewer.md) — Decision Reviewer role guide
-- [`.claude/agents/documentation-curator.md`](../claude/agents/documentation-curator.md) — Documentation Curator role guide
-- [`.claude/agents/structure-planner.md`](../claude/agents/structure-planner.md) — Structure Planner role guide
+- [`.claude/agents/planning-lead.md`](../.claude/agents/planning-lead.md) — Planning Lead role guide
+- [`.claude/agents/decision-reviewer.md`](../.claude/agents/decision-reviewer.md) — Decision Reviewer role guide
+- [`.claude/agents/documentation-curator.md`](../.claude/agents/documentation-curator.md) — Documentation Curator role guide
+- [`.claude/agents/structure-planner.md`](../.claude/agents/structure-planner.md) — Structure Planner role guide
 - [`docs/documentation-workflow.md`](documentation-workflow.md) — How planning documents are updated
 - [`docs/open-questions.md`](open-questions.md) — All unresolved planning items
