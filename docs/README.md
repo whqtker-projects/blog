@@ -23,15 +23,15 @@ The repository is currently in the **planning and documentation stage**. No blog
 | File | Purpose |
 |---|---|
 | [post-template.md](post-template.md) | Planning-level structure of a blog post. |
-| [series-backlog.md](series-backlog.md) | Candidate series and topic domain organization. *(planned — see issue #8)* |
-| [status-lifecycle.md](status-lifecycle.md) | Status definitions for notes, drafts, and published posts. *(planned — see issue #11)* |
+| [series-backlog.md](series-backlog.md) | Candidate series and topic domain organization. |
+| [status-lifecycle.md](status-lifecycle.md) | Status definitions for notes, drafts, and published posts. |
 
 ### Technical decisions
 
 | File | Purpose |
 |---|---|
-| [file-naming-conventions.md](file-naming-conventions.md) | Options for Obsidian file naming — unresolved decision. *(planned — see issue #9)* |
-| [publishing-workflow.md](publishing-workflow.md) | Publishing platform and conversion workflow — unresolved decision. *(planned — see issue #10)* |
+| [file-naming-conventions.md](file-naming-conventions.md) | Options for Obsidian file naming — unresolved decision. |
+| [publishing-workflow.md](publishing-workflow.md) | Publishing platform and conversion workflow — unresolved decision. |
 | [github-issue-workflow.md](github-issue-workflow.md) | How to create GitHub issues and proceed with work using Claude Code. |
 
 ### Decision records (ADR)
@@ -47,7 +47,7 @@ The repository is currently in the **planning and documentation stage**. No blog
 - **Starting a new planning session:** Read `project-overview.md`, then `confirmed-decisions.md`, then `open-questions.md`.
 - **Recording a new decision:** Add an entry to `decision-log.md` and update `confirmed-decisions.md`.
 - **Tracking unresolved items:** All open questions live in `open-questions.md`. Move resolved items to `confirmed-decisions.md`.
-- **Planning a new series or post:** Consult `series-backlog.md` and `post-template.md` once those documents exist.
+- **Planning a new series or post:** Consult `series-backlog.md` and `post-template.md`.
 
 ---
 
