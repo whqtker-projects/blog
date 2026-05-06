@@ -1,7 +1,8 @@
 # File Naming Conventions
 
-**Status:** Unresolved — this document frames the decision. No convention has been chosen.  
-**Last updated:** 2026-05-06
+**Status:** Resolved — decision recorded in `confirmed-decisions.md` (D-15, D-16) and `decision-log.md` (DL-002).  
+**Decided:** 2026-05-06  
+**Convention:** All-lowercase kebab-case, English only, no prefix. Example: `transformer-attention-mechanism.md`
 
 Obsidian file names directly affect internal linking, search behavior, and the Obsidian-to-blog conversion path. This document lays out the decision points and available options. The user decides.
 

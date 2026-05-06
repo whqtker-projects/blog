@@ -86,6 +86,41 @@ The following remain unresolved and are tracked in `open-questions.md`:
 
 ---
 
+## DL-002 — Obsidian file naming convention (Q-4)
+
+**Date:** 2026-05-06  
+**Status:** confirmed
+
+### Context
+
+File naming affects Obsidian wikilink resolution, filesystem search, and the Obsidian-to-blog URL conversion path. A consistent convention needs to be set before posts are created to avoid retroactive renaming across all internal links. Q-4 was prepared through a full agent-workflow pilot (see `docs/pilot-record.md`), which produced a tradeoff summary across five dimensions.
+
+### Alternatives considered
+
+- **Korean filenames:** Obsidian-compatible, but URL encoding behavior depends on the conversion tool (Q-1/Q-2 unresolved). Risk flagged as conditional; English chosen to remove the dependency.
+- **snake_case:** Functional but less conventional for web URLs than kebab-case.
+- **Title case:** Higher readability as filenames, but introduces case-sensitivity risk across OS environments (Linux vs. macOS). Rejected in favor of all-lowercase.
+- **Series prefix (domain or numbered):** Domain prefix depends on Q-3 (series names not yet decided). Numbered prefix is structurally fragile when posts are inserted or reordered. Both deferred; no prefix chosen.
+- **Date prefix:** Suits time-ordered content, but the blog produces evergreen concept posts (D-5, D-6). Adds noise without benefit.
+
+### Decision
+
+- File names use all-lowercase kebab-case. Example: `transformer-attention-mechanism.md`.
+- File names are English only. Korean content goes in post titles and body text.
+- No series prefix and no date prefix.
+
+### Follow-up
+
+- If a series prefix is desired in the future after Q-3 is resolved, the convention can be extended. This would require renaming existing files and updating all wikilinks — a non-trivial migration.
+- Q-1/Q-2 (publishing platform and conversion tooling) remain open. The chosen convention (ASCII kebab-case) is safe regardless of platform.
+
+### References
+
+- `confirmed-decisions.md`: D-15, D-16
+- `open-questions.md`: Q-4 (resolved)
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions

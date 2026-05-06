@@ -27,7 +27,7 @@ Items that are not yet finalized. Do not resolve these by assumption — bring t
 | # | Status | Question | Notes |
 |---|---|---|---|
 | Q-3 | open | What are the series/category names and their groupings? | Topic domains are confirmed (CS, AI/ML/LLM, backend, software engineering). Series structure within those domains is not yet defined. See [series-backlog.md](series-backlog.md). |
-| Q-4 | open | What are the Obsidian file naming conventions? | Affects internal links, search, and conversion output. See [file-naming-conventions.md](file-naming-conventions.md). |
+| Q-4 | decided | What are the Obsidian file naming conventions? | All-lowercase kebab-case, English only, no prefix. See `confirmed-decisions.md` D-15, D-16 and `decision-log.md` DL-002. |
 | Q-5 | open | Will series be strictly bounded, or can a post belong to multiple domains? | |
 
 ---

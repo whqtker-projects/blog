@@ -67,6 +67,15 @@ This document is the stable reference for decisions that have been explicitly ag
 
 ---
 
+## File Naming
+
+| # | Decision |
+|---|---|
+| D-15 | Obsidian file names use all-lowercase kebab-case with no prefix (no series prefix, no date prefix). Example: `transformer-attention-mechanism.md`. |
+| D-16 | File names are English only. Korean content is expressed in post titles and body text, not in file names. |
+
+---
+
 ## Future Decisions
 
 The following areas are not yet decided. See `open-questions.md` for the full list.
@@ -74,7 +83,6 @@ The following areas are not yet decided. See `open-questions.md` for the full li
 - Publishing platform (Q-1)
 - Obsidian-to-blog conversion tooling (Q-2)
 - Series and category names within topic domains (Q-3)
-- Obsidian file naming conventions (Q-4)
 - Series boundary rules — single vs. multiple domain membership (Q-5)
 - Exact post template structure and section names (Q-6)
 - Quiz count and format per post (Q-7)
