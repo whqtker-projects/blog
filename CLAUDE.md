@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with this repository.
 
 ## Project State
 
@@ -8,31 +8,44 @@ This repository is in the **early planning stage**. There is no build system, no
 
 ## Repository Purpose
 
-An Obsidian-based technical blog system. Obsidian is the internal knowledge repository; the blog is the reader-facing output converted directly from Obsidian Markdown documents.
+An Obsidian-based technical blog. Obsidian is the internal knowledge repository; the blog is the reader-facing output converted directly from Obsidian Markdown documents.
 
 Content focus: concept explanation (definition level + operational principles), not troubleshooting. Target audience: beginner to practitioner.
 
-## Document Structure
+## Authoritative Planning Documents
+
+Start here when beginning a session:
 
 ```
-PLANNING.md                        # Main project overview — start here
-docs/
-  open-questions.md                # Unresolved items; do not resolve by assumption
-  decisions/
-    ADR-001-project-foundations.md # Confirmed foundational decisions
-.claude/logs/worklog.md            # Session log
+docs/README.md                    # Document map — read first
+docs/project-overview.md          # Purpose, scope, and current stage
+docs/confirmed-decisions.md       # All confirmed project decisions
+docs/open-questions.md            # All unresolved items — do not resolve by assumption
+docs/decision-log.md              # Chronological record of planning discussions
+docs/documentation-workflow.md    # How to update planning documents correctly
+```
+
+Supporting reference documents (read when relevant to the task):
+
+```
+docs/series-backlog.md            # Candidate series and topic domains
+docs/post-template.md             # Post structure planning
+docs/file-naming-conventions.md   # Naming convention options — unresolved
+docs/publishing-workflow.md       # Publishing platform options — unresolved
+docs/status-lifecycle.md          # Status definitions for notes, drafts, posts
+docs/decisions/                   # ADR files for foundational decisions
 ```
 
 ## Planning Conventions
 
-- **Confirmed decisions** live in `docs/decisions/` as ADR files.
-- **Unresolved items** live in `docs/open-questions.md`. Do not assume answers to open questions — surface them to the user.
-- `PLANNING.md` is the single source of truth for current project direction. Keep it in sync when decisions are made or open questions are resolved.
+- **Confirmed decisions** live in `docs/confirmed-decisions.md` and individual ADR files under `docs/decisions/`.
+- **Unresolved items** live in `docs/open-questions.md`. Do not assume answers — surface them to the user.
+- When a decision is made: update `docs/confirmed-decisions.md`, log it in `docs/decision-log.md`, and resolve the entry in `docs/open-questions.md`.
 - All documents are written in English (Obsidian Markdown format).
 
 ## Role Boundaries
 
 The user decides: post content, topic selection, series structure, publication timing.  
-The planning agent helps with: document structure, decision records, series organization, open-question tracking.
+Agents help with: document structure, decision records, series organization, open-question tracking, consistency cleanup.
 
 Do not draft blog post content, select the first series, define post outlines, or set a publishing cadence unless the user explicitly initiates that discussion.
