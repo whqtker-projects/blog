@@ -15,7 +15,7 @@
 | D-12 | The user decides the detailed content of each post personally. |
 | D-13 | Planning agents support structure and planning, but do not decide post content. |
 
-Key constraint from D-10: four topic domains are confirmed. Series names and groupings must fit within these domains or extend them — they cannot contradict them. The domains are extensible (confirmed), but the existing four are fixed.
+Key constraint from D-10: four topic domains are confirmed. Series names and groupings must not contradict those confirmed domains. Whether the domain model may expand later is not part of the confirmed decision set and should not be assumed here.
 
 ---
 
