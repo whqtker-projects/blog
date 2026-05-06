@@ -4,48 +4,47 @@
 **Decided:** 2026-05-06  
 **Platform:** Astro (static site generator). **Conversion:** automated script (wikilinks → standard links).
 
-The publishing workflow covers two decisions: (1) which platform the blog is hosted on, and (2) how Obsidian documents are converted into publishable posts. Both are open. This document frames the constraints and evaluation criteria for a future decision discussion.
-
-See the related open question in [`docs/open-questions.md`](open-questions.md).
+Both decisions are now resolved. This document is a reference record of the constraints, candidate approaches, and evaluation criteria that informed the decision. See `confirmed-decisions.md` (D-17, D-18) and `decision-log.md` (DL-003) for the full decision record.
 
 ---
 
-## Known Constraints
+## Constraints That Drove the Decision
 
-These are confirmed facts that any platform or conversion approach must satisfy:
+These confirmed facts shaped which approaches were viable:
 
 - **Source format is Obsidian Markdown.** Documents must render correctly inside Obsidian during the writing and review phase.
 - **The conversion path is Obsidian → blog.** Obsidian is the source of truth; there is no separate writing environment for the blog.
 - **Post format includes code blocks, embedded examples, and a quiz section.** The platform must render these elements correctly.
-- **No platform has been decided.** This is an open question.
 
 ---
 
-## Open Decisions
+## Decided Approach
 
-### Decision 1: Publishing Platform
+### Platform (Q-1): Astro
 
-The platform where the blog is hosted. Not chosen.
+Astro was selected as the static site generator. It supports content collections for post management, MDX for component-based quiz implementation, and built-in code highlighting.
 
-**Candidate approaches:**
+**Candidate approaches reviewed:**
 
 | Approach | Examples | Notes |
 |---|---|---|
-| Static site generator | Hugo, Astro, Jekyll, 11ty | Markdown-native; high control; requires build pipeline |
+| **Static site generator** ✓ | **Astro** | Markdown-native; high control; requires build pipeline |
 | Obsidian-native publishing | Obsidian Publish | Tight integration; limited customization; subscription cost |
 | Hosted platform | Ghost, Hashnode, dev.to | Lower maintenance; less control over rendering |
 | Custom setup | Self-hosted SSG + VPS | Maximum control; highest maintenance |
 
 ---
 
-### Decision 2: Conversion Method
+### Conversion Method (Q-2): Automated script
 
-How Obsidian documents become published posts. Not chosen.
+Conversion is handled by an automated script that transforms Obsidian wikilinks into standard Markdown links before the Astro build step. Specific script design details (language, trigger mechanism, edge cases) are not yet defined and will be addressed during implementation.
+
+**Conversion methods reviewed:**
 
 | Method | Description | Notes |
 |---|---|---|
 | Manual copy-paste | Copy content from Obsidian into the publishing platform by hand | No tooling required; error-prone at scale |
-| Script-based conversion | Custom script transforms Obsidian Markdown to the platform's format | Flexible; requires maintenance |
+| **Script-based conversion** ✓ | **Custom script transforms wikilinks before build** | Flexible; requires maintenance |
 | Plugin-based export | Obsidian plugin exports to target format | Depends on plugin ecosystem; variable quality |
 | Direct sync | Platform reads from the Obsidian vault directory | Requires platform support or middleware |
 
@@ -53,7 +52,7 @@ How Obsidian documents become published posts. Not chosen.
 
 ## Evaluation Criteria
 
-When the platform and conversion method are under discussion, evaluate against these criteria:
+Criteria used to evaluate the candidates:
 
 | Criterion | Why It Matters |
 |---|---|
@@ -67,6 +66,8 @@ When the platform and conversion method are under discussion, evaluate against t
 
 ---
 
-## Next Step
+## Related Documents
 
-This document is an input to a future platform and workflow decision discussion initiated by the user. When decisions are made, they will be recorded in [`docs/decisions/`](decisions/) and the related open questions in `open-questions.md` will be resolved.
+- [`docs/confirmed-decisions.md`](confirmed-decisions.md) — D-17 (Astro), D-18 (automated script)
+- [`docs/decision-log.md`](decision-log.md) — DL-003 (context and alternatives)
+- [`docs/open-questions.md`](open-questions.md) — Q-1 and Q-2 (both resolved)
