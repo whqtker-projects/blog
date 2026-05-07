@@ -116,27 +116,68 @@ This allows CI pipelines to enforce strict link integrity without blocking local
 
 ## Script Integration Point
 
-The script is a one-shot Node.js process, not an Astro integration. It runs before the Astro build step.
+The script is a one-shot Node.js process, not an Astro integration. Conversion is **manual and explicit** — there is no prebuild hook or watch mode.
 
-**Manual invocation:**
-```
+**Trigger:** run by the author whenever Obsidian vault content has changed.
+
+```bash
+# Standard sync (warn on unresolved links)
 pnpm convert --input /path/to/obsidian-vault/posts
+
+# Strict sync — required before committing (fail on unresolved links)
+pnpm convert --input /path/to/obsidian-vault/posts --strict
 ```
 
-**Pre-build workflow (recommended for CI):**
-```
-pnpm convert --input /path/to/obsidian-vault/posts --strict && pnpm build
-```
+**Conversion is not part of `pnpm build`.** The Astro build reads from the already-committed `src/content/posts/` and requires no vault access. CI runs `pnpm build` only.
 
-The script is intentionally decoupled from `astro build` so local development and content editing can proceed independently.
+Rationale for manual trigger:
+- The vault path is machine-specific and cannot be hardcoded in a CI script.
+- Converted files are committed to git, so CI has no need to run conversion.
+- Explicit conversion makes every content change a deliberate, reviewable commit.
 
 ---
 
 ## Output Directory Structure
 
-Output files are written to `./src/content/posts/` by default (the Astro content collection location from D-37). The directory is created if it does not exist. Output filenames match source filenames exactly.
+### Default output path
+
+Output files are written to `./src/content/posts/` by default — the Astro content collection directory defined by D-37. The directory is created if it does not exist. Output filenames match source filenames exactly.
 
 A custom output path can be specified with `--output <dir>`.
+
+### Commit policy — generated-but-committed
+
+`src/content/posts/` is **committed to git**. It is not gitignored.
+
+Rationale:
+- The Obsidian vault is a local, author-owned directory not available in CI or to collaborators. If converted output were gitignored, the repository could not build without the vault present.
+- Committing converted content makes the repository self-contained: `pnpm build` works from any checkout without requiring the vault.
+- Git diff on `src/content/posts/` provides a human-readable review of every content change before it is published — wikilink rewrites and frontmatter edits are visible in PR diffs.
+
+The relationship between the three layers is:
+
+```
+Obsidian vault (posts/)        ← authoritative source; not in this repo
+       │
+       │  pnpm convert --input <vault/posts>
+       ▼
+src/content/posts/             ← committed converted artifact
+       │
+       │  pnpm build
+       ▼
+dist/                          ← gitignored build output
+```
+
+### What is committed vs. ignored
+
+| Path | Policy | Reason |
+|------|--------|--------|
+| `src/content/posts/*.md` | **Committed** | Converted artifact; repo must be self-contained |
+| `dist/` | Gitignored | Ephemeral build output |
+| `.astro/` | Gitignored | Dev-server cache |
+| `node_modules/` | Gitignored | Installed dependencies |
+
+The `.gitignore` already reflects this policy and requires no changes.
 
 ---
 
