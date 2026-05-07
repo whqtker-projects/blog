@@ -8,6 +8,8 @@ Validation results for Astro's rendering of Obsidian Markdown constructs. Valida
 
 **Status: PASS** — `pnpm build` completes without errors. Both `/index.html` and `/posts/what-is-a-database-index/index.html` are generated correctly.
 
+Image rendering validated: `public/images/btree-structure.svg` is committed and referenced in the sample fixture. The build produces `<img src="/images/btree-structure.svg" alt="B+Tree structure">` in the rendered HTML, confirming that images served from `public/images/` load correctly after wikilink conversion.
+
 ---
 
 ## Obsidian Construct Inventory

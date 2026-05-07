@@ -15,6 +15,8 @@ Write operations (INSERT, UPDATE, DELETE) become slightly more expensive because
 
 ## Example
 
+![B+Tree structure](/images/btree-structure.svg)
+
 Given a `users` table with one million rows, a query like:
 
 ```sql
