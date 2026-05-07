@@ -16,7 +16,7 @@ Image rendering validated: `public/images/btree-structure.svg` is committed and 
 
 | Construct | Obsidian syntax | Output | Status |
 |-----------|----------------|--------|--------|
-| Fenced code block (with language) | ` ```sql ... ``` ` | Shiki-highlighted `<pre>` block | ✅ Supported |
+| Fenced code block (with language) | ` ```sql ... ``` ` | Shiki-highlighted `<pre>` block; `sql` and `python` validated (#66) | ✅ Supported |
 | Inline code | `` `code` `` | `<code>` element | ✅ Supported |
 | Headings (H1–H3) | `# ## ###` | `<h1>`–`<h3>` with auto-generated `id` anchors | ✅ Supported |
 | Bold / italic | `**bold**` / `*italic*` | `<strong>` / `<em>` | ✅ Supported |
@@ -34,13 +34,26 @@ Image rendering validated: `public/images/btree-structure.svg` is committed and 
 
 ---
 
-## Syntax Highlighting
+## Code Block Rendering (Issue #66)
+
+### Validation result: PASS
+
+Fenced code blocks in the sample fixture render correctly after `pnpm build`. No raw Markdown fence text (```` ``` ````) appears in the HTML output.
+
+**Languages validated in `src/content/posts/what-is-a-database-index.md`:**
+
+| Language tag | Block count | Rendered as | Raw fence in HTML |
+|---|---|---|---|
+| `sql` | 2 | `<pre class="astro-code …" data-language="sql">` | None |
+| `python` | 1 | `<pre class="astro-code …" data-language="python">` | None |
+
+Each block is wrapped in a `<pre>` element with Shiki-generated inline `color` styles on individual `<span>` elements per token. The `data-language` attribute on `<pre>` carries the language label; no visible language badge is rendered by the current layout (unstyled, not a gap).
+
+### Syntax highlighting
 
 Astro uses **Shiki** as its built-in highlighter. Theme is pinned to `github-dark` in `astro.config.mjs`.
 
 Shiki runs at build time; no client-side JavaScript is required. All languages supported by Shiki are available.
-
-Validated with SQL in the sample fixture — rendered output confirmed correct.
 
 ---
 

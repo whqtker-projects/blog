@@ -13,6 +13,31 @@ When you create an index on a column, the database builds an auxiliary structure
 
 Write operations (INSERT, UPDATE, DELETE) become slightly more expensive because the index must be updated alongside the table. This is the core tradeoff: indexes speed up reads at the cost of slower writes and additional storage.
 
+To see what indexes a table currently has in PostgreSQL:
+
+```sql
+SELECT indexname, indexdef
+FROM pg_indexes
+WHERE tablename = 'users';
+```
+
+A simplified model of how a B+Tree lookup works in Python:
+
+```python
+import bisect
+
+class BPlusTreeLeaf:
+    def __init__(self, keys, values):
+        self.keys = keys      # sorted list of indexed values
+        self.values = values  # corresponding row pointers
+
+    def find(self, target):
+        pos = bisect.bisect_left(self.keys, target)
+        if pos < len(self.keys) and self.keys[pos] == target:
+            return self.values[pos]
+        return None
+```
+
 ## Example
 
 ![B+Tree structure](/images/btree-structure.svg)
