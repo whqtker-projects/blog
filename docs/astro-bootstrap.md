@@ -34,6 +34,8 @@ pnpm test:convert                                    # Run conversion script uni
 
 > `pnpm build` does **not** auto-run conversion. It builds from whatever `.md` files are currently committed in `src/content/posts/`. Run `pnpm convert` first whenever vault content has changed, then commit the updated files.
 
+> `src/content/posts/` is reserved for real publishable content candidates. Validation fixtures belong under `test/fixtures/obsidian-vault/` and should be converted only into a temporary or test-only output location when rendering checks are needed.
+
 ---
 
 ## Content Workflow
@@ -117,7 +119,7 @@ new_blog/
 ├── docs/                        # Planning documents (not part of Astro build)
 ├── src/
 │   ├── content/
-│   │   └── posts/               # Converted Markdown posts go here
+│   │   └── posts/               # Converted Markdown for real publishable posts
 │   ├── content.config.ts        # Content collection schema
 │   ├── layouts/
 │   │   ├── BaseLayout.astro     # HTML shell (head, body)
@@ -126,6 +128,9 @@ new_blog/
 │       ├── index.astro          # Home — lists published posts
 │       └── posts/
 │           └── [slug].astro     # Post route — /posts/<slug>
+├── test/
+│   └── fixtures/
+│       └── obsidian-vault/      # Validation-only Obsidian source fixtures
 ├── public/                      # Static assets
 ├── astro.config.mjs
 ├── package.json
@@ -174,6 +179,8 @@ Slug is derived from the Markdown file name (e.g., `b-plus-tree.md` → `/posts/
 4. Set `status: published` in frontmatter when the post is ready to go live
 5. Run `pnpm build` to verify no schema errors
 6. Commit `src/content/posts/<filename>.md`
+
+Validation-only fixtures follow a different rule: keep the Obsidian source under `test/fixtures/obsidian-vault/`, do not leave its converted output in `src/content/posts/`, and use `--output <temp-dir>` when a one-off rendering check needs converted artifacts.
 
 ---
 

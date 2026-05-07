@@ -19,7 +19,7 @@ The first series is `database-internals` (D-22). The five candidate posts below 
 | 4 | `write-ahead-log.md` | Write-Ahead Log and Durability | How WAL separates write ordering from page writes, crash recovery flow, and checkpoint mechanics |
 | 5 | `query-execution-plan.md` | Query Execution and the Optimizer | How the query planner turns SQL into a plan, cost estimation, and when/why index scans beat table scans |
 
-Post 1 (`what-is-a-database-index.md`) exists as a committed sample fixture. Posts 2–5 are candidates to be written in order.
+Committed real content candidates currently in the repository are `what-is-a-database-index.md` and `b-plus-tree-index.md`. Validation fixtures such as `e2e-rendering-validation.md` are tracked separately under `test/fixtures/obsidian-vault/` and do not count as series candidates.
 
 The author may adjust order, add topics, or split a post — this list is a starting point, not a commitment. Any changes to the confirmed candidate set should be reflected here.
 

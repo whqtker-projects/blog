@@ -2,6 +2,8 @@
 
 Validation results for Astro's rendering of Obsidian Markdown constructs. Validated against the sample fixture `src/content/posts/what-is-a-database-index.md` using `pnpm build`.
 
+Validation-only source fixtures now live under `test/fixtures/obsidian-vault/`. If a rendering check needs a dedicated fixture such as `e2e-rendering-validation.md`, keep the Obsidian source there and avoid leaving its converted output in `src/content/posts/` after the check is complete.
+
 ---
 
 ## End-to-End Validation Result

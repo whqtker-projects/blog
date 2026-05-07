@@ -22,6 +22,12 @@ The script accepts a single flat directory of `.md` post files. The recommended 
 
 Non-post files (templates, notes, attachments) must live outside the `--input` directory. The script processes every `.md` file in the given directory; it does not recurse into subdirectories.
 
+Repository policy separates real content from validation fixtures:
+
+- Real publishable content candidates are converted into `src/content/posts/` and committed.
+- Validation fixtures live in `test/fixtures/obsidian-vault/`.
+- Converted output from validation fixtures must not remain in `src/content/posts/`; if conversion is needed for a rendering check, write it to a temporary or test-only location instead.
+
 ### File selection rules
 
 | File type | Behaviour |
@@ -146,6 +152,8 @@ Rationale for manual trigger:
 Output files are written to `./src/content/posts/` by default — the Astro content collection directory defined by D-37. The directory is created if it does not exist. Output filenames match source filenames exactly.
 
 A custom output path can be specified with `--output <dir>`.
+
+Use the default output path only for real publishable posts. Validation fixtures should be converted with `--output` pointing to a temporary or test-only directory so they do not re-enter the public content set by accident.
 
 ### Commit policy — generated-but-committed
 
