@@ -1,85 +1,66 @@
 # Series Backlog
 
-**Status:** Active — candidate series are collected here before final structure is confirmed.  
-**Last updated:** 2026-05-06
+**Status:** Confirmed — series structure decided on 2026-05-07. See `confirmed-decisions.md` D-19–D-22 and `decision-log.md` DL-004.  
+**Last updated:** 2026-05-07
 
-This document tracks candidate series for the blog. It is a planning artifact, not a confirmed hierarchy. The final series/category structure is an open question — see [`docs/open-questions.md`](open-questions.md).
+This document is the authoritative list of confirmed series. The structure is no longer a candidate list — all 12 series below have been decided. Individual series descriptions, post lists, and ordering are defined in their respective series files under `docs/series/` (not yet created; tracked in issue #35 and later issues).
 
 ---
 
 ## What Is a Series?
 
-A series is a named grouping of posts that share a topic domain and a learning arc. Posts within a series can be read in order or independently. A candidate series listed here has not been committed to — it may be renamed, merged, split, or dropped.
-
-**Candidate** = proposed but not confirmed.  
-**Confirmed** = user has decided this series will exist.
+A series is a named grouping of posts that share a topic focus and a learning arc within a domain. Each post belongs to exactly one series (D-20). Series are not 1:1 with domains — each domain contains multiple series (D-19).
 
 ---
 
-## Candidate Series
-
-### CS Fundamentals
-
-| Field | Value |
-|---|---|
-| **Domain** | CS fundamentals and algorithms |
-| **Status** | Candidate |
-| **Purpose** | Explain foundational computer science concepts from first principles — data structures, algorithms, operating systems, networking, and theory |
-| **Target audience** | Beginners building a mental model; practitioners revisiting foundational understanding |
-| **Prerequisites** | None assumed — each post defines its own baseline |
-| **Candidate posts** | TBD by user |
-| **Open questions** | Which CS subdomain to start from; how deep to go per post; whether algorithms get a separate series |
-
----
-
-### AI / ML / LLM
-
-| Field | Value |
-|---|---|
-| **Domain** | Artificial intelligence, machine learning, large language models |
-| **Status** | Candidate |
-| **Purpose** | Explain how AI and ML systems work internally — from statistical foundations through transformer architecture to LLM behavior |
-| **Target audience** | Practitioners curious about internals; beginners with basic programming knowledge |
-| **Prerequisites** | Basic programming; math comfort varies per post |
-| **Candidate posts** | TBD by user |
-| **Open questions** | Whether to separate classical ML from LLMs; whether to cover training vs. inference separately |
-
----
+## Confirmed Series
 
 ### Backend and Systems
 
-| Field | Value |
-|---|---|
-| **Domain** | Backend engineering, distributed systems, databases, infrastructure |
-| **Status** | Candidate |
-| **Purpose** | Explain how backend systems are built and how they behave under load — concurrency, consensus, storage engines, APIs |
-| **Target audience** | Practitioners building or debugging backend systems |
-| **Prerequisites** | Programming experience; varies by post |
-| **Candidate posts** | TBD by user |
-| **Open questions** | Whether databases get a separate series; scope of "systems" (OS-level included or not) |
+| Series slug | Status | Notes |
+|---|---|---|
+| `database-internals` | **First series** (D-22) | Storage engines, indexing, transactions, query execution |
+| `distributed-systems` | Confirmed | Consensus, replication, consistency models |
+| `network-protocols` | Confirmed | TCP/IP, HTTP, DNS, TLS internals |
+| `backend-design` | Confirmed | API design, concurrency patterns, service architecture |
 
----
+### CS Fundamentals
+
+| Series slug | Status | Notes |
+|---|---|---|
+| `data-structures` | Confirmed | Arrays, trees, graphs, hash tables |
+| `algorithms` | Confirmed | Sorting, search, dynamic programming, complexity |
+| `operating-systems` | Confirmed | Processes, scheduling, memory management, I/O |
+| `computer-architecture` | Confirmed | CPU pipeline, cache, memory hierarchy |
+| `computer-security` | Confirmed | Cryptography, authentication, common attack models |
+
+### AI / ML / LLM
+
+| Series slug | Status | Notes |
+|---|---|---|
+| `llm-internals` | Confirmed | Transformer architecture, attention, tokenization, inference |
+| `ml-fundamentals` | Confirmed | Statistical learning, training, evaluation, classical models |
 
 ### Software Engineering
 
-| Field | Value |
-|---|---|
-| **Domain** | Software design, architecture, engineering practices |
-| **Status** | Candidate |
-| **Purpose** | Explain design principles, patterns, and practices that shape how software is built and maintained |
-| **Target audience** | Practitioners wanting to improve code and design decisions |
-| **Prerequisites** | Programming experience |
-| **Candidate posts** | TBD by user |
-| **Open questions** | Distinction from Backend series; whether to cover tooling and process |
+| Series slug | Status | Notes |
+|---|---|---|
+| `design-principles` | Confirmed | SOLID, design patterns, coupling, abstraction |
 
 ---
 
-## Unresolved Structure Questions
+## Structure Rules
 
-The final series hierarchy — how series are named, grouped, and ordered — is not decided here. See the related open question in [`docs/open-questions.md`](open-questions.md).
+- **One post, one series:** Cross-series membership is not allowed (D-20).
+- **Multiple series per domain:** Domains are not collapsed into single series (D-19).
+- **Slug format:** all-lowercase kebab-case, English only (D-15, D-16).
+- **Series naming policy** (slug ↔ display name mapping): tracked in issue #33.
+- **Post metadata structure** (how a post declares its series): tracked in issue #34.
 
-Specific unresolved items:
-- Whether topic domains map 1:1 to series or cluster differently
-- Whether a series has a fixed post count or is open-ended
-- Whether sub-series (e.g., "LLM internals" under AI/ML) will be used
-- How series are surfaced in the final blog navigation
+---
+
+## Related Documents
+
+- [`docs/confirmed-decisions.md`](confirmed-decisions.md) — D-19, D-20, D-21, D-22
+- [`docs/decision-log.md`](decision-log.md) — DL-004 (series structure), DL-005 (first series)
+- [`docs/open-questions.md`](open-questions.md) — Q-3, Q-5 (both resolved)

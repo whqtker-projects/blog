@@ -154,6 +154,69 @@ Q-1 (publishing platform) and Q-2 (conversion tooling) were discussed together b
 
 ---
 
+## DL-004 — Series structure within topic domains (Q-3, Q-5)
+
+**Date:** 2026-05-07
+**Status:** confirmed
+
+### Context
+
+Q-3 (series/category names) and Q-5 (single vs. multiple domain membership) were addressed together as part of issue #24. The topic domains were already confirmed (D-10), but the internal series structure within each domain was not. A key structural question was whether each domain maps to a single series or multiple.
+
+### Alternatives considered
+
+- **One series per domain:** Simple navigation; risks combining unrelated topics (e.g., databases and distributed systems) into a single unnamed group. Rejected — does not scale as post count grows.
+- **Multiple series per domain (chosen):** Each domain contains named series with a clear learning arc. More navigation structure upfront but cleaner separation of topics.
+- **Cross-series membership (one post in multiple series):** Would allow posts like "CAP theorem" to appear in both `distributed-systems` and `database-internals`. Rejected — creates ambiguity in post ownership and ordering.
+
+### Decision
+
+- Each topic domain contains multiple series (D-19).
+- Each post belongs to exactly one series (D-20).
+- 12 series confirmed across 4 domains (D-21). See `confirmed-decisions.md` for full list.
+
+### Follow-up
+
+- Slug/naming policy for series identifiers is tracked in issue #33.
+- Post metadata structure (how a post declares its series) is tracked in issue #34.
+- Series-level descriptions, post ordering within each series, and navigation design remain to be defined during implementation.
+
+### References
+
+- `confirmed-decisions.md`: D-19, D-20, D-21
+- `open-questions.md`: Q-3 (resolved), Q-5 (resolved)
+
+---
+
+## DL-005 — First series selection (database-internals)
+
+**Date:** 2026-05-07
+**Status:** confirmed
+
+### Context
+
+After the full 12-series list was confirmed, the starting series was selected to unblock drafting. The choice needed to reflect the user's current interest and the topic area with the clearest post scope.
+
+### Alternatives considered
+
+The 12 confirmed series were all candidates. The user selected `database-internals` (Backend/Systems domain) as the first series to write.
+
+### Decision
+
+- The first series is `database-internals` within the Backend/Systems domain (D-22).
+
+### Follow-up
+
+- The first series issue (#35) will define the series description, candidate post list, and ordering.
+- Post drafting does not begin until Q-6, Q-7, Q-8 (template structure, quiz format, length guidelines) are resolved.
+
+### References
+
+- `confirmed-decisions.md`: D-22
+- Issue #35 — first series setup
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions

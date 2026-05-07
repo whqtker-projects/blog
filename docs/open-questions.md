@@ -9,7 +9,7 @@ Items that are not yet finalized. Do not resolve these by assumption — bring t
 
 **Status values:** `open` | `under discussion` | `decided`
 
-**Last updated:** 2026-05-06
+**Last updated:** 2026-05-07
 
 ---
 
@@ -26,9 +26,9 @@ Items that are not yet finalized. Do not resolve these by assumption — bring t
 
 | # | Status | Question | Notes |
 |---|---|---|---|
-| Q-3 | open | What are the series/category names and their groupings? | Topic domains are confirmed (CS, AI/ML/LLM, backend, software engineering). Series structure within those domains is not yet defined. See [series-backlog.md](series-backlog.md). |
+| Q-3 | decided | What are the series/category names and their groupings? | 12 series across 4 domains. See `confirmed-decisions.md` D-21 and `decision-log.md` DL-004. |
 | Q-4 | decided | What are the Obsidian file naming conventions? | All-lowercase kebab-case, English only, no prefix. See `confirmed-decisions.md` D-15, D-16 and `decision-log.md` DL-002. |
-| Q-5 | open | Will series be strictly bounded, or can a post belong to multiple domains? | |
+| Q-5 | decided | Will series be strictly bounded, or can a post belong to multiple domains? | One post, one series — cross-series membership not allowed. See `confirmed-decisions.md` D-20 and `decision-log.md` DL-004. |
 
 ---
 

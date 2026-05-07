@@ -8,7 +8,7 @@ This document is the stable reference for decisions that have been explicitly ag
 - When a new decision is confirmed, add it here and remove it from `open-questions.md`.
 - For the full decision record with context and rationale, see `decision-log.md`.
 
-**Last updated:** 2026-05-06
+**Last updated:** 2026-05-07
 
 ---
 
@@ -85,12 +85,21 @@ This document is the stable reference for decisions that have been explicitly ag
 
 ---
 
+## Series Structure
+
+| # | Decision |
+|---|---|
+| D-19 | Each topic domain contains multiple series. Domains and series are not 1:1. |
+| D-20 | Each post belongs to exactly one series. Cross-series membership is not allowed. |
+| D-21 | Confirmed series (12 total): **Backend/Systems** — `database-internals`, `distributed-systems`, `network-protocols`, `backend-design`; **CS Fundamentals** — `data-structures`, `algorithms`, `operating-systems`, `computer-architecture`, `computer-security`; **AI/ML/LLM** — `llm-internals`, `ml-fundamentals`; **Software Engineering** — `design-principles`. |
+| D-22 | The first series to be written is `database-internals` (Backend/Systems domain). |
+
+---
+
 ## Future Decisions
 
 The following areas are not yet decided. See `open-questions.md` for the full list.
 
-- Series and category names within topic domains (Q-3)
-- Series boundary rules — single vs. multiple domain membership (Q-5)
 - Exact post template structure and section names (Q-6)
 - Quiz count and format per post (Q-7)
 - Post length guidelines (Q-8)
