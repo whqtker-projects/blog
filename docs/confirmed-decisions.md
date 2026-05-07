@@ -8,7 +8,7 @@ This document is the stable reference for decisions that have been explicitly ag
 - When a new decision is confirmed, add it here and remove it from `open-questions.md`.
 - For the full decision record with context and rationale, see `decision-log.md`.
 
-**Last updated:** 2026-05-07
+**Last updated:** 2026-05-07 (updated)
 
 ---
 
@@ -93,6 +93,23 @@ This document is the stable reference for decisions that have been explicitly ag
 | D-20 | Each post belongs to exactly one series. Cross-series membership is not allowed. |
 | D-21 | Confirmed series (12 total): **Backend/Systems** — `database-internals`, `distributed-systems`, `network-protocols`, `backend-design`; **CS Fundamentals** — `data-structures`, `algorithms`, `operating-systems`, `computer-architecture`, `computer-security`; **AI/ML/LLM** — `llm-internals`, `ml-fundamentals`; **Software Engineering** — `design-principles`. |
 | D-22 | The first series to be written is `database-internals` (Backend/Systems domain). |
+
+---
+
+## Series Naming and Display
+
+| # | Decision |
+|---|---|
+| D-23 | Series display names are derived from slugs by Title Case conversion. Hyphen-separated words are capitalized; known acronyms (LLM, ML, CS, API, HTTP, DNS, TLS, TCP, IP, CPU) are fully uppercased. Example: `llm-internals` → "LLM Internals", `database-internals` → "Database Internals". |
+| D-24 | "Category" is not a separate concept. The blog hierarchy is **domain > series > post**. Domains serve as categories. Domain slugs: `backend-systems`, `cs-fundamentals`, `ai-ml-llm`, `software-engineering`. |
+
+---
+
+## Post Metadata
+
+| # | Decision |
+|---|---|
+| D-25 | Post frontmatter has three required fields: `title` (string), `series` (series slug, string), `order` (integer, position within the series). Domain is inferred from `series` and is not a separate frontmatter field. |
 
 ---
 

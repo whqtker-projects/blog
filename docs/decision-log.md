@@ -217,6 +217,68 @@ The 12 confirmed series were all candidates. The user selected `database-interna
 
 ---
 
+## DL-006 — Series slug/naming policy (#33)
+
+**Date:** 2026-05-07
+**Status:** confirmed
+
+### Context
+
+Once the 12 series were confirmed (D-21), the remaining question was how slugs translate into display names and whether "category" is a concept distinct from "domain". Both are needed before Astro content collection schemas and blog navigation can be built.
+
+### Alternatives considered
+
+- **Manual display name mapping:** Each series has an independently chosen display name stored in a mapping table. Maximum flexibility; requires maintaining a separate lookup. Rejected — the slugs are already descriptive enough that auto-derivation works for all 12 confirmed series.
+- **Separate category layer:** A category concept above domain (e.g., "Computer Science" as category, "CS Fundamentals" as domain). Rejected — adds structural complexity without a clear use case given the current domain set.
+
+### Decision
+
+- Display names are auto-derived by Title Case conversion with acronym exceptions (D-23).
+- Category = Domain. Hierarchy is domain > series > post. Domain slugs defined: `backend-systems`, `cs-fundamentals`, `ai-ml-llm`, `software-engineering` (D-24).
+
+### Follow-up
+
+- Acronym list (D-23) can be extended as new series slugs are added.
+- Blog navigation design (how domains and series are surfaced in the UI) is not yet addressed and will be handled during Astro implementation.
+
+### References
+
+- `confirmed-decisions.md`: D-23, D-24
+- Issue #33 (closed)
+
+---
+
+## DL-007 — Post metadata/frontmatter structure (#34)
+
+**Date:** 2026-05-07
+**Status:** confirmed
+
+### Context
+
+Posts need a machine-readable frontmatter schema for Astro content collections to index them by series and ordering. The key question was whether to store domain explicitly or infer it from series.
+
+### Alternatives considered
+
+- **series + domain both explicit:** More query-friendly; allows domain-level filtering without a lookup. Rejected — redundant with the series-to-domain mapping; risks inconsistency if the two fields diverge.
+- **series only (chosen):** Domain inferred from series via a lookup table maintained in the codebase. Single source of truth per post; no redundancy.
+
+### Decision
+
+- Three required frontmatter fields: `title`, `series`, `order` (D-25).
+- Domain is inferred from `series`, not stored as a separate field.
+
+### Follow-up
+
+- Optional fields (e.g., `description`, `draft`, `tags`) are not yet defined. They will be addressed when the Astro content collection schema is implemented (Issue #27 sub-issues).
+- The full Astro schema (types, validation, default values) is an implementation concern — not a planning document concern.
+
+### References
+
+- `confirmed-decisions.md`: D-25
+- Issue #34 (closed)
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions

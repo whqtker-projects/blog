@@ -15,37 +15,37 @@ A series is a named grouping of posts that share a topic focus and a learning ar
 
 ## Confirmed Series
 
-### Backend and Systems
+### Backend and Systems (domain slug: `backend-systems`)
 
-| Series slug | Status | Notes |
-|---|---|---|
-| `database-internals` | **First series** (D-22) | Storage engines, indexing, transactions, query execution |
-| `distributed-systems` | Confirmed | Consensus, replication, consistency models |
-| `network-protocols` | Confirmed | TCP/IP, HTTP, DNS, TLS internals |
-| `backend-design` | Confirmed | API design, concurrency patterns, service architecture |
+| Series slug | Display Name | Status | Notes |
+|---|---|---|---|
+| `database-internals` | Database Internals | **First series** (D-22) | Storage engines, indexing, transactions, query execution |
+| `distributed-systems` | Distributed Systems | Confirmed | Consensus, replication, consistency models |
+| `network-protocols` | Network Protocols | Confirmed | TCP/IP, HTTP, DNS, TLS internals |
+| `backend-design` | Backend Design | Confirmed | API design, concurrency patterns, service architecture |
 
-### CS Fundamentals
+### CS Fundamentals (domain slug: `cs-fundamentals`)
 
-| Series slug | Status | Notes |
-|---|---|---|
-| `data-structures` | Confirmed | Arrays, trees, graphs, hash tables |
-| `algorithms` | Confirmed | Sorting, search, dynamic programming, complexity |
-| `operating-systems` | Confirmed | Processes, scheduling, memory management, I/O |
-| `computer-architecture` | Confirmed | CPU pipeline, cache, memory hierarchy |
-| `computer-security` | Confirmed | Cryptography, authentication, common attack models |
+| Series slug | Display Name | Status | Notes |
+|---|---|---|---|
+| `data-structures` | Data Structures | Confirmed | Arrays, trees, graphs, hash tables |
+| `algorithms` | Algorithms | Confirmed | Sorting, search, dynamic programming, complexity |
+| `operating-systems` | Operating Systems | Confirmed | Processes, scheduling, memory management, I/O |
+| `computer-architecture` | Computer Architecture | Confirmed | CPU pipeline, cache, memory hierarchy |
+| `computer-security` | Computer Security | Confirmed | Cryptography, authentication, common attack models |
 
-### AI / ML / LLM
+### AI / ML / LLM (domain slug: `ai-ml-llm`)
 
-| Series slug | Status | Notes |
-|---|---|---|
-| `llm-internals` | Confirmed | Transformer architecture, attention, tokenization, inference |
-| `ml-fundamentals` | Confirmed | Statistical learning, training, evaluation, classical models |
+| Series slug | Display Name | Status | Notes |
+|---|---|---|---|
+| `llm-internals` | LLM Internals | Confirmed | Transformer architecture, attention, tokenization, inference |
+| `ml-fundamentals` | ML Fundamentals | Confirmed | Statistical learning, training, evaluation, classical models |
 
-### Software Engineering
+### Software Engineering (domain slug: `software-engineering`)
 
-| Series slug | Status | Notes |
-|---|---|---|
-| `design-principles` | Confirmed | SOLID, design patterns, coupling, abstraction |
+| Series slug | Display Name | Status | Notes |
+|---|---|---|---|
+| `design-principles` | Design Principles | Confirmed | SOLID, design patterns, coupling, abstraction |
 
 ---
 
