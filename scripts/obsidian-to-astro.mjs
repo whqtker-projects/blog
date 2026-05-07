@@ -2,6 +2,7 @@
  * Obsidian → Astro conversion script (D-18)
  *
  * Transforms Obsidian Markdown posts into Astro-compatible content:
+ * - ![[image]] wikilinks → standard Markdown image syntax (images served from /images/)
  * - [[wikilinks]] → standard Markdown links
  * - Validates file names against D-15 (lowercase kebab-case, English)
  * - Passes frontmatter through unchanged
@@ -12,6 +13,8 @@
  * --input   Path to the Obsidian vault posts directory (required)
  * --output  Destination directory (default: ./src/content/posts)
  * --strict  Exit with error on any unresolved wikilink (default: warn only)
+ *
+ * Image files referenced via ![[...]] must be copied to public/images/ separately.
  */
 
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync } from 'node:fs';
@@ -20,6 +23,9 @@ import { parseArgs } from 'node:util';
 
 // D-15: lowercase kebab-case, English only, .md extension
 const VALID_FILENAME_RE = /^[a-z0-9]+(-[a-z0-9]+)*\.md$/;
+
+// ![[image.ext]] or ![[image.ext|alt text]] — must match before WIKILINK_RE
+const IMAGE_WIKILINK_RE = /!\[\[([^\]|\n]+?)(?:\|([^\]\n]+?))?\]\]/g;
 
 // [[page]], [[page|alias]], [[page#heading]], [[page#heading|alias]]
 const WIKILINK_RE = /\[\[([^\]|#\n]+?)(?:#([^\]|\n]+?))?(?:\|([^\]\n]+?))?\]\]/g;
@@ -36,6 +42,21 @@ export function fileNameToSlug(filename) {
 // Handles both [[kebab-case]] and [[Display Name]] inputs.
 function toSlug(text) {
   return text.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+}
+
+/**
+ * Converts ![[image.ext]] and ![[image.ext|alt]] to standard Markdown image syntax.
+ * Images are assumed to be served from the /images/ public path.
+ *
+ * @param {string} content - Markdown body (no frontmatter)
+ * @returns {string}
+ */
+export function convertImageWikilinks(content) {
+  return content.replace(IMAGE_WIKILINK_RE, (_match, filename, alt) => {
+    const name = filename.trim();
+    const altText = alt ? alt.trim() : name;
+    return `![${altText}](/images/${name})`;
+  });
 }
 
 /**
@@ -89,7 +110,9 @@ export function convertFile(inputContent, filename, knownSlugs = null) {
     throw new Error(`${filename}: missing frontmatter`);
   }
 
-  const { result: convertedBody, warnings } = convertWikilinks(body, knownSlugs);
+  // Image wikilinks must be converted before link wikilinks to avoid regex overlap
+  const imageConverted = convertImageWikilinks(body);
+  const { result: convertedBody, warnings } = convertWikilinks(imageConverted, knownSlugs);
 
   return {
     content: `---\n${frontmatter}\n---\n${convertedBody}`,

@@ -4,6 +4,7 @@ import {
   validateFileName,
   fileNameToSlug,
   convertWikilinks,
+  convertImageWikilinks,
   parseFrontmatter,
   convertFile,
 } from './obsidian-to-astro.mjs';
@@ -168,4 +169,60 @@ See [[nonexistent-post]].`;
   const known = new Set(['database-index']);
   const { warnings } = convertFile(input, 'test.md', known);
   assert.deepEqual(warnings, ['nonexistent-post']);
+});
+
+// ── convertImageWikilinks ────────────────────────────────────────────────────
+
+test('convertImageWikilinks: ![[image.png]]', () => {
+  const result = convertImageWikilinks('See ![[diagram.png]] below.');
+  assert.equal(result, 'See ![diagram.png](/images/diagram.png) below.');
+});
+
+test('convertImageWikilinks: ![[image.png|alt text]]', () => {
+  const result = convertImageWikilinks('![[btree-structure.png|B+Tree structure]]');
+  assert.equal(result, '![B+Tree structure](/images/btree-structure.png)');
+});
+
+test('convertImageWikilinks: multiple images', () => {
+  const result = convertImageWikilinks('![[a.png]] and ![[b.png|B image]]');
+  assert.equal(result, '![a.png](/images/a.png) and ![B image](/images/b.png)');
+});
+
+test('convertImageWikilinks: does not affect regular wikilinks', () => {
+  const result = convertImageWikilinks('See [[database-index]] and ![[diagram.png]].');
+  assert.equal(result, 'See [[database-index]] and ![diagram.png](/images/diagram.png).');
+});
+
+test('convertImageWikilinks: no image wikilinks passes content through unchanged', () => {
+  const input = 'Plain text with [[link]] only.';
+  assert.equal(convertImageWikilinks(input), input);
+});
+
+test('convertFile: image wikilinks in body are converted', () => {
+  const input = `---
+title: Test
+series: database-internals
+order: 1
+---
+
+See ![[btree.png|B+Tree]] for the structure.`;
+
+  const { content } = convertFile(input, 'test.md');
+  assert.ok(content.includes('![B+Tree](/images/btree.png)'));
+  assert.ok(!content.includes('![[btree.png'));
+});
+
+test('convertFile: image conversion runs before link conversion', () => {
+  // Ensures ![[...]] is not accidentally matched by the link wikilink regex
+  const input = `---
+title: Test
+series: database-internals
+order: 1
+---
+
+![[diagram.png]] and [[database-index]].`;
+
+  const { content } = convertFile(input, 'test.md');
+  assert.ok(content.includes('![diagram.png](/images/diagram.png)'));
+  assert.ok(content.includes('[database-index](/posts/database-index)'));
 });
