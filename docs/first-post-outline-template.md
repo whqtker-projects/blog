@@ -22,6 +22,7 @@ Example: `b-plus-tree-index.md`, `tcp-three-way-handshake.md`
 title: "[Post title — Korean or English]"
 series: [series-slug]
 order: [integer, position in series starting from 1]
+status: draft   # optional — omit if not tracking status in Obsidian
 ---
 ```
 
@@ -32,6 +33,7 @@ order: [integer, position in series starting from 1]
 title: "B+Tree 인덱스 구조"
 series: database-internals
 order: 1
+status: draft
 ---
 ```
 

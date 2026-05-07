@@ -124,11 +124,21 @@ This document is the stable reference for decisions that have been explicitly ag
 
 ---
 
+## Status Lifecycle
+
+| # | Decision |
+|---|---|
+| D-30 | Post status vocabulary (5 values): `idea`, `outline`, `draft`, `review`, `published`. |
+| D-31 | Published-post update policy: typo, link, and factual-error fixes keep `published` status. Section additions or substantial rewrites return the post to `draft`. |
+| D-32 | `status` is an optional frontmatter field. No default value. Required fields remain `title`, `series`, `order` (D-25). |
+
+---
+
 ## Future Decisions
 
-The following areas are not yet decided. See `open-questions.md` for the full list.
+The following areas are not yet decided. See `open-questions.md` for the current status.
 
-- No remaining pre-drafting decisions are open. See `open-questions.md` for the current status.
+- No remaining pre-drafting planning decisions are open.
 
 ---
 

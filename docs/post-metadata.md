@@ -49,15 +49,13 @@ Domain is not stored as a frontmatter field. It is inferred from `series` via th
 
 ---
 
-## Optional Fields (Not Yet Decided)
+## Optional Fields
 
-The following fields are candidates for future definition. They are not confirmed and must not be added to posts until decided:
+| Field | Type | Description |
+|---|---|---|
+| `status` | string | Post lifecycle stage. Confirmed values: `idea`, `outline`, `draft`, `review`, `published` (D-30). No default value (D-32). |
 
-- `description` — short summary for blog listing pages
-- `draft` — boolean flag for unpublished posts
-- `tags` — freeform topic tags
-
-These will be addressed during Astro content collection implementation (Issue #27 sub-issues).
+All other optional fields (e.g., `description`, `tags`) are not yet defined and must not be added until decided during Astro implementation (Issue #27 sub-issues).
 
 ---
 

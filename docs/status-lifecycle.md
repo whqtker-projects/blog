@@ -1,13 +1,13 @@
 # Post Status Lifecycle
 
-**Status:** Proposed — the lifecycle defined here is a working proposal, not a confirmed convention. The user confirms or revises it.  
-**Last updated:** 2026-05-06
+**Status:** Active — confirmed on 2026-05-07. See `confirmed-decisions.md` D-30, D-31, D-32 and `decision-log.md` DL-009.  
+**Last updated:** 2026-05-07
 
-This document proposes a shared vocabulary for tracking how posts and planning documents move from idea to publication. A consistent status system makes it possible to see the state of the blog at a glance without reading individual files.
+This document defines the shared vocabulary for tracking how posts move from idea to publication. A consistent status system makes the state of the blog visible at a glance without reading individual files.
 
 ---
 
-## Proposed Statuses
+## Post Status Vocabulary
 
 | Status | Meaning |
 |---|---|
@@ -17,7 +17,7 @@ This document proposes a shared vocabulary for tracking how posts and planning d
 | `review` | The post is complete enough to evaluate for accuracy, clarity, and structure |
 | `published` | The post is live on the blog |
 
-These statuses are proposed. They are not final until confirmed.
+These five statuses are confirmed (D-30). See `docs/review-checklist.md` for what "ready for review" means in practice.
 
 ---
 
@@ -37,54 +37,64 @@ Active writing phase. The post may be incomplete, rough, or missing sections. No
 
 ### `review`
 
-The post is self-consistent and complete. It is being checked for:
-- Factual accuracy
-- Clarity at the target audience level
-- Coverage of definition-level and operational-principle-level content
-- Quality of examples
-- Quiz alignment with post content
+The post is self-consistent and complete. It is being checked against the criteria in `docs/review-checklist.md` before publication.
 
 ### `published`
 
-The post is live. Post-publication edits (corrections, updates) do not change the status back unless the content is substantially revised.
+The post is live on the blog. See update policy below.
 
 ---
 
-## How the Lifecycle Applies
+## Published-Post Update Policy
 
-### Obsidian Notes
+When a published post needs to be changed (D-31):
 
-Notes in the Obsidian vault carry a status in their frontmatter (proposed):
+| Change type | Status after change |
+|---|---|
+| Typo or punctuation fix | `published` (no change) |
+| Broken link fix | `published` (no change) |
+| Factual error correction | `published` (no change) |
+| Section addition or substantial rewrite | Return to `draft` |
+
+Substantial rewrites go through the full review cycle again before republishing.
+
+---
+
+## `status` in Obsidian Frontmatter
+
+`status` is an optional frontmatter field (D-32). It is not required on every post. When present, it must use one of the five confirmed values above.
 
 ```yaml
 ---
+title: "B+Tree 인덱스 구조"
+series: database-internals
+order: 1
 status: draft
 ---
 ```
 
-This makes the status visible inside Obsidian and searchable via Dataview or similar plugins.
+The required frontmatter fields remain `title`, `series`, and `order` (D-25). `status` is supplementary and primarily used to filter posts inside Obsidian (via Dataview or search).
 
-### Blog Drafts
+---
 
-A blog draft is an Obsidian document at `draft` or `review` status that is being prepared for publication. It lives in the Obsidian vault until it is published.
+## Planning Document Status Vocabulary
 
-### Published Posts
-
-Once published, the post exists both in the Obsidian vault (as a source document) and on the blog (as the reader-facing artifact). The Obsidian copy remains the source of truth for edits.
-
-### Planning Documents
-
-Planning documents (this file, `open-questions.md`, ADRs, series backlog) use a different status vocabulary:
+Planning documents use a separate status vocabulary. They are not interchangeable with post statuses.
 
 | Status | Meaning |
 |---|---|
 | `Active` | In use and being updated |
 | `Proposed` | A working draft, not yet confirmed |
-| `Resolved` | Decision made; document no longer changes |
+| `Resolved` | Decision made; document is a stable reference |
 | `Superseded` | Replaced by a newer document or decision |
+
+Post statuses (`idea`, `draft`, etc.) apply only to content files in the Obsidian vault. Planning document statuses appear in the header block of documents in `docs/`.
 
 ---
 
-## Next Step
+## Related Documents
 
-The user confirms, revises, or extends this lifecycle. When confirmed, it will be noted in [`docs/decisions/`](decisions/) and the `Proposed` status on this document will change to `Active`.
+- [`docs/confirmed-decisions.md`](confirmed-decisions.md) — D-30, D-31, D-32
+- [`docs/decision-log.md`](decision-log.md) — DL-009
+- [`docs/review-checklist.md`](review-checklist.md) — criteria for moving a post from `draft` to `review`
+- [`docs/post-metadata.md`](post-metadata.md) — frontmatter field definitions

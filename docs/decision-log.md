@@ -331,6 +331,51 @@ The four remaining open questions about post format were addressed together as p
 
 ---
 
+## DL-009 — Post status lifecycle, update policy, and frontmatter usage (#26)
+
+**Date:** 2026-05-07
+**Status:** confirmed
+
+### Context
+
+`docs/status-lifecycle.md` was created as a proposal during initial planning. Before drafting begins, the status vocabulary, update policy, and frontmatter usage needed to be confirmed so that the Obsidian workflow is consistent from the first post.
+
+### Alternatives considered
+
+**Post status vocabulary:**
+- Fewer stages (e.g., draft → published only): Too coarse — no distinction between work-in-progress and ready-to-review states. Rejected.
+- More stages (e.g., adding `archived` or `deprecated`): Not needed for the current scale. Can be added later if required.
+- Confirmed as proposed: idea / outline / draft / review / published.
+
+**Published-post update policy:**
+- All edits require review cycle: Adds overhead for minor corrections (typos, broken links). Rejected.
+- No policy (ad hoc): Inconsistent behavior over time. Rejected.
+- Corrections keep status; rewrites return to draft (chosen): Balances quality control with low overhead for small fixes.
+
+**`status` frontmatter field:**
+- Required field: Forces a decision on every post even when status tracking isn't needed. Rejected.
+- Optional with no default (chosen): Low friction; status can be added when it provides value inside Obsidian.
+
+### Decision
+
+- D-30: Five post statuses confirmed (idea, outline, draft, review, published).
+- D-31: Correction-type edits keep `published`; substantial rewrites return to `draft`.
+- D-32: `status` is an optional frontmatter field.
+
+### Follow-up
+
+- The Obsidian-to-Astro build pipeline may filter posts by `status` (e.g., exclude `draft` posts). Implementation tracked in Issue #28 sub-issues.
+- Review checklist formalized in `docs/review-checklist.md` (Issue #47).
+
+### References
+
+- `confirmed-decisions.md`: D-30, D-31, D-32
+- `docs/status-lifecycle.md` — updated from Proposed to Active
+- `docs/review-checklist.md` — new
+- Issue #26 (parent), #44, #45, #46, #47, #48, #49
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions
