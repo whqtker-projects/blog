@@ -36,9 +36,9 @@ Items that are not yet finalized. Do not resolve these by assumption — bring t
 
 | # | Status | Question | Notes |
 |---|---|---|---|
-| Q-6 | open | What is the exact template structure for a post? | Known: definition level → operational principle → examples → quiz. Section names and ordering not formalized yet. See [post-template.md](post-template.md). |
-| Q-7 | open | How many quiz items per post? What format (MCQ, short answer, etc.)? | |
-| Q-8 | open | Are there length guidelines per post? | |
+| Q-6 | decided | What is the exact template structure for a post? | Section titles and ordering are flexible per post; required content areas (D-6, D-7) must be present; Quiz is always last (D-8). See `confirmed-decisions.md` D-26 and `decision-log.md` DL-008. |
+| Q-7 | decided | How many quiz items per post? What format (MCQ, short answer, etc.)? | 5 MCQ, 4 options each, one correct answer. See `confirmed-decisions.md` D-27 and `decision-log.md` DL-008. |
+| Q-8 | decided | Are there length guidelines per post? | No word count limit; length is topic-driven. See `confirmed-decisions.md` D-28 and `decision-log.md` DL-008. |
 
 ---
 
@@ -46,7 +46,7 @@ Items that are not yet finalized. Do not resolve these by assumption — bring t
 
 | # | Status | Question | Notes |
 |---|---|---|---|
-| Q-9 | open | Does each series target a different audience segment, or is every post written for the full beginner-to-practitioner range? | |
+| Q-9 | decided | Does each series target a different audience segment, or is every post written for the full beginner-to-practitioner range? | All series target the same audience: beginner to practitioner (same as D-9). No per-series segmentation. See `confirmed-decisions.md` D-29 and `decision-log.md` DL-008. |
 
 ---
 

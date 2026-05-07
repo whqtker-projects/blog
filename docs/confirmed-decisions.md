@@ -8,7 +8,7 @@ This document is the stable reference for decisions that have been explicitly ag
 - When a new decision is confirmed, add it here and remove it from `open-questions.md`.
 - For the full decision record with context and rationale, see `decision-log.md`.
 
-**Last updated:** 2026-05-07 (updated)
+**Last updated:** 2026-05-07
 
 ---
 
@@ -113,14 +113,22 @@ This document is the stable reference for decisions that have been explicitly ag
 
 ---
 
+## Post Format
+
+| # | Decision |
+|---|---|
+| D-26 | Post section titles and ordering are flexible and decided per post. The required content areas (definition-level explanation, operational principles, examples — D-6, D-7) can appear in any order under any heading. The Quiz section must always be last (D-8). |
+| D-27 | Each post ends with exactly 5 multiple-choice questions (MCQ). Each question has 4 answer options with one correct answer. |
+| D-28 | There is no word count limit. Post length is determined by the topic's requirements — long enough to cover it fully, no longer. |
+| D-29 | All series target the same audience: beginner to practitioner (D-9). No per-series audience segmentation. |
+
+---
+
 ## Future Decisions
 
 The following areas are not yet decided. See `open-questions.md` for the full list.
 
-- Exact post template structure and section names (Q-6)
-- Quiz count and format per post (Q-7)
-- Post length guidelines (Q-8)
-- Audience segmentation per series (Q-9)
+- No remaining pre-drafting decisions are open. See `open-questions.md` for the current status.
 
 ---
 

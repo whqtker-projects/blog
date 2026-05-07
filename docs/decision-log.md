@@ -279,6 +279,58 @@ Posts need a machine-readable frontmatter schema for Astro content collections t
 
 ---
 
+## DL-008 — Post format: section structure, quiz, length, audience (Q-6, Q-7, Q-8, Q-9)
+
+**Date:** 2026-05-07
+**Status:** confirmed
+
+### Context
+
+The four remaining open questions about post format were addressed together as part of issue #25. The confirmed content areas (definition, operational principles, examples, quiz) were already settled (D-6, D-7, D-8), but section titles, ordering, quiz details, length, and audience segmentation were not.
+
+### Alternatives considered
+
+**Q-6 (section structure):**
+- Fixed order with standard English titles ("Definition" / "How It Works" / "Examples" / "Quiz"): Provides consistency but forces a rigid layout even when topic flow suggests a different order. Rejected.
+- Fixed order with question-style titles ("What Is X?" / "How Does It Work?"): More reader-friendly tone but still inflexible. Rejected.
+- Fixed order with per-post titles: Preserves sequence; titles customized. Rejected in favor of full flexibility.
+- Flexible (chosen): Titles and ordering decided per post. Quiz remains last (D-8 constraint). Required content areas (D-6, D-7) must still be present.
+
+**Q-7 (quiz):**
+- 3 MCQ: Lighter; may not adequately cover the topic. Rejected.
+- 3 MCQ + 2 short answer: Richer assessment; Astro rendering complexity increases for free-text input. Rejected.
+- Per-post decision: No standard; inconsistent reader experience. Rejected.
+- 5 MCQ (chosen): Consistent, self-contained, straightforward Astro component implementation.
+
+**Q-8 (length):**
+- Word count targets (1,500–2,500 or 2,500–4,000): Adds a metric to manage; can conflict with topic depth. Rejected.
+- Per-section limits: More precise but complex to enforce and monitor. Rejected.
+- Topic-driven, no limit (chosen): Length follows the topic's requirements. Consistent with the concept-first approach (D-5).
+
+**Q-9 (audience):**
+- Per-series segmentation: More targeted; requires defining and maintaining audience criteria per series. Rejected — the blog's overall audience (D-9) already spans beginner to practitioner.
+- Uniform (chosen): All series target the same range. No additional audience management needed.
+
+### Decision
+
+- D-26: Flexible section titles and ordering; Quiz always last.
+- D-27: 5 MCQ per post, 4 options each, one correct answer.
+- D-28: No word count limit; length is topic-driven.
+- D-29: All series target beginner-to-practitioner (same as D-9).
+
+### Follow-up
+
+- The Astro MCQ quiz component design (rendering, interaction) is an implementation concern tracked in Issue #28 sub-issues.
+- A reusable first-post outline template is defined in `docs/first-post-outline-template.md` (Issue #43).
+
+### References
+
+- `confirmed-decisions.md`: D-26, D-27, D-28, D-29
+- `open-questions.md`: Q-6, Q-7, Q-8, Q-9 (all resolved)
+- Issue #25 (parent), #36, #37, #38, #39, #40, #41
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions
