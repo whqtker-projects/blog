@@ -13,3 +13,7 @@ Added `src/content/posts/transaction-and-acid.md` as the third real `database-in
 ## 2026-05-07 — Add Write-Ahead Log and Durability post
 
 Added `src/content/posts/write-ahead-log.md` as the fourth real `database-internals` series post. Wrote a publishable draft explaining WAL ordering, crash recovery flow, checkpoint mechanics, a commit-path example, and a five-question quiz, then prepared it for build verification.
+
+## 2026-05-07 — Add Query Execution and the Optimizer post
+
+Added `src/content/posts/query-execution-plan.md` as the fifth real `database-internals` series post. Wrote a publishable draft covering how the planner turns SQL into a plan, how cost estimation works, why index scans can beat table scans, and a five-question quiz, then prepared it for build verification.
