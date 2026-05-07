@@ -11,13 +11,13 @@ This document defines the artifacts and criteria needed to move from planning in
 
 The first series is `database-internals` (D-22). The five candidate posts below cover its core topic areas: indexing structures, transaction guarantees, durability mechanisms, and query execution.
 
-| Order | File name | Title |
-|-------|-----------|-------|
-| 1 | `what-is-a-database-index.md` | What Is a Database Index? |
-| 2 | `b-plus-tree-index.md` | B+Tree Index Structure |
-| 3 | `transaction-and-acid.md` | Transactions and ACID |
-| 4 | `write-ahead-log.md` | Write-Ahead Log and Durability |
-| 5 | `query-execution-plan.md` | Query Execution and the Optimizer |
+| Order | File name | Title | Scope |
+|-------|-----------|-------|-------|
+| 1 | `what-is-a-database-index.md` | What Is a Database Index? | What an index is, why it exists, and the core read/write tradeoff; B+Tree as the dominant structure |
+| 2 | `b-plus-tree-index.md` | B+Tree Index Structure | Internal node layout, leaf-level linked list, insert/delete mechanics, and range query traversal |
+| 3 | `transaction-and-acid.md` | Transactions and ACID | What a transaction guarantees, how each ACID property is implemented, and where isolation levels fit |
+| 4 | `write-ahead-log.md` | Write-Ahead Log and Durability | How WAL separates write ordering from page writes, crash recovery flow, and checkpoint mechanics |
+| 5 | `query-execution-plan.md` | Query Execution and the Optimizer | How the query planner turns SQL into a plan, cost estimation, and when/why index scans beat table scans |
 
 Post 1 (`what-is-a-database-index.md`) exists as a committed sample fixture. Posts 2–5 are candidates to be written in order.
 
@@ -27,9 +27,24 @@ The author may adjust order, add topics, or split a post — this list is a star
 
 ## Starting a Post: `idea` → `outline` Process
 
+### Vault directory location
+
+New post files are created inside the vault's dedicated posts directory — the same directory passed as `--input` to the conversion script. Keep all post `.md` files in this one flat directory; do not nest them in subdirectories.
+
+Recommended vault layout:
+
+```
+<vault-root>/
+  posts/            ← create new post files here
+    what-is-a-database-index.md
+    b-plus-tree-index.md       ← new file goes here
+  attachments/      ← images and other assets
+  templates/        ← Obsidian templates (not processed by the script)
+```
+
 ### Step 1 — Create the file in the Obsidian vault
 
-Create a new `.md` file in the Obsidian vault posts directory. File name must follow D-15/D-16: all-lowercase kebab-case, English only.
+Create a new `.md` file in the vault `posts/` directory. File name must follow D-15/D-16: all-lowercase kebab-case, English only.
 
 ```
 b-plus-tree-index.md
@@ -37,9 +52,9 @@ transaction-and-acid.md
 write-ahead-log.md
 ```
 
-### Step 2 — Write the frontmatter
+### Step 2 — Write the minimum frontmatter for `idea` state
 
-Minimum required fields (D-25) plus status:
+A post in `idea` state needs only the frontmatter. No body content is required. All three D-25 required fields must be set even at `idea` state, because the conversion script and Astro schema both require them.
 
 ```yaml
 ---
@@ -50,7 +65,16 @@ status: idea
 ---
 ```
 
-A post in `idea` state needs only the frontmatter. No body content is required.
+Minimum fields at `idea` state:
+
+| Field | Required | Value at `idea` state |
+|-------|----------|-----------------------|
+| `title` | Yes (D-25) | The intended post title |
+| `series` | Yes (D-25) | Confirmed series slug (e.g., `database-internals`) |
+| `order` | Yes (D-25) | Intended position in the series (integer) |
+| `status` | No (D-32) | `idea` — marks the post as not yet written |
+
+No other fields are required at `idea` state. The D-33 build filter excludes `idea` posts from production output, so the file can be committed to the repo or converted without affecting the live site.
 
 ### Step 3 — Advance to `outline`
 

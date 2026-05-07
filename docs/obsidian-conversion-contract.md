@@ -6,22 +6,60 @@ This document defines the rules the conversion script (`scripts/obsidian-to-astr
 
 ## Source Input Contract
 
-The script reads `.md` files from a caller-specified directory (the Obsidian vault posts folder).
+### Expected vault directory structure
 
-**Every source file must:**
+The script accepts a single flat directory of `.md` post files. The recommended vault layout is:
 
-1. Follow D-15: filename is all-lowercase kebab-case, English only (e.g., `database-index.md`).
-2. Open with a YAML frontmatter block fenced by `---`.
-3. Include the three required frontmatter fields from D-25: `title` (string), `series` (series slug), `order` (integer).
-4. Use `status` only if desired; valid values are `idea`, `outline`, `draft`, `review`, `published` (D-30, D-32).
+```
+<vault-root>/
+  posts/            ← pass this path as --input
+    database-index.md
+    b-plus-tree-index.md
+    ...
+  attachments/      ← image files; copy to public/images/ separately
+  templates/        ← Obsidian templates; not passed to the script
+```
 
-Files that violate rule 1 are skipped with an error. Files that violate rule 2 are aborted with an error. Rules 3–4 are validated downstream by Astro's content schema; the script does not re-validate them.
+Non-post files (templates, notes, attachments) must live outside the `--input` directory. The script processes every `.md` file in the given directory; it does not recurse into subdirectories.
+
+### File selection rules
+
+| File type | Behaviour |
+|-----------|-----------|
+| `.md` file with valid D-15 name | Processed and written to output |
+| `.md` file with invalid name (uppercase, Korean, underscore, etc.) | Skipped; error logged; exit code 1 |
+| `.md` file with no frontmatter fence | Aborted with error; remaining files continue |
+| Non-`.md` file (`.png`, `.pdf`, etc.) | Silently ignored |
+| Subdirectory | Silently ignored (no recursion) |
+
+### File format requirements
+
+Every processed `.md` file must satisfy all of the following:
+
+1. **Filename** — all-lowercase kebab-case, English only (D-15, D-16). Example: `database-index.md`.
+2. **Encoding** — UTF-8. Files with other encodings produce undefined behaviour.
+3. **Line endings** — LF (`\n`). CRLF is not normalised by the script; CRLF files may cause frontmatter parsing to fail.
+4. **Frontmatter fence** — the file must open with `---\n`, contain a YAML block, and close with `\n---\n`. Frontmatter must appear at byte offset 0.
+5. **Required frontmatter fields** — `title` (string), `series` (series slug string), `order` (integer), as per D-25. The script does not validate these; Astro's content schema enforces them at build time.
+6. **Optional status field** — if present, must be one of `idea`, `outline`, `draft`, `review`, `published` (D-30, D-32). Unknown values are passed through and will be rejected by Astro's schema.
 
 ---
 
 ## Frontmatter Mapping
 
-Frontmatter is passed through to the output file unchanged. No field is renamed, added, or removed by the script.
+The conversion script passes the entire frontmatter block through to the output file unchanged — no field is renamed, reformatted, or removed. Mapping is 1:1.
+
+| Obsidian field | Type | Astro field | Transformation |
+|----------------|------|-------------|----------------|
+| `title` | string | `title` | None |
+| `series` | series slug string | `series` | None |
+| `order` | integer | `order` | None |
+| `status` | enum string (optional) | `status` | None |
+| Any other field | any | same name | Passed through as-is; Astro's Zod schema strips unknown fields at build time |
+
+**Astro schema consistency:** The Astro content collection schema (`src/content.config.ts`) defines `title`, `series`, `order` as required and `status` as optional. Fields not listed in the schema are silently dropped by Zod during the build — they do not cause errors but do not appear in `post.data`.
+
+**No Obsidian-only fields are added by the script.** If Obsidian generates metadata fields (e.g., `aliases`, `tags`, `cssclass`), they will be passed through by the script and silently dropped by Astro. They do not affect the build or the rendered output.
 
 ---
 
