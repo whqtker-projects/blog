@@ -9,7 +9,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "convert": "node scripts/obsidian-to-astro.mjs",
+    "test:convert": "node --test scripts/obsidian-to-astro.test.mjs"
   },
   "dependencies": {
     "astro": "^6.2.2"
