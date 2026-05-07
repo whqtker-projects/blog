@@ -23,9 +23,9 @@ Image rendering validated: `public/images/btree-structure.svg` is committed and 
 | Unordered lists | `- item` | `<ul><li>` | ✅ Supported |
 | Horizontal rule | `---` | `<hr>` | ✅ Supported |
 | HTML blocks (`<details>`) | `<details><summary>…</summary>…</details>` | Passed through as raw HTML | ✅ Supported |
-| Post wikilink | `[[page-name]]` | `[page-name](/posts/page-name)` via conversion script | ✅ Supported (via script) |
+| Post wikilink | `[[page-name]]` | `[page-name](/posts/page-name)` via conversion script; routes validated (#69) | ✅ Supported (via script) |
 | Post wikilink with alias | `[[page-name\|alias]]` | `[alias](/posts/page-name)` via conversion script | ✅ Supported (via script) |
-| Post wikilink with heading | `[[page-name#heading]]` | `[page-name](/posts/page-name#heading)` | ✅ Supported (via script) |
+| Post wikilink with heading | `[[page-name#heading]]` | `[page-name](/posts/page-name#heading)`; anchor validated (#69) | ✅ Supported (via script) |
 | Image wikilink | `![[image.png]]` | `![image.png](/images/image.png)` via conversion script | ✅ Supported (via script) |
 | Image wikilink with alt | `![[image.png\|alt]]` | `![alt](/images/image.png)` via conversion script | ✅ Supported (via script) |
 | Callouts / admonitions | `> [!NOTE]` | Not natively rendered | ⛔ Not used — avoid |
@@ -97,6 +97,24 @@ Astro generates heading `id` attributes using the following normalisation, which
 - Non-word characters removed
 
 Example: `## How It Works` → `id="how-it-works"` → wikilink `[[post#How It Works]]` resolves to `/posts/post#how-it-works`. ✅
+
+---
+
+## Internal Link Rendering (Issue #69)
+
+### Validation result: PASS — three links across two posts
+
+Two committed sample fixtures cross-link each other. The table below traces each link from its Obsidian wikilink source form through conversion to the rendered HTML href, and confirms the destination route is built.
+
+| Source post | Obsidian source (vault) | Converted Markdown | Rendered `href` | Destination exists |
+|---|---|---|---|---|
+| `what-is-a-database-index.md` | `[[b-plus-tree-index]]` | `[B+Tree Index Structure](/posts/b-plus-tree-index)` | `/posts/b-plus-tree-index` | ✅ |
+| `b-plus-tree-index.md` | `[[what-is-a-database-index]]` | `[What Is a Database Index?](/posts/what-is-a-database-index)` | `/posts/what-is-a-database-index` | ✅ |
+| `b-plus-tree-index.md` | `[[what-is-a-database-index#Example]]` | `[…](/posts/what-is-a-database-index#example)` | `/posts/what-is-a-database-index#example` | ✅ |
+
+All three links are `<a href="…">` elements in the rendered HTML. No broken links (`404`) remain in the validated fixture set.
+
+**Heading anchor validation:** `#Example` in the wikilink normalises to `#example` in the href (lowercase, matching Astro's auto-generated heading `id`). This confirms the conversion script's heading-anchor normalisation is consistent with the rendered output.
 
 ---
 

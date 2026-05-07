@@ -49,7 +49,7 @@ SELECT * FROM users WHERE email = 'alice@example.com';
 ```
 
 Without an index on `email`, the database reads all one million rows.
-With a B+Tree index on `email`, it reads roughly 20 rows (the depth of the tree).
+With a B+Tree index on `email`, it reads roughly 20 rows (the depth of the tree). For a detailed breakdown of how the B+Tree achieves this, see [B+Tree Index Structure](/posts/b-plus-tree-index).
 
 A hash-based in-memory index in JavaScript follows the same idea — O(1) lookup by key, no range support:
 
