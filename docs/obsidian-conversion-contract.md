@@ -130,6 +130,8 @@ pnpm convert --input /path/to/obsidian-vault/posts --strict
 
 **Conversion is not part of `pnpm build`.** The Astro build reads from the already-committed `src/content/posts/` and requires no vault access. CI runs `pnpm build` only.
 
+`pnpm build` guarantees the committed artifact is built correctly. It does not guarantee that `src/content/posts/` is current with the author's vault — that is the author's responsibility before committing. See the build contract in `docs/astro-bootstrap.md`.
+
 Rationale for manual trigger:
 - The vault path is machine-specific and cannot be hardcoded in a CI script.
 - Converted files are committed to git, so CI has no need to run conversion.

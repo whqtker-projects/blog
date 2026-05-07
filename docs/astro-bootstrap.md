@@ -65,6 +65,25 @@ dist/                       ← gitignored; deploy this
 | Production build in CI | Not needed — `src/content/posts/` is already committed |
 | Previewing changes without committing | `pnpm convert` then `pnpm dev` (don't commit yet) |
 
+### Build contract
+
+There are two distinct freshness layers in this model:
+
+| Layer | What it means | Who controls it |
+|-------|---------------|-----------------|
+| **Vault freshness** | The author's Obsidian vault reflects the latest intent | Author (local machine) |
+| **Repository freshness** | `src/content/posts/` contains the latest intentionally synced, committed conversion | Author (via `pnpm convert` + commit) |
+
+**`pnpm build` is the official repository build entrypoint.** It guarantees that the committed converted artifact is built correctly — it does not guarantee that `src/content/posts/` reflects the author's current vault state.
+
+"Up-to-date converted content" in this repository means: the latest converted Markdown that has been intentionally synced from the vault and committed to git. CI does not and cannot validate against the author's live vault; it builds the committed artifact by design.
+
+The required author workflow before publishing is:
+1. `pnpm convert --input <vault/posts> --strict` — sync and fail on broken links
+2. `git diff src/content/posts/` — review the converted output
+3. `git add src/content/posts/ && git commit` — commit the converted artifact
+4. `pnpm build` — verify the committed content builds without errors
+
 ### Conversion trigger
 
 Conversion is **manual and explicit**. There is no prebuild hook and no automatic watch mode. Reasons:
