@@ -9,3 +9,7 @@ Removed `src/content/posts/e2e-rendering-validation.md` from the public content 
 ## 2026-05-07 — Add Transactions and ACID post
 
 Added `src/content/posts/transaction-and-acid.md` as the third real `database-internals` series post. Wrote a publishable draft covering transaction guarantees, ACID enforcement, isolation levels, a concrete bank-transfer example, and a five-question quiz, then prepared it for build verification.
+
+## 2026-05-07 — Add Write-Ahead Log and Durability post
+
+Added `src/content/posts/write-ahead-log.md` as the fourth real `database-internals` series post. Wrote a publishable draft explaining WAL ordering, crash recovery flow, checkpoint mechanics, a commit-path example, and a five-question quiz, then prepared it for build verification.
