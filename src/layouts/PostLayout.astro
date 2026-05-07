@@ -1,0 +1,19 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  series: string;
+  order: number;
+}
+const { title, series, order } = Astro.props;
+---
+<BaseLayout title={title}>
+  <article>
+    <header>
+      <p>{series} · #{order}</p>
+      <h1>{title}</h1>
+    </header>
+    <slot />
+  </article>
+</BaseLayout>
