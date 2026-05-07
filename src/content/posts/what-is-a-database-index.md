@@ -51,6 +51,25 @@ SELECT * FROM users WHERE email = 'alice@example.com';
 Without an index on `email`, the database reads all one million rows.
 With a B+Tree index on `email`, it reads roughly 20 rows (the depth of the tree).
 
+A hash-based in-memory index in JavaScript follows the same idea — O(1) lookup by key, no range support:
+
+```javascript
+class HashIndex {
+  constructor() {
+    this.map = new Map(); // key → [rowPointer, ...]
+  }
+
+  insert(key, rowPointer) {
+    if (!this.map.has(key)) this.map.set(key, []);
+    this.map.get(key).push(rowPointer);
+  }
+
+  lookup(key) {
+    return this.map.get(key) ?? [];
+  }
+}
+```
+
 ## Quiz
 
 **Q1.** What is the primary purpose of a database index?
