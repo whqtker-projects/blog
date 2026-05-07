@@ -17,3 +17,7 @@ Added `src/content/posts/write-ahead-log.md` as the fourth real `database-intern
 ## 2026-05-07 — Add Query Execution and the Optimizer post
 
 Added `src/content/posts/query-execution-plan.md` as the fifth real `database-internals` series post. Wrote a publishable draft covering how the planner turns SQL into a plan, how cost estimation works, why index scans can beat table scans, and a five-question quiz, then prepared it for build verification.
+
+## 2026-05-07 — Sync first-content readiness document
+
+Updated `docs/first-content-readiness.md` so its committed-content note reflects the full real `database-internals` post set now present in `src/content/posts/`. Kept validation fixtures explicitly separated under `test/fixtures/obsidian-vault/`.
