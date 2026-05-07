@@ -131,6 +131,7 @@ This document is the stable reference for decisions that have been explicitly ag
 | D-30 | Post status vocabulary (5 values): `idea`, `outline`, `draft`, `review`, `published`. |
 | D-31 | Published-post update policy: typo, link, and factual-error fixes keep `published` status. Section additions or substantial rewrites return the post to `draft`. |
 | D-32 | `status` is an optional frontmatter field. No default value. Required fields remain `title`, `series`, `order` (D-25). |
+| D-33 | Production build inclusion policy: a post is included if `status` is absent or equals `published`. A post is excluded if `status` is `idea`, `outline`, `draft`, or `review`. |
 
 ---
 

@@ -77,6 +77,23 @@ The required frontmatter fields remain `title`, `series`, and `order` (D-25). `s
 
 ---
 
+## Production Build Behavior
+
+The Astro production build uses `status` to determine which posts are included in the output (D-33):
+
+| `status` value | Build behavior |
+|---|---|
+| field absent (not set) | Included in production build |
+| `published` | Included in production build |
+| `idea` | Excluded from production build |
+| `outline` | Excluded from production build |
+| `draft` | Excluded from production build |
+| `review` | Excluded from production build |
+
+This policy controls reader-facing output only. It does not restrict which statuses an author can use in the Obsidian vault.
+
+---
+
 ## Planning Document Status Vocabulary
 
 Planning documents use a separate status vocabulary. They are not interchangeable with post statuses.

@@ -53,7 +53,7 @@ Domain is not stored as a frontmatter field. It is inferred from `series` via th
 
 | Field | Type | Description |
 |---|---|---|
-| `status` | string | Post lifecycle stage. Confirmed values: `idea`, `outline`, `draft`, `review`, `published` (D-30). No default value (D-32). |
+| `status` | string | Post lifecycle stage. Confirmed values: `idea`, `outline`, `draft`, `review`, `published` (D-30). No default value (D-32). Production build: absent or `published` → included; `idea`, `outline`, `draft`, `review` → excluded (D-33). |
 
 All other optional fields (e.g., `description`, `tags`) are not yet defined and must not be added until decided during Astro implementation (Issue #27 sub-issues).
 
