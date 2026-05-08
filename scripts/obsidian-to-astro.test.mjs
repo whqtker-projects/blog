@@ -11,6 +11,8 @@ import {
   extractImageFilenames,
   parseFrontmatter,
   convertFile,
+  convertConceptLinks,
+  buildConceptAliasMap,
 } from './obsidian-to-astro.mjs';
 
 // ── validateFileName ─────────────────────────────────────────────────────────
@@ -346,4 +348,143 @@ order: 1
   } finally {
     rmSync(imagesDir, { recursive: true });
   }
+});
+
+// ── convertConceptLinks ──────────────────────────────────────────────────────
+
+test('convertConceptLinks: [[concept:tcp]]', () => {
+  const { result } = convertConceptLinks('See [[concept:tcp]] for details.');
+  assert.equal(result, 'See [tcp](/concepts/tcp) for details.');
+});
+
+test('convertConceptLinks: [[concept:tcp|TCP]]', () => {
+  const { result } = convertConceptLinks('Read [[concept:tcp|TCP]] here.');
+  assert.equal(result, 'Read [TCP](/concepts/tcp) here.');
+});
+
+test('convertConceptLinks: alias resolves to canonical slug', () => {
+  const aliasMap = new Map([['tcp', 'tcp'], ['transmission-control-protocol', 'tcp']]);
+  const { result } = convertConceptLinks('See [[concept:transmission-control-protocol]].', aliasMap);
+  assert.equal(result, 'See [transmission-control-protocol](/concepts/tcp).');
+});
+
+test('convertConceptLinks: uppercase alias resolves via lowercased lookup', () => {
+  const aliasMap = new Map([['tcp', 'tcp'], ['tcp', 'tcp']]);
+  const { result } = convertConceptLinks('See [[concept:TCP]].', aliasMap);
+  assert.equal(result, 'See [TCP](/concepts/tcp).');
+});
+
+test('convertConceptLinks: warns on unresolved concept when knownConceptSlugs provided', () => {
+  const known = new Set(['tcp']);
+  const { warnings } = convertConceptLinks('See [[concept:unknown]].', null, known);
+  assert.deepEqual(warnings, ['unknown']);
+});
+
+test('convertConceptLinks: no warning for resolved concept', () => {
+  const known = new Set(['tcp']);
+  const { warnings } = convertConceptLinks('See [[concept:tcp]].', null, known);
+  assert.deepEqual(warnings, []);
+});
+
+test('convertConceptLinks: no resolution check when knownConceptSlugs is null', () => {
+  const { warnings } = convertConceptLinks('See [[concept:anything]].', null, null);
+  assert.deepEqual(warnings, []);
+});
+
+test('convertConceptLinks: does not affect normal wikilinks', () => {
+  const input = 'See [[database-index]] and [[concept:tcp]].';
+  const { result } = convertConceptLinks(input);
+  assert.ok(result.includes('[[database-index]]'));
+  assert.ok(result.includes('[tcp](/concepts/tcp)'));
+});
+
+test('convertConceptLinks: no concept links passes content through unchanged', () => {
+  const input = 'Plain text with [[link]] only.';
+  const { result, warnings } = convertConceptLinks(input);
+  assert.equal(result, input);
+  assert.deepEqual(warnings, []);
+});
+
+// ── buildConceptAliasMap ─────────────────────────────────────────────────────
+
+test('buildConceptAliasMap: returns empty map for nonexistent dir', () => {
+  const map = buildConceptAliasMap('/nonexistent/path/xyz');
+  assert.equal(map.size, 0);
+});
+
+test('buildConceptAliasMap: slug maps to itself', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'test-concepts-'));
+  try {
+    writeFileSync(join(dir, 'tcp.md'), '---\ntitle: TCP\n---\n');
+    const map = buildConceptAliasMap(dir);
+    assert.equal(map.get('tcp'), 'tcp');
+  } finally {
+    rmSync(dir, { recursive: true });
+  }
+});
+
+test('buildConceptAliasMap: aliases map to canonical slug', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'test-concepts-'));
+  try {
+    writeFileSync(join(dir, 'tcp.md'), '---\ntitle: TCP\naliases: [TCP, tcp]\n---\n');
+    const map = buildConceptAliasMap(dir);
+    assert.equal(map.get('tcp'), 'tcp');
+  } finally {
+    rmSync(dir, { recursive: true });
+  }
+});
+
+test('buildConceptAliasMap: alias lookup is case-insensitive', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'test-concepts-'));
+  try {
+    writeFileSync(join(dir, 'tcp.md'), '---\ntitle: TCP\naliases: [TCP]\n---\n');
+    const map = buildConceptAliasMap(dir);
+    assert.equal(map.get('tcp'), 'tcp');
+  } finally {
+    rmSync(dir, { recursive: true });
+  }
+});
+
+// ── concept links in convertFile ─────────────────────────────────────────────
+
+test('convertFile: concept links in body are converted', () => {
+  const input = `---
+title: Test
+series: network-protocols
+order: 1
+---
+
+See [[concept:tcp]] for details.`;
+
+  const { content } = convertFile(input, 'test.md');
+  assert.ok(content.includes('[tcp](/concepts/tcp)'));
+  assert.ok(!content.includes('[[concept:tcp]]'));
+});
+
+test('convertFile: concept links convert before post wikilinks', () => {
+  const input = `---
+title: Test
+series: network-protocols
+order: 1
+---
+
+[[concept:tcp]] and [[what-is-http]].`;
+
+  const { content } = convertFile(input, 'test.md');
+  assert.ok(content.includes('[tcp](/concepts/tcp)'));
+  assert.ok(content.includes('[what-is-http](/posts/what-is-http)'));
+});
+
+test('convertFile: returns conceptWarnings for unresolved concept links', () => {
+  const input = `---
+title: Test
+series: network-protocols
+order: 1
+---
+
+See [[concept:unknown-concept]].`;
+
+  const known = new Set(['tcp']);
+  const { conceptWarnings } = convertFile(input, 'test.md', null, null, null, known);
+  assert.deepEqual(conceptWarnings, ['unknown-concept']);
 });
