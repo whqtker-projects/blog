@@ -14,7 +14,9 @@ This document describes how the blog is deployed to production and staging, what
 | `master` | Production | Production deployment — live at `blog-seven-rho-24.vercel.app` |
 | `develop` | Staging | Preview Deployment — unique URL per deploy, protected by Vercel auth |
 
-These roles are confirmed decisions D-45 and D-46. `develop` is the integration branch; `master` is the public-facing branch.
+These roles are confirmed decisions D-45 and D-46. `develop` is the default branch and the integration branch for all ongoing work; `master` is the public-facing production branch.
+
+**All agent and automated work targets `develop`.** Direct commits to `master` are blocked by repository ruleset.
 
 ---
 
