@@ -26,8 +26,8 @@ const { title, series, order, prev, next } = Astro.props;
     </header>
     <slot />
     <nav class="post-nav">
-      {prev && <a href={`/posts/${prev.slug}`}>← {prev.title}</a>}
-      {next && <a href={`/posts/${next.slug}`}>{next.title} →</a>}
+      {prev && <a class="prev" href={`/posts/${prev.slug}`}>← {prev.title}</a>}
+      {next && <a class="next" href={`/posts/${next.slug}`}>{next.title} →</a>}
     </nav>
   </article>
 </BaseLayout>
@@ -50,7 +50,6 @@ const { title, series, order, prev, next } = Astro.props;
   .post-nav {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     gap: 0.5rem 1rem;
     margin-top: 3rem;
     padding-top: 1.5rem;
@@ -60,10 +59,17 @@ const { title, series, order, prev, next } = Astro.props;
 
   .post-nav a {
     text-decoration: none;
+    min-width: 0;
+    overflow-wrap: break-word;
   }
 
   .post-nav a:hover {
     text-decoration: underline;
     opacity: 1;
+  }
+
+  .post-nav .next {
+    margin-left: auto;
+    text-align: right;
   }
 </style>

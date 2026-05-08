@@ -119,9 +119,12 @@ pre code {
   border-radius: 3px;
 }
 
-/* Tables: display block enables overflow-x scroll on narrow viewports */
+/* Tables: display block enables overflow-x scroll on narrow viewports.
+   width/max-width combo preserves narrow tables' natural size. */
 table {
   display: block;
+  width: max-content;
+  max-width: 100%;
   overflow-x: auto;
   border-collapse: collapse;
   margin: 0 0 1.25rem;
