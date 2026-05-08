@@ -44,6 +44,7 @@ The repository is in the **active content-creation stage**. The Astro build, con
 | File | Purpose |
 |---|---|
 | [astro-bootstrap.md](astro-bootstrap.md) | Astro project setup, commands, and build contract |
+| [deployment-workflow.md](deployment-workflow.md) | Production and staging deployment workflow, branch model, and CI gate |
 | [file-naming-conventions.md](file-naming-conventions.md) | Confirmed file naming rules (D-15, D-16) |
 | [publishing-workflow.md](publishing-workflow.md) | Confirmed publishing platform and conversion workflow (D-17, D-18) |
 | [github-issue-workflow.md](github-issue-workflow.md) | How to create GitHub issues and proceed with implementation |

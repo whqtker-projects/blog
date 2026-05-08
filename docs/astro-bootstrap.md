@@ -220,6 +220,7 @@ Validation-only fixtures follow a different rule: keep the Obsidian source under
 
 ## Related Documents
 
+- [`docs/deployment-workflow.md`](deployment-workflow.md) — how the built output is deployed to Vercel (production and staging)
 - [`docs/content-model.md`](content-model.md) — role boundaries for all three content types
 - [`docs/series-index-authoring.md`](series-index-authoring.md) — series index document rules
 - [`docs/post-metadata.md`](post-metadata.md) — frontmatter field definitions
