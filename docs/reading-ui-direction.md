@@ -1,9 +1,11 @@
 # Reading UI Direction
 
-**Status:** Draft  
-**Last updated:** 2026-05-08 (open questions resolved as D-40–D-43)
+**Status:** Resolved — first reading-focused UI phase implemented.  
+**Last updated:** 2026-05-08
 
-This document defines the reading-focused UI direction for the current phase. The blog has a working navigation structure and published content but no visual layer yet. This phase makes the site readable without introducing full branding or a component library.
+This document records the design direction that guided the first reading-focused UI pass. It is no longer a statement of the current rendered site state.
+
+This document defines the reading-focused UI direction that was implemented in the first reading-focused phase. At design time, the blog had working navigation structure and published content but no visual layer yet. That phase added readability without introducing full branding or a component library.
 
 ---
 

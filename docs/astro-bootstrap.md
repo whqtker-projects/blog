@@ -29,6 +29,8 @@ pnpm preview      # Preview the production build locally
 # Content conversion (requires Obsidian vault to be available locally)
 pnpm convert --input <path/to/vault/posts>           # Sync vault posts → src/content/posts/
 pnpm convert --input <path/to/vault/posts> --strict  # Same; exit 1 on unresolved wikilinks
+pnpm convert --input <path/to/vault/posts> --concepts <path/to/vault/concepts>
+                                                    # Sync vault posts + concepts
 pnpm test:convert                                    # Run conversion script unit tests
 ```
 
@@ -43,13 +45,14 @@ pnpm test:convert                                    # Run conversion script uni
 Content moves from the Obsidian vault to the published site in three explicit steps:
 
 ```
-Obsidian vault (posts/)
+Obsidian vault (posts/, concepts/)
        │
-       │  1. pnpm convert --input <vault/posts> [--strict]
+       │  1. pnpm convert --input <vault/posts> [--concepts <vault/concepts>] [--strict]
        ▼
 src/content/posts/          ← committed to git; review diff before committing
+src/content/concepts/       ← committed to git when concept files change
        │
-       │  2. git add src/content/posts/ && git commit
+       │  2. git add src/content/posts/ src/content/concepts/ && git commit
        ▼
 git repository
        │
@@ -63,6 +66,7 @@ dist/                       ← gitignored; deploy this
 | Situation | Action |
 |-----------|--------|
 | Wrote or edited a post in Obsidian | `pnpm convert --input <vault/posts>` then commit |
+| Wrote or edited a concept in Obsidian | `pnpm convert --input <vault/posts> --concepts <vault/concepts>` then commit |
 | Starting the dev server with fresh content | `pnpm convert` first, then `pnpm dev` |
 | Production build in CI | Not needed — `src/content/posts/` is already committed |
 | Previewing changes without committing | `pnpm convert` then `pnpm dev` (don't commit yet) |
@@ -81,9 +85,9 @@ There are two distinct freshness layers in this model:
 "Up-to-date converted content" in this repository means: the latest converted Markdown that has been intentionally synced from the vault and committed to git. CI does not and cannot validate against the author's live vault; it builds the committed artifact by design.
 
 The required author workflow before publishing is:
-1. `pnpm convert --input <vault/posts> --strict` — sync and fail on broken links
-2. `git diff src/content/posts/` — review the converted output
-3. `git add src/content/posts/ && git commit` — commit the converted artifact
+1. `pnpm convert --input <vault/posts> --concepts <vault/concepts> --strict` — sync and fail on broken links
+2. `git diff src/content/posts/ src/content/concepts/` — review the converted output
+3. `git add src/content/posts/ src/content/concepts/ && git commit` — commit the converted artifact
 4. `pnpm build` — verify the committed content builds without errors
 
 ### Conversion trigger
@@ -101,10 +105,13 @@ Conversion is **manual and explicit**. There is no prebuild hook and no automati
 pnpm convert --input ~/my-vault/posts
 pnpm dev              # or review diff and commit first
 
+# When concept pages changed too
+pnpm convert --input ~/my-vault/posts --concepts ~/my-vault/concepts
+
 # Before committing
-pnpm convert --input ~/my-vault/posts --strict   # fail on broken links
-git diff src/content/posts/                      # review converted output
-git add src/content/posts/ && git commit
+pnpm convert --input ~/my-vault/posts --concepts ~/my-vault/concepts --strict
+git diff src/content/posts/ src/content/concepts/
+git add src/content/posts/ src/content/concepts/ && git commit
 
 # Production build (no vault needed)
 pnpm build
@@ -119,6 +126,7 @@ new_blog/
 ├── docs/                        # Planning documents (not part of Astro build)
 ├── src/
 │   ├── content/
+│   │   ├── concepts/            # Converted Markdown for concept reference pages
 │   │   └── posts/               # Converted Markdown for real publishable posts
 │   ├── content.config.ts        # Content collection schema
 │   ├── layouts/
@@ -126,8 +134,12 @@ new_blog/
 │   │   └── PostLayout.astro     # Post page wrapper (title, series, content)
 │   └── pages/
 │       ├── index.astro          # Home — lists published posts
-│       └── posts/
-│           └── [slug].astro     # Post route — /posts/<slug>
+│       ├── concepts/
+│       │   └── [slug].astro     # Concept route — /concepts/<slug>
+│       ├── posts/
+│       │   └── [slug].astro     # Post route — /posts/<slug>
+│       └── series/
+│           └── [series].astro   # Series route — /series/<series>
 ├── test/
 │   └── fixtures/
 │       └── obsidian-vault/      # Validation-only Obsidian source fixtures
@@ -158,6 +170,8 @@ status: idea | outline | draft | review | published
 
 **Production build inclusion (D-33):** Posts with `status` absent or set to `published` are included. All other status values are excluded from the build output.
 
+Concepts are loaded separately from `src/content/concepts/`. They require `title` and may include `aliases`; they do not use `series`, `order`, or `status`.
+
 ---
 
 ## Routes
@@ -165,7 +179,9 @@ status: idea | outline | draft | review | published
 | Route | Source | Notes |
 |---|---|---|
 | `/` | `src/pages/index.astro` | Lists all published posts |
+| `/series/[series]` | `src/pages/series/[series].astro` | Lists published posts in one series |
 | `/posts/[slug]` | `src/pages/posts/[slug].astro` | Individual post page |
+| `/concepts/[slug]` | `src/pages/concepts/[slug].astro` | Individual concept reference page |
 
 Slug is derived from the Markdown file name (e.g., `b-plus-tree.md` → `/posts/b-plus-tree`).
 
@@ -174,8 +190,8 @@ Slug is derived from the Markdown file name (e.g., `b-plus-tree.md` → `/posts/
 ## Adding a Post
 
 1. Write the post in the Obsidian vault (`posts/` directory in the vault)
-2. Run `pnpm convert --input <vault/posts> --strict` to sync to `src/content/posts/`
-3. Review the diff in `src/content/posts/` — verify wikilinks converted correctly
+2. Run `pnpm convert --input <vault/posts> --concepts <vault/concepts> --strict` when posts or concept links changed
+3. Review the diff in `src/content/posts/` and `src/content/concepts/` — verify wikilinks converted correctly
 4. Set `status: published` in frontmatter when the post is ready to go live
 5. Run `pnpm build` to verify no schema errors
 6. Commit `src/content/posts/<filename>.md`
