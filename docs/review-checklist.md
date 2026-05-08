@@ -1,15 +1,15 @@
 # Post Review Checklist
 
 **Status:** Active — confirmed on 2026-05-07.  
-**Last updated:** 2026-05-08
+**Last updated:** 2026-05-09
 
-Use this checklist before moving a post from `draft` to `review`, and again before moving from `review` to `published`.
+Use this checklist while working on a `draft`, and again before changing the post to `published`.
 
 ---
 
-## Draft → Review
+## Draft Readiness
 
-All items below must pass before a post is considered ready for review.
+All items below must pass before a `draft` is considered ready to publish.
 
 ### Content completeness
 
@@ -35,16 +35,14 @@ All items below must pass before a post is considered ready for review.
 
 ---
 
-## Review → Published
-
 Before publishing, confirm:
 
-- [ ] All draft → review checklist items still pass
+- [ ] All draft-readiness checklist items still pass
 - [ ] The post has been read through once as a reader (not as a writer)
 - [ ] No placeholder text (`[Write here]`, `[Question text]`, etc.) remains
 - [ ] Quiz answer explanations are complete
 - [ ] `status` is set to `published` in frontmatter
-- [ ] The post should be reader-visible after deployment only because `status: published` is explicit, not because the field is omitted
+- [ ] The post should be reader-visible after deployment only because `status: published` is explicit
 
 ### Staging Verification
 

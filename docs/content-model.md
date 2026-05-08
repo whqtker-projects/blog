@@ -12,7 +12,7 @@ This document defines the role boundaries for the three content types in this re
 | Location | `src/content/posts/` | `src/content/concepts/` | `src/content/series_indexes/` |
 | Belongs to series | Yes (required) | No | Defines the series |
 | Has `order` | Yes (required) | No | No |
-| Has `status` | Yes (optional) | No | No |
+| Has `status` | Yes (required) | No | No |
 | Created via | `pnpm convert` from Obsidian | `pnpm convert` from Obsidian | Manual authoring |
 | Appears on homepage | No | No | Yes |
 | Prev/next navigation | Yes | No | No |
@@ -32,6 +32,7 @@ Posts are in-depth explanations of a topic within a series. Each post belongs to
 title: string
 series: string   # must match a series_indexes document's series field
 order: number    # position within the series, starting at 1
+status: string   # one of idea, draft, published
 ```
 
 ---

@@ -164,12 +164,12 @@ series: string   # must match a confirmed slug from docs/series-backlog.md
 order: number    # position within the series, starting at 1
 ```
 
-**Optional field (D-32):**
+**Required status field (D-32):**
 ```yaml
-status: idea | outline | draft | review | published
+status: idea | draft | published
 ```
 
-**Build-time visibility (D-33, D-54, D-55):** Local development includes all posts so in-progress work can be inspected. Staged and production builds include only posts with `status: published`; posts with `status` absent or set to a non-public value are excluded from build output.
+**Build-time visibility (D-33, D-54, D-55):** Local development includes all posts so in-progress work can be inspected. Staged and production builds include only posts with `status: published`; posts with `status: idea` or `status: draft` are excluded from build output.
 
 Concepts are loaded separately from `src/content/concepts/`. They require `title` and may include `aliases`; they do not use `series`, `order`, or `status`.
 

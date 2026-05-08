@@ -106,3 +106,13 @@ This keeps all in-progress `network-protocols` work under a single non-public st
 Verification:
 - `pnpm build`
 - Confirmed generated static routes still include only published post pages in build output
+
+## 2026-05-09 — Align validation with the simplified status model
+
+Updated `src/content.config.ts` so `status` is required and limited to `idea`, `draft`, `published`. Updated `scripts/check-content.mjs` so missing `status` now fails instead of warning, and so invalid status values fail explicitly against the simplified vocabulary.
+
+Synchronized the status/validation docs that directly describe the contract: `docs/status-lifecycle.md`, `docs/post-metadata.md`, `docs/review-checklist.md`, `docs/first-content-readiness.md`, `docs/obsidian-conversion-contract.md`, `docs/astro-bootstrap.md`, and `docs/content-model.md`.
+
+Verification:
+- `pnpm check:content`
+- `pnpm build`

@@ -6,7 +6,8 @@
  *   1. No two series_indexes documents share the same series value
  *   2. Every series value in posts/ has a matching series_indexes document
  *   3. No two explicitly published posts in the same series share the same order value
- *   4. Warn when a post omits status, because omitted status is excluded from production
+ *   4. Fail when a post omits status, because committed posts must set status explicitly
+ *   5. Fail when a post uses a status outside the simplified vocabulary
  */
 
 import { readFileSync, readdirSync } from 'node:fs';
@@ -42,18 +43,13 @@ const indexesDir = join(ROOT, 'src/content/series_indexes');
 
 const posts = readMdFiles(postsDir);
 const indexes = readMdFiles(indexesDir);
+const ALLOWED_POST_STATUSES = new Set(['idea', 'draft', 'published']);
 
 let errors = 0;
-let warnings = 0;
 
 function fail(msg) {
   console.error(`  ✗ ${msg}`);
   errors++;
-}
-
-function warn(msg) {
-  console.warn(`  ! ${msg}`);
-  warnings++;
 }
 
 // --- Check 1: no duplicate series values in series_indexes ---
@@ -105,27 +101,35 @@ for (const post of publishedPosts) {
 }
 if (errors === errorsAfterCheck2) console.log('  ✓ passed');
 
-// --- Check 4: warn on missing status ---
-console.log('Check 4: warn on posts with missing status');
+// --- Check 4: fail on missing status ---
+console.log('Check 4: no posts may omit status');
 const statuslessPosts = posts.filter((post) => post.status === undefined);
 if (statuslessPosts.length === 0) {
   console.log('  ✓ passed');
 } else {
   for (const post of statuslessPosts) {
-    warn(
-      `${post.file}: missing 'status' field — omitted status is excluded from production output`
+    fail(
+      `${post.file}: missing required 'status' field — committed posts must set one of ${Array.from(ALLOWED_POST_STATUSES).join(', ')}`
     );
   }
 }
+const errorsAfterCheck4 = errors;
+
+// --- Check 5: fail on invalid status values ---
+console.log('Check 5: status values use the simplified vocabulary');
+for (const post of posts) {
+  if (post.status !== undefined && !ALLOWED_POST_STATUSES.has(post.status)) {
+    fail(
+      `${post.file}: invalid status '${post.status}' — allowed values are ${Array.from(ALLOWED_POST_STATUSES).join(', ')}`
+    );
+  }
+}
+if (errors === errorsAfterCheck4) console.log('  ✓ passed');
 
 // --- Result ---
 if (errors > 0) {
   console.error(`\n${errors} violation(s) found. Fix before committing.`);
   process.exit(1);
 } else {
-  console.log(
-    warnings > 0
-      ? `\nAll checks passed with ${warnings} warning(s).`
-      : '\nAll checks passed.'
-  );
+  console.log('\nAll checks passed.');
 }

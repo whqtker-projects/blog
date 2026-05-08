@@ -47,7 +47,7 @@ Every processed `.md` file must satisfy all of the following:
 3. **Line endings** — LF (`\n`). CRLF is not normalised by the script; CRLF files may cause frontmatter parsing to fail.
 4. **Frontmatter fence** — the file must open with `---\n`, contain a YAML block, and close with `\n---\n`. Frontmatter must appear at byte offset 0.
 5. **Required frontmatter fields** — `title` (string), `series` (series slug string), `order` (integer), as per D-25. The script does not validate these; Astro's content schema enforces them at build time.
-6. **Optional status field** — if present, must be one of `idea`, `outline`, `draft`, `review`, `published` (D-30, D-32). Unknown values are passed through and will be rejected by Astro's schema.
+6. **Required status field** — must be one of `idea`, `draft`, `published` (D-30, D-32). Missing or unknown values will be rejected by repository validation and Astro's schema.
 
 ---
 
@@ -60,10 +60,10 @@ The conversion script passes the entire frontmatter block through to the output 
 | `title` | string | `title` | None |
 | `series` | series slug string | `series` | None |
 | `order` | integer | `order` | None |
-| `status` | enum string (optional) | `status` | None |
+| `status` | enum string (required) | `status` | None |
 | Any other field | any | same name | Passed through as-is; Astro's Zod schema strips unknown fields at build time |
 
-**Astro schema consistency:** The Astro content collection schema (`src/content.config.ts`) defines `title`, `series`, `order` as required and `status` as optional. Fields not listed in the schema are silently dropped by Zod during the build — they do not cause errors but do not appear in `post.data`.
+**Astro schema consistency:** The Astro content collection schema (`src/content.config.ts`) defines `title`, `series`, `order`, and `status` as required. Fields not listed in the schema are silently dropped by Zod during the build — they do not cause errors but do not appear in `post.data`.
 
 **No Obsidian-only fields are added by the script.** If Obsidian generates metadata fields (e.g., `aliases`, `tags`, `cssclass`), they will be passed through by the script and silently dropped by Astro. They do not affect the build or the rendered output.
 

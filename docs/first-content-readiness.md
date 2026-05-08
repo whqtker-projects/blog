@@ -1,7 +1,7 @@
 # First-Content Readiness
 
 **Status:** Active — produced by Issue #30.  
-**Last updated:** 2026-05-08
+**Last updated:** 2026-05-09
 
 This document defines the artifacts and criteria needed to move from planning into active content creation. It covers the candidate post set for the first series, the process for starting a post, the drafting checklist, the quality bar for publication, and the pre-publication self-review checklist.
 
@@ -41,7 +41,7 @@ The author may adjust order, add topics, or split a post — this list is a star
 
 ---
 
-## Starting a Post: `idea` → `outline` Process
+## Starting a Post: `idea` → `draft` Process
 
 ### Vault directory location
 
@@ -88,21 +88,21 @@ Minimum fields at `idea` state:
 | `title` | Yes (D-25) | The intended post title |
 | `series` | Yes (D-25) | Confirmed series slug (e.g., `database-internals`) |
 | `order` | Yes (D-25) | Intended position in the series (integer) |
-| `status` | No (D-32) | `idea` — marks the post as not yet written |
+| `status` | Yes (D-32) | `idea` — marks the post as not yet written |
 
-No other fields are required at `idea` state. In repository practice, set `status` explicitly even for early drafts so production visibility is never ambiguous. Under D-33, only `status: published` is included in production output, so `idea` posts and statusless notes stay off the live site.
+No other fields are required at `idea` state. `status` must still be set explicitly even for early drafts so lifecycle and visibility remain unambiguous. Under D-33, only `status: published` is included in staged and production output, so `idea` posts stay off the public site.
 
-### Step 3 — Advance to `outline`
+### Step 3 — Advance to `draft`
 
-When ready to structure the post, add section headings and bullet-point notes under each. Do not write prose yet. Decide the quiz topic.
+When ready to work on the post, change status to `draft`. This single working state now covers both outline-only documents and prose drafts.
 
-Change status to `outline`:
+Change status to `draft`:
 
 ```yaml
-status: outline
+status: draft
 ```
 
-An `outline`-state post body looks like:
+A `draft`-state post body may still be outline-only:
 
 ```markdown
 ## What B+Tree Is
@@ -123,9 +123,7 @@ An `outline`-state post body looks like:
 Topic: properties of B+Tree vs. binary search tree
 ```
 
-### Step 4 — Advance to `draft`
-
-Begin writing prose. Change status to `draft`. The post does not need to be complete — draft means active writing is in progress.
+Begin writing prose when ready. The post does not need to be complete — `draft` means active work is in progress, whether that work is structural or prose-level.
 
 The conversion script (`pnpm convert`) is not needed during Obsidian writing. Run it before previewing with Astro.
 
@@ -166,7 +164,7 @@ Use this while writing a post in `draft` state. Each item maps to a confirmed de
 
 ## Quality Bar — What "Good Enough to Publish" Means
 
-A post is ready to move from `review` to `published` when all of the following are true:
+A post is ready to move from `draft` to `published` when all of the following are true:
 
 **Content**
 - Every required content area (definition, operational principles, examples, quiz) is complete — no `[Write here]` placeholders or stubs remain.
@@ -194,7 +192,7 @@ This quality bar applies to the first post and to all subsequent posts. The bar 
 
 ## Pre-Publication Self-Review Checklist
 
-Run through this checklist in a single sitting after completing the `draft → review` checklist in `docs/review-checklist.md`.
+Run through this checklist in a single sitting after the `docs/review-checklist.md` draft-readiness items all pass.
 
 ### Read-through pass
 
@@ -225,7 +223,7 @@ Run through this checklist in a single sitting after completing the `draft → r
 ### Final gate
 
 - [ ] All items in this checklist pass
-- [ ] All items in `docs/review-checklist.md` (Review → Published section) pass
+- [ ] All items in `docs/review-checklist.md` pass
 - [ ] Change `status` to `published` in frontmatter
 - [ ] Run conversion and build one final time before deploying
 
@@ -235,7 +233,7 @@ Run through this checklist in a single sitting after completing the `draft → r
 
 - [`docs/post-template.md`](post-template.md) — confirmed post structure rules (D-6, D-7, D-8, D-26–D-28)
 - [`docs/first-post-outline-template.md`](first-post-outline-template.md) — fill-in-the-blank Obsidian template
-- [`docs/review-checklist.md`](review-checklist.md) — draft → review and review → published checklists
+- [`docs/review-checklist.md`](review-checklist.md) — draft-readiness and publish checks
 - [`docs/status-lifecycle.md`](status-lifecycle.md) — status vocabulary and update policy (D-30–D-33)
 - [`docs/series-backlog.md`](series-backlog.md) — confirmed series list (D-21, D-22)
 - [`docs/obsidian-conversion-contract.md`](obsidian-conversion-contract.md) — conversion script input contract
