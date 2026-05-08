@@ -1,7 +1,7 @@
 # Agent Architecture
 
 **Status:** Active  
-**Last updated:** 2026-05-06
+**Last updated:** 2026-05-08
 
 This document defines the responsibility-based agent model used in this repository and describes how agents interact with each other and with the user.
 
@@ -9,9 +9,9 @@ This document defines the responsibility-based agent model used in this reposito
 
 ## Design Philosophy
 
-This repository uses a small set of responsibility-based agents rather than many job-title agents. Each agent has one clear purpose and a bounded scope. Overlapping responsibilities create ambiguity about who updates which document, so the model deliberately keeps boundaries sharp.
+This repository uses a small set of responsibility-based agents rather than many job-title agents. Each agent has one clear purpose and a bounded scope. The model was designed during the planning stage and was revised in May 2026 when the repository moved into active content creation.
 
-The user is the sole decision-maker. Agents prepare, organize, review, and maintain — they do not decide.
+The user is the sole decision-maker. Agents prepare, verify, maintain, and route — they do not decide.
 
 ---
 
@@ -19,10 +19,9 @@ The user is the sole decision-maker. Agents prepare, organize, review, and maint
 
 | Agent | Primary Responsibility |
 |---|---|
-| [Planning Lead](#planning-lead) | Classify incoming work and route it to the right agent or document |
-| [Decision Reviewer](#decision-reviewer) | Validate confirmed vs. unresolved status; catch overreaching language |
-| [Documentation Curator](#documentation-curator) | Maintain document consistency, cross-links, and stale-reference cleanup |
-| [Structure Planner](#structure-planner) | Prepare options and tradeoffs for structure-related open questions |
+| [Planning Lead](#planning-lead) | Classify incoming work and route it to the right agent |
+| [Documentation Curator](#documentation-curator) | Maintain document consistency, cross-links, and decision document stability |
+| [Post Drafter](#post-drafter) | Guide posts through the idea → published lifecycle; run checklist and build verification |
 
 Individual role guides live in `.claude/agents/`.
 
@@ -32,63 +31,49 @@ Individual role guides live in `.claude/agents/`.
 
 **Routes work. Does not implement.**
 
-The Planning Lead reads an incoming task or question and determines:
-- What type of work it is (new open question, decision update, structure work, cleanup, decision-preparation)
+The Planning Lead reads an incoming task and determines:
+- What type of work it is (content creation, doc cleanup, ambiguous)
 - Which documents need to be read
 - Which agent should handle the work, or whether to ask the user before proceeding
 
-The Planning Lead is the entry point for any ambiguous or multi-step task. It does not write planning documents or produce structure proposals itself.
+It is the entry point for multi-step or ambiguous tasks. It does not draft post content, make publication decisions, or implement anything directly.
 
-**Must not:** decide blog post content, resolve open questions by assumption, or skip to implementation without classifying the work.
-
----
-
-## Decision Reviewer
-
-**Reviews decision-boundary integrity. Does not invent decisions.**
-
-The Decision Reviewer inspects `confirmed-decisions.md`, `open-questions.md`, and `decision-log.md` to check that:
-- Confirmed decisions reflect explicit user agreement, not inference
-- Open questions are not written with unwarranted certainty
-- Decision log entries are consistent with confirmed decisions
-- Cross-document references between decision docs are accurate
-
-When it finds a problem, it flags the issue and proposes a correction. It does not make the correction unilaterally for anything that touches decision status.
-
-**Must not:** resolve open questions, add new confirmed decisions, or rewrite decision content without user involvement.
+**Must not:** draft blog post content, make content or publication decisions, chain agents autonomously without user checkpoints.
 
 ---
 
 ## Documentation Curator
 
-**Maintains document integrity. Does not touch decision status.**
+**Maintains document integrity. Validates decision document stability.**
 
 The Documentation Curator is responsible for the structural health of the planning document system:
-- Remove stale `*(planned)*` markers when files are created
+- Remove stale `*(planned)*` markers when files exist
 - Fix broken or missing cross-links between documents
 - Keep `docs/README.md` aligned with the actual file state
-- Correct inconsistent wording that does not affect meaning
-- Run cleanup passes after major document additions
+- Correct wording inconsistencies that do not change meaning
+- Keep `docs/first-content-readiness.md` aligned with committed posts
+- Validate that decision documents (`confirmed-decisions.md`, `open-questions.md`, `decision-log.md`) remain internally consistent
 
-Curator work is the most autonomous of the four roles because it does not touch decision content. It operates within scope defined by the Documentation Curator role guide.
+When a decision document inconsistency is found, the Curator flags the specific location and proposes a correction. It does not change decision status unilaterally.
 
-**Must not:** change decision status, rewrite document meaning, or draft blog post content.
+**Must not:** change decision status, edit the decision log retroactively, rewrite document meaning, or draft blog post content.
 
 ---
 
-## Structure Planner
+## Post Drafter
 
-**Prepares options. Does not finalize decisions.**
+**Guides content creation. Applies checklists. Verifies builds.**
 
-The Structure Planner handles open questions related to structure — series organization, file naming, publishing workflow, post lifecycle. For each task it:
-- Reads the relevant open question and confirmed context
-- Prepares a set of options with tradeoffs
-- Connects the output to the relevant entry in `open-questions.md`
-- Hands the prepared options to the user or to the Decision Reviewer
+The Post Drafter supports the author through each post-creation stage:
+- Preparing minimum-frontmatter stubs in Obsidian vault format
+- Guiding `idea → outline → draft → review → published` transitions
+- Running the drafting and review checklists from `docs/first-content-readiness.md` and `docs/review-checklist.md`
+- Running conversion (`pnpm convert --strict`) and build (`pnpm build`) verification
+- Flagging checklist failures so the author can address them
 
-The Structure Planner produces decision-preparation artifacts (options documents, tradeoff summaries). The user makes the final call.
+The Post Drafter applies checklists literally and stops when an item fails. It does not approve posts for publication — that is the user's call.
 
-**Must not:** finalize structure decisions, choose between options on the user's behalf, or update `confirmed-decisions.md` without explicit user approval.
+**Must not:** choose post topics, set a publishing schedule, approve a post for publication without full checklist completion, advance a post's `status` field without explicit user confirmation.
 
 ---
 
@@ -100,43 +85,49 @@ Incoming task
       ▼
 Planning Lead classifies
       │
-      ├─ New open question ──────────► Planning Lead classifies and routes;
-      │                               item recorded per documentation-workflow.md
-      │
-      ├─ Structure decision needed ──► Structure Planner prepares options
+      ├─ Content creation / status advance / build verify ──► Post Drafter
       │        │
-      │        └─ Options ready ──────► User decides
-      │                  │
-      │                  └─ Decision confirmed ──► Documentation Curator updates docs
-      │                                            Decision Reviewer validates
+      │        └─ Checklist complete ──────────────────────► User approves status advance
       │
-      ├─ Decision boundary unclear ──► Decision Reviewer inspects and flags
+      ├─ Document cleanup / stale references ─────────────► Documentation Curator
       │
-      ├─ Document consistency issue ─► Documentation Curator fixes
+      ├─ Decision doc concern ─────────────────────────────► Documentation Curator
+      │        │
+      │        └─ Inconsistency found ──────────────────────► Flag to user; propose correction
       │
-      └─ Ambiguous scope ────────────► Planning Lead asks user before proceeding
+      └─ Ambiguous scope ──────────────────────────────────► Planning Lead asks user before routing
 ```
+
+---
+
+## Retired Agents
+
+The following agents were active during the planning phase and were retired in May 2026 when all structural and platform decisions were finalized:
+
+| Agent | Reason for retirement |
+|---|---|
+| Decision Reviewer | All open questions decided. Remaining responsibility absorbed into Documentation Curator. |
+| Structure Planner | All structure questions (series, naming, publishing workflow) decided. No remaining scope. |
 
 ---
 
 ## User Authority
 
 The user decides:
-- All detailed blog post content
-- Topic selection and series structure
-- Which open question to work on next
+- All blog post content, topic selection, and series structure
+- Whether to advance a post's status
+- Which post to work on next and when to publish
 - Whether to confirm, reject, or modify any agent proposal
-- Publication timing and platform choice
 
-Agents may propose and prepare, but may not decide anything in the user's domain.
+Agents may prepare, verify, and flag — but may not decide anything in the user's domain.
 
 ---
 
 ## Related Documents
 
 - [`.claude/agents/planning-lead.md`](../.claude/agents/planning-lead.md) — Planning Lead role guide
-- [`.claude/agents/decision-reviewer.md`](../.claude/agents/decision-reviewer.md) — Decision Reviewer role guide
 - [`.claude/agents/documentation-curator.md`](../.claude/agents/documentation-curator.md) — Documentation Curator role guide
-- [`.claude/agents/structure-planner.md`](../.claude/agents/structure-planner.md) — Structure Planner role guide
-- [`docs/documentation-workflow.md`](documentation-workflow.md) — How planning documents are updated
-- [`docs/open-questions.md`](open-questions.md) — All unresolved planning items
+- [`.claude/agents/post-drafter.md`](../.claude/agents/post-drafter.md) — Post Drafter role guide
+- [`docs/documentation-workflow.md`](documentation-workflow.md) — how planning documents are updated
+- [`docs/first-content-readiness.md`](first-content-readiness.md) — content creation workflow
+- [`docs/review-checklist.md`](review-checklist.md) — post review criteria
