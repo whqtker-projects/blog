@@ -8,7 +8,7 @@ This document is the stable reference for decisions that have been explicitly ag
 - When a new decision is confirmed, add it here and remove it from `open-questions.md`.
 - For the full decision record with context and rationale, see `decision-log.md`.
 
-**Last updated:** 2026-05-08 (D-40–D-43 added)
+**Last updated:** 2026-05-08 (D-44–D-49 added)
 
 ---
 
@@ -156,6 +156,19 @@ This document is the stable reference for decisions that have been explicitly ag
 | D-36 | Post URL structure: `/posts/[slug]`. Slug is derived from the Markdown file name. |
 | D-37 | Posts are loaded from `src/content/posts/` via Astro glob loader. Content collection name: `posts`. |
 | D-38 | Image copying from vault attachments to `public/images/` is manual. No `--attachments` auto-copy flag is added to the conversion script. Rationale: vault path is machine-specific; copying is a deliberate step with a reviewable git diff; `--strict` image validation catches missing images before they produce broken HTML. |
+
+---
+
+## Deployment
+
+| # | Decision |
+|---|---|
+| D-44 | Deployment platform: Vercel. |
+| D-45 | Production branch: `master`. Staging branch: `develop`. |
+| D-46 | Single Vercel project with branch-based routing. `master` maps to the production deployment; `develop` maps to a Vercel Preview Deployment. |
+| D-47 | Deploy gate for merging to `master`: full CI pass required (`pnpm build` + `pnpm test:convert` via `ci.yml`). |
+| D-48 | `ci.yml` is extended to run on `push` and `pull_request` for both `master` and `develop`. |
+| D-49 | Custom domain setup is deferred to a later phase. The initial deployment uses the Vercel-assigned `*.vercel.app` URL. |
 
 ---
 

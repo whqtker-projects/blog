@@ -9,7 +9,7 @@ Items that are not yet finalized. Do not resolve these by assumption — bring t
 
 **Status values:** `open` | `under discussion` | `decided`
 
-**Last updated:** 2026-05-07
+**Last updated:** 2026-05-08
 
 ---
 
@@ -47,6 +47,19 @@ Items that are not yet finalized. Do not resolve these by assumption — bring t
 | # | Status | Question | Notes |
 |---|---|---|---|
 | Q-9 | decided | Does each series target a different audience segment, or is every post written for the full beginner-to-practitioner range? | All series target the same audience: beginner to practitioner (same as D-9). No per-series segmentation. See `confirmed-decisions.md` D-29 and `decision-log.md` DL-008. |
+
+---
+
+## Deployment
+
+| # | Status | Question | Notes |
+|---|---|---|---|
+| OQ-Deploy-1 | decided | Which deployment platform? | Vercel. See D-44. |
+| OQ-Deploy-2 | decided | Production and staging branch model? | `master` = production, `develop` = staging. See D-45. |
+| OQ-Deploy-3 | decided | Single Vercel project or separate projects for prod/staging? | Single project; `master` → production, `develop` → Preview Deployment. See D-46. |
+| OQ-Deploy-4 | decided | What checks must pass before deploying to production? | Full CI pass (`pnpm build` + `pnpm test:convert`). See D-47. |
+| OQ-Deploy-5 | decided | Should `ci.yml` cover `develop` as well as `master`? | Yes — both branches included. See D-48. |
+| OQ-Deploy-6 | decided | Is custom domain setup in scope for the first deployment phase? | Deferred. Initial deployment uses `*.vercel.app`. See D-49. |
 
 ---
 

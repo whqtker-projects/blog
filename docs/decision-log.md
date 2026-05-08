@@ -447,6 +447,56 @@ The reading-focused UI phase (`docs/reading-ui-direction.md`) identified four de
 
 ---
 
+## DL-012 — First deployment model decisions (#133)
+
+**Date:** 2026-05-08
+**Status:** confirmed
+
+### Context
+
+The Astro static site is code-complete and the content model is stable. Before configuring Vercel deployment (Issue #135) and writing deployment documentation (Issue #136), five deployment decisions remained unresolved. These were collected from the user via `AskUserQuestion` as part of Issue #133.
+
+### Alternatives considered
+
+**Project structure (single vs. two Vercel projects):**
+- Two separate Vercel projects (`blog-prod` / `blog-staging`): Provides full environment isolation and independent env vars. Adds management overhead. Rejected — unnecessary complexity for a single-maintainer static site.
+- Single project with branch-based routing (chosen): Aligns with Vercel's default model. `master` → production, `develop` → Preview Deployment. Lower setup cost.
+
+**Deploy gate:**
+- `pnpm build` only: Lightest gate. Misses content structural errors that `check:content` would catch. Not selected.
+- `pnpm build` + `pnpm check:content`: Intermediate option. Does not run conversion script tests.
+- Full CI pass via `ci.yml` (`pnpm build` + `pnpm test:convert`) (chosen): Consistent with existing CI contract. Only one check definition to maintain.
+
+**CI scope (master-only vs. develop-inclusive):**
+- `master`-only: Simpler initial config. But staging deployments would have no build verification beyond Vercel's own build step. Not selected.
+- Both branches (chosen): Ensures consistent build verification before any deployment — production or staging.
+
+**Custom domain:**
+- In scope now: Would block deployment setup on DNS/domain availability. Not selected.
+- Deferred (chosen): Deployment can be verified using the Vercel-assigned `*.vercel.app` URL first. Domain setup is a follow-on task.
+
+### Decision
+
+- D-44: Deployment platform: Vercel.
+- D-45: Production branch `master`; staging branch `develop`.
+- D-46: Single Vercel project; `master` → production, `develop` → Preview Deployment.
+- D-47: Deploy gate: full CI pass (`pnpm build` + `pnpm test:convert`) required before merging to `master`.
+- D-48: `ci.yml` extended to cover `develop` branch.
+- D-49: Custom domain deferred; initial deployment uses `*.vercel.app`.
+
+### Follow-up
+
+- Issue #134: Create `develop` branch and extend `ci.yml`.
+- Issue #135: Add `vercel.json` and configure Vercel project settings.
+- Issue #136: Document the production/staging deployment workflow.
+
+### References
+
+- `confirmed-decisions.md`: D-44 through D-49
+- Issue #133 (closed), #134, #135, #136, #137 (parent)
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions
