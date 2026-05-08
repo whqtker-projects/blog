@@ -116,3 +116,14 @@ Synchronized the status/validation docs that directly describe the contract: `do
 Verification:
 - `pnpm check:content`
 - `pnpm build`
+
+## 2026-05-09 — Run pilot batch for idea-stage posts
+
+Formalized the `network-protocols` series as the first pilot batch for the simplified status model in `docs/first-content-readiness.md`. The batch uses five already-committed posts with explicit `order` and `status`, covering both non-public states now in use: `draft` and `idea`.
+
+To make the local-vs-production visibility rule directly testable, replaced the TypeScript-only visibility helper with `src/utils/post-visibility.js`, added a pure `visiblePostsForMode` function, and added `scripts/post-visibility.test.mjs` plus the `pnpm test:repo` script. This verifies that local development includes all posts while staged and production builds keep only `published` posts public.
+
+Verification:
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`

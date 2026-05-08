@@ -23,6 +23,31 @@ The full initial `database-internals` post set is now committed as real content 
 
 The author may adjust order, add topics, or split a post — this list is a starting point, not a commitment. Any changes to the confirmed candidate set should be reflected here.
 
+### Pilot Batch — Simplified Status Model
+
+The current pilot batch for large-scale idea intake is the committed `network-protocols` series. This batch was chosen because it already satisfies the repository's structural requirements:
+
+- A real series index exists at `src/content/series_indexes/network-protocols.md`
+- All five posts already have explicit `series`, `order`, and `status`
+- The batch exercises both non-public lifecycle states now in use: `draft` and `idea`
+- The `order` range is contiguous (`1` through `5`), so ordering and listing behavior can be checked without introducing new numbering rules
+
+Current pilot statuses:
+
+| Order | File name | Status |
+|-------|-----------|--------|
+| 1 | `what-is-http.md` | `draft` |
+| 2 | `tcp-connection-and-reliability.md` | `draft` |
+| 3 | `dns-resolution.md` | `idea` |
+| 4 | `tls-and-https.md` | `idea` |
+| 5 | `http2-and-http3.md` | `idea` |
+
+Pilot verification goals:
+
+- Local development should show all five `network-protocols` posts
+- Staged and production builds should keep all five posts off public post routes until each post is explicitly changed to `status: published`
+- `pnpm check:content` and `pnpm build` should continue to pass with the batch in place
+
 ---
 
 ## Candidate Posts — `network-protocols` Series
