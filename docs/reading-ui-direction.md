@@ -1,7 +1,7 @@
 # Reading UI Direction
 
 **Status:** Draft  
-**Last updated:** 2026-05-08
+**Last updated:** 2026-05-08 (open questions resolved as D-40–D-43)
 
 This document defines the reading-focused UI direction for the current phase. The blog has a working navigation structure and published content but no visual layer yet. This phase makes the site readable without introducing full branding or a component library.
 
@@ -255,14 +255,14 @@ The following items are intentionally deferred from this phase:
 
 ## Open Questions Summary
 
-| ID | Question | Blocks |
-|----|----------|--------|
-| OQ-UI-1 | Content width target (`max-width` value) | Layout implementation |
-| OQ-UI-2 | Font stack (system fonts vs. web font) | Typography implementation |
-| OQ-UI-3 | Concept page return navigation (home link, browser back, or site nav) | Concept page and possibly all pages |
-| OQ-UI-4 | Concept link visual treatment (same as normal links, or distinct) | Post page inline link styling |
+All four questions resolved 2026-05-08 via AskUserQuestion (Issue #117). Decisions recorded as D-40–D-43 in `confirmed-decisions.md`.
 
-These questions must be explicitly answered before implementation issues are written. They should be asked via `AskUserQuestion` at the start of the implementation session.
+| ID | Question | Decision | Decision ID |
+|----|----------|----------|-------------|
+| OQ-UI-1 | Content width target | `max-width: 65ch` | D-40 |
+| OQ-UI-2 | Font stack | System font stack; no web font import | D-41 |
+| OQ-UI-3 | Concept page return navigation | Site-level header on all pages (`BaseLayout.astro`) | D-42 |
+| OQ-UI-4 | Concept link visual treatment | Identical to normal links; no distinct style | D-43 |
 
 ---
 

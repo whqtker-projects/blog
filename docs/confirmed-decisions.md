@@ -8,7 +8,7 @@ This document is the stable reference for decisions that have been explicitly ag
 - When a new decision is confirmed, add it here and remove it from `open-questions.md`.
 - For the full decision record with context and rationale, see `decision-log.md`.
 
-**Last updated:** 2026-05-08
+**Last updated:** 2026-05-08 (D-40–D-43 added)
 
 ---
 
@@ -94,6 +94,17 @@ This document is the stable reference for decisions that have been explicitly ag
 | D-21 | Confirmed series (12 total): **Backend/Systems** — `database-internals`, `distributed-systems`, `network-protocols`, `backend-design`; **CS Fundamentals** — `data-structures`, `algorithms`, `operating-systems`, `computer-architecture`, `computer-security`; **AI/ML/LLM** — `llm-internals`, `ml-fundamentals`; **Software Engineering** — `design-principles`. |
 | D-22 | The first series to be written is `database-internals` (Backend/Systems domain). |
 | D-39 | The second series to be written is `network-protocols` (Backend/Systems domain). |
+
+---
+
+## Reading UI
+
+| # | Decision |
+|---|---|
+| D-40 | Content width: `max-width: 65ch` applied to all page types. |
+| D-41 | Font stack: system font stack (`-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", sans-serif`). No web font import. |
+| D-42 | Site-level header with a home link is added to `BaseLayout.astro`, making it visible on all pages. |
+| D-43 | Inline concept links (`/concepts/<slug>`) are styled identically to normal post links. No distinct visual treatment. |
 
 ---
 

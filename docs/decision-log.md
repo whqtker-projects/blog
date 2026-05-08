@@ -410,6 +410,43 @@ Decision recorded as D-39 in `confirmed-decisions.md`.
 
 ---
 
+## DL-011 — Reading UI design decisions (OQ-UI-1 through OQ-UI-4)
+
+**Date:** 2026-05-08
+**Status:** confirmed
+
+### Context
+
+The reading-focused UI phase (`docs/reading-ui-direction.md`) identified four design questions that could not be resolved by assumption. These were collected from the user via AskUserQuestion as Issue #117.
+
+### Alternatives considered
+
+- OQ-UI-1: `720px` (fixed pixel) and `48rem` (rem-based) were offered alongside `65ch`. `65ch` chosen for font-relative adaptability.
+- OQ-UI-2: Google Fonts (Noto Sans KR) was the alternative. System font stack chosen to avoid external loading overhead.
+- OQ-UI-3: Concept-page-only back link and browser-back reliance were alternatives. Site-level header on all pages chosen for consistent navigation across all page types.
+- OQ-UI-4: Dashed underline and color-based distinction were offered. Identical styling chosen for simplicity.
+
+### Decision
+
+- D-40: `max-width: 65ch` for all page types.
+- D-41: System font stack; no web font import.
+- D-42: Site-level header (home link) added to `BaseLayout.astro`; visible on all pages.
+- D-43: Concept links styled identically to normal links; no distinct visual treatment.
+
+### Follow-up
+
+- #118 (shared layout + typography) now unblocked — implements D-40, D-41, D-42.
+- #119 (homepage/series), #120 (post/concept) now unblocked.
+- #121 (polish) — OQ-UI-4 resolved as no-op; D-43 requires no additional implementation.
+
+### References
+
+- `confirmed-decisions.md`: D-40, D-41, D-42, D-43
+- `docs/reading-ui-direction.md` — Open Questions Summary
+- Issue #117, #122
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions
