@@ -73,6 +73,8 @@ The typical author workflow before publishing a post:
 3. Open a PR from `develop` → `master` — wait for CI to pass
 4. Merge — Vercel deploys to production automatically
 
+**PR creation and merge to `master` are always the author's decision.** No tooling or automation creates or merges these PRs. The author decides when content is ready for production.
+
 For minor fixes (typos, broken links, non-content changes), pushing directly to `master` is acceptable — CI still runs and the deploy gate holds.
 
 ---
