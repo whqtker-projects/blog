@@ -127,13 +127,14 @@ new_blog/
 ├── src/
 │   ├── content/
 │   │   ├── concepts/            # Converted Markdown for concept reference pages
-│   │   └── posts/               # Converted Markdown for real publishable posts
+│   │   ├── posts/               # Converted Markdown for real publishable posts
+│   │   └── series_indexes/      # One index document per series (manually authored)
 │   ├── content.config.ts        # Content collection schema
 │   ├── layouts/
 │   │   ├── BaseLayout.astro     # HTML shell (head, body)
 │   │   └── PostLayout.astro     # Post page wrapper (title, series, content)
 │   └── pages/
-│       ├── index.astro          # Home — lists published posts
+│       ├── index.astro          # Home — series directory (one entry per series index)
 │       ├── concepts/
 │       │   └── [slug].astro     # Concept route — /concepts/<slug>
 │       ├── posts/
@@ -172,18 +173,35 @@ status: idea | outline | draft | review | published
 
 Concepts are loaded separately from `src/content/concepts/`. They require `title` and may include `aliases`; they do not use `series`, `order`, or `status`.
 
+Series index documents are loaded from `src/content/series_indexes/`. There must be exactly one per series. They are authored manually (not converted from Obsidian).
+
+**Required fields:**
+```yaml
+title: string    # display name for the series
+series: string   # slug matching the series value used in posts
+```
+
+**Optional field:**
+```yaml
+description: string   # one-line summary shown on the homepage and series page
+```
+
+Series index documents do not use `order`, `status`, or any post-specific fields.
+
 ---
 
 ## Routes
 
 | Route | Source | Notes |
 |---|---|---|
-| `/` | `src/pages/index.astro` | Lists all published posts |
-| `/series/[series]` | `src/pages/series/[series].astro` | Lists published posts in one series |
+| `/` | `src/pages/index.astro` | Series directory — one entry per series index document |
+| `/series/[series]` | `src/pages/series/[series].astro` | Series index title + description + ordered list of published posts |
 | `/posts/[slug]` | `src/pages/posts/[slug].astro` | Individual post page |
 | `/concepts/[slug]` | `src/pages/concepts/[slug].astro` | Individual concept reference page |
 
 Slug is derived from the Markdown file name (e.g., `b-plus-tree.md` → `/posts/b-plus-tree`).
+
+A `/series/[series]` route is only generated if a matching series index document exists in `src/content/series_indexes/`. Adding a new series requires creating the index document first.
 
 ---
 

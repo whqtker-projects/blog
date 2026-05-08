@@ -1,31 +1,31 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { seriesDisplayName } from '../../utils/series';
 
 export async function getStaticPaths() {
+  const allIndexes = await getCollection('series_indexes');
   const allPosts = await getCollection('posts');
   const publishedPosts = allPosts.filter(
     (post) => !post.data.status || post.data.status === 'published'
   );
 
-  const seriesSet = new Set(publishedPosts.map((post) => post.data.series));
-  return [...seriesSet].map((series) => ({
-    params: { series },
+  return allIndexes.map((idx) => ({
+    params: { series: idx.data.series },
     props: {
+      index: idx,
       posts: publishedPosts
-        .filter((post) => post.data.series === series)
+        .filter((post) => post.data.series === idx.data.series)
         .sort((a, b) => a.data.order - b.data.order),
     },
   }));
 }
 
-const { series } = Astro.params;
-const { posts } = Astro.props;
+const { index, posts } = Astro.props;
 ---
-<BaseLayout title={seriesDisplayName(series!)}>
+<BaseLayout title={index.data.title}>
   <main>
-    <h1>{seriesDisplayName(series!)}</h1>
+    <h1>{index.data.title}</h1>
+    {index.data.description && <p class="description">{index.data.description}</p>}
     <ol>
       {posts.map((post) => (
         <li>
@@ -38,7 +38,13 @@ const { posts } = Astro.props;
 
 <style>
   h1 {
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .description {
+    font-size: 0.9rem;
+    color: #555;
+    margin: 0 0 1.75rem;
   }
 
   ol {
