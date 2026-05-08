@@ -81,3 +81,16 @@ Confirmed policy:
 - Vercel Preview / staging should follow production-style visibility.
 - Missing `status` should be treated as an error under the new model.
 - The first bulk idea-stage batch may include new series if the existing content-model and series-index rules are satisfied.
+
+## 2026-05-09 — Implement environment-aware post visibility
+
+Added `src/utils/post-visibility.ts` so post visibility is decided in one place. Updated `src/pages/posts/[slug].astro` and `src/pages/series/[series].astro` to show all posts during local development while keeping staged and production builds limited to `status: published`.
+
+Updated `docs/content-model.md`, `docs/astro-bootstrap.md`, and `docs/deployment-workflow.md` so they describe the new split correctly: local dev shows all posts, but the `develop` Vercel Preview Deployment still mirrors production visibility.
+
+Verification:
+- `pnpm build`
+- Confirmed generated static routes still include only published post pages in build output
+
+Constraint encountered:
+- Local `pnpm dev --host 127.0.0.1 --port 4321` verification could not complete in this sandbox because binding the local port failed with `listen EPERM`.

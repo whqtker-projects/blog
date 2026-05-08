@@ -46,6 +46,8 @@ A push to `develop` triggers a Vercel Preview Deployment. The URL is unique per 
 
 Preview Deployments are protected by Vercel's default deployment protection — they require a logged-in Vercel account to view. This is intentional: staging is for the author, not the public.
 
+Staging visibility follows production visibility. Unpublished posts remain local-development-only and do not appear on the `develop` Preview Deployment unless they are explicitly marked `status: published`.
+
 The same CI gate applies to `develop` (D-48). A staging deploy will still build even if CI is red, but do not treat a red-CI staging URL as a reliable preview.
 
 ---

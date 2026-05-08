@@ -169,7 +169,7 @@ order: number    # position within the series, starting at 1
 status: idea | outline | draft | review | published
 ```
 
-**Production build inclusion (D-33):** Only posts with `status: published` are included. Posts with `status` absent or set to `idea`, `outline`, `draft`, or `review` are excluded from the build output.
+**Build-time visibility (D-33, D-54, D-55):** Local development includes all posts so in-progress work can be inspected. Staged and production builds include only posts with `status: published`; posts with `status` absent or set to a non-public value are excluded from build output.
 
 Concepts are loaded separately from `src/content/concepts/`. They require `title` and may include `aliases`; they do not use `series`, `order`, or `status`.
 
@@ -195,8 +195,8 @@ Series index documents do not use `order`, `status`, or any post-specific fields
 | Route | Source | Notes |
 |---|---|---|
 | `/` | `src/pages/index.astro` | Series directory — one entry per series index document |
-| `/series/[series]` | `src/pages/series/[series].astro` | Series index title + description + ordered list of published posts |
-| `/posts/[slug]` | `src/pages/posts/[slug].astro` | Individual post page |
+| `/series/[series]` | `src/pages/series/[series].astro` | Series index title + description + ordered list of visible posts for the current environment |
+| `/posts/[slug]` | `src/pages/posts/[slug].astro` | Individual post page; local dev includes all posts, staged/production builds include only `published` posts |
 | `/concepts/[slug]` | `src/pages/concepts/[slug].astro` | Individual concept reference page |
 
 Slug is derived from the Markdown file name (e.g., `b-plus-tree.md` → `/posts/b-plus-tree`).

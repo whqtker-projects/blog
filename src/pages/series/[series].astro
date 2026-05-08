@@ -1,17 +1,18 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { visiblePostsForCurrentBuild } from '../../utils/post-visibility';
 
 export async function getStaticPaths() {
   const allIndexes = await getCollection('series_indexes');
   const allPosts = await getCollection('posts');
-  const publishedPosts = allPosts.filter((post) => post.data.status === 'published');
+  const visiblePosts = visiblePostsForCurrentBuild(allPosts);
 
   return allIndexes.map((idx) => ({
     params: { series: idx.data.series },
     props: {
       index: idx,
-      posts: publishedPosts
+      posts: visiblePosts
         .filter((post) => post.data.series === idx.data.series)
         .sort((a, b) => a.data.order - b.data.order),
     },
