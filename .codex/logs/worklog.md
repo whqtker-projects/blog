@@ -94,3 +94,15 @@ Verification:
 
 Constraint encountered:
 - Local `pnpm dev --host 127.0.0.1 --port 4321` verification could not complete in this sandbox because binding the local port failed with `listen EPERM`.
+
+## 2026-05-09 — Migrate existing posts to simplified status values
+
+Updated the two remaining legacy-status posts under `src/content/posts/` to match the simplified model:
+- `what-is-http.md`: `review` → `draft`
+- `tcp-connection-and-reliability.md`: `outline` → `draft`
+
+This keeps all in-progress `network-protocols` work under a single non-public state while leaving all currently published `database-internals` posts explicitly `published`.
+
+Verification:
+- `pnpm build`
+- Confirmed generated static routes still include only published post pages in build output
