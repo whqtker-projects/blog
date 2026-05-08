@@ -48,6 +48,30 @@ Pilot verification goals:
 - Staged and production builds should keep all five posts off public post routes until each post is explicitly changed to `status: published`
 - `pnpm check:content` and `pnpm build` should continue to pass with the batch in place
 
+### First Bulk Batch — `data-structures`
+
+The first larger idea-stage batch is grouped as one new confirmed series: `data-structures`. This keeps the intake reviewable because the batch has a single series index, a contiguous ordering block, and a consistent all-`idea` status set.
+
+Series index:
+- `src/content/series_indexes/data-structures.md`
+
+Initial bulk batch:
+
+| Order | File name | Title | Status |
+|-------|-----------|-------|--------|
+| 1 | `what-is-an-array.md` | What Is an Array? | `idea` |
+| 2 | `linked-list.md` | Linked List Structure | `idea` |
+| 3 | `stack-and-queue.md` | Stack and Queue Basics | `idea` |
+| 4 | `hash-table.md` | Hash Table Basics | `idea` |
+| 5 | `binary-search-tree.md` | Binary Search Tree | `idea` |
+
+Why this batch is suitable:
+
+- `data-structures` is already a confirmed series in `docs/series-backlog.md`
+- The repository now has a real series index before any posts in that series
+- All posts use explicit `status: idea`
+- The batch is reviewable as one coherent series-level diff instead of many unrelated one-off stubs
+
 ---
 
 ## Candidate Posts — `network-protocols` Series

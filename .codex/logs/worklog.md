@@ -127,3 +127,19 @@ Verification:
 - `pnpm test:repo`
 - `pnpm check:content`
 - `pnpm build`
+
+## 2026-05-09 — Add first bulk batch of idea-stage posts
+
+Added the first larger intake batch as one coherent new confirmed series: `data-structures`. Created `src/content/series_indexes/data-structures.md` first, then added five explicit `status: idea` posts with contiguous ordering:
+- `what-is-an-array.md`
+- `linked-list.md`
+- `stack-and-queue.md`
+- `hash-table.md`
+- `binary-search-tree.md`
+
+Documented the batch in `docs/first-content-readiness.md` so the grouping rule is explicit: one series index, one contiguous order block, all idea-stage, one reviewable series-level diff.
+
+Verification:
+- `pnpm check:content`
+- `pnpm build`
+- Confirmed `/series/data-structures` is generated while no new public post routes are created for the idea-stage files
