@@ -497,6 +497,56 @@ The Astro static site is code-complete and the content model is stable. Before c
 
 ---
 
+## DL-013 — Public-site quality and publication-workflow scope (#138)
+
+**Date:** 2026-05-08
+**Status:** confirmed
+
+### Context
+
+After the first deployment phase was complete, the next natural step was establishing a public-site quality baseline (discoverability, metadata) and sharpening the publication workflow (staging review, promotion criteria). Six scope decisions were collected from the user via `AskUserQuestion` as part of Issue #138.
+
+### Alternatives considered
+
+**Custom domain (D-49 → D-50):**
+- Continue deferring: site remains on `*.vercel.app`. Simpler, but hinders discoverability and makes canonical URLs less stable.
+- Proceed now (chosen): user confirmed `blog.whqtker.com` as the target domain. Allows stable canonical URLs in sitemap and meta tags from the start.
+
+**description field (D-51):**
+- Required for `published` posts: enforces consistency but adds friction to the publish workflow and requires schema + checklist changes.
+- Optional with site-level fallback (chosen): lower friction; Google and social scrapers still receive a usable description via the fallback.
+
+**OG/Twitter Card (D-52):**
+- Defer to later: reduces scope now but means shared links lack preview cards.
+- Add in this phase (chosen): once BaseLayout is being modified for canonical/description, OG tags are low marginal cost.
+
+**RSS:**
+- Not asked — deferred by default. No confirmed user need identified.
+
+**Staging review (D-53):**
+- Strict checklist (mobile, console errors, all links): high overhead for a solo maintainer.
+- Lightweight checklist (chosen): covers the main rendering and interaction concerns without over-formalizing.
+
+### Decision
+
+- D-50: Custom domain `blog.whqtker.com`.
+- D-51: `description` optional; site-level fallback in BaseLayout.
+- D-52: OG + Twitter Card tags on all page templates.
+- D-53: Lightweight staging checklist.
+
+### Follow-up
+
+- Issue #139: sitemap, robots.txt, meta baseline, OG tags
+- Issue #140: Vercel custom domain + DNS configuration
+- Issue #141: staging checklist and promotion criteria docs
+
+### References
+
+- `confirmed-decisions.md`: D-50 through D-53
+- Issue #138 (closed), #139, #140, #141, #142 (parent)
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions

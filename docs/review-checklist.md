@@ -42,6 +42,11 @@ Before publishing, confirm:
 - [ ] The post has been read through once as a reader (not as a writer)
 - [ ] No placeholder text (`[Write here]`, `[Question text]`, etc.) remains
 - [ ] Quiz answer explanations are complete
+- [ ] `status` is set to `published` in frontmatter
+
+### Staging Verification
+
+After committing and pushing to `develop`, verify the Vercel Preview Deployment before promoting to `master`. See the full checklist in [`docs/deployment-workflow.md`](deployment-workflow.md#staging-verification-d-53).
 
 ---
 
