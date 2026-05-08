@@ -581,6 +581,67 @@ The repository had moved into active multi-stage content production. At that poi
 
 ---
 
+## DL-015 — Simplified status model and environment-specific visibility (#143)
+
+**Date:** 2026-05-08
+**Status:** confirmed
+
+### Context
+
+After explicit publish-only production visibility was adopted, the repository still retained a five-stage authoring model in docs, schema, and content files. That level of detail was acceptable for a small handcrafted set of posts, but it added unnecessary state-management overhead for the next phase: large-scale intake of idea-stage content. Issue #143 was opened to resolve the remaining policy questions before implementation work changed routes, validation, and existing post frontmatter.
+
+### Alternatives considered
+
+**Status vocabulary:**
+- Keep the five-stage model (`idea`, `outline`, `draft`, `review`, `published`): Preserves fine-grained workflow labels, but creates extra maintenance burden for bulk intake and requires more migration decisions for low-value distinctions.
+- Reduce to `idea`, `draft`, `published` (chosen): Keeps the meaningful separation between backlog items, active work, and public content while removing two intermediate states that do not affect deployment visibility.
+
+**Legacy `outline` / `review` mapping:**
+- Preserve them as special-case legacy values during migration: Lowers immediate migration cost, but weakens the goal of simplification and prolongs mixed semantics.
+- Map both to `draft` (chosen): Treats all in-progress authoring states as a single non-public working state.
+
+**Staging visibility:**
+- Make local development, staging, and production all show every post: Simplifies preview behavior, but weakens the staging environment as a public-site approximation.
+- Make staging behave like local development while production stays stricter: Helps unpublished-content review, but splits non-production environments in a harder-to-reason-about way.
+- Keep staging aligned with production while local development shows everything (chosen): Preserves local author convenience without changing the meaning of the develop Preview Deployment as a public-facing verification step.
+
+**Missing `status`:**
+- Warn only: Lower friction, but inconsistent with the goal of explicit state management for a larger repository.
+- Treat as repository error (chosen): Forces intentional lifecycle assignment on every committed post and avoids silent ambiguity during bulk intake.
+
+**First bulk batch scope:**
+- Limit the first larger idea-stage batch to existing confirmed series only: Lower structural risk, but unnecessarily constrains backlog intake.
+- Allow new series as long as the existing content model rules are followed (chosen): Supports broader intake without redesigning `posts`, `concepts`, or `series_indexes`.
+
+### Decision
+
+- D-30 revised: simplified status vocabulary is `idea`, `draft`, `published`.
+- D-30 revised: legacy `outline` and `review` map to `draft`.
+- D-32 revised: committed posts must set `status` explicitly; missing `status` is an error under the new model.
+- D-33 revised: production excludes `idea` and `draft`; only explicit `published` is public.
+- D-54: local development should show all posts regardless of status.
+- D-55: Vercel Preview / staging should follow production visibility, not local-development visibility.
+- D-56: the first bulk idea-stage batch may include new series, provided the existing series-index and content-model rules are satisfied.
+
+### Follow-up
+
+- Issue #144: implement environment-aware route and series-list visibility.
+- Issue #145: migrate existing posts from `outline` / `review` to `draft`.
+- Issue #146: update schema and repository validation so missing `status` fails and only the three simplified values remain.
+- Issue #147: validate the model with a pilot batch before the first larger intake.
+- Issue #148: add the first larger idea-stage batch under the new rules.
+
+### References
+
+- `confirmed-decisions.md`: D-30 through D-33, D-54 through D-56
+- Issue #143
+- `docs/status-lifecycle.md`
+- `docs/review-checklist.md`
+- `docs/first-content-readiness.md`
+- `docs/deployment-workflow.md`
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions

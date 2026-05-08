@@ -69,3 +69,15 @@ Repository-grounded findings that shaped the issue set:
 - Local development currently follows the same hard-coded published-only filtering.
 - `docs/content-model.md` still contains stale omitted-status language that no longer matches D-33 or the route code.
 - Current committed posts already span `published`, `review`, `outline`, and `idea`, which makes migration work explicit rather than theoretical.
+
+## 2026-05-08 — Confirm simplified status-model policy from Issue #143
+
+Recorded the policy outcome for Issue `#143` in `docs/confirmed-decisions.md` and `docs/decision-log.md` without changing implementation yet.
+
+Confirmed policy:
+- Status model is reduced to `idea`, `draft`, `published`.
+- Legacy `outline` and `review` both map to `draft`.
+- Local development should show all posts.
+- Vercel Preview / staging should follow production-style visibility.
+- Missing `status` should be treated as an error under the new model.
+- The first bulk idea-stage batch may include new series if the existing content-model and series-index rules are satisfied.
