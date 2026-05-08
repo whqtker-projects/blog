@@ -33,3 +33,39 @@ Synced `docs/astro-bootstrap.md` with the implemented concept routes and dual po
 ## 2026-05-08 — Enforce explicit published-only visibility
 
 Changed Astro route generation so only posts explicitly marked `status: published` are exposed through `/posts/[slug]` and series pages. Updated the lifecycle, review, readiness, metadata, bootstrap, conversion-contract, and decision documents to match the stricter D-33 rule, and extended `scripts/check-content.mjs` to warn when a committed post omits `status` because omission now always excludes the post from production output.
+
+## 2026-05-08 — Checkpoint after publish-only visibility change
+
+### 완료한 작업
+- `status: published`만 production route에 포함되도록 `src/pages/posts/[slug].astro`와 `src/pages/series/[series].astro`를 수정했다.
+- `docs/status-lifecycle.md`, `docs/review-checklist.md`, `docs/first-content-readiness.md`, `docs/confirmed-decisions.md`, `docs/decision-log.md`, `docs/post-metadata.md`, `docs/astro-bootstrap.md`, `docs/obsidian-conversion-contract.md`를 새 D-33 규칙에 맞게 동기화했다.
+- `scripts/check-content.mjs`에 `status` 누락 경고를 추가했다.
+- `pnpm check:content`, `pnpm test:convert`, `pnpm build`를 실행해 검증했고, build 결과에서 `review`/`outline` 상태 글이 public route에 노출되지 않음을 확인했다.
+- 변경을 `291c805` (`Require explicit published status for public posts`)로 커밋하고 `origin/develop`에 푸시했다.
+
+### 미완료
+- `src/content/.obsidian/workspace.json` 로컬 변경 1건은 이번 작업 범위 밖이라 남겨두었다.
+
+### 주요 결정
+- D-33은 이제 “`status: published`만 production 포함”으로 해석한다.
+- `status`는 스키마상 optional로 유지하지만, 운영 규칙상 누락은 항상 비공개로 간주하고 검사 스크립트에서 경고한다.
+
+## 2026-05-08 — Create GitHub issue hierarchy for simplified status model phase
+
+Inspected the required repository files before issue creation: `docs/status-lifecycle.md`, `docs/review-checklist.md`, `docs/first-content-readiness.md`, `docs/confirmed-decisions.md`, `docs/decision-log.md`, `docs/content-model.md`, `src/pages/posts/[slug].astro`, `src/pages/series/[series].astro`, `src/content/posts/`, `scripts/check-content.mjs`, and `package.json`.
+
+Created a new issue hierarchy in `whqtker-projects/blog` for the next repository phase:
+- `#149` parent umbrella issue for simplifying the post status model and preparing bulk idea-stage intake
+- `#143` AskUserQuestion issue for unresolved policy decisions
+- `#144` environment-aware visibility implementation
+- `#145` existing-content status migration
+- `#146` validation and documentation alignment
+- `#147` pilot idea-stage batch
+- `#148` first larger bulk batch
+
+Repository-grounded findings that shaped the issue set:
+- The five-state model is still active in docs and schema.
+- Production visibility is already explicit-published-only in both post and series routes.
+- Local development currently follows the same hard-coded published-only filtering.
+- `docs/content-model.md` still contains stale omitted-status language that no longer matches D-33 or the route code.
+- Current committed posts already span `published`, `review`, `outline`, and `idea`, which makes migration work explicit rather than theoretical.
