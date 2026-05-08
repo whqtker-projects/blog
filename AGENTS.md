@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-`src/pages/` contains Astro routes: `index.astro` lists published posts and `posts/[slug].astro` renders each post. Shared page shells live in `src/layouts/`. Blog content and its schema live in `src/content/posts/` and `src/content.config.ts`. Static assets such as diagrams belong in `public/images/`. Conversion and validation utilities live in `scripts/`, and planning or ADR material stays under `docs/`.
+`src/pages/` contains Astro routes: `index.astro` lists published posts and `posts/[slug].astro` renders each post. Shared page shells live in `src/layouts/`. Blog content and its schema live in `src/content/posts/` and `src/content.config.ts`. Static assets such as diagrams belong in `public/images/`. Conversion and validation utilities live in `scripts/`, and planning or ADR material stays under `docs/`. Repository-local agent guidance is mirrored in `.claude/agents/` and `.codex/agents/`, while project work logs live under `.claude/logs/` and `.codex/logs/`.
 
 ## Build, Test, and Development Commands
 Use `pnpm install` with Node `>=22.12.0` first. Key commands:
@@ -22,4 +22,4 @@ Tests currently use Node’s built-in runner in `scripts/obsidian-to-astro.test.
 Recent history favors short imperative subjects with issue references, for example `Validate internal link rendering across two fixture posts (#69)`. Keep commits scoped to one change and mention the affected pipeline or contract when relevant. PRs should include a concise summary, linked issue numbers, and screenshots or rendered-output notes for UI/content changes. Call out any fixture posts, schema updates, or conversion edge cases reviewers should verify.
 
 ## Content & Documentation Notes
-Do not hand-edit generated output without updating the source or converter logic that produced it. When changing workflow assumptions or structure, update the relevant files in `docs/` alongside code so planning records stay aligned with implementation.
+Do not hand-edit generated output without updating the source or converter logic that produced it. When changing workflow assumptions or structure, update the relevant files in `docs/` alongside code so planning records stay aligned with implementation. If agent responsibilities or operating rules change, keep `.claude/agents/`, `.codex/agents/`, and the corresponding log files in sync rather than updating only one tool-specific directory.

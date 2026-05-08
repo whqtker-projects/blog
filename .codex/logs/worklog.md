@@ -21,3 +21,7 @@ Added `src/content/posts/query-execution-plan.md` as the fifth real `database-in
 ## 2026-05-07 — Sync first-content readiness document
 
 Updated `docs/first-content-readiness.md` so its committed-content note reflects the full real `database-internals` post set now present in `src/content/posts/`. Kept validation fixtures explicitly separated under `test/fixtures/obsidian-vault/`.
+
+## 2026-05-08 — Mirror agent guidance into .codex
+
+Added `.codex/agents/` role guides for planning-lead, documentation-curator, and post-drafter so the Codex-side repository metadata matches the existing `.claude/agents/` structure. Also added `.codex/logs/troubleshooting.md` and updated `AGENTS.md` to state that `.claude` and `.codex` should stay in sync for agent and logging guidance.
