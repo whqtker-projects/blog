@@ -1,7 +1,7 @@
 # Series Backlog
 
 **Status:** Confirmed — series structure decided on 2026-05-07. See `confirmed-decisions.md` D-19–D-22 and `decision-log.md` DL-004.  
-**Last updated:** 2026-05-07
+**Last updated:** 2026-05-08
 
 This document is the authoritative list of confirmed series. The structure is no longer a candidate list — all 12 series below have been decided. Individual series descriptions, post lists, and ordering are defined in their respective series files under `docs/series/` (not yet created; tracked in issue #35 and later issues).
 
@@ -21,7 +21,7 @@ A series is a named grouping of posts that share a topic focus and a learning ar
 |---|---|---|---|
 | `database-internals` | Database Internals | **First series** (D-22) | Storage engines, indexing, transactions, query execution |
 | `distributed-systems` | Distributed Systems | Confirmed | Consensus, replication, consistency models |
-| `network-protocols` | Network Protocols | Confirmed | TCP/IP, HTTP, DNS, TLS internals |
+| `network-protocols` | Network Protocols | **In progress** | TCP/IP, HTTP, DNS, TLS internals |
 | `backend-design` | Backend Design | Confirmed | API design, concurrency patterns, service architecture |
 
 ### CS Fundamentals (domain slug: `cs-fundamentals`)

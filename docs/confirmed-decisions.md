@@ -8,7 +8,7 @@ This document is the stable reference for decisions that have been explicitly ag
 - When a new decision is confirmed, add it here and remove it from `open-questions.md`.
 - For the full decision record with context and rationale, see `decision-log.md`.
 
-**Last updated:** 2026-05-07
+**Last updated:** 2026-05-08
 
 ---
 
@@ -93,6 +93,7 @@ This document is the stable reference for decisions that have been explicitly ag
 | D-20 | Each post belongs to exactly one series. Cross-series membership is not allowed. |
 | D-21 | Confirmed series (12 total): **Backend/Systems** — `database-internals`, `distributed-systems`, `network-protocols`, `backend-design`; **CS Fundamentals** — `data-structures`, `algorithms`, `operating-systems`, `computer-architecture`, `computer-security`; **AI/ML/LLM** — `llm-internals`, `ml-fundamentals`; **Software Engineering** — `design-principles`. |
 | D-22 | The first series to be written is `database-internals` (Backend/Systems domain). |
+| D-39 | The second series to be written is `network-protocols` (Backend/Systems domain). |
 
 ---
 

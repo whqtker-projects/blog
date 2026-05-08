@@ -376,6 +376,40 @@ The four remaining open questions about post format were addressed together as p
 
 ---
 
+## DL-010 — Second series selection (network-protocols)
+
+**Date:** 2026-05-08
+**Status:** confirmed
+
+### Context
+
+`database-internals` is complete (five published posts). The next series needed to be selected from the 11 remaining confirmed series before drafting work could begin.
+
+### Alternatives considered
+
+- `distributed-systems` — natural follow-on to database-internals (consensus, replication), but higher prerequisite burden for beginners.
+- `operating-systems` — strong CS fundamentals coverage, but further from the backend-focused content already established.
+- `llm-internals` — high reader interest, but domain shift from systems content.
+
+### Decision
+
+`network-protocols` selected as the second series. It pairs naturally with `database-internals` in the Backend/Systems domain and covers foundational protocol knowledge (TCP, HTTP, DNS, TLS) that is prerequisite for many backend and distributed systems topics.
+
+Decision recorded as D-39 in `confirmed-decisions.md`.
+
+### Follow-up
+
+- Candidate posts defined in `docs/first-content-readiness.md` (Issue #110)
+- `idea`-state stubs committed to `src/content/posts/` (Issue #111)
+
+### References
+
+- `confirmed-decisions.md`: D-39
+- `docs/series-backlog.md` — `network-protocols` marked In progress
+- Issue #101, #109
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions

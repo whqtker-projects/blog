@@ -1,7 +1,7 @@
 # First-Content Readiness
 
 **Status:** Active — produced by Issue #30.  
-**Last updated:** 2026-05-07
+**Last updated:** 2026-05-08
 
 This document defines the artifacts and criteria needed to move from planning into active content creation. It covers the candidate post set for the first series, the process for starting a post, the drafting checklist, the quality bar for publication, and the pre-publication self-review checklist.
 
@@ -20,6 +20,22 @@ The first series is `database-internals` (D-22). The five candidate posts below 
 | 5 | `query-execution-plan.md` | Query Execution and the Optimizer | How the query planner turns SQL into a plan, cost estimation, and when/why index scans beat table scans |
 
 The full initial `database-internals` post set is now committed as real content in the repository: `what-is-a-database-index.md`, `b-plus-tree-index.md`, `transaction-and-acid.md`, `write-ahead-log.md`, and `query-execution-plan.md`. Validation fixtures such as `e2e-rendering-validation.md` remain tracked separately under `test/fixtures/obsidian-vault/` and do not count as real series candidates.
+
+The author may adjust order, add topics, or split a post — this list is a starting point, not a commitment. Any changes to the confirmed candidate set should be reflected here.
+
+---
+
+## Candidate Posts — `network-protocols` Series
+
+The second series is `network-protocols` (D-39). The five candidate posts below cover foundational protocol knowledge across the transport, application, and security layers.
+
+| Order | File name | Title | Scope |
+|-------|-----------|-------|-------|
+| 1 | `what-is-http.md` | What Is HTTP? | HTTP as an application-layer protocol; request/response model, methods, status codes, statelessness, and the role of HTTP in the web stack |
+| 2 | `tcp-connection-and-reliability.md` | TCP and Reliable Transmission | Three-way handshake, sequence numbers, acknowledgment, flow control, congestion control, and retransmission mechanics |
+| 3 | `dns-resolution.md` | DNS and Name Resolution | Domain hierarchy, resolver flow (recursive vs. iterative), caching with TTL, record types (A, CNAME, MX, NS), and negative caching |
+| 4 | `tls-and-https.md` | TLS and HTTPS | TLS handshake, certificate chain and CA trust model, symmetric vs. asymmetric key exchange, and how HTTPS wraps HTTP |
+| 5 | `http2-and-http3.md` | HTTP/2 and HTTP/3 | HTTP/1.1 head-of-line blocking problem, HTTP/2 multiplexing and HPACK header compression, HTTP/3 on QUIC, and 0-RTT connection resumption |
 
 The author may adjust order, add topics, or split a post — this list is a starting point, not a commitment. Any changes to the confirmed candidate set should be reflected here.
 
