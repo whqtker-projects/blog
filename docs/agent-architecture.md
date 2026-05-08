@@ -102,12 +102,59 @@ Planning Lead classifies
 
 ## Retired Agents
 
-The following agents were active during the planning phase and were retired in May 2026 when all structural and platform decisions were finalized:
+The following agents were active during the planning phase and were retired in May 2026.
 
-| Agent | Reason for retirement |
-|---|---|
-| Decision Reviewer | All open questions decided. Remaining responsibility absorbed into Documentation Curator. |
-| Structure Planner | All structure questions (series, naming, publishing workflow) decided. No remaining scope. |
+### Decision Reviewer → absorbed into Documentation Curator
+
+**Why retired:** The Decision Reviewer existed to validate that confirmed/unresolved decision boundaries were accurate while decisions were being actively made. By May 2026, all open questions (Q-1 through Q-9) were resolved and the decision documents (`confirmed-decisions.md`, `open-questions.md`, `decision-log.md`) were in a stable, post-planning state. The ongoing need is not active validation of new decisions but maintenance of existing stable documents — which is within the Documentation Curator's existing scope.
+
+**What was absorbed:** Periodic stability checks — verifying that `decision-log.md` is not retroactively edited, that `confirmed-decisions.md` entries have corresponding log entries, and that `open-questions.md` items marked `decided` are correctly referenced. These are now listed in the Documentation Curator's role guide as the "Decision document stability" responsibility.
+
+**What was not absorbed:** The Decision Reviewer's role in actively evaluating whether a new item should be confirmed or remain open. If new structural decisions arise, the user decides and the Documentation Curator records — no separate reviewer role is needed at the current repository size.
+
+### Structure Planner → retired without absorption
+
+**Why retired:** The Structure Planner's sole function was to prepare options and tradeoffs for the structural open questions (Q-1 through Q-9). All nine questions are now decided. The series organization, file naming conventions, publishing platform, conversion workflow, post template, and status lifecycle are all confirmed decisions. There is no remaining scope.
+
+**If new structure questions arise:** New questions would be added to `docs/open-questions.md` and surfaced to the user by the Planning Lead. If they require options preparation, that work would be done inline — a dedicated agent is not justified unless questions accumulate again.
+
+---
+
+## Candidate Agents — Disposition
+
+The following roles were evaluated during the May 2026 redesign. Each is explicitly marked with its disposition and the rationale.
+
+### `technical-reviewer` — absorbed into Post Drafter
+
+**Disposition:** Do not add as a separate agent.
+
+**Rationale:** The technical accuracy review is already part of the Post Drafter's checklist responsibilities. `docs/review-checklist.md` includes a factual accuracy pass, and `docs/first-content-readiness.md` includes a technical accuracy section in the pre-publication self-review. At the current repository size (five posts, one author), a separate technical reviewer agent adds coordination overhead without adding capability — the Post Drafter handles the same checklist items.
+
+**Condition for revisiting:** If the post volume grows significantly, if a multi-author workflow is introduced, or if factual accuracy errors become a recurring pattern that checklist-based review does not catch.
+
+### `publish-verifier` — absorbed into Post Drafter
+
+**Disposition:** Do not add as a separate agent.
+
+**Rationale:** The publication verification sequence — `pnpm convert --strict`, `pnpm build`, HTML spot check — is a small, concrete, sequential procedure that the Post Drafter already owns as part of the Review → Published transition. Splitting it into a separate agent would divide a three-step linear workflow across an agent boundary with no benefit. The Post Drafter role guide documents the full verification sequence explicitly.
+
+**Condition for revisiting:** If the verification workflow grows to include deployment targets, CDN invalidation, or multi-environment checks that are clearly outside the Post Drafter's content-creation scope.
+
+### `platform-maintainer` — deferred
+
+**Disposition:** Defer. Do not add now.
+
+**Rationale:** The Astro build is stable (Astro 6.2.2, Shiki highlighting, static output). No active platform maintenance tasks exist. The conversion script is implemented and tested. There are no open infrastructure issues. A dedicated maintenance agent requires real ongoing work to justify its existence — if added now it would have nothing to do.
+
+**Condition for revisiting:** If the platform work becomes significant — Astro major version upgrade requiring template changes, Shiki theme reconfiguration, new content collection schema changes, or a move to a different deployment target. At that point the scope would be concrete enough to define a role.
+
+### Design-related role (`design-planner`, `ux-structure-planner`) — rejected
+
+**Disposition:** Reject. Do not add.
+
+**Rationale:** No visual design work exists in this repository. There are no design assets, no CSS files, no layout iteration tasks, and no design decisions tracked in any planning document. The blog renders with Astro's default PostLayout. Adding a design agent without any design work to do is premature and would create a role with no scope. This is not a deferral — the repository does not have a design layer to maintain yet.
+
+**Condition for revisiting:** When the repository has explicit design work: a non-default layout, a design decision that needs tracking, or a visual direction the user has articulated.
 
 ---
 

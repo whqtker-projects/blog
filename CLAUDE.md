@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with th
 
 ## Project State
 
-This repository is in the **early planning stage**. There is no build system, no publishing pipeline, and no blog posts yet. The current work is documentation of decisions and structure — article drafting has not begun.
+The repository is in the **active content-creation stage**. The Astro build is set up, the Obsidian-to-Astro conversion script is implemented, and five posts are published in `src/content/posts/`. The content drafting and review workflow is fully documented.
+
+All structural and platform decisions are finalized (Q-1 through Q-9 resolved). The primary ongoing work is writing and publishing posts.
 
 ## Repository Purpose
 
@@ -12,40 +14,48 @@ An Obsidian-based technical blog. Obsidian is the internal knowledge repository;
 
 Content focus: concept explanation (definition level + operational principles), not troubleshooting. Target audience: beginner to practitioner.
 
-## Authoritative Planning Documents
+## Authoritative Documents
 
 Start here when beginning a session:
 
 ```
 docs/README.md                    # Document map — read first
-docs/project-overview.md          # Purpose, scope, and current stage
+docs/agent-architecture.md        # Agent model and role boundaries
 docs/confirmed-decisions.md       # All confirmed project decisions
-docs/open-questions.md            # All unresolved items — do not resolve by assumption
-docs/decision-log.md              # Chronological record of planning discussions
+docs/open-questions.md            # Resolved planning items (all decided)
 docs/documentation-workflow.md    # How to update planning documents correctly
 ```
 
-Supporting reference documents (read when relevant to the task):
+Content creation workflow (read when working on posts):
 
 ```
-docs/series-backlog.md            # Candidate series and topic domains
-docs/post-template.md             # Post structure planning
-docs/file-naming-conventions.md   # Naming convention options — unresolved
-docs/publishing-workflow.md       # Publishing platform options — unresolved
-docs/status-lifecycle.md          # Status definitions for notes, drafts, posts
+docs/first-content-readiness.md   # Status transitions, drafting checklist, quality bar
+docs/review-checklist.md          # Draft → review and review → published criteria
+docs/obsidian-conversion-contract.md  # Conversion script input requirements
+docs/status-lifecycle.md          # Post status vocabulary and production build behavior
+```
+
+Supporting reference (read when relevant):
+
+```
+docs/series-backlog.md            # Confirmed series and topic domains
+docs/post-template.md             # Post structure rules
+docs/post-metadata.md             # Frontmatter field definitions
 docs/decisions/                   # ADR files for foundational decisions
 ```
 
 ## Planning Conventions
 
 - **Confirmed decisions** live in `docs/confirmed-decisions.md` and individual ADR files under `docs/decisions/`.
-- **Unresolved items** live in `docs/open-questions.md`. Do not assume answers — surface them to the user.
-- When a decision is made: update `docs/confirmed-decisions.md`, log it in `docs/decision-log.md`, and resolve the entry in `docs/open-questions.md`.
+- All open questions are resolved. If a new structural question arises, add it to `docs/open-questions.md` and surface it to the user — do not resolve by assumption.
+- When a decision is made: update `docs/confirmed-decisions.md`, log it in `docs/decision-log.md`, and update `docs/open-questions.md`.
 - All documents are written in English (Obsidian Markdown format).
 
 ## Role Boundaries
 
 The user decides: post content, topic selection, series structure, publication timing.  
-Agents help with: document structure, decision records, series organization, open-question tracking, consistency cleanup.
+Agents help with: routing tasks (Planning Lead), document consistency and decision doc stability (Documentation Curator), post lifecycle and build verification (Post Drafter).
 
-Do not draft blog post content, select the first series, define post outlines, or set a publishing cadence unless the user explicitly initiates that discussion.
+See `docs/agent-architecture.md` for the full agent model.
+
+Do not draft blog post content, advance a post's status, or make publication decisions unless the user explicitly requests it.
