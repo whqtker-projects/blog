@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('posts');
+  const publishedPosts = allPosts.filter(
+    (post) => !post.data.status || post.data.status === 'published'
+  );
+
+  const seriesSet = new Set(publishedPosts.map((post) => post.data.series));
+  return [...seriesSet].map((series) => ({
+    params: { series },
+    props: {
+      posts: publishedPosts
+        .filter((post) => post.data.series === series)
+        .sort((a, b) => a.data.order - b.data.order),
+    },
+  }));
+}
+
+const { series } = Astro.params;
+const { posts } = Astro.props;
+---
+<BaseLayout title={series}>
+  <main>
+    <h1>{series}</h1>
+    <ol>
+      {posts.map((post) => (
+        <li>
+          <a href={`/posts/${post.id}`}>{post.data.title}</a>
+        </li>
+      ))}
+    </ol>
+  </main>
+</BaseLayout>

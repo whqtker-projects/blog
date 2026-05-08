@@ -1,19 +1,30 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 
+interface NavLink {
+  slug: string;
+  title: string;
+}
+
 interface Props {
   title: string;
   series: string;
   order: number;
+  prev?: NavLink | null;
+  next?: NavLink | null;
 }
-const { title, series, order } = Astro.props;
+const { title, series, order, prev, next } = Astro.props;
 ---
 <BaseLayout title={title}>
   <article>
     <header>
-      <p>{series} · #{order}</p>
+      <p><a href={`/series/${series}`}>{series}</a> · #{order}</p>
       <h1>{title}</h1>
     </header>
     <slot />
+    <nav>
+      {prev && <a href={`/posts/${prev.slug}`}>← {prev.title}</a>}
+      {next && <a href={`/posts/${next.slug}`}>{next.title} →</a>}
+    </nav>
   </article>
 </BaseLayout>

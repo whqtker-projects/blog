@@ -3,21 +3,31 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const allPosts = await getCollection('posts');
-// Home page lists only published posts (D-33)
 const publishedPosts = allPosts
   .filter((post) => !post.data.status || post.data.status === 'published')
   .sort((a, b) => a.data.series.localeCompare(b.data.series) || a.data.order - b.data.order);
+
+const seriesMap = new Map<string, typeof publishedPosts>();
+for (const post of publishedPosts) {
+  const s = post.data.series;
+  if (!seriesMap.has(s)) seriesMap.set(s, []);
+  seriesMap.get(s)!.push(post);
+}
 ---
 <BaseLayout title="Blog">
   <main>
     <h1>Posts</h1>
-    <ul>
-      {publishedPosts.map((post) => (
-        <li>
-          <a href={`/posts/${post.id}`}>{post.data.title}</a>
-          <span> — {post.data.series} #{post.data.order}</span>
-        </li>
-      ))}
-    </ul>
+    {[...seriesMap.entries()].map(([series, posts]) => (
+      <section>
+        <h2><a href={`/series/${series}`}>{series}</a></h2>
+        <ul>
+          {posts.map((post) => (
+            <li>
+              <a href={`/posts/${post.id}`}>{post.data.title}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
   </main>
 </BaseLayout>
