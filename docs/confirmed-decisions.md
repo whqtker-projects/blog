@@ -8,7 +8,7 @@ This document is the stable reference for decisions that have been explicitly ag
 - When a new decision is confirmed, add it here and remove it from `open-questions.md`.
 - For the full decision record with context and rationale, see `decision-log.md`.
 
-**Last updated:** 2026-05-08 (D-44–D-49 added)
+**Last updated:** 2026-05-08 (D-30–D-33 revised; D-54–D-56 added)
 
 ---
 
@@ -140,10 +140,10 @@ This document is the stable reference for decisions that have been explicitly ag
 
 | # | Decision |
 |---|---|
-| D-30 | Post status vocabulary (5 values): `idea`, `outline`, `draft`, `review`, `published`. |
+| D-30 | Post status vocabulary is simplified to 3 values: `idea`, `draft`, `published`. Legacy `outline` and `review` both map to `draft`. |
 | D-31 | Published-post update policy: typo, link, and factual-error fixes keep `published` status. Section additions or substantial rewrites return the post to `draft`. |
-| D-32 | `status` is an optional frontmatter field. No default value. Required fields remain `title`, `series`, `order` (D-25). |
-| D-33 | Production build inclusion policy: a post is included if `status` is absent or equals `published`. A post is excluded if `status` is `idea`, `outline`, `draft`, or `review`. |
+| D-32 | `status` must be set explicitly on every committed post. Missing `status` is treated as a repository error under the simplified model. |
+| D-33 | Production build inclusion policy: only posts explicitly marked `status: published` are included. Posts with `status: idea` or `status: draft` are excluded. |
 
 ---
 
@@ -168,7 +168,28 @@ This document is the stable reference for decisions that have been explicitly ag
 | D-46 | Single Vercel project with branch-based routing. `master` maps to the production deployment; `develop` maps to a Vercel Preview Deployment. |
 | D-47 | Deploy gate for merging to `master`: full CI pass required (`pnpm build` + `pnpm test:convert` via `ci.yml`). |
 | D-48 | `ci.yml` is extended to run on `push` and `pull_request` for both `master` and `develop`. |
-| D-49 | Custom domain setup is deferred to a later phase. The initial deployment uses the Vercel-assigned `*.vercel.app` URL. |
+| D-49 | ~~Custom domain setup is deferred to a later phase.~~ Superseded by D-50. |
+
+---
+
+## Public-Site Quality
+
+| # | Decision |
+|---|---|
+| D-50 | Custom domain: `blog.whqtker.com`. |
+| D-51 | Post `description` frontmatter field remains optional. `BaseLayout` uses a site-level fallback description when the field is absent. |
+| D-52 | OG meta tags (`og:title`, `og:description`, `og:url`, `og:type`) and Twitter Card tags (`twitter:card`, `twitter:title`, `twitter:description`) are added to all page templates. |
+| D-53 | Staging review (develop Preview Deployment) uses a lightweight checklist: homepage/series/post page rendering, prev/next navigation links, quiz `<details>` toggle. |
+
+---
+
+## Bulk Idea Intake
+
+| # | Decision |
+|---|---|
+| D-54 | Local development should show all posts regardless of status. |
+| D-55 | Vercel Preview / staging should follow production visibility, not local-development visibility. Only explicitly published posts should be reader-visible there. |
+| D-56 | The first bulk idea-stage batch is not limited to already-confirmed series. New series may be included if they fit the repository's existing content model and series-index requirements. |
 
 ---
 

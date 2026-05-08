@@ -12,7 +12,7 @@ This document defines the role boundaries for the three content types in this re
 | Location | `src/content/posts/` | `src/content/concepts/` | `src/content/series_indexes/` |
 | Belongs to series | Yes (required) | No | Defines the series |
 | Has `order` | Yes (required) | No | No |
-| Has `status` | Yes (optional) | No | No |
+| Has `status` | Yes (required) | No | No |
 | Created via | `pnpm convert` from Obsidian | `pnpm convert` from Obsidian | Manual authoring |
 | Appears on homepage | No | No | Yes |
 | Prev/next navigation | Yes | No | No |
@@ -32,6 +32,7 @@ Posts are in-depth explanations of a topic within a series. Each post belongs to
 title: string
 series: string   # must match a series_indexes document's series field
 order: number    # position within the series, starting at 1
+status: string   # one of idea, draft, published
 ```
 
 ---
@@ -80,7 +81,7 @@ The homepage (`/`) lists one entry per `series_indexes` document. It does not li
 1. The series title and optional description from the index document
 2. An automatically generated ordered list of all published posts in that series
 
-The post list is sorted by `order` ascending and filtered to `status: published` (or no status). You do not write post links in the series index body.
+The post list is sorted by `order` ascending. In local development, all posts in the series are shown so unpublished work can be reviewed. In staged and production builds, only posts explicitly marked `status: published` are shown. You do not write post links in the series index body.
 
 A series page route exists only when a matching series index document exists. If an index is missing, the route is not generated and post breadcrumbs for that series will 404.
 

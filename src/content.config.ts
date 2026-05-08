@@ -8,8 +8,10 @@ const posts = defineCollection({
     title: z.string(),
     series: z.string(),
     order: z.number(),
-    // Optional field (D-32); confirmed values from D-30
-    status: z.enum(['idea', 'outline', 'draft', 'review', 'published']).optional(),
+    // Required field (D-32); confirmed values from D-30
+    status: z.enum(['idea', 'draft', 'published']),
+    // Optional field (D-51); used for meta description and OG tags
+    description: z.string().optional(),
   }),
 });
 

@@ -5,7 +5,9 @@
  * Checks:
  *   1. No two series_indexes documents share the same series value
  *   2. Every series value in posts/ has a matching series_indexes document
- *   3. No two published posts in the same series share the same order value
+ *   3. No two explicitly published posts in the same series share the same order value
+ *   4. Fail when a post omits status, because committed posts must set status explicitly
+ *   5. Fail when a post uses a status outside the simplified vocabulary
  */
 
 import { readFileSync, readdirSync } from 'node:fs';
@@ -41,6 +43,7 @@ const indexesDir = join(ROOT, 'src/content/series_indexes');
 
 const posts = readMdFiles(postsDir);
 const indexes = readMdFiles(indexesDir);
+const ALLOWED_POST_STATUSES = new Set(['idea', 'draft', 'published']);
 
 let errors = 0;
 
@@ -82,10 +85,8 @@ if (errors === errorsAfterCheck1) console.log('  ✓ passed');
 const errorsAfterCheck2 = errors;
 
 // --- Check 3: no duplicate order within a series (published posts only) ---
-console.log('Check 3: no duplicate order values within a series (published posts)');
-const publishedPosts = posts.filter(
-  (p) => !p.status || p.status === 'published'
-);
+console.log('Check 3: no duplicate order values within a series (explicitly published posts)');
+const publishedPosts = posts.filter((p) => p.status === 'published');
 const orderKeys = new Map();
 for (const post of publishedPosts) {
   if (!post.series || post.order === undefined) continue;
@@ -99,6 +100,31 @@ for (const post of publishedPosts) {
   }
 }
 if (errors === errorsAfterCheck2) console.log('  ✓ passed');
+
+// --- Check 4: fail on missing status ---
+console.log('Check 4: no posts may omit status');
+const statuslessPosts = posts.filter((post) => post.status === undefined);
+if (statuslessPosts.length === 0) {
+  console.log('  ✓ passed');
+} else {
+  for (const post of statuslessPosts) {
+    fail(
+      `${post.file}: missing required 'status' field — committed posts must set one of ${Array.from(ALLOWED_POST_STATUSES).join(', ')}`
+    );
+  }
+}
+const errorsAfterCheck4 = errors;
+
+// --- Check 5: fail on invalid status values ---
+console.log('Check 5: status values use the simplified vocabulary');
+for (const post of posts) {
+  if (post.status !== undefined && !ALLOWED_POST_STATUSES.has(post.status)) {
+    fail(
+      `${post.file}: invalid status '${post.status}' — allowed values are ${Array.from(ALLOWED_POST_STATUSES).join(', ')}`
+    );
+  }
+}
+if (errors === errorsAfterCheck4) console.log('  ✓ passed');
 
 // --- Result ---
 if (errors > 0) {

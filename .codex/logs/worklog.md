@@ -29,3 +29,117 @@ Added `.codex/agents/` role guides for planning-lead, documentation-curator, and
 ## 2026-05-08 — Start network-protocols production phase
 
 Synced `docs/astro-bootstrap.md` with the implemented concept routes and dual posts/concepts conversion workflow, and marked `docs/reading-ui-direction.md` as a resolved design record rather than a live description of the current UI. Promoted `src/content/posts/what-is-http.md` from `idea` to a full `review` draft with real concept links to DNS, TCP, and TLS, and advanced `src/content/posts/tcp-connection-and-reliability.md` to `outline` so the next post is ready for the repeatable production loop.
+
+## 2026-05-08 — Enforce explicit published-only visibility
+
+Changed Astro route generation so only posts explicitly marked `status: published` are exposed through `/posts/[slug]` and series pages. Updated the lifecycle, review, readiness, metadata, bootstrap, conversion-contract, and decision documents to match the stricter D-33 rule, and extended `scripts/check-content.mjs` to warn when a committed post omits `status` because omission now always excludes the post from production output.
+
+## 2026-05-08 — Checkpoint after publish-only visibility change
+
+### 완료한 작업
+- `status: published`만 production route에 포함되도록 `src/pages/posts/[slug].astro`와 `src/pages/series/[series].astro`를 수정했다.
+- `docs/status-lifecycle.md`, `docs/review-checklist.md`, `docs/first-content-readiness.md`, `docs/confirmed-decisions.md`, `docs/decision-log.md`, `docs/post-metadata.md`, `docs/astro-bootstrap.md`, `docs/obsidian-conversion-contract.md`를 새 D-33 규칙에 맞게 동기화했다.
+- `scripts/check-content.mjs`에 `status` 누락 경고를 추가했다.
+- `pnpm check:content`, `pnpm test:convert`, `pnpm build`를 실행해 검증했고, build 결과에서 `review`/`outline` 상태 글이 public route에 노출되지 않음을 확인했다.
+- 변경을 `291c805` (`Require explicit published status for public posts`)로 커밋하고 `origin/develop`에 푸시했다.
+
+### 미완료
+- `src/content/.obsidian/workspace.json` 로컬 변경 1건은 이번 작업 범위 밖이라 남겨두었다.
+
+### 주요 결정
+- D-33은 이제 “`status: published`만 production 포함”으로 해석한다.
+- `status`는 스키마상 optional로 유지하지만, 운영 규칙상 누락은 항상 비공개로 간주하고 검사 스크립트에서 경고한다.
+
+## 2026-05-08 — Create GitHub issue hierarchy for simplified status model phase
+
+Inspected the required repository files before issue creation: `docs/status-lifecycle.md`, `docs/review-checklist.md`, `docs/first-content-readiness.md`, `docs/confirmed-decisions.md`, `docs/decision-log.md`, `docs/content-model.md`, `src/pages/posts/[slug].astro`, `src/pages/series/[series].astro`, `src/content/posts/`, `scripts/check-content.mjs`, and `package.json`.
+
+Created a new issue hierarchy in `whqtker-projects/blog` for the next repository phase:
+- `#149` parent umbrella issue for simplifying the post status model and preparing bulk idea-stage intake
+- `#143` AskUserQuestion issue for unresolved policy decisions
+- `#144` environment-aware visibility implementation
+- `#145` existing-content status migration
+- `#146` validation and documentation alignment
+- `#147` pilot idea-stage batch
+- `#148` first larger bulk batch
+
+Repository-grounded findings that shaped the issue set:
+- The five-state model is still active in docs and schema.
+- Production visibility is already explicit-published-only in both post and series routes.
+- Local development currently follows the same hard-coded published-only filtering.
+- `docs/content-model.md` still contains stale omitted-status language that no longer matches D-33 or the route code.
+- Current committed posts already span `published`, `review`, `outline`, and `idea`, which makes migration work explicit rather than theoretical.
+
+## 2026-05-08 — Confirm simplified status-model policy from Issue #143
+
+Recorded the policy outcome for Issue `#143` in `docs/confirmed-decisions.md` and `docs/decision-log.md` without changing implementation yet.
+
+Confirmed policy:
+- Status model is reduced to `idea`, `draft`, `published`.
+- Legacy `outline` and `review` both map to `draft`.
+- Local development should show all posts.
+- Vercel Preview / staging should follow production-style visibility.
+- Missing `status` should be treated as an error under the new model.
+- The first bulk idea-stage batch may include new series if the existing content-model and series-index rules are satisfied.
+
+## 2026-05-09 — Implement environment-aware post visibility
+
+Added `src/utils/post-visibility.ts` so post visibility is decided in one place. Updated `src/pages/posts/[slug].astro` and `src/pages/series/[series].astro` to show all posts during local development while keeping staged and production builds limited to `status: published`.
+
+Updated `docs/content-model.md`, `docs/astro-bootstrap.md`, and `docs/deployment-workflow.md` so they describe the new split correctly: local dev shows all posts, but the `develop` Vercel Preview Deployment still mirrors production visibility.
+
+Verification:
+- `pnpm build`
+- Confirmed generated static routes still include only published post pages in build output
+
+Constraint encountered:
+- Local `pnpm dev --host 127.0.0.1 --port 4321` verification could not complete in this sandbox because binding the local port failed with `listen EPERM`.
+
+## 2026-05-09 — Migrate existing posts to simplified status values
+
+Updated the two remaining legacy-status posts under `src/content/posts/` to match the simplified model:
+- `what-is-http.md`: `review` → `draft`
+- `tcp-connection-and-reliability.md`: `outline` → `draft`
+
+This keeps all in-progress `network-protocols` work under a single non-public state while leaving all currently published `database-internals` posts explicitly `published`.
+
+Verification:
+- `pnpm build`
+- Confirmed generated static routes still include only published post pages in build output
+
+## 2026-05-09 — Align validation with the simplified status model
+
+Updated `src/content.config.ts` so `status` is required and limited to `idea`, `draft`, `published`. Updated `scripts/check-content.mjs` so missing `status` now fails instead of warning, and so invalid status values fail explicitly against the simplified vocabulary.
+
+Synchronized the status/validation docs that directly describe the contract: `docs/status-lifecycle.md`, `docs/post-metadata.md`, `docs/review-checklist.md`, `docs/first-content-readiness.md`, `docs/obsidian-conversion-contract.md`, `docs/astro-bootstrap.md`, and `docs/content-model.md`.
+
+Verification:
+- `pnpm check:content`
+- `pnpm build`
+
+## 2026-05-09 — Run pilot batch for idea-stage posts
+
+Formalized the `network-protocols` series as the first pilot batch for the simplified status model in `docs/first-content-readiness.md`. The batch uses five already-committed posts with explicit `order` and `status`, covering both non-public states now in use: `draft` and `idea`.
+
+To make the local-vs-production visibility rule directly testable, replaced the TypeScript-only visibility helper with `src/utils/post-visibility.js`, added a pure `visiblePostsForMode` function, and added `scripts/post-visibility.test.mjs` plus the `pnpm test:repo` script. This verifies that local development includes all posts while staged and production builds keep only `published` posts public.
+
+Verification:
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`
+
+## 2026-05-09 — Add first bulk batch of idea-stage posts
+
+Added the first larger intake batch as one coherent new confirmed series: `data-structures`. Created `src/content/series_indexes/data-structures.md` first, then added five explicit `status: idea` posts with contiguous ordering:
+- `what-is-an-array.md`
+- `linked-list.md`
+- `stack-and-queue.md`
+- `hash-table.md`
+- `binary-search-tree.md`
+
+Documented the batch in `docs/first-content-readiness.md` so the grouping rule is explicit: one series index, one contiguous order block, all idea-stage, one reviewable series-level diff.
+
+Verification:
+- `pnpm check:content`
+- `pnpm build`
+- Confirmed `/series/data-structures` is generated while no new public post routes are created for the idea-stage files

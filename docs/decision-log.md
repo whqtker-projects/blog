@@ -497,6 +497,151 @@ The Astro static site is code-complete and the content model is stable. Before c
 
 ---
 
+## DL-013 — Public-site quality and publication-workflow scope (#138)
+
+**Date:** 2026-05-08
+**Status:** confirmed
+
+### Context
+
+After the first deployment phase was complete, the next natural step was establishing a public-site quality baseline (discoverability, metadata) and sharpening the publication workflow (staging review, promotion criteria). Six scope decisions were collected from the user via `AskUserQuestion` as part of Issue #138.
+
+### Alternatives considered
+
+**Custom domain (D-49 → D-50):**
+- Continue deferring: site remains on `*.vercel.app`. Simpler, but hinders discoverability and makes canonical URLs less stable.
+- Proceed now (chosen): user confirmed `blog.whqtker.com` as the target domain. Allows stable canonical URLs in sitemap and meta tags from the start.
+
+**description field (D-51):**
+- Required for `published` posts: enforces consistency but adds friction to the publish workflow and requires schema + checklist changes.
+- Optional with site-level fallback (chosen): lower friction; Google and social scrapers still receive a usable description via the fallback.
+
+**OG/Twitter Card (D-52):**
+- Defer to later: reduces scope now but means shared links lack preview cards.
+- Add in this phase (chosen): once BaseLayout is being modified for canonical/description, OG tags are low marginal cost.
+
+**RSS:**
+- Not asked — deferred by default. No confirmed user need identified.
+
+**Staging review (D-53):**
+- Strict checklist (mobile, console errors, all links): high overhead for a solo maintainer.
+- Lightweight checklist (chosen): covers the main rendering and interaction concerns without over-formalizing.
+
+### Decision
+
+- D-50: Custom domain `blog.whqtker.com`.
+- D-51: `description` optional; site-level fallback in BaseLayout.
+- D-52: OG + Twitter Card tags on all page templates.
+- D-53: Lightweight staging checklist.
+
+### Follow-up
+
+- Issue #139: sitemap, robots.txt, meta baseline, OG tags
+- Issue #140: Vercel custom domain + DNS configuration
+- Issue #141: staging checklist and promotion criteria docs
+
+### References
+
+- `confirmed-decisions.md`: D-50 through D-53
+- Issue #138 (closed), #139, #140, #141, #142 (parent)
+
+---
+
+## DL-014 — Explicit publish-only production visibility
+
+**Date:** 2026-05-08
+**Status:** confirmed
+
+### Context
+
+The repository had moved into active multi-stage content production. At that point, treating a missing `status` field as deployable created an avoidable ambiguity: an unfinished or newly added post could appear on the public site unless the author remembered to add a non-published status immediately.
+
+### Alternatives considered
+
+- Keep the existing rule (`status` absent or `published` → included): Lower friction, but too easy to expose incomplete content accidentally.
+- Require `status: published` explicitly for deployment (chosen): Makes public visibility intentional and aligns deployed output with the documented review → publish workflow.
+
+### Decision
+
+- D-33 revised: only posts explicitly marked `status: published` are included in the production build.
+- Posts with `status` absent are now excluded, the same as `idea`, `outline`, `draft`, and `review`.
+
+### Follow-up
+
+- Route-generation filters must use the explicit `published` check only.
+- Lifecycle and review documents must state that omission is not a publish signal.
+- Content validation should warn when committed posts omit `status`, because omission now always hides the post from production.
+
+### References
+
+- `confirmed-decisions.md`: D-33
+- `docs/status-lifecycle.md`
+- `docs/review-checklist.md`
+- `docs/first-content-readiness.md`
+
+---
+
+## DL-015 — Simplified status model and environment-specific visibility (#143)
+
+**Date:** 2026-05-08
+**Status:** confirmed
+
+### Context
+
+After explicit publish-only production visibility was adopted, the repository still retained a five-stage authoring model in docs, schema, and content files. That level of detail was acceptable for a small handcrafted set of posts, but it added unnecessary state-management overhead for the next phase: large-scale intake of idea-stage content. Issue #143 was opened to resolve the remaining policy questions before implementation work changed routes, validation, and existing post frontmatter.
+
+### Alternatives considered
+
+**Status vocabulary:**
+- Keep the five-stage model (`idea`, `outline`, `draft`, `review`, `published`): Preserves fine-grained workflow labels, but creates extra maintenance burden for bulk intake and requires more migration decisions for low-value distinctions.
+- Reduce to `idea`, `draft`, `published` (chosen): Keeps the meaningful separation between backlog items, active work, and public content while removing two intermediate states that do not affect deployment visibility.
+
+**Legacy `outline` / `review` mapping:**
+- Preserve them as special-case legacy values during migration: Lowers immediate migration cost, but weakens the goal of simplification and prolongs mixed semantics.
+- Map both to `draft` (chosen): Treats all in-progress authoring states as a single non-public working state.
+
+**Staging visibility:**
+- Make local development, staging, and production all show every post: Simplifies preview behavior, but weakens the staging environment as a public-site approximation.
+- Make staging behave like local development while production stays stricter: Helps unpublished-content review, but splits non-production environments in a harder-to-reason-about way.
+- Keep staging aligned with production while local development shows everything (chosen): Preserves local author convenience without changing the meaning of the develop Preview Deployment as a public-facing verification step.
+
+**Missing `status`:**
+- Warn only: Lower friction, but inconsistent with the goal of explicit state management for a larger repository.
+- Treat as repository error (chosen): Forces intentional lifecycle assignment on every committed post and avoids silent ambiguity during bulk intake.
+
+**First bulk batch scope:**
+- Limit the first larger idea-stage batch to existing confirmed series only: Lower structural risk, but unnecessarily constrains backlog intake.
+- Allow new series as long as the existing content model rules are followed (chosen): Supports broader intake without redesigning `posts`, `concepts`, or `series_indexes`.
+
+### Decision
+
+- D-30 revised: simplified status vocabulary is `idea`, `draft`, `published`.
+- D-30 revised: legacy `outline` and `review` map to `draft`.
+- D-32 revised: committed posts must set `status` explicitly; missing `status` is an error under the new model.
+- D-33 revised: production excludes `idea` and `draft`; only explicit `published` is public.
+- D-54: local development should show all posts regardless of status.
+- D-55: Vercel Preview / staging should follow production visibility, not local-development visibility.
+- D-56: the first bulk idea-stage batch may include new series, provided the existing series-index and content-model rules are satisfied.
+
+### Follow-up
+
+- Issue #144: implement environment-aware route and series-list visibility.
+- Issue #145: migrate existing posts from `outline` / `review` to `draft`.
+- Issue #146: update schema and repository validation so missing `status` fails and only the three simplified values remain.
+- Issue #147: validate the model with a pilot batch before the first larger intake.
+- Issue #148: add the first larger idea-stage batch under the new rules.
+
+### References
+
+- `confirmed-decisions.md`: D-30 through D-33, D-54 through D-56
+- Issue #143
+- `docs/status-lifecycle.md`
+- `docs/review-checklist.md`
+- `docs/first-content-readiness.md`
+- `docs/deployment-workflow.md`
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions

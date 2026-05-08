@@ -11,10 +11,12 @@ This document describes how the blog is deployed to production and staging, what
 
 | Branch | Role | Vercel target |
 |--------|------|---------------|
-| `master` | Production | Production deployment — live at `blog-seven-rho-24.vercel.app` |
+| `master` | Production | Production deployment — `https://blog.whqtker.com` (custom domain) / `blog-seven-rho-24.vercel.app` (Vercel alias) |
 | `develop` | Staging | Preview Deployment — unique URL per deploy, protected by Vercel auth |
 
-These roles are confirmed decisions D-45 and D-46. `develop` is the integration branch; `master` is the public-facing branch.
+These roles are confirmed decisions D-45 and D-46. `develop` is the default branch and the integration branch for all ongoing work; `master` is the public-facing production branch.
+
+**All agent and automated work targets `develop`.** Direct commits to `master` are blocked by repository ruleset.
 
 ---
 
@@ -44,6 +46,8 @@ A push to `develop` triggers a Vercel Preview Deployment. The URL is unique per 
 
 Preview Deployments are protected by Vercel's default deployment protection — they require a logged-in Vercel account to view. This is intentional: staging is for the author, not the public.
 
+Staging visibility follows production visibility. Unpublished posts remain local-development-only and do not appear on the `develop` Preview Deployment unless they are explicitly marked `status: published`.
+
 The same CI gate applies to `develop` (D-48). A staging deploy will still build even if CI is red, but do not treat a red-CI staging URL as a reliable preview.
 
 ---
@@ -69,13 +73,38 @@ Production Deployment  ←  live site
 The typical author workflow before publishing a post:
 
 1. Convert and commit content to `src/content/`
-2. Push to `develop` — verify the staging Preview Deployment looks correct
+2. Push to `develop` — complete the Staging Verification checklist below
 3. Open a PR from `develop` → `master` — wait for CI to pass
 4. Merge — Vercel deploys to production automatically
 
 **PR creation and merge to `master` are always the author's decision.** No tooling or automation creates or merges these PRs. The author decides when content is ready for production.
 
-For minor fixes (typos, broken links, non-content changes), pushing directly to `master` is acceptable — CI still runs and the deploy gate holds.
+---
+
+## Staging Verification (D-53)
+
+Before opening a PR from `develop` → `master`, verify the Vercel Preview Deployment URL for `develop`:
+
+- [ ] Homepage (`/`) renders — series list loads without layout errors
+- [ ] Series page (`/series/<series>`) renders — post list appears in order
+- [ ] Post page (`/posts/<slug>`) renders — content, breadcrumb, and code blocks display correctly
+- [ ] Prev/next post navigation links are present and point to the correct posts
+- [ ] Quiz `<details>` elements open and close correctly
+
+These five checks cover the main rendering and interaction surface for a content-focused static site. Mobile layout check is optional but recommended for the first post in a new series.
+
+---
+
+## Promotion Checklist
+
+All of the following must be true before opening the develop→master PR:
+
+- [ ] CI is green on `develop` (`.github/workflows/ci.yml` passes)
+- [ ] Staging Verification checklist above is complete
+- [ ] All posts being promoted have `status: published` in frontmatter
+- [ ] `pnpm build` completes locally without errors (optional but catches schema issues early)
+
+**Direct pushes to `master`** are reserved for non-content changes only (dependency updates, configuration fixes, documentation corrections). Any commit that adds or modifies `src/content/` files must go through `develop` and the staging verification step.
 
 ---
 
@@ -117,7 +146,6 @@ Project-level settings (Node.js version, production branch, GitHub integration) 
 
 ## What Is Not in Scope
 
-- Custom domain — deferred (D-49). The site runs on `*.vercel.app` URLs until a domain is configured.
 - Analytics, monitoring, or error tracking — not configured.
 - Environment variables — this site has no runtime env vars; all content is statically built.
 

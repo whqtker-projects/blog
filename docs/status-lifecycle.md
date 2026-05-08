@@ -1,7 +1,7 @@
 # Post Status Lifecycle
 
-**Status:** Active — confirmed on 2026-05-07. See `confirmed-decisions.md` D-30, D-31, D-32 and `decision-log.md` DL-009.  
-**Last updated:** 2026-05-07
+**Status:** Active — confirmed on 2026-05-09. See `confirmed-decisions.md` D-30, D-31, D-32, D-33, D-54, D-55 and `decision-log.md` DL-015.  
+**Last updated:** 2026-05-09
 
 This document defines the shared vocabulary for tracking how posts move from idea to publication. A consistent status system makes the state of the blog visible at a glance without reading individual files.
 
@@ -12,12 +12,10 @@ This document defines the shared vocabulary for tracking how posts move from ide
 | Status | Meaning |
 |---|---|
 | `idea` | A topic or post concept has been noted but not yet structured |
-| `outline` | The post has a defined scope, section headings, and key points — no prose yet |
-| `draft` | Prose is being written; the post is not ready for review |
-| `review` | The post is complete enough to evaluate for accuracy, clarity, and structure |
+| `draft` | The post is actively being developed. This includes both structured outlines and prose drafts that are not yet public |
 | `published` | The post is live on the blog |
 
-These five statuses are confirmed (D-30). See `docs/review-checklist.md` for what "ready for review" means in practice.
+These three statuses are confirmed (D-30). `outline` and `review` are no longer separate status values; both map to `draft`.
 
 ---
 
@@ -27,17 +25,9 @@ These five statuses are confirmed (D-30). See `docs/review-checklist.md` for wha
 
 The post exists as a note or title only. No commitment to write it yet. Ideas can stay in the series backlog without advancing.
 
-### `outline`
-
-The post has a clear scope and structure. Key concepts, examples, and the quiz topic are decided. Writing has not started.
-
 ### `draft`
 
-Active writing phase. The post may be incomplete, rough, or missing sections. Not for sharing externally.
-
-### `review`
-
-The post is self-consistent and complete. It is being checked against the criteria in `docs/review-checklist.md` before publication.
+Active working state. A `draft` may be a bare outline, a partial prose draft, or a publication-ready post that is still under private review. `draft` is not reader-visible on staged or production builds.
 
 ### `published`
 
@@ -62,7 +52,7 @@ Substantial rewrites go through the full review cycle again before republishing.
 
 ## `status` in Obsidian Frontmatter
 
-`status` is an optional frontmatter field (D-32). It is not required on every post. When present, it must use one of the five confirmed values above.
+`status` is required on every committed post (D-32). It must use one of the three confirmed values above.
 
 ```yaml
 ---
@@ -73,7 +63,7 @@ status: draft
 ---
 ```
 
-The required frontmatter fields remain `title`, `series`, and `order` (D-25). `status` is supplementary and primarily used to filter posts inside Obsidian (via Dataview or search).
+The required frontmatter fields are `title`, `series`, `order`, and `status`. Missing `status` is a repository validation error.
 
 ---
 
@@ -83,14 +73,11 @@ The Astro production build uses `status` to determine which posts are included i
 
 | `status` value | Build behavior |
 |---|---|
-| field absent (not set) | Included in production build |
 | `published` | Included in production build |
 | `idea` | Excluded from production build |
-| `outline` | Excluded from production build |
 | `draft` | Excluded from production build |
-| `review` | Excluded from production build |
 
-This policy controls reader-facing output only. It does not restrict which statuses an author can use in the Obsidian vault.
+Only posts explicitly marked `published` are deployed. Local development shows all posts (D-54), but Vercel Preview / staging follows the same public visibility rule as production (D-55).
 
 ---
 
@@ -111,7 +98,7 @@ Post statuses (`idea`, `draft`, etc.) apply only to content files in the Obsidia
 
 ## Related Documents
 
-- [`docs/confirmed-decisions.md`](confirmed-decisions.md) — D-30, D-31, D-32
-- [`docs/decision-log.md`](decision-log.md) — DL-009
-- [`docs/review-checklist.md`](review-checklist.md) — criteria for moving a post from `draft` to `review`
+- [`docs/confirmed-decisions.md`](confirmed-decisions.md) — D-30 through D-33, D-54, D-55
+- [`docs/decision-log.md`](decision-log.md) — DL-015
+- [`docs/review-checklist.md`](review-checklist.md) — criteria for moving a post from in-progress draft to published
 - [`docs/post-metadata.md`](post-metadata.md) — frontmatter field definitions

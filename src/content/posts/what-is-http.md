@@ -2,7 +2,7 @@
 title: "What Is HTTP?"
 series: network-protocols
 order: 1
-status: review
+status: draft
 ---
 
 HTTP is the application-layer protocol that lets a client ask for a resource and a server answer with a response. When you open a web page, load an API endpoint, or submit a form, the application usually speaks HTTP on top of lower-level protocols such as [DNS](/concepts/dns), [TCP](/concepts/tcp), and sometimes [TLS](/concepts/tls). HTTP does not move bytes across the network by itself; it defines the structure and meaning of the messages exchanged between two endpoints.

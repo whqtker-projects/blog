@@ -2,15 +2,14 @@
 import { getCollection } from 'astro:content';
 import { render } from 'astro:content';
 import PostLayout from '../../layouts/PostLayout.astro';
+import { visiblePostsForCurrentBuild } from '../../utils/post-visibility.js';
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('posts');
-  const publishedPosts = allPosts.filter(
-    (post) => !post.data.status || post.data.status === 'published'
-  );
+  const visiblePosts = visiblePostsForCurrentBuild(allPosts);
 
-  return publishedPosts.map((post) => {
-    const seriesPosts = publishedPosts
+  return visiblePosts.map((post) => {
+    const seriesPosts = visiblePosts
       .filter((p) => p.data.series === post.data.series)
       .sort((a, b) => a.data.order - b.data.order);
     const idx = seriesPosts.findIndex((p) => p.id === post.id);
@@ -32,6 +31,7 @@ const { Content } = await render(post);
 ---
 <PostLayout
   title={post.data.title}
+  description={post.data.description}
   series={post.data.series}
   order={post.data.order}
   prev={prev}

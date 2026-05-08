@@ -2,7 +2,7 @@
 title: "TCP and Reliable Transmission"
 series: network-protocols
 order: 2
-status: outline
+status: draft
 ---
 
 ## What TCP Is

@@ -1,7 +1,7 @@
 # First-Content Readiness
 
 **Status:** Active — produced by Issue #30.  
-**Last updated:** 2026-05-08
+**Last updated:** 2026-05-09
 
 This document defines the artifacts and criteria needed to move from planning into active content creation. It covers the candidate post set for the first series, the process for starting a post, the drafting checklist, the quality bar for publication, and the pre-publication self-review checklist.
 
@@ -23,6 +23,55 @@ The full initial `database-internals` post set is now committed as real content 
 
 The author may adjust order, add topics, or split a post — this list is a starting point, not a commitment. Any changes to the confirmed candidate set should be reflected here.
 
+### Pilot Batch — Simplified Status Model
+
+The current pilot batch for large-scale idea intake is the committed `network-protocols` series. This batch was chosen because it already satisfies the repository's structural requirements:
+
+- A real series index exists at `src/content/series_indexes/network-protocols.md`
+- All five posts already have explicit `series`, `order`, and `status`
+- The batch exercises both non-public lifecycle states now in use: `draft` and `idea`
+- The `order` range is contiguous (`1` through `5`), so ordering and listing behavior can be checked without introducing new numbering rules
+
+Current pilot statuses:
+
+| Order | File name | Status |
+|-------|-----------|--------|
+| 1 | `what-is-http.md` | `draft` |
+| 2 | `tcp-connection-and-reliability.md` | `draft` |
+| 3 | `dns-resolution.md` | `idea` |
+| 4 | `tls-and-https.md` | `idea` |
+| 5 | `http2-and-http3.md` | `idea` |
+
+Pilot verification goals:
+
+- Local development should show all five `network-protocols` posts
+- Staged and production builds should keep all five posts off public post routes until each post is explicitly changed to `status: published`
+- `pnpm check:content` and `pnpm build` should continue to pass with the batch in place
+
+### First Bulk Batch — `data-structures`
+
+The first larger idea-stage batch is grouped as one new confirmed series: `data-structures`. This keeps the intake reviewable because the batch has a single series index, a contiguous ordering block, and a consistent all-`idea` status set.
+
+Series index:
+- `src/content/series_indexes/data-structures.md`
+
+Initial bulk batch:
+
+| Order | File name | Title | Status |
+|-------|-----------|-------|--------|
+| 1 | `what-is-an-array.md` | What Is an Array? | `idea` |
+| 2 | `linked-list.md` | Linked List Structure | `idea` |
+| 3 | `stack-and-queue.md` | Stack and Queue Basics | `idea` |
+| 4 | `hash-table.md` | Hash Table Basics | `idea` |
+| 5 | `binary-search-tree.md` | Binary Search Tree | `idea` |
+
+Why this batch is suitable:
+
+- `data-structures` is already a confirmed series in `docs/series-backlog.md`
+- The repository now has a real series index before any posts in that series
+- All posts use explicit `status: idea`
+- The batch is reviewable as one coherent series-level diff instead of many unrelated one-off stubs
+
 ---
 
 ## Candidate Posts — `network-protocols` Series
@@ -41,7 +90,7 @@ The author may adjust order, add topics, or split a post — this list is a star
 
 ---
 
-## Starting a Post: `idea` → `outline` Process
+## Starting a Post: `idea` → `draft` Process
 
 ### Vault directory location
 
@@ -88,21 +137,21 @@ Minimum fields at `idea` state:
 | `title` | Yes (D-25) | The intended post title |
 | `series` | Yes (D-25) | Confirmed series slug (e.g., `database-internals`) |
 | `order` | Yes (D-25) | Intended position in the series (integer) |
-| `status` | No (D-32) | `idea` — marks the post as not yet written |
+| `status` | Yes (D-32) | `idea` — marks the post as not yet written |
 
-No other fields are required at `idea` state. The D-33 build filter excludes `idea` posts from production output, so the file can be committed to the repo or converted without affecting the live site.
+No other fields are required at `idea` state. `status` must still be set explicitly even for early drafts so lifecycle and visibility remain unambiguous. Under D-33, only `status: published` is included in staged and production output, so `idea` posts stay off the public site.
 
-### Step 3 — Advance to `outline`
+### Step 3 — Advance to `draft`
 
-When ready to structure the post, add section headings and bullet-point notes under each. Do not write prose yet. Decide the quiz topic.
+When ready to work on the post, change status to `draft`. This single working state now covers both outline-only documents and prose drafts.
 
-Change status to `outline`:
+Change status to `draft`:
 
 ```yaml
-status: outline
+status: draft
 ```
 
-An `outline`-state post body looks like:
+A `draft`-state post body may still be outline-only:
 
 ```markdown
 ## What B+Tree Is
@@ -123,9 +172,7 @@ An `outline`-state post body looks like:
 Topic: properties of B+Tree vs. binary search tree
 ```
 
-### Step 4 — Advance to `draft`
-
-Begin writing prose. Change status to `draft`. The post does not need to be complete — draft means active writing is in progress.
+Begin writing prose when ready. The post does not need to be complete — `draft` means active work is in progress, whether that work is structural or prose-level.
 
 The conversion script (`pnpm convert`) is not needed during Obsidian writing. Run it before previewing with Astro.
 
@@ -166,7 +213,7 @@ Use this while writing a post in `draft` state. Each item maps to a confirmed de
 
 ## Quality Bar — What "Good Enough to Publish" Means
 
-A post is ready to move from `review` to `published` when all of the following are true:
+A post is ready to move from `draft` to `published` when all of the following are true:
 
 **Content**
 - Every required content area (definition, operational principles, examples, quiz) is complete — no `[Write here]` placeholders or stubs remain.
@@ -186,6 +233,7 @@ A post is ready to move from `review` to `published` when all of the following a
 - The file name and frontmatter are valid (see drafting checklist above).
 - The Obsidian-to-Astro conversion runs without errors on this file (`pnpm convert --strict`).
 - `pnpm build` completes without errors after conversion.
+- The post becomes reader-visible only after frontmatter is explicitly changed to `status: published`.
 
 This quality bar applies to the first post and to all subsequent posts. The bar does not lower for early posts.
 
@@ -193,7 +241,7 @@ This quality bar applies to the first post and to all subsequent posts. The bar 
 
 ## Pre-Publication Self-Review Checklist
 
-Run through this checklist in a single sitting after completing the `draft → review` checklist in `docs/review-checklist.md`.
+Run through this checklist in a single sitting after the `docs/review-checklist.md` draft-readiness items all pass.
 
 ### Read-through pass
 
@@ -224,7 +272,7 @@ Run through this checklist in a single sitting after completing the `draft → r
 ### Final gate
 
 - [ ] All items in this checklist pass
-- [ ] All items in `docs/review-checklist.md` (Review → Published section) pass
+- [ ] All items in `docs/review-checklist.md` pass
 - [ ] Change `status` to `published` in frontmatter
 - [ ] Run conversion and build one final time before deploying
 
@@ -234,7 +282,7 @@ Run through this checklist in a single sitting after completing the `draft → r
 
 - [`docs/post-template.md`](post-template.md) — confirmed post structure rules (D-6, D-7, D-8, D-26–D-28)
 - [`docs/first-post-outline-template.md`](first-post-outline-template.md) — fill-in-the-blank Obsidian template
-- [`docs/review-checklist.md`](review-checklist.md) — draft → review and review → published checklists
+- [`docs/review-checklist.md`](review-checklist.md) — draft-readiness and publish checks
 - [`docs/status-lifecycle.md`](status-lifecycle.md) — status vocabulary and update policy (D-30–D-33)
 - [`docs/series-backlog.md`](series-backlog.md) — confirmed series list (D-21, D-22)
 - [`docs/obsidian-conversion-contract.md`](obsidian-conversion-contract.md) — conversion script input contract

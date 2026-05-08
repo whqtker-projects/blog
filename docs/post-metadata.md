@@ -13,6 +13,7 @@ This document defines the required frontmatter fields for every blog post.
 | `title` | string | Display title of the post. Korean or English. |
 | `series` | string (slug) | Series the post belongs to. Must match a confirmed series slug from `series-backlog.md`. |
 | `order` | integer | Position of the post within its series. Starts at 1. |
+| `status` | string | Post lifecycle stage. Required values: `idea`, `draft`, `published` (D-30, D-32). |
 
 **Example:**
 
@@ -21,6 +22,7 @@ This document defines the required frontmatter fields for every blog post.
 title: "B+Tree 인덱스 구조"
 series: database-internals
 order: 1
+status: draft
 ---
 ```
 
@@ -49,13 +51,13 @@ Domain is not stored as a frontmatter field. It is inferred from `series` via th
 
 ---
 
-## Optional Fields
+## Additional Optional Fields
 
 | Field | Type | Description |
 |---|---|---|
-| `status` | string | Post lifecycle stage. Confirmed values: `idea`, `outline`, `draft`, `review`, `published` (D-30). No default value (D-32). Production build: absent or `published` → included; `idea`, `outline`, `draft`, `review` → excluded (D-33). |
+| `description` | string | Optional summary used for metadata and previews when present. |
 
-All other optional fields (e.g., `description`, `tags`) are not yet defined and must not be added until decided during Astro implementation (Issue #27 sub-issues).
+Optional fields other than `description` (for example `tags`) are not yet defined and must not be added until decided during Astro implementation (Issue #27 sub-issues).
 
 ---
 
