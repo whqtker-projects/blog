@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { seriesDisplayName } from '../../utils/series';
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('posts');
@@ -22,9 +23,9 @@ export async function getStaticPaths() {
 const { series } = Astro.params;
 const { posts } = Astro.props;
 ---
-<BaseLayout title={series}>
+<BaseLayout title={seriesDisplayName(series!)}>
   <main>
-    <h1>{series}</h1>
+    <h1>{seriesDisplayName(series!)}</h1>
     <ol>
       {posts.map((post) => (
         <li>
@@ -34,3 +35,28 @@ const { posts } = Astro.props;
     </ol>
   </main>
 </BaseLayout>
+
+<style>
+  h1 {
+    margin-bottom: 1.5rem;
+  }
+
+  ol {
+    padding-left: 1.75rem;
+    margin: 0;
+  }
+
+  li {
+    padding: 0.4rem 0;
+    margin: 0;
+  }
+
+  li a {
+    text-decoration: none;
+  }
+
+  li a:hover {
+    text-decoration: underline;
+    opacity: 1;
+  }
+</style>

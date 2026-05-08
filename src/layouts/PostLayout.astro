@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import { seriesDisplayName } from '../utils/series';
 
 interface NavLink {
   slug: string;
@@ -18,13 +19,50 @@ const { title, series, order, prev, next } = Astro.props;
 <BaseLayout title={title}>
   <article>
     <header>
-      <p><a href={`/series/${series}`}>{series}</a> · #{order}</p>
+      <p class="breadcrumb">
+        <a href={`/series/${series}`}>{seriesDisplayName(series)}</a> · #{order}
+      </p>
       <h1>{title}</h1>
     </header>
     <slot />
-    <nav>
+    <nav class="post-nav">
       {prev && <a href={`/posts/${prev.slug}`}>← {prev.title}</a>}
       {next && <a href={`/posts/${next.slug}`}>{next.title} →</a>}
     </nav>
   </article>
 </BaseLayout>
+
+<style>
+  .breadcrumb {
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+  }
+
+  .breadcrumb a {
+    color: #666;
+  }
+
+  header h1 {
+    margin-top: 0;
+  }
+
+  .post-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e5e5;
+    font-size: 0.875rem;
+  }
+
+  .post-nav a {
+    text-decoration: none;
+  }
+
+  .post-nav a:hover {
+    text-decoration: underline;
+    opacity: 1;
+  }
+</style>

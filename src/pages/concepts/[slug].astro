@@ -19,9 +19,25 @@ const { Content } = await render(concept);
     <header>
       <h1>{concept.data.title}</h1>
       {concept.data.aliases && concept.data.aliases.length > 0 && (
-        <p>Also known as: {concept.data.aliases.join(', ')}</p>
+        <p class="aliases">Also known as: {concept.data.aliases.join(', ')}</p>
       )}
     </header>
     <Content />
   </article>
 </BaseLayout>
+
+<style>
+  header {
+    margin-bottom: 1.5rem;
+  }
+
+  header h1 {
+    margin-bottom: 0.25rem;
+  }
+
+  .aliases {
+    font-size: 0.875rem;
+    color: #666;
+    margin: 0;
+  }
+</style>
