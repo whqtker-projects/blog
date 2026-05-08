@@ -28,37 +28,39 @@ gh auth status
 The most straightforward approach is to tell Claude what you want to track and let it compose and create the issue.
 
 ```text
-create a github issue titled "[Series] Define series structure for AI/ML posts"
-body: we need to decide the category names, post ordering, and depth level for the AI/ML domain before drafting begins.
-labels: planning
+create a github issue for adding prev/next navigation to post pages.
+write a clear description of the current state, what needs to change, and acceptance criteria.
+labels: enhancement
 ```
 
 Claude runs `gh issue create` with the right flags. You can also let Claude write the body:
 
 ```text
-create a github issue for defining the Obsidian file naming convention.
-write a clear description of why this needs to be decided before we start drafting.
+create a github issue for adding image existence validation to the conversion script.
+explain the current gap and what the expected new behavior should be.
 ```
 
 ### Manual `gh` command (reference)
 
 ```bash
 gh issue create \
-  --title "[Planning] Define series structure for AI/ML domain" \
+  --title "Add prev/next navigation to post pages" \
   --body "$(cat <<'EOF'
-## Context
-Before drafting any posts in the AI/ML domain, we need to define:
-- Category names and slugs
-- Ordering within the series
-- Depth levels (introductory vs. practitioner)
+## Purpose
+Post pages have no navigation between adjacent posts in the same series.
+
+## Tasks
+- [ ] Calculate prev/next post within the same series by order
+- [ ] Pass prev/next as props to PostLayout.astro
+- [ ] Render navigation links in the layout
 
 ## Acceptance criteria
-- [ ] Series names agreed upon
-- [ ] Post ordering documented in PLANNING.md
-- [ ] Decision recorded in docs/decisions/
+- [ ] Each post page renders prev/next links within its series
+- [ ] First post has no prev; last post has no next
+- [ ] pnpm build passes without errors
 EOF
 )" \
-  --label "planning"
+  --label "enhancement"
 ```
 
 ---
@@ -72,7 +74,7 @@ Each issue should contain:
 | **Title** | `[Domain] Short action phrase` — e.g., `[Planning] Finalize post template` |
 | **Context** | Why this needs to be resolved; link to relevant planning docs |
 | **Acceptance criteria** | Checkboxes that define "done" concretely |
-| **Labels** | `planning`, `content`, `structure`, `decision` |
+| **Labels** | `content`, `enhancement`, `workflow`, `documentation`, `decision` |
 
 Vague acceptance criteria force you to become the only feedback loop. Concrete checkboxes let Claude verify its own work.
 
@@ -98,8 +100,8 @@ Shift+Tab
 ```
 
 ```text
-read PLANNING.md and docs/open-questions.md.
-understand what's already decided and what this issue is asking us to resolve.
+read CLAUDE.md and docs/README.md.
+understand the current repository stage and which files are relevant to this issue.
 ```
 
 ### Step 3 — Plan
@@ -227,7 +229,7 @@ This requires repo admin access and an `ANTHROPIC_API_KEY` repository secret.
 - **Explore first, then plan, then implement.** Never skip to coding without reading the context.
 - **Keep context clean.** Run `/clear` between unrelated issues. Each issue gets its own session when possible.
 - **Install `gh`.** It is the most context-efficient way for Claude to interact with GitHub.
-- **Reference files with `@`.** Instead of describing where a document lives, use `@PLANNING.md` directly in your prompt.
+- **Reference files with `@`.** Instead of describing where a document lives, use `@CLAUDE.md` or `@docs/first-content-readiness.md` directly in your prompt.
 
 ---
 
@@ -235,8 +237,10 @@ This requires repo admin access and an `ANTHROPIC_API_KEY` repository secret.
 
 | Label | Meaning |
 |---|---|
-| `planning` | Structural decisions, series organization, planning docs |
-| `decision` | Items that need to be recorded in `docs/decisions/` |
-| `content` | Post drafting or content-related tasks |
-| `open-question` | Corresponds to an item in `docs/open-questions.md` |
-| `template` | Post template or format work |
+| `content` | Post drafting, series preparation, content-related tasks |
+| `enhancement` | New site features (routing, navigation, layout) |
+| `workflow` | CI, conversion pipeline, build process |
+| `documentation` | Planning docs, workflow docs, guide updates |
+| `decision` | Items that require a decision recorded in `docs/confirmed-decisions.md` |
+| `planning` | Series planning, candidate post selection |
+| `bug` | Something broken in the build or conversion pipeline |

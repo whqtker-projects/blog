@@ -1,7 +1,7 @@
 # Project Overview
 
-**Last updated:** 2026-05-06  
-**Current stage:** Planning and documentation — no posts are being drafted yet.
+**Last updated:** 2026-05-08  
+**Current stage:** Active content creation — five posts published, full workflow in place.
 
 ---
 
@@ -53,17 +53,11 @@ The following domains are confirmed. Additional domains may be added as the proj
 
 ---
 
-## Current planning stage
+## Current stage
 
-The current work is establishing structure, decisions, and planning documents. Article drafting has not begun.
+All structural decisions are finalized (series structure, file naming, publishing workflow, post format, status lifecycle). The Astro build and Obsidian-to-Astro conversion script are implemented and tested. Five posts in the `database-internals` series are published.
 
-Planning priorities, in order:
-
-1. Document confirmed decisions and open questions
-2. Define series and category structure
-3. Formalize post template
-4. Begin series-level planning
-5. Draft individual posts
+The current work is writing and publishing posts. The content drafting and review workflow is fully documented in `docs/first-content-readiness.md` and `docs/review-checklist.md`.
 
 ---
 
@@ -73,15 +67,19 @@ Planning priorities, in order:
 |---|---|
 | Obsidian | Source vault — notes, drafts, reference material |
 | Blog | Published output — reader-facing posts |
-| User | Decides detailed post content, topic selection, series order, publication timing |
-| Planning agent | Helps with document structure, decision records, series organization, open-question tracking |
+| User | Decides post content, topic selection, series order, publication timing |
+| Planning Lead | Routes incoming tasks to the right agent |
+| Documentation Curator | Maintains document consistency and decision document stability |
+| Post Drafter | Guides posts through the idea → published lifecycle; runs checklist and build verification |
 
-The planning agent does not decide post content, select the first series, define post outlines, or set a publishing schedule unless the user initiates that discussion.
+See `docs/agent-architecture.md` for the full agent model and role boundaries.
 
 ---
 
 ## Related documents
 
-- [confirmed-decisions.md](confirmed-decisions.md) — what has been agreed on
-- [open-questions.md](open-questions.md) — what is still unresolved
-- [docs/README.md](README.md) — full document map
+- [README.md](README.md) — full document map
+- [agent-architecture.md](agent-architecture.md) — agent model and role boundaries
+- [first-content-readiness.md](first-content-readiness.md) — content creation workflow
+- [confirmed-decisions.md](confirmed-decisions.md) — all confirmed decisions
+- [open-questions.md](open-questions.md) — resolved planning items
