@@ -1,10 +1,14 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { mkdtempSync, writeFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import {
   validateFileName,
   fileNameToSlug,
   convertWikilinks,
   convertImageWikilinks,
+  extractImageFilenames,
   parseFrontmatter,
   convertFile,
 } from './obsidian-to-astro.mjs';
@@ -225,4 +229,121 @@ order: 1
   const { content } = convertFile(input, 'test.md');
   assert.ok(content.includes('![diagram.png](/images/diagram.png)'));
   assert.ok(content.includes('[database-index](/posts/database-index)'));
+});
+
+// ── extractImageFilenames ────────────────────────────────────────────────────
+
+test('extractImageFilenames: returns filename from ![[image.png]]', () => {
+  assert.deepEqual(extractImageFilenames('See ![[diagram.png]] below.'), ['diagram.png']);
+});
+
+test('extractImageFilenames: returns filename from ![[image.png|alt]]', () => {
+  assert.deepEqual(extractImageFilenames('![[btree.svg|B+Tree]]'), ['btree.svg']);
+});
+
+test('extractImageFilenames: returns multiple filenames', () => {
+  const result = extractImageFilenames('![[a.png]] and ![[b.svg]]');
+  assert.deepEqual(result, ['a.png', 'b.svg']);
+});
+
+test('extractImageFilenames: deduplicates repeated references', () => {
+  const result = extractImageFilenames('![[a.png]] then ![[a.png]] again');
+  assert.deepEqual(result, ['a.png']);
+});
+
+test('extractImageFilenames: returns empty array when no image wikilinks', () => {
+  assert.deepEqual(extractImageFilenames('Plain text with [[link]] only.'), []);
+});
+
+test('extractImageFilenames: does not capture regular wikilinks', () => {
+  assert.deepEqual(extractImageFilenames('See [[database-index]] here.'), []);
+});
+
+// ── image validation in convertFile ─────────────────────────────────────────
+
+test('convertFile: no publicImagesDir → empty imageWarnings', () => {
+  const input = `---
+title: Test
+series: database-internals
+order: 1
+---
+
+![[missing.png]]`;
+
+  const { imageWarnings } = convertFile(input, 'test.md');
+  assert.deepEqual(imageWarnings, []);
+});
+
+test('convertFile: present image produces no imageWarning', () => {
+  const imagesDir = mkdtempSync(join(tmpdir(), 'test-images-'));
+  try {
+    writeFileSync(join(imagesDir, 'present.png'), '');
+    const input = `---
+title: Test
+series: database-internals
+order: 1
+---
+
+![[present.png]]`;
+
+    const { imageWarnings } = convertFile(input, 'test.md', null, imagesDir);
+    assert.deepEqual(imageWarnings, []);
+  } finally {
+    rmSync(imagesDir, { recursive: true });
+  }
+});
+
+test('convertFile: missing image produces imageWarning with filename', () => {
+  const imagesDir = mkdtempSync(join(tmpdir(), 'test-images-'));
+  try {
+    const input = `---
+title: Test
+series: database-internals
+order: 1
+---
+
+![[missing.png]]`;
+
+    const { imageWarnings } = convertFile(input, 'test.md', null, imagesDir);
+    assert.deepEqual(imageWarnings, ['missing.png']);
+  } finally {
+    rmSync(imagesDir, { recursive: true });
+  }
+});
+
+test('convertFile: mixed present and missing images reports only missing', () => {
+  const imagesDir = mkdtempSync(join(tmpdir(), 'test-images-'));
+  try {
+    writeFileSync(join(imagesDir, 'present.png'), '');
+    const input = `---
+title: Test
+series: database-internals
+order: 1
+---
+
+![[present.png]] and ![[missing.svg]]`;
+
+    const { imageWarnings } = convertFile(input, 'test.md', null, imagesDir);
+    assert.deepEqual(imageWarnings, ['missing.svg']);
+  } finally {
+    rmSync(imagesDir, { recursive: true });
+  }
+});
+
+test('convertFile: duplicate image reference warns once', () => {
+  const imagesDir = mkdtempSync(join(tmpdir(), 'test-images-'));
+  try {
+    const input = `---
+title: Test
+series: database-internals
+order: 1
+---
+
+![[missing.png]] and again ![[missing.png]]`;
+
+    const { imageWarnings } = convertFile(input, 'test.md', null, imagesDir);
+    assert.deepEqual(imageWarnings, ['missing.png']);
+  } finally {
+    rmSync(imagesDir, { recursive: true });
+  }
 });

@@ -12,9 +12,10 @@
  *
  * --input   Path to the Obsidian vault posts directory (required)
  * --output  Destination directory (default: ./src/content/posts)
- * --strict  Exit with error on any unresolved wikilink (default: warn only)
+ * --strict  Exit with error on any unresolved wikilink or missing image (default: warn only)
  *
- * Image files referenced via ![[...]] must be copied to public/images/ separately.
+ * Image files referenced via ![[...]] must be present in public/images/ before running.
+ * Missing images produce a warning; --strict treats them as errors.
  */
 
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync } from 'node:fs';
@@ -42,6 +43,23 @@ export function fileNameToSlug(filename) {
 // Handles both [[kebab-case]] and [[Display Name]] inputs.
 function toSlug(text) {
   return text.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+}
+
+/**
+ * Extracts image filenames from all ![[image.ext]] and ![[image.ext|alt]] patterns.
+ * Returns each referenced filename once (deduplicated).
+ *
+ * @param {string} content - Markdown body (no frontmatter)
+ * @returns {string[]}
+ */
+export function extractImageFilenames(content) {
+  const re = /!\[\[([^\]|\n]+?)(?:\|[^\]\n]+?)?\]\]/g;
+  const seen = new Set();
+  let m;
+  while ((m = re.exec(content)) !== null) {
+    seen.add(m[1].trim());
+  }
+  return [...seen];
 }
 
 /**
@@ -100,15 +118,20 @@ export function parseFrontmatter(content) {
  * Converts a single Obsidian file's content to Astro-compatible Markdown.
  *
  * @param {string} inputContent
- * @param {string} filename      - used only for error messages
+ * @param {string} filename        - used only for error messages
  * @param {Set<string>|null} knownSlugs
- * @returns {{ content: string, warnings: string[] }}
+ * @param {string|null} publicImagesDir - path to public/images/ on disk; null skips image validation
+ * @returns {{ content: string, warnings: string[], imageWarnings: string[] }}
  */
-export function convertFile(inputContent, filename, knownSlugs = null) {
+export function convertFile(inputContent, filename, knownSlugs = null, publicImagesDir = null) {
   const { frontmatter, body } = parseFrontmatter(inputContent);
   if (!frontmatter) {
     throw new Error(`${filename}: missing frontmatter`);
   }
+
+  const imageWarnings = publicImagesDir
+    ? extractImageFilenames(body).filter(f => !existsSync(join(publicImagesDir, f)))
+    : [];
 
   // Image wikilinks must be converted before link wikilinks to avoid regex overlap
   const imageConverted = convertImageWikilinks(body);
@@ -117,6 +140,7 @@ export function convertFile(inputContent, filename, knownSlugs = null) {
   return {
     content: `---\n${frontmatter}\n---\n${convertedBody}`,
     warnings,
+    imageWarnings,
   };
 }
 
@@ -161,10 +185,18 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
     const inputContent = readFileSync(join(inputDir, file), 'utf8');
 
     try {
-      const { content: converted, warnings } = convertFile(inputContent, file, knownSlugs);
+      const { content: converted, warnings, imageWarnings } = convertFile(
+        inputContent, file, knownSlugs, './public/images'
+      );
 
       for (const slug of warnings) {
         console.warn(`Warn: ${file} — unresolved wikilink [[${slug}]]`);
+        warnCount++;
+        if (values.strict) errorCount++;
+      }
+
+      for (const imgFile of imageWarnings) {
+        console.warn(`Warn: ${file} — missing image public/images/${imgFile}`);
         warnCount++;
         if (values.strict) errorCount++;
       }

@@ -120,6 +120,31 @@ This allows CI pipelines to enforce strict link integrity without blocking local
 
 ---
 
+## Image Validation
+
+When the script encounters `![[image.ext]]`, it converts the reference to standard Markdown syntax and checks whether the referenced file exists in `./public/images/` on disk.
+
+| Mode | Behaviour |
+|------|-----------|
+| Default | Convert the image reference; print a warning to stderr if the file is missing. Exit code 0. |
+| `--strict` | Convert the image reference; print a warning to stderr if the file is missing. Exit code 1 after processing all files. |
+
+Warning format: `Warn: <file> — missing image public/images/<filename>`
+
+Each missing filename is reported once per file, even if the same image is referenced multiple times.
+
+The check runs against `./public/images/` relative to the working directory where the script is invoked (the project root). Image files must be copied to `public/images/` before running `pnpm convert`. See the recommended workflow below.
+
+### Recommended image workflow
+
+1. Copy image files from the Obsidian vault's `attachments/` directory to `public/images/` manually
+2. Run `pnpm convert --input <vault/posts> --strict` — any missing images are reported as errors
+3. Commit both the converted `.md` files and any new files in `public/images/`
+
+This workflow is intentionally manual: the vault path is machine-specific, and copying images is a deliberate step that pairs with a reviewable git diff.
+
+---
+
 ## Script Integration Point
 
 The script is a one-shot Node.js process, not an Astro integration. Conversion is **manual and explicit** — there is no prebuild hook or watch mode.
