@@ -100,3 +100,113 @@ Created `docs/github-issue-workflow.md` based on official Claude Code best pract
 - Astro 6.2.2에서 `type: 'content'` 대신 glob loader 명시 필요 (content-modules.mjs가 비어있는 현상)
 - `category` 개념을 별도로 두지 않고 domain과 동일시 (D-24)
 - 프로덕션 빌드에서 status 없는 파일은 포함 처리 (D-33: absent → included)
+
+## 2026-05-07 — 이슈 #28~#30, #58~#78 구현 및 렌더링 검증 완료
+
+### 완료한 작업
+
+**이슈 #28 — Obsidian→Astro 변환 파이프라인 구현**
+- `scripts/obsidian-to-astro.mjs`: wikilink 변환, 이미지 wikilink 변환, D-15 파일명 검증, 미해결 링크 warn/strict 처리
+- `scripts/obsidian-to-astro.test.mjs`: 29개 테스트 전부 통과
+- `docs/obsidian-conversion-contract.md`: 입력 계약, slug 매핑, 링크 해석 규칙, 미해결 링크 정책 문서화
+- `package.json`: `pnpm convert`, `pnpm test:convert` 스크립트 추가
+
+**이슈 #29 — 렌더링 호환성 검증**
+- `astro.config.mjs`: Shiki `github-dark` 테마 명시 설정
+- `convertImageWikilinks()` 추가: `![[image.png]]` → `![image.png](/images/image.png)`
+- `public/images/btree-structure.svg`: 최소 B+Tree SVG 커밋
+- 샘플 포스트에 이미지 참조 추가 → 빌드 HTML에서 `<img>` 생성 확인
+- `docs/rendering-compatibility.md` 신규 생성: 구성물 인벤토리, MDX 결정(미채택), 이미지 경로 규칙
+
+**이슈 #30 — 첫 콘텐츠 준비 패키지**
+- `docs/first-content-readiness.md` 신규 생성:
+  - database-internals 후보 포스트 5개 (Scope 컬럼 포함)
+  - idea→outline→draft 프로세스 (vault 경로, 최소 메타데이터 테이블 포함)
+  - 초안 작성 체크리스트, 품질 기준, 출판 전 자가 검토 체크리스트
+
+**이슈 다수 close (근거 커밋 링크 + 코멘트)**
+- #31, #32, #35: 이미 닫혀 있었음
+- #58: 입력 계약 보강 (vault 구조, 파일 선별 규칙, 인코딩 가정)
+- #59, #61, #62, #63: 변환 스크립트 구현으로 충족
+- #60: 프론트매터 매핑 테이블 추가 (1:1 passthrough, Zod strip 동작)
+- #64, #65: 출력 디렉터리 정책 (generated-but-committed), 변환 워크플로 (수동 명시적 트리거)
+- #66: 코드 블록 렌더링 검증 (sql, python)
+- #67: 신택스 하이라이팅 검증 (sql, python, javascript 세 언어)
+- #68: 이미지 경로 검증 (btree-structure.svg)
+- #69: 내부 링크 렌더링 검증 (b-plus-tree-index ↔ what-is-a-database-index, plain + heading anchor)
+- #70, #71, #72: 구성물 인벤토리, quiz 렌더링, MDX 결정
+- #74: 후보 포스트 Scope 컬럼 추가
+- #75: vault 경로 및 idea 상태 최소 메타데이터 정리
+- #76, #77, #78: 초안 체크리스트, 품질 기준, 출판 전 체크리스트
+
+**이슈 #69 — 내부 링크 렌더링 검증**
+- `src/content/posts/b-plus-tree-index.md` 신규 픽스처 (order:2, published)
+- 두 포스트 간 상호 링크 + heading anchor 링크 검증
+- 빌드: 3페이지 생성, 모든 href 정상 해석
+
+### 미완료
+
+- 없음 (이번 세션에서 지정된 이슈 전부 완료)
+
+### 주요 결정
+
+- `src/content/posts/` = generated-but-committed (Option A): vault는 로컬, CI는 커밋된 파일만 빌드
+- 변환 트리거: 수동 명시적 (`pnpm convert --input <vault> --strict`), prebuild hook 없음
+- MDX 미채택: `<details>/<summary>`로 quiz 렌더링이 충분
+- freshness 두 레이어 명시: vault freshness (저자 로컬) vs. repository freshness (커밋된 변환 아티팩트)
+
+## 2026-05-07 — E2E rendering validation complete (#73)
+
+**Actions:**
+- Created Obsidian-format fixture: `test/fixtures/obsidian-vault/e2e-rendering-validation.md`
+  - Exercises all four element types: code blocks (sql/python/js), image wikilink, internal wikilinks, quiz section
+- Ran `obsidian-to-astro.mjs --input test/fixtures/obsidian-vault --output src/content/posts`
+  - 2 unresolved-link warnings (expected: target posts exist in output dir, not input dir)
+- Astro build: 4 pages, 0 errors
+- HTML inspection confirmed all four elements render correctly
+
+**Gaps found:** None. Pipeline is end-to-end verified.
+
+**Commit:** 91dea1d | Issue #73 closed
+
+## 2026-05-08 — Agent system redesign for content-creation stage
+
+**Trigger:** All open questions decided, five posts committed, repository moved to active content creation.
+
+**Changes:**
+- Retired `decision-reviewer` — all decisions finalized; remaining responsibility absorbed into curator
+- Retired `structure-planner` — Q-1~Q-9 all decided; no remaining scope
+- Revised `planning-lead` — task taxonomy updated from planning-centric to content-centric
+- Revised `documentation-curator` — absorbed decision doc stability + content-adjacent alignment
+- Added `post-drafter` — new agent: idea→published lifecycle, checklist application, build verification
+- Updated `docs/agent-architecture.md` — three-agent model, documents retired agents with rationale
+
+**Final agent set:** planning-lead · documentation-curator · post-drafter
+
+## 2026-05-08 — Follow-up agent-system revision (validation gap fix)
+
+**Changed files:** CLAUDE.md, docs/README.md, docs/agent-architecture.md
+
+**CLAUDE.md:** "early planning stage" / "no build / no posts" 전부 현실 반영으로 교체. 문서 목록을 session-start / content-workflow / supporting-reference 세 그룹으로 재구성. Role Boundaries에 세 에이전트 명시.
+
+**docs/README.md:** 스테이지 설명 교체. 이후 생성된 파일 전부 추가(first-content-readiness, review-checklist, obsidian-conversion-contract, astro-bootstrap, rendering-compatibility, post-metadata 등). file-naming-conventions.md·publishing-workflow.md의 "unresolved decision" 라벨 제거(D-15/D-16, D-17/D-18로 해결된 항목).
+
+**docs/agent-architecture.md:** Retired Agents 섹션에 흡수 근거 명시(decision-reviewer → curator 이유; structure-planner 폐기 이유와 후속 대응). Candidate Agents — Disposition 섹션 신규 추가: technical-reviewer·publish-verifier(post-drafter 흡수), platform-maintainer(보류), design-related(거부) — 각각 이유와 재검토 조건 명시.
+
+## 2026-05-08 — Roadmap GitHub issue hierarchy created
+
+15개 이슈 생성 (#97~#111).
+
+**Standalone:** #97 — docs/project-overview.md, docs/github-issue-workflow.md 콘텐츠 단계 반영
+
+**Parent #98 (CI):** #102 conversion-script unit test step / #103 Astro build step
+
+**Parent #99 (image handling):** #104 image existence check / #105 vault-attachments auto-copy design
+
+**Parent #100 (IA):** #106 homepage series grouping / #107 series landing pages / #108 prev/next navigation
+
+**Parent #101 (next series):** #109 series selection / #110 candidate posts definition / #111 idea-state stubs
+
+**미생성:** agent-role re-splitting (근거 없음)
+
+**권장 실행 순서:** #97 → #98(#102→#103) → #99(#104→#105) → #101(#109→#110→#111) → #100(#106, #107, #108)
