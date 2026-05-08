@@ -220,6 +220,8 @@ Validation-only fixtures follow a different rule: keep the Obsidian source under
 
 ## Related Documents
 
+- [`docs/content-model.md`](content-model.md) — role boundaries for all three content types
+- [`docs/series-index-authoring.md`](series-index-authoring.md) — series index document rules
 - [`docs/post-metadata.md`](post-metadata.md) — frontmatter field definitions
 - [`docs/status-lifecycle.md`](status-lifecycle.md) — status values and build policy
 - [`docs/series-backlog.md`](series-backlog.md) — confirmed series slugs

@@ -48,6 +48,8 @@ The repository is in the **active content-creation stage**. The Astro build, con
 | [publishing-workflow.md](publishing-workflow.md) | Confirmed publishing platform and conversion workflow (D-17, D-18) |
 | [github-issue-workflow.md](github-issue-workflow.md) | How to create GitHub issues and proceed with implementation |
 | [concept-authoring-workflow.md](concept-authoring-workflow.md) | Concept page authoring, alias policy, and conversion workflow |
+| [series-index-authoring.md](series-index-authoring.md) | Series index document rules, required fields, and operating invariants |
+| [content-model.md](content-model.md) | Role boundaries for posts, concepts, and series indexes; homepage and series page behavior |
 
 ### UI direction
 
