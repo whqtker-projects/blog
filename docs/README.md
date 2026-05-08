@@ -47,6 +47,13 @@ The repository is in the **active content-creation stage**. The Astro build, con
 | [file-naming-conventions.md](file-naming-conventions.md) | Confirmed file naming rules (D-15, D-16) |
 | [publishing-workflow.md](publishing-workflow.md) | Confirmed publishing platform and conversion workflow (D-17, D-18) |
 | [github-issue-workflow.md](github-issue-workflow.md) | How to create GitHub issues and proceed with implementation |
+| [concept-authoring-workflow.md](concept-authoring-workflow.md) | Concept page authoring, alias policy, and conversion workflow |
+
+### UI direction
+
+| File | Purpose |
+|---|---|
+| [reading-ui-direction.md](reading-ui-direction.md) | Reading-focused UI direction: current state, design goals, page roles, open questions |
 
 ### Decision records (ADR)
 
