@@ -29,3 +29,7 @@ Added `.codex/agents/` role guides for planning-lead, documentation-curator, and
 ## 2026-05-08 — Start network-protocols production phase
 
 Synced `docs/astro-bootstrap.md` with the implemented concept routes and dual posts/concepts conversion workflow, and marked `docs/reading-ui-direction.md` as a resolved design record rather than a live description of the current UI. Promoted `src/content/posts/what-is-http.md` from `idea` to a full `review` draft with real concept links to DNS, TCP, and TLS, and advanced `src/content/posts/tcp-connection-and-reliability.md` to `outline` so the next post is ready for the repeatable production loop.
+
+## 2026-05-08 — Enforce explicit published-only visibility
+
+Changed Astro route generation so only posts explicitly marked `status: published` are exposed through `/posts/[slug]` and series pages. Updated the lifecycle, review, readiness, metadata, bootstrap, conversion-contract, and decision documents to match the stricter D-33 rule, and extended `scripts/check-content.mjs` to warn when a committed post omits `status` because omission now always excludes the post from production output.

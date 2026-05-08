@@ -90,7 +90,7 @@ Minimum fields at `idea` state:
 | `order` | Yes (D-25) | Intended position in the series (integer) |
 | `status` | No (D-32) | `idea` — marks the post as not yet written |
 
-No other fields are required at `idea` state. The D-33 build filter excludes `idea` posts from production output, so the file can be committed to the repo or converted without affecting the live site.
+No other fields are required at `idea` state. In repository practice, set `status` explicitly even for early drafts so production visibility is never ambiguous. Under D-33, only `status: published` is included in production output, so `idea` posts and statusless notes stay off the live site.
 
 ### Step 3 — Advance to `outline`
 
@@ -186,6 +186,7 @@ A post is ready to move from `review` to `published` when all of the following a
 - The file name and frontmatter are valid (see drafting checklist above).
 - The Obsidian-to-Astro conversion runs without errors on this file (`pnpm convert --strict`).
 - `pnpm build` completes without errors after conversion.
+- The post becomes reader-visible only after frontmatter is explicitly changed to `status: published`.
 
 This quality bar applies to the first post and to all subsequent posts. The bar does not lower for early posts.
 

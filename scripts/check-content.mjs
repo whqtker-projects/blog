@@ -5,7 +5,8 @@
  * Checks:
  *   1. No two series_indexes documents share the same series value
  *   2. Every series value in posts/ has a matching series_indexes document
- *   3. No two published posts in the same series share the same order value
+ *   3. No two explicitly published posts in the same series share the same order value
+ *   4. Warn when a post omits status, because omitted status is excluded from production
  */
 
 import { readFileSync, readdirSync } from 'node:fs';
@@ -43,10 +44,16 @@ const posts = readMdFiles(postsDir);
 const indexes = readMdFiles(indexesDir);
 
 let errors = 0;
+let warnings = 0;
 
 function fail(msg) {
   console.error(`  ✗ ${msg}`);
   errors++;
+}
+
+function warn(msg) {
+  console.warn(`  ! ${msg}`);
+  warnings++;
 }
 
 // --- Check 1: no duplicate series values in series_indexes ---
@@ -82,10 +89,8 @@ if (errors === errorsAfterCheck1) console.log('  ✓ passed');
 const errorsAfterCheck2 = errors;
 
 // --- Check 3: no duplicate order within a series (published posts only) ---
-console.log('Check 3: no duplicate order values within a series (published posts)');
-const publishedPosts = posts.filter(
-  (p) => !p.status || p.status === 'published'
-);
+console.log('Check 3: no duplicate order values within a series (explicitly published posts)');
+const publishedPosts = posts.filter((p) => p.status === 'published');
 const orderKeys = new Map();
 for (const post of publishedPosts) {
   if (!post.series || post.order === undefined) continue;
@@ -100,10 +105,27 @@ for (const post of publishedPosts) {
 }
 if (errors === errorsAfterCheck2) console.log('  ✓ passed');
 
+// --- Check 4: warn on missing status ---
+console.log('Check 4: warn on posts with missing status');
+const statuslessPosts = posts.filter((post) => post.status === undefined);
+if (statuslessPosts.length === 0) {
+  console.log('  ✓ passed');
+} else {
+  for (const post of statuslessPosts) {
+    warn(
+      `${post.file}: missing 'status' field — omitted status is excluded from production output`
+    );
+  }
+}
+
 // --- Result ---
 if (errors > 0) {
   console.error(`\n${errors} violation(s) found. Fix before committing.`);
   process.exit(1);
 } else {
-  console.log('\nAll checks passed.');
+  console.log(
+    warnings > 0
+      ? `\nAll checks passed with ${warnings} warning(s).`
+      : '\nAll checks passed.'
+  );
 }

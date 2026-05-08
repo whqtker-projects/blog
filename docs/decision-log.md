@@ -547,6 +547,40 @@ After the first deployment phase was complete, the next natural step was establi
 
 ---
 
+## DL-014 — Explicit publish-only production visibility
+
+**Date:** 2026-05-08
+**Status:** confirmed
+
+### Context
+
+The repository had moved into active multi-stage content production. At that point, treating a missing `status` field as deployable created an avoidable ambiguity: an unfinished or newly added post could appear on the public site unless the author remembered to add a non-published status immediately.
+
+### Alternatives considered
+
+- Keep the existing rule (`status` absent or `published` → included): Lower friction, but too easy to expose incomplete content accidentally.
+- Require `status: published` explicitly for deployment (chosen): Makes public visibility intentional and aligns deployed output with the documented review → publish workflow.
+
+### Decision
+
+- D-33 revised: only posts explicitly marked `status: published` are included in the production build.
+- Posts with `status` absent are now excluded, the same as `idea`, `outline`, `draft`, and `review`.
+
+### Follow-up
+
+- Route-generation filters must use the explicit `published` check only.
+- Lifecycle and review documents must state that omission is not a publish signal.
+- Content validation should warn when committed posts omit `status`, because omission now always hides the post from production.
+
+### References
+
+- `confirmed-decisions.md`: D-33
+- `docs/status-lifecycle.md`
+- `docs/review-checklist.md`
+- `docs/first-content-readiness.md`
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions

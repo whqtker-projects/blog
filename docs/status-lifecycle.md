@@ -1,7 +1,7 @@
 # Post Status Lifecycle
 
-**Status:** Active — confirmed on 2026-05-07. See `confirmed-decisions.md` D-30, D-31, D-32 and `decision-log.md` DL-009.  
-**Last updated:** 2026-05-07
+**Status:** Active — confirmed on 2026-05-07. See `confirmed-decisions.md` D-30, D-31, D-32, D-33 and `decision-log.md` DL-009, DL-014.  
+**Last updated:** 2026-05-08
 
 This document defines the shared vocabulary for tracking how posts move from idea to publication. A consistent status system makes the state of the blog visible at a glance without reading individual files.
 
@@ -62,7 +62,7 @@ Substantial rewrites go through the full review cycle again before republishing.
 
 ## `status` in Obsidian Frontmatter
 
-`status` is an optional frontmatter field (D-32). It is not required on every post. When present, it must use one of the five confirmed values above.
+`status` is an optional frontmatter field at the schema level (D-32). When present, it must use one of the five confirmed values above.
 
 ```yaml
 ---
@@ -73,7 +73,7 @@ status: draft
 ---
 ```
 
-The required frontmatter fields remain `title`, `series`, and `order` (D-25). `status` is supplementary and primarily used to filter posts inside Obsidian (via Dataview or search).
+The required frontmatter fields remain `title`, `series`, and `order` (D-25). In repository practice, committed posts should still set `status` explicitly so their lifecycle and production visibility are unambiguous.
 
 ---
 
@@ -83,14 +83,14 @@ The Astro production build uses `status` to determine which posts are included i
 
 | `status` value | Build behavior |
 |---|---|
-| field absent (not set) | Included in production build |
+| field absent (not set) | Excluded from production build |
 | `published` | Included in production build |
 | `idea` | Excluded from production build |
 | `outline` | Excluded from production build |
 | `draft` | Excluded from production build |
 | `review` | Excluded from production build |
 
-This policy controls reader-facing output only. It does not restrict which statuses an author can use in the Obsidian vault.
+Only posts explicitly marked `published` are deployed. A missing `status` no longer acts as an implicit publish signal.
 
 ---
 

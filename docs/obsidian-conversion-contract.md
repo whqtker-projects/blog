@@ -222,5 +222,5 @@ The `.gitignore` already reflects this policy and requires no changes.
 - D-15, D-16: File naming rules that constrain slug mapping.
 - D-18: Conversion is automated; wikilinks are the minimum required transformation.
 - D-25: Required frontmatter fields (`title`, `series`, `order`).
-- D-33: Production build inclusion policy enforced by Astro's content schema, not by this script.
+- D-33: Production build inclusion policy enforced by Astro route-generation filters, not by this script.
 - D-36, D-37: URL structure and content collection location.

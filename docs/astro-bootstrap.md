@@ -1,7 +1,7 @@
 # Astro Bootstrap Documentation
 
 **Status:** Active — Astro skeleton initialized 2026-05-07.  
-**Last updated:** 2026-05-07
+**Last updated:** 2026-05-08
 
 Quick reference for working with the Astro project in this repository.
 
@@ -169,7 +169,7 @@ order: number    # position within the series, starting at 1
 status: idea | outline | draft | review | published
 ```
 
-**Production build inclusion (D-33):** Posts with `status` absent or set to `published` are included. All other status values are excluded from the build output.
+**Production build inclusion (D-33):** Only posts with `status: published` are included. Posts with `status` absent or set to `idea`, `outline`, `draft`, or `review` are excluded from the build output.
 
 Concepts are loaded separately from `src/content/concepts/`. They require `title` and may include `aliases`; they do not use `series`, `order`, or `status`.
 

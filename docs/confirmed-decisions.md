@@ -8,7 +8,7 @@ This document is the stable reference for decisions that have been explicitly ag
 - When a new decision is confirmed, add it here and remove it from `open-questions.md`.
 - For the full decision record with context and rationale, see `decision-log.md`.
 
-**Last updated:** 2026-05-08 (D-50–D-53 added)
+**Last updated:** 2026-05-08 (D-33 revised; D-50–D-53 added)
 
 ---
 
@@ -143,7 +143,7 @@ This document is the stable reference for decisions that have been explicitly ag
 | D-30 | Post status vocabulary (5 values): `idea`, `outline`, `draft`, `review`, `published`. |
 | D-31 | Published-post update policy: typo, link, and factual-error fixes keep `published` status. Section additions or substantial rewrites return the post to `draft`. |
 | D-32 | `status` is an optional frontmatter field. No default value. Required fields remain `title`, `series`, `order` (D-25). |
-| D-33 | Production build inclusion policy: a post is included if `status` is absent or equals `published`. A post is excluded if `status` is `idea`, `outline`, `draft`, or `review`. |
+| D-33 | Production build inclusion policy: only posts explicitly marked `status: published` are included. Posts with `status` absent, `idea`, `outline`, `draft`, or `review` are excluded. |
 
 ---
 
