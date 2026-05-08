@@ -9,14 +9,15 @@ interface NavLink {
 
 interface Props {
   title: string;
+  description?: string;
   series: string;
   order: number;
   prev?: NavLink | null;
   next?: NavLink | null;
 }
-const { title, series, order, prev, next } = Astro.props;
+const { title, description, series, order, prev, next } = Astro.props;
 ---
-<BaseLayout title={title}>
+<BaseLayout title={title} description={description}>
   <article>
     <header>
       <p class="breadcrumb">

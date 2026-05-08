@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://blog.whqtker.com/sitemap-index.xml
