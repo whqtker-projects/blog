@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "series_indexes/computer-architecture/architecture-overview.md",
+                "file": "series_indexes/data-structures-and-algorithms.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "architecture-overview"
+              "title": "data-structures-and-algorithms"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "series_indexes/computer-architecture/architecture-overview.md",
+                "file": "series_indexes/data-structures-and-algorithms.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "architecture-overview 의 백링크"
+              "title": "data-structures-and-algorithms 의 백링크"
             }
           },
           {
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "series_indexes/computer-architecture/architecture-overview.md",
+                "file": "series_indexes/data-structures-and-algorithms.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "architecture-overview 의 나가는 링크"
+              "title": "data-structures-and-algorithms 의 나가는 링크"
             }
           },
           {
@@ -156,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "series_indexes/computer-architecture/architecture-overview.md",
+                "file": "series_indexes/data-structures-and-algorithms.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "architecture-overview 의 개요"
+              "title": "data-structures-and-algorithms 의 개요"
             }
           }
         ]
@@ -185,6 +185,25 @@
   },
   "active": "45e3cee8864045d5",
   "lastOpenFiles": [
+    "series_indexes/database-systems.md",
+    "series_indexes/database-systems/database-internals.md",
+    "series_indexes/computer-networks.md",
+    "series_indexes/computer-architecture/architecture-overview.md",
+    "posts/routing-and-routing-protocols.md",
+    "posts/ip-fragmentation-and-mtu.md",
+    "posts/nat-and-private-addressing.md",
+    "posts/icmp-and-network-control-messages.md",
+    "posts/arp-and-local-address-resolution.md",
+    "posts/tcp-header-options.md",
+    "posts/tcp-congestion-control.md",
+    "posts/tcp-flow-control.md",
+    "posts/networking-technologies-and-media.md",
+    "posts/encapsulation-and-network-path.md",
+    "posts/osi-and-tcp-ip-models.md",
+    "posts/overview-of-computer-networks.md",
+    "posts/ip-addressing-and-subnetting.md",
+    "series_indexes/computer-networks/network-foundations.md",
+    "series_indexes/computer-networks/internet-addressing-and-routing.md",
     "series_indexes/computer-architecture/bus-io-and-interrupts.md",
     "series_indexes/computer-architecture/computer-arithmetic.md",
     "series_indexes/computer-architecture/control-unit.md",
@@ -192,29 +211,10 @@
     "series_indexes/computer-architecture/storage-systems.md",
     "series_indexes/computer-architecture/parallel-and-high-performance-architecture.md",
     "series_indexes/computer-architecture/cpu-and-instruction-execution.md",
-    "series_indexes/computer-architecture/architecture-overview.md",
-    "series_indexes/computer-architecture.md",
-    "series_indexes/bus-io-and-interrupts.md",
-    "series_indexes/database-systems/database-internals.md",
     "series_indexes/database-systems",
-    "series_indexes/data-structures-and-algorithms/data-structures.md",
     "series_indexes/data-structures-and-algorithms",
-    "series_indexes/computer-networks/transport-and-reliability.md",
-    "series_indexes/computer-networks/network-protocols.md",
-    "series_indexes/computer-networks/naming-and-routing.md",
     "series_indexes/computer-networks",
     "series_indexes/computer-architecture",
-    "series_indexes/data-structures.md",
-    "series_indexes/data-structures-and-algorithms.md",
-    "series_indexes/cpu-and-instruction-execution.md",
-    "series_indexes/control-unit.md",
-    "series_indexes/computer-networks.md",
-    "series_indexes/computer-arithmetic.md",
-    "posts/hbm-and-high-bandwidth-memory.md",
-    "posts/gpu-architecture-and-role.md",
-    "posts/cache-coherence-protocols.md",
-    "posts/shared-memory-and-distributed-memory-architecture.md",
-    "posts/multiprocessor-system-architecture.md",
     "series_indexes"
   ]
 }

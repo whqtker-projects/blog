@@ -1,5 +1,5 @@
 ---
-title: "Computer Networks"
+title: 컴퓨터 네트워크
 series: computer-networks
-description: "How distributed machines connect, identify each other, and move data across the network stack."
+description: Computer Networks
 ---

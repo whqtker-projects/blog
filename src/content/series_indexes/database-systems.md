@@ -1,5 +1,5 @@
 ---
-title: "Database Systems"
+title: 데이터베이스
 series: database-systems
-description: "Storage engines, query processing, and the structures that make databases durable and fast."
+description: Database Systems
 ---
