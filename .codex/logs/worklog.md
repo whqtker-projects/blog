@@ -119,6 +119,15 @@ Verification:
 
 ## 2026-05-09 — Run pilot batch for idea-stage posts
 
+## 2026-05-09 — Add computer-architecture parent and child series backlog
+
+Added the `computer-architecture` parent series in repository style and created eight child series under it: `architecture-overview`, `cpu-and-instruction-execution`, `computer-arithmetic`, `control-unit`, `memory-systems`, `storage-systems`, `bus-io-and-interrupts`, and `parallel-and-high-performance-architecture`.
+
+Populated those child series with 55 new idea-stage backlog posts under `src/content/posts/`. Every post uses explicit `title`, `series`, `order`, and `status: idea`, with contiguous ordering inside each child series and a minimal body stub.
+
+Repository-specific adjustment:
+- Reused an existing untracked local file at `src/content/series_indexes/computer-architecture.md` as the requested parent series index, normalizing its title and description to match the current repository conventions instead of creating a duplicate slug.
+
 Formalized the `network-protocols` series as the first pilot batch for the simplified status model in `docs/first-content-readiness.md`. The batch uses five already-committed posts with explicit `order` and `status`, covering both non-public states now in use: `draft` and `idea`.
 
 To make the local-vs-production visibility rule directly testable, replaced the TypeScript-only visibility helper with `src/utils/post-visibility.js`, added a pure `visiblePostsForMode` function, and added `scripts/post-visibility.test.mjs` plus the `pnpm test:repo` script. This verifies that local development includes all posts while staged and production builds keep only `published` posts public.
