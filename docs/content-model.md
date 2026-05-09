@@ -4,7 +4,7 @@ This document defines the role boundaries for the three content types in this re
 
 It also serves as the authoritative information-architecture contract for the current parent-child series model.
 
-Structural policy comes from `D-57` through `D-60`; page-role and attachment rules come from `D-61` through `D-64`.
+Structural policy comes from `D-57` through `D-60`; page-role and attachment rules come from `D-61` through `D-64`; ordering and title-prefix rules come from `D-68` through `D-71`.
 
 ---
 
@@ -15,7 +15,7 @@ Structural policy comes from `D-57` through `D-60`; page-role and attachment rul
 | URL | `/posts/<slug>` | `/concepts/<slug>` | Parent: `/series/<parent>`; Child: `/series/<parent>/<child>` |
 | Location | `src/content/posts/` | `src/content/concepts/` | `src/content/series_indexes/` |
 | Belongs to series | Yes (required; child series only) | No | Defines either a parent series or a child series |
-| Has `order` | Yes (required) | No | No |
+| Has `order` | Yes (required) | No | Child only |
 | Has `status` | Yes (required) | No | No |
 | Created via | `pnpm convert` from Obsidian | `pnpm convert` from Obsidian | Manual authoring |
 | Appears on homepage | No | No | Parent series only |
@@ -94,6 +94,7 @@ Confirmed target metadata contract:
 title: string
 series: string   # slug for this parent or child series
 parent: string?  # omitted for parent series; required for child series
+order: number?   # omitted for parent series; required for child series
 ```
 
 Physical path contract:
@@ -103,7 +104,9 @@ Physical path contract:
 
 Role rules:
 - A parent series omits `parent`.
+- A parent series omits `order`.
 - A child series sets `parent` to the slug of exactly one parent series.
+- A child series sets `order` to its position within that parent, starting at 1.
 - Existing flat series slugs migrate into child-series slugs unchanged.
 - `network-protocols` remains the child-series slug during migration.
 - No third level is allowed. A child series cannot itself be the parent of another child series.
@@ -133,6 +136,7 @@ This differs from the current flat model, where every `series_indexes` document 
 Parent page responsibilities:
 - introduce the broader direction represented by the parent series
 - list child series that belong to that parent
+- sort child series by `order` ascending, with `title` ascending only as a deterministic fallback
 - link each child series to `/series/<parent>/<child>`
 - avoid flattening all descendant posts into one mixed ordered list
 
@@ -150,9 +154,14 @@ The parent page is a navigation layer, not the direct owner of posts.
 Child page responsibilities:
 - act as the terminal ordered content container
 - list posts for that child series only
-- sort posts by `order` ascending within that child series
+- sort posts by `order` ascending within that child series, with `title` ascending only as a deterministic fallback
 - apply the existing visibility rules: local development shows all posts; staged and production builds show only posts with `status: published`
 - provide the series context used by post breadcrumbs, prev/next navigation, and series back-links
+
+Post title-prefix rule:
+- Numeric title prefixes such as `01. ...` are optional display aids only.
+- They do not replace `order` as the structural source of truth.
+- When a numeric prefix is present, repository validation requires it to match the post's explicit `order`.
 
 You do not write post links manually in the series index body.
 

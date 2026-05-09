@@ -196,10 +196,18 @@ series: string   # slug for this parent or child series
 **Optional field:**
 ```yaml
 parent: string        # set on child series only; omitted on parent series
+order: number         # set on child series only; omitted on parent series
 description: string   # one-line summary shown on the homepage and series page
 ```
 
-Series index documents do not use `order`, `status`, or any post-specific fields.
+Repository contract:
+- Parent series omit `order`.
+- Child series require `order` and are sorted on parent pages by `order ASC`, with `title ASC` only as a fallback.
+
+Post ordering contract:
+- Posts continue to require explicit `order`.
+- Child pages and prev/next navigation use `order ASC`, with `title ASC` only as a fallback.
+- Numeric title prefixes such as `01. ...` are optional display aids only. They are rendered as-is when present, and validation requires them to match `order`.
 
 ---
 

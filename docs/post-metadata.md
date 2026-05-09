@@ -10,7 +10,7 @@ This document defines the required frontmatter fields for every blog post.
 
 | Field | Type | Description |
 |---|---|---|
-| `title` | string | Display title of the post. Korean or English. |
+| `title` | string | Display title of the post. Korean or English. Numeric prefixes such as `01. ...` are optional display aids only. |
 | `series` | string (slug) | Series the post belongs to. Must match a confirmed series slug from `series-backlog.md`. |
 | `order` | integer | Position of the post within its series. Starts at 1. |
 | `status` | string | Post lifecycle stage. Required values: `idea`, `draft`, `published` (D-30, D-32). |
@@ -25,6 +25,22 @@ order: 1
 status: draft
 ---
 ```
+
+---
+
+## Domain Inference
+
+## Ordering Rule
+
+`order` remains the structural source of truth for post ordering.
+
+- Child series pages sort posts by `order` ascending.
+- Post prev/next navigation is derived from `order` ascending.
+- `title` is used only as a deterministic fallback when two posts compare equal by `order`.
+- If a post title includes a numeric prefix such as `01. `, that prefix is a visible authoring/display aid only.
+- When a numeric title prefix is present, repository validation requires it to match the post's explicit `order`.
+
+File naming is unchanged. Numeric title prefixes do not imply filename prefixes.
 
 ---
 

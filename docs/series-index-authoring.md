@@ -44,6 +44,7 @@ File names follow the same kebab-case rule as posts (D-15). Frontmatter remains 
 title: "Database Internals"
 series: database-internals
 parent: database-systems
+order: 1
 ---
 ```
 
@@ -58,12 +59,14 @@ parent: database-systems
 
 ```yaml
 parent: database-systems
+order: 1
 description: "How relational databases store, index, and retrieve data."
 ```
 
 | Field | Required | Notes |
 |-------|----------|-------|
 | `parent` | No for parent series; Yes for child series | Omit on parent series. Set to the parent series slug on child series. |
+| `order` | No for parent series; Yes for child series | Omit on parent series. Set the child series position within its parent, starting at 1. |
 | `description` | No | One-line summary shown on the homepage and series page |
 
 ---
@@ -74,9 +77,12 @@ Do not add these fields to series index documents:
 
 | Field | Reason |
 |-------|--------|
-| `order` | Series indexes are not ordered entries; they define the series |
 | `status` | Series indexes are always rendered; there is no draft state |
 | `aliases` | Concept-specific field |
+
+Clarification:
+- `order` is forbidden on parent series indexes.
+- `order` is required on child series indexes.
 
 ---
 
@@ -85,6 +91,8 @@ Do not add these fields to series index documents:
 **One index per series slug.** There must be exactly one series index document for each parent or child slug. If two index documents share the same `series` value, Astro generates duplicate routes.
 
 **Path and frontmatter must agree.** The file layout expresses the hierarchy physically, but it does not replace frontmatter. A child index under `src/content/series_indexes/computer-networks/network-protocols.md` must still declare `series: network-protocols` and `parent: computer-networks`.
+
+**Child series are explicitly ordered.** Parent pages sort child series by `order` ascending. `title` is only a deterministic fallback when comparing items that otherwise tie.
 
 **Posts attach only to child series.** The `series` field in post frontmatter must exactly match a child series slug, not a parent series slug.
 
@@ -123,6 +131,7 @@ Child example: `src/content/series_indexes/database-systems/database-internals.m
 title: "Database Internals"
 series: database-internals
 parent: database-systems
+order: 1
 description: "How relational databases store, index, and retrieve data — from on-disk structures to query execution."
 ---
 ```

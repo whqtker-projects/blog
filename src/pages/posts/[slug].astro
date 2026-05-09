@@ -25,7 +25,7 @@ export async function getStaticPaths() {
     const parentIndex = requireParentIndex(childIndex, seriesBySlug);
     const seriesPosts = visiblePosts
       .filter((p) => p.data.series === post.data.series)
-      .sort((a, b) => a.data.order - b.data.order);
+      .sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title));
     const idx = seriesPosts.findIndex((p) => p.id === post.id);
     const prevPost = idx > 0 ? seriesPosts[idx - 1] : null;
     const nextPost = idx < seriesPosts.length - 1 ? seriesPosts[idx + 1] : null;

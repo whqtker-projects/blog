@@ -151,6 +151,26 @@ Added a repository operating rule in `AGENTS.md` that agents must not modify any
 
 Mirrored the same restriction into `.codex/agents/post-drafter.md` and `.claude/agents/post-drafter.md` so content-writing agents treat published posts as author-only content unless the repository rule itself is explicitly changed later.
 
+## 2026-05-09 — Implement child-series order metadata and ordering validation
+
+Implemented the repository follow-up for issues `#162` through `#165` after the AskUserQuestion policy was resolved in `D-68` through `D-71`.
+
+Added optional schema support for `series_indexes.order` in `src/content.config.ts`, then updated all existing child series indexes under `computer-architecture`, `computer-networks`, `database-systems`, and `data-structures-and-algorithms` to declare explicit `order` values. Parent series remain unordered.
+
+Updated sorting so child series are ordered by `order ASC`, with `title ASC` only as a fallback in `src/utils/series-hierarchy.ts`. Updated child-page post lists and post prev/next derivation to use `order ASC`, `title ASC` as the deterministic fallback.
+
+Extended `scripts/check-content.mjs` to enforce the new contract:
+- parent series must not declare `order`
+- child series must declare a positive integer `order`
+- child-series `order` must be unique within each parent
+- numeric post title prefixes, when present, must match explicit post `order`
+
+Synchronized the directly affected contract docs:
+- `docs/content-model.md`
+- `docs/series-index-authoring.md`
+- `docs/post-metadata.md`
+- `docs/astro-bootstrap.md`
+
 ## 2026-05-09 — Add first bulk batch of idea-stage posts
 
 Added the first larger intake batch as one coherent new confirmed series: `data-structures`. Created `src/content/series_indexes/data-structures.md` first, then added five explicit `status: idea` posts with contiguous ordering:

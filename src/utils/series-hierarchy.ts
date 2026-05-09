@@ -6,6 +6,11 @@ function byTitleAsc(a: SeriesIndex, b: SeriesIndex) {
   return a.data.title.localeCompare(b.data.title);
 }
 
+function byChildSeriesOrderAsc(a: SeriesIndex, b: SeriesIndex) {
+  const orderDiff = (a.data.order ?? Number.MAX_SAFE_INTEGER) - (b.data.order ?? Number.MAX_SAFE_INTEGER);
+  return orderDiff || byTitleAsc(a, b);
+}
+
 export function parentSeriesPath(parentSlug: string): string {
   return `/series/${parentSlug}`;
 }
@@ -17,7 +22,9 @@ export function childSeriesPath(parentSlug: string, childSlug: string): string {
 export function buildSeriesHierarchy(indexes: SeriesIndex[]) {
   const seriesBySlug = new Map(indexes.map((idx) => [idx.data.series, idx]));
   const parentIndexes = indexes.filter((idx) => !idx.data.parent).sort(byTitleAsc);
-  const childIndexes = indexes.filter((idx) => Boolean(idx.data.parent)).sort(byTitleAsc);
+  const childIndexes = indexes
+    .filter((idx) => Boolean(idx.data.parent))
+    .sort(byChildSeriesOrderAsc);
   const childrenByParent = new Map<string, SeriesIndex[]>();
 
   for (const child of childIndexes) {
@@ -28,7 +35,7 @@ export function buildSeriesHierarchy(indexes: SeriesIndex[]) {
   }
 
   for (const children of childrenByParent.values()) {
-    children.sort(byTitleAsc);
+    children.sort(byChildSeriesOrderAsc);
   }
 
   return { seriesBySlug, parentIndexes, childIndexes, childrenByParent };

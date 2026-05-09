@@ -7,9 +7,11 @@
  *   2. Parent-child hierarchy is structurally valid
  *   3. Every series value in posts/ has a matching child series index
  *   4. Series index file paths match the parent-child layout contract
- *   5. No two explicitly published posts in the same child series share the same order value
- *   6. Fail when a post omits status, because committed posts must set status explicitly
- *   7. Fail when a post uses a status outside the simplified vocabulary
+ *   5. Child-series ordering metadata is valid and parent series stay unordered
+ *   6. No two explicitly published posts in the same child series share the same order value
+ *   7. Fail when a post omits status, because committed posts must set status explicitly
+ *   8. Fail when a post uses a status outside the simplified vocabulary
+ *   9. Numeric post title prefixes, when present, must match post order
  */
 
 import { readFileSync, readdirSync } from 'node:fs';
@@ -72,6 +74,11 @@ function fail(msg) {
 
 function splitIndexPath(index) {
   return index.file.replace(/\.md$/, '').split('/');
+}
+
+function parseNumericTitlePrefix(title) {
+  const match = title.match(/^(\d+)\.\s+/);
+  return match ? Number(match[1]) : null;
 }
 
 // --- Check 1: no duplicate series values in series_indexes ---
@@ -185,9 +192,41 @@ for (const idx of indexes) {
 if (errors === errorsAfterCheck3) console.log('  ✓ passed');
 const errorsAfterCheck4 = errors;
 
-// --- Check 5: no published-order collision within a child series ---
+// --- Check 5: child-series ordering metadata is valid ---
+console.log('Check 5: child-series order metadata is valid');
+const childOrderKeys = new Map();
+for (const idx of indexes) {
+  if (!idx.parent) {
+    if (idx.order !== undefined) {
+      fail(
+        `${idx.file}: parent series '${idx.series}' must not declare an 'order' field`
+      );
+    }
+    continue;
+  }
+
+  if (!Number.isInteger(idx.order) || idx.order < 1) {
+    fail(
+      `${idx.file}: child series '${idx.series}' must declare a positive integer 'order' field`
+    );
+    continue;
+  }
+
+  const key = `${idx.parent}::${idx.order}`;
+  if (childOrderKeys.has(key)) {
+    fail(
+      `${idx.file}: child series order ${idx.order} under parent '${idx.parent}' is already used by '${childOrderKeys.get(key)}'`
+    );
+  } else {
+    childOrderKeys.set(key, idx.file);
+  }
+}
+if (errors === errorsAfterCheck4) console.log('  ✓ passed');
+const errorsAfterCheck5 = errors;
+
+// --- Check 6: no published-order collision within a child series ---
 console.log(
-  'Check 5: no duplicate order values within a child series (explicitly published posts)'
+  'Check 6: no duplicate order values within a child series (explicitly published posts)'
 );
 const publishedPosts = posts.filter((p) => p.status === 'published');
 const orderKeys = new Map();
@@ -202,11 +241,11 @@ for (const post of publishedPosts) {
     orderKeys.set(key, post.file);
   }
 }
-if (errors === errorsAfterCheck4) console.log('  ✓ passed');
-const errorsAfterCheck5 = errors;
+if (errors === errorsAfterCheck5) console.log('  ✓ passed');
+const errorsAfterCheck6 = errors;
 
-// --- Check 6: fail on missing status ---
-console.log('Check 6: no posts may omit status');
+// --- Check 7: fail on missing status ---
+console.log('Check 7: no posts may omit status');
 const statuslessPosts = posts.filter((post) => post.status === undefined);
 if (statuslessPosts.length === 0) {
   console.log('  ✓ passed');
@@ -217,10 +256,10 @@ if (statuslessPosts.length === 0) {
     );
   }
 }
-const errorsAfterCheck6 = errors;
+const errorsAfterCheck7 = errors;
 
-// --- Check 7: fail on invalid status values ---
-console.log('Check 7: status values use the simplified vocabulary');
+// --- Check 8: fail on invalid status values ---
+console.log('Check 8: status values use the simplified vocabulary');
 for (const post of posts) {
   if (post.status !== undefined && !ALLOWED_POST_STATUSES.has(post.status)) {
     fail(
@@ -228,7 +267,24 @@ for (const post of posts) {
     );
   }
 }
-if (errors === errorsAfterCheck6) console.log('  ✓ passed');
+if (errors === errorsAfterCheck7) console.log('  ✓ passed');
+const errorsAfterCheck8 = errors;
+
+// --- Check 9: title prefixes must match post order when present ---
+console.log('Check 9: numeric post title prefixes match explicit order when present');
+for (const post of posts) {
+  if (!post.title || !Number.isInteger(post.order)) continue;
+
+  const prefixOrder = parseNumericTitlePrefix(post.title);
+  if (prefixOrder === null) continue;
+
+  if (prefixOrder !== post.order) {
+    fail(
+      `${post.file}: title prefix '${String(prefixOrder).padStart(2, '0')}' does not match explicit order ${post.order}`
+    );
+  }
+}
+if (errors === errorsAfterCheck8) console.log('  ✓ passed');
 
 // --- Result ---
 if (errors > 0) {

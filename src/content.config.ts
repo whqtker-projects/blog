@@ -29,6 +29,8 @@ const series_indexes = defineCollection({
     title: z.string(),
     series: z.string(),
     parent: z.string().optional(),
+    // Parent series omit this; child series require it by repository validation.
+    order: z.number().optional(),
     description: z.string().optional(),
   }),
 });
