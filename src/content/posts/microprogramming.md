@@ -1,5 +1,5 @@
 ---
-title: "마이크로프로그래밍"
+title: "03. 마이크로프로그래밍"
 series: control-unit
 order: 3
 status: idea

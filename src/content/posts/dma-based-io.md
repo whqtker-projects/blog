@@ -1,5 +1,5 @@
 ---
-title: "DMA를 이용한 I/O"
+title: "05. DMA를 이용한 I/O"
 series: bus-io-and-interrupts
 order: 5
 status: idea

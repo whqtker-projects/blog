@@ -1,5 +1,5 @@
 ---
-title: "캐시 사상 방식"
+title: "07. 캐시 사상 방식"
 series: memory-systems
 order: 7
 status: idea

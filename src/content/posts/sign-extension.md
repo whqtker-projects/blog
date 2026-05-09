@@ -1,5 +1,5 @@
 ---
-title: "부호 확장"
+title: "04. 부호 확장"
 series: computer-arithmetic
 order: 4
 status: idea

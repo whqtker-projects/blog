@@ -1,5 +1,5 @@
 ---
-title: "컴퓨터 구조의 발전 과정"
+title: "04. 컴퓨터 구조의 발전 과정"
 series: architecture-overview
 order: 4
 status: idea

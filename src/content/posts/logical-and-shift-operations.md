@@ -1,5 +1,5 @@
 ---
-title: "논리 연산과 시프트 연산"
+title: "05. 논리 연산과 시프트 연산"
 series: computer-arithmetic
 order: 5
 status: idea

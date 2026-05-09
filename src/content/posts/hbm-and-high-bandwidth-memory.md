@@ -1,5 +1,5 @@
 ---
-title: "HBM과 고대역폭 메모리 구조"
+title: "07. HBM과 고대역폭 메모리 구조"
 series: parallel-and-high-performance-architecture
 order: 7
 status: idea

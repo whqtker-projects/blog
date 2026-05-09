@@ -2,9 +2,11 @@
 
 **Status:** Resolved — decision recorded in `confirmed-decisions.md` (D-15, D-16) and `decision-log.md` (DL-002).  
 **Decided:** 2026-05-06  
-**Convention:** All-lowercase kebab-case, English only, no prefix. Example: `transformer-attention-mechanism.md`
+**Convention:** All-lowercase kebab-case, English only, no filename prefix. Example: `transformer-attention-mechanism.md`
 
-Obsidian file names directly affect internal linking, search behavior, and the Obsidian-to-blog conversion path. This document lays out the decision points and available options. The user decides.
+Obsidian file names directly affect internal linking, search behavior, and the Obsidian-to-blog conversion path. This document lays out the decision points and available options.
+
+Visible post titles are a separate concern. A post `title` may optionally include a numeric prefix such as `01. ...`, but that does not change the filename rule and does not make title numbering the structural source of truth.
 
 See the related open question in [`docs/open-questions.md`](open-questions.md).
 
@@ -57,7 +59,7 @@ Changing conventions after many files exist is expensive — all internal links 
 
 ---
 
-### 4. Series Prefix
+### 4. Series Prefix in Filenames
 
 | Option | Example | Notes |
 |---|---|---|
@@ -67,7 +69,7 @@ Changing conventions after many files exist is expensive — all internal links 
 
 ---
 
-### 5. Date Prefix
+### 5. Date Prefix in Filenames
 
 | Option | Example | Notes |
 |---|---|---|
@@ -94,6 +96,13 @@ Encodes domain and order; brittle when posts are inserted or reordered.
 
 ---
 
-## Next Step
+## Current Clarification
 
-This document is an input to a user decision. When the convention is chosen, the decision will be recorded in [`docs/decisions/`](decisions/) and the related open question in `open-questions.md` will be resolved.
+The resolved filename rule is:
+- filenames stay all-lowercase kebab-case, English only, with no filename prefix
+
+This does not prohibit visible numeric prefixes in the post `title` frontmatter. Under the current repository policy:
+- numeric title prefixes are optional
+- they are rendered as-is when present
+- post `order` remains the structural source of truth
+- validation requires a numeric title prefix to match `order` when such a prefix is present

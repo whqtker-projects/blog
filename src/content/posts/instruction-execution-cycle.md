@@ -1,5 +1,5 @@
 ---
-title: "명령어 실행 사이클"
+title: "02. 명령어 실행 사이클"
 series: cpu-and-instruction-execution
 order: 2
 status: idea

@@ -29,7 +29,7 @@ The original pilot batch for large-scale idea intake was the committed `network-
 
 Why the original pilot was suitable:
 
-- A real series index exists at `src/content/series_indexes/network-protocols.md`
+- A real child series index exists at `src/content/series_indexes/computer-networks/network-protocols.md`
 - The child series now has an explicit parent mapping to `computer-networks`
 - All five posts already have explicit `series`, `order`, and `status`
 - The batch exercises both non-public lifecycle states now in use: `draft` and `idea`
@@ -57,7 +57,7 @@ The first larger idea-stage batch is grouped as one new confirmed child series: 
 
 Series indexes:
 - `src/content/series_indexes/data-structures-and-algorithms.md`
-- `src/content/series_indexes/data-structures.md`
+- `src/content/series_indexes/data-structures-and-algorithms/data-structures.md`
 
 Initial bulk batch:
 

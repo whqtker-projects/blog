@@ -1,5 +1,5 @@
 ---
-title: "반도체 기억장치"
+title: "03. 반도체 기억장치"
 series: memory-systems
 order: 3
 status: idea

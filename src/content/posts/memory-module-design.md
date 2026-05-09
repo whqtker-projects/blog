@@ -1,5 +1,5 @@
 ---
-title: "기억장치 모듈의 설계"
+title: "05. 기억장치 모듈의 설계"
 series: memory-systems
 order: 5
 status: idea

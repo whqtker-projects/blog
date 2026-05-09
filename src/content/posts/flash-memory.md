@@ -1,5 +1,5 @@
 ---
-title: "플래시 메모리"
+title: "04. 플래시 메모리"
 series: storage-systems
 order: 4
 status: idea

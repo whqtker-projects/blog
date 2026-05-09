@@ -1,5 +1,5 @@
 ---
-title: "캐시 일관성 유지 프로토콜"
+title: "05. 캐시 일관성 유지 프로토콜"
 series: parallel-and-high-performance-architecture
 order: 5
 status: idea

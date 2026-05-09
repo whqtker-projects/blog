@@ -1,5 +1,5 @@
 ---
-title: "2의 보수 표현"
+title: "03. 2의 보수 표현"
 series: computer-arithmetic
 order: 3
 status: idea

@@ -145,6 +145,14 @@ Verification:
 - `pnpm check:content`
 - `pnpm build`
 
+## 2026-05-09 — Roll out numeric title prefixes to the Computer Architecture backlog
+
+Applied optional numeric title prefixes to the idea-stage `computer-architecture` backlog posts only. File names and explicit `order` fields were left unchanged; the visible prefixes now mirror the existing `order` values within each child series.
+
+Cleaned up the remaining directly affected docs:
+- `docs/file-naming-conventions.md` now distinguishes filename prefixes from visible title prefixes
+- `docs/first-content-readiness.md` now uses the current nested child-series index paths
+
 ## 2026-05-09 — Forbid agent edits to published posts
 
 Added a repository operating rule in `AGENTS.md` that agents must not modify any post already marked `status: published` under `src/content/posts/`.

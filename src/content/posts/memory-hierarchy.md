@@ -1,5 +1,5 @@
 ---
-title: "기억장치 계층 구조"
+title: "02. 기억장치 계층 구조"
 series: memory-systems
 order: 2
 status: idea

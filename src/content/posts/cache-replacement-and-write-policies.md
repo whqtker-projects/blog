@@ -1,5 +1,5 @@
 ---
-title: "캐시 교체 알고리즘과 쓰기 정책"
+title: "08. 캐시 교체 알고리즘과 쓰기 정책"
 series: memory-systems
 order: 8
 status: idea

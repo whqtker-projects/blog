@@ -1,5 +1,5 @@
 ---
-title: "기억장치의 분류와 특성"
+title: "01. 기억장치의 분류와 특성"
 series: memory-systems
 order: 1
 status: idea

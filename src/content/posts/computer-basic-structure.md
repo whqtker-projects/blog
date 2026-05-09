@@ -1,5 +1,5 @@
 ---
-title: "컴퓨터의 기본 구조"
+title: "01. 컴퓨터의 기본 구조"
 series: architecture-overview
 order: 1
 status: idea

@@ -1,5 +1,5 @@
 ---
-title: "주소지정 방식"
+title: "09. 주소지정 방식"
 series: cpu-and-instruction-execution
 order: 9
 status: idea

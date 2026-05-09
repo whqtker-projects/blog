@@ -1,5 +1,5 @@
 ---
-title: "부동소수점 산술 연산"
+title: "09. 부동소수점 산술 연산"
 series: computer-arithmetic
 order: 9
 status: idea

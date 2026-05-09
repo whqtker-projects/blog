@@ -1,5 +1,5 @@
 ---
-title: "다중 캐시 구조"
+title: "09. 다중 캐시 구조"
 series: memory-systems
 order: 9
 status: idea

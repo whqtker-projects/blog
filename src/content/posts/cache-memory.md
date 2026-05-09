@@ -1,5 +1,5 @@
 ---
-title: "캐시 메모리"
+title: "06. 캐시 메모리"
 series: memory-systems
 order: 6
 status: idea

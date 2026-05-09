@@ -1,5 +1,5 @@
 ---
-title: "부동소수점 수의 표현"
+title: "08. 부동소수점 수의 표현"
 series: computer-arithmetic
 order: 8
 status: idea

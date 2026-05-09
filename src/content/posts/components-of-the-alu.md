@@ -1,5 +1,5 @@
 ---
-title: "ALU의 구성 요소"
+title: "01. ALU의 구성 요소"
 series: computer-arithmetic
 order: 1
 status: idea

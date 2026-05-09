@@ -1,5 +1,5 @@
 ---
-title: "SDRAM과 DDR SDRAM"
+title: "10. SDRAM과 DDR SDRAM"
 series: memory-systems
 order: 10
 status: idea

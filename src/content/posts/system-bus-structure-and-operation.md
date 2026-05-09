@@ -1,5 +1,5 @@
 ---
-title: "시스템 버스의 구조와 동작"
+title: "01. 시스템 버스의 구조와 동작"
 series: bus-io-and-interrupts
 order: 1
 status: idea

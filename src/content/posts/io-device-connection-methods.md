@@ -1,5 +1,5 @@
 ---
-title: "I/O 장치의 접속 방식"
+title: "03. I/O 장치의 접속 방식"
 series: bus-io-and-interrupts
 order: 3
 status: idea

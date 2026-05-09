@@ -1,5 +1,5 @@
 ---
-title: "인터럽트를 이용한 I/O"
+title: "04. 인터럽트를 이용한 I/O"
 series: bus-io-and-interrupts
 order: 4
 status: idea
