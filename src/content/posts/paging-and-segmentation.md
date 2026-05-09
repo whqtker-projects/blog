@@ -5,4 +5,6 @@ order: 3
 status: idea
 ---
 
-아이디어 단계 메모.
+관련 링크:
+- 시리즈: [[series:operating-systems/memory-management|메모리 관리]]
+- 관련 글: [[virtual-memory-and-demand-paging|가상 메모리와 요구 페이징]]

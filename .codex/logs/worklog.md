@@ -458,3 +458,14 @@ Synchronized the repository-facing docs so the new slugs, child ordering, and ba
 Verification target:
 - `pnpm check:content`
 - `pnpm build`
+
+## 2026-05-09 — Add graph-friendly series links and backlog backfill
+
+Extended `scripts/obsidian-to-astro.mjs` with explicit `[[series:<parent>]]` and `[[series:<parent>/<child>]]` link conversion, added unresolved-series warning coverage, and expanded `scripts/obsidian-to-astro.test.mjs` accordingly.
+
+Updated graph-link authoring policy across `docs/content-model.md`, `docs/post-template.md`, `docs/first-content-readiness.md`, and `docs/series-index-authoring.md`. Backfilled the `operating-systems`, `spring-framework`, and `spring-boot` parent/child indexes plus their idea-stage post stubs with minimal internal links so graph connectivity no longer depends on frontmatter alone.
+
+Verification:
+- `pnpm test:convert`
+- `pnpm check:content`
+- `pnpm build`

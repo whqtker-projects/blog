@@ -5,5 +5,6 @@ order: 5
 status: idea
 ---
 
-아이디어 단계 메모.
-
+관련 링크:
+- 시리즈: [[series:spring-framework/spring-core|스프링 코어]]
+- 관련 글: [[what-is-spring-framework|스프링 프레임워크란 무엇인가]]

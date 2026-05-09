@@ -5,4 +5,6 @@ order: 1
 status: idea
 ---
 
-아이디어 단계 메모.
+관련 링크:
+- 시리즈: [[series:operating-systems/operating-systems-overview|운영체제 개요]]
+- 관련 글: [[computer-system-structure|컴퓨터 시스템 구조]]

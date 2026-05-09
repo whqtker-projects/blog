@@ -5,4 +5,6 @@ order: 4
 status: idea
 ---
 
-아이디어 단계 메모.
+관련 링크:
+- 시리즈: [[series:operating-systems/memory-management|메모리 관리]]
+- 관련 글: [[page-replacement-policies|페이지 교체 정책]]

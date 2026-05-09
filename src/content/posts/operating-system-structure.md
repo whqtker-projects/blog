@@ -5,4 +5,6 @@ order: 3
 status: idea
 ---
 
-아이디어 단계 메모.
+관련 링크:
+- 시리즈: [[series:operating-systems/operating-systems-overview|운영체제 개요]]
+- 관련 글: [[system-calls-and-user-kernel-boundary|시스템 콜과 사용자-커널 경계]]

@@ -22,3 +22,7 @@ The rollout is migration-safe rather than retroactive: new and editable backlog 
 ## 2026-05-09 — Spring Framework and Spring Boot stay as separate parent directions
 
 The repository treats `spring-framework` and `spring-boot` as separate parent series under backend/systems rather than placing Boot as one child inside a larger framework tree. This keeps framework runtime mechanics distinct from Boot startup, configuration, testing, and operations topics.
+
+## 2026-05-09 — Explicit series links are namespaced and generic wikilinks stay post-only
+
+Graph-friendly repository authoring now treats `[[series:<parent>]]` and `[[series:<parent>/<child>]]` as the explicit series-link namespace, keeps `[[concept:slug]]` for concepts, and reserves generic `[[wikilinks]]` for post targets. Idea-stage post stubs should include at least one series link plus one related post or concept link.

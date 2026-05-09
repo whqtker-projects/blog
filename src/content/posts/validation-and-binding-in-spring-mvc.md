@@ -5,5 +5,6 @@ order: 4
 status: idea
 ---
 
-아이디어 단계 메모.
-
+관련 링크:
+- 시리즈: [[series:spring-framework/spring-web-mvc|스프링 웹 MVC]]
+- 관련 글: [[exception-handling-in-spring-mvc|스프링 MVC의 예외 처리]]

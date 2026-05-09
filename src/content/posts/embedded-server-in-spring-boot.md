@@ -5,5 +5,6 @@ order: 5
 status: idea
 ---
 
-아이디어 단계 메모.
-
+관련 링크:
+- 시리즈: [[series:spring-boot/spring-boot-basics|스프링 부트 기초]]
+- 관련 글: [[what-is-spring-boot|스프링 부트란 무엇인가]]

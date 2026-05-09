@@ -5,4 +5,6 @@ order: 2
 status: idea
 ---
 
-아이디어 단계 메모.
+관련 링크:
+- 시리즈: [[series:operating-systems/processes-and-threads|프로세스와 스레드]]
+- 관련 글: [[threads-and-multithreading|스레드와 멀티스레딩]]

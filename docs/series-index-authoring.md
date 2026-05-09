@@ -100,6 +100,17 @@ Clarification:
 
 **Create the parent and child indexes before the first post.** Without them, the child-series route and post breadcrumb context cannot be generated correctly from day one.
 
+**Body links are allowed, but they are not the post list.** Series index bodies may contain explicit series links for graph-friendly navigation:
+- parent series indexes may link to child series and related parent series
+- child series indexes may link to their parent series and sibling or adjacent child series
+- series index bodies must not become a manual list of post links, because the site generates the post inventory automatically
+
+Recommended explicit link syntax:
+- parent series: `[[series:<parent>]]`
+- child series: `[[series:<parent>/<child>]]`
+
+Generic `[[wikilinks]]` remain post-only, and `[[concept:slug]]` remains concept-only.
+
 ---
 
 ## Adding a New Child Series: Minimum Steps

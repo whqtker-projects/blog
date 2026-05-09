@@ -5,4 +5,6 @@ order: 1
 status: idea
 ---
 
-아이디어 단계 메모.
+관련 링크:
+- 시리즈: [[series:operating-systems/memory-management|메모리 관리]]
+- 관련 글: [[contiguous-allocation-and-fragmentation|연속 할당과 단편화]]

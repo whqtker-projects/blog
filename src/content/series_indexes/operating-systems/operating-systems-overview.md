@@ -5,3 +5,7 @@ parent: operating-systems
 order: 1
 description: "How operating systems are introduced through computer-system structure, kernel responsibilities, and the user-kernel boundary."
 ---
+
+관련 링크:
+- 상위 시리즈: [[series:operating-systems|운영체제]]
+- 다음 시리즈: [[series:operating-systems/processes-and-threads|프로세스와 스레드]]

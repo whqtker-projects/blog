@@ -5,4 +5,6 @@ order: 4
 status: idea
 ---
 
-아이디어 단계 메모.
+관련 링크:
+- 시리즈: [[series:operating-systems/file-systems-and-storage|파일 시스템과 저장장치]]
+- 관련 글: [[mass-storage-and-disk-scheduling|대용량 저장장치와 디스크 스케줄링]]

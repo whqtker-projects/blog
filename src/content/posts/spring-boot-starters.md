@@ -5,5 +5,6 @@ order: 4
 status: idea
 ---
 
-아이디어 단계 메모.
-
+관련 링크:
+- 시리즈: [[series:spring-boot/spring-boot-basics|스프링 부트 기초]]
+- 관련 글: [[embedded-server-in-spring-boot|스프링 부트의 내장 서버]]

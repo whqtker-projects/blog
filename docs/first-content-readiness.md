@@ -12,6 +12,12 @@ Language-policy note:
 - post titles and planned post bodies are intended to be Korean for new and editable backlog content
 - backlog title synchronization happens per rollout; already published content is left unchanged unless a task explicitly targets it
 
+Graph-link note:
+- frontmatter alone is not enough for a useful Obsidian graph
+- generic `[[wikilinks]]` are reserved for post links
+- series pages use explicit `[[series:<parent>]]` or `[[series:<parent>/<child>]]` syntax
+- new idea-stage stubs should include a minimal related-links block rather than frontmatter only
+
 Current operating documents:
 - [`docs/series/database-systems.md`](series/database-systems.md)
 - [`docs/series/computer-networks.md`](series/computer-networks.md)
@@ -374,7 +380,7 @@ write-ahead-log.md
 
 ### Step 2 — Write the minimum frontmatter for `idea` state
 
-A post in `idea` state needs only the frontmatter. No body content is required. All three D-25 required fields must be set even at `idea` state, because the conversion script and Astro schema both require them.
+A post in `idea` state must set the required frontmatter and should also include a short related-links block so the document participates in graph navigation. All three D-25 required fields must be set even at `idea` state, because the conversion script and Astro schema both require them.
 
 ```yaml
 ---
@@ -383,6 +389,14 @@ series: database-internals
 order: 2
 status: idea
 ---
+```
+
+Recommended minimal body for graph-friendly idea stubs:
+
+```md
+관련 링크:
+- 시리즈: [[series:database-systems/database-internals|데이터베이스 내부 구조]]
+- 관련 글: [[what-is-a-database-index]]
 ```
 
 Minimum fields at `idea` state:
@@ -394,7 +408,7 @@ Minimum fields at `idea` state:
 | `order` | Yes (D-25) | Intended position in the series (integer) |
 | `status` | Yes (D-32) | `idea` — marks the post as not yet written |
 
-No other fields are required at `idea` state. `status` must still be set explicitly even for early drafts so lifecycle and visibility remain unambiguous. Under D-33, only `status: published` is included in staged and production output, so `idea` posts stay off the public site.
+No other frontmatter fields are required at `idea` state. `status` must still be set explicitly even for early drafts so lifecycle and visibility remain unambiguous. Under D-33, only `status: published` is included in staged and production output, so `idea` posts stay off the public site. Graph-friendly body links remain recommended even when the rest of the post body is still a stub.
 
 ### Step 3 — Advance to `draft`
 
