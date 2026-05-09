@@ -1,5 +1,5 @@
 ---
-title: "Computer Architecture"
+title: 컴퓨터구조론
 series: computer-architecture
-description: "CPU execution, arithmetic, memory hierarchy, and the hardware structures that make programs run."
+description: Computer Architecture
 ---
