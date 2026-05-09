@@ -8,7 +8,7 @@ This document is the stable reference for decisions that have been explicitly ag
 - When a new decision is confirmed, add it here and remove it from `open-questions.md`.
 - For the full decision record with context and rationale, see `decision-log.md`.
 
-**Last updated:** 2026-05-08 (D-30–D-33 revised; D-54–D-56 added)
+**Last updated:** 2026-05-09 (D-57–D-60 added: hierarchical series architecture)
 
 ---
 
@@ -190,6 +190,17 @@ This document is the stable reference for decisions that have been explicitly ag
 | D-54 | Local development should show all posts regardless of status. |
 | D-55 | Vercel Preview / staging should follow production visibility, not local-development visibility. Only explicitly published posts should be reader-visible there. |
 | D-56 | The first bulk idea-stage batch is not limited to already-confirmed series. New series may be included if they fit the repository's existing content model and series-index requirements. |
+
+---
+
+## Hierarchical Series Architecture
+
+| # | Decision |
+|---|---|
+| D-57 | Parent-child series hierarchy uses the existing `series_indexes` content type. A `parent` field (series slug string) is added to the schema. Child series carry a `parent` field; parent series omit it. No new content type is introduced. |
+| D-58 | URL structure: parent series → `/series/<parent-slug>`, child series → `/series/<parent-slug>/<child-slug>`. Two levels only — no third level is permitted. |
+| D-59 | The homepage lists parent series only. Child series and their posts are accessible through the parent series page, not directly from the homepage. |
+| D-60 | Existing flat series slugs are preserved as child series slugs during migration. The `network-protocols` slug is retained unchanged when placed under a parent. The old flat URL `/series/network-protocols` will no longer be generated after migration; no redirect is added. |
 
 ---
 

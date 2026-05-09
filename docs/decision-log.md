@@ -642,6 +642,56 @@ After explicit publish-only production visibility was adopted, the repository st
 
 ---
 
+## DL-016 — Hierarchical series architecture policy (#151)
+
+**Date:** 2026-05-09
+**Status:** confirmed
+
+### Context
+
+The current implementation is flat-series-first: posts belong directly to one `series`, and `series_indexes` define which `/series/<slug>` pages exist. The homepage lists all `series_indexes` documents flat. Before migrating to a two-level parent-child model, five structural policy questions needed explicit answers to unblock schema, routing, validation, and migration work.
+
+### Alternatives considered
+
+**Content type for parent vs. child series:**
+- New `parent_series` content type separate from `series_indexes`: Cleaner type separation, but adds schema maintenance overhead and requires additional routing logic. Rejected.
+- Extend existing `series_indexes` with a `parent` field (chosen): One content type handles both levels. Parent series omit `parent`; child series carry it. Lower structural change; existing tooling continues to work.
+
+**URL structure:**
+- `/series/<child-slug>` (flat URLs preserved): Child series keep existing short URLs; parent series get new `/series/<parent-slug>` pages. No URL migration for existing content, but hierarchy is invisible in the URL. Rejected.
+- `/series/<parent-slug>/<child-slug>` (chosen): URL reflects the hierarchy. Easier for readers and crawlers to infer structure. Existing flat URLs are not preserved after migration — intentional given the site is not yet widely indexed.
+
+**Homepage content:**
+- Parent + grouped child structure (parent header with child list indented below): Gives full overview on one page; complexity grows as series expand. Rejected.
+- Parent series only (chosen): Homepage stays simple and stable. Child series are discovered through their parent's page.
+
+**network-protocols slug during migration:**
+- Replace slug with a new slug under a broader parent (e.g., `computer-networks`): More semantically accurate parent grouping, but requires renaming an already-used slug and updating all post frontmatter. Rejected.
+- Retain `network-protocols` slug as-is (chosen): No frontmatter migration required for existing posts. The slug remains the child-series identifier. No redirect added for the old flat URL — the site is pre-indexing at migration time.
+
+### Decision
+
+- D-57: Extend `series_indexes` with an optional `parent` field; no new content type.
+- D-58: Two-level URL scheme — `/series/<parent-slug>` and `/series/<parent-slug>/<child-slug>`.
+- D-59: Homepage lists parent series only.
+- D-60: Existing flat series slugs become child series slugs unchanged; no redirects from old flat URLs.
+
+### Follow-up
+
+- Schema migration: add `parent` field (optional string) to `series_indexes` in `src/content.config.ts`.
+- Routing: create `/series/[parent].astro` (parent page) and `/series/[parent]/[child].astro` (child page); retire flat `/series/[series].astro`.
+- Validation: update `scripts/check-content.mjs` to enforce that `post.series` matches a child `series_indexes` slug, and that every child slug has a corresponding parent.
+- Migration: add `parent` field to existing `series_indexes` documents (`network-protocols`, `data-structures`, `database-internals`) once a parent series for each is created.
+- Homepage: update `src/pages/index.astro` to list only parent `series_indexes` documents (those without `parent`).
+
+### References
+
+- `confirmed-decisions.md`: D-57 through D-60
+- Issue #151 (closed after this entry)
+- `docs/content-model.md` — will need updating after schema/routing changes land
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions
