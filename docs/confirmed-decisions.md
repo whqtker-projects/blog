@@ -8,7 +8,7 @@ This document is the stable reference for decisions that have been explicitly ag
 - When a new decision is confirmed, add it here and remove it from `open-questions.md`.
 - For the full decision record with context and rationale, see `decision-log.md`.
 
-**Last updated:** 2026-05-09 (D-57–D-67 added: hierarchical series architecture, IA contract, and Computer Networks child-series breakdown)
+**Last updated:** 2026-05-09 (D-68–D-71 added: child-series ordering and post title-prefix policy)
 
 ---
 
@@ -208,6 +208,17 @@ This document is the stable reference for decisions that have been explicitly ag
 | D-65 | The `computer-networks` parent direction is currently split into three child series: `network-protocols`, `transport-and-reliability`, and `naming-and-routing`. |
 | D-66 | During the first backlog rebuild under `computer-networks`, the existing `network-protocols` child slug is retained and narrowed to the HTTP/TLS/HTTP2+/application-protocol portion of the backlog. Transport-focused and naming/routing-focused backlog items move into sibling child series. |
 | D-67 | The original 12-series flat inventory in D-21 remains the historical baseline, but the active child-series inventory may expand when a parent direction is rebuilt into multiple child series. |
+
+---
+
+## Child-Series Ordering and Post Title-Prefix Policy
+
+| # | Decision |
+|---|---|
+| D-68 | Numeric post title prefixes (e.g. `01. TCP란 무엇인가`) are globally optional. No series requires them; no series forbids them. Authors may add them as a display aid at their discretion. |
+| D-69 | When a post title includes a numeric prefix in the source file, the prefix is rendered as-is in the public HTML. No stripping or transformation is applied at build time. |
+| D-70 | Child-series `order` is introduced as an immediately required field for all existing child series. Every child series index must declare an explicit `order` value; missing `order` is a repository validation error. |
+| D-71 | The first rollout of child-series `order` covers all parent series simultaneously, not a staged per-series migration. All child series indexes are updated in the same phase. |
 
 ---
 

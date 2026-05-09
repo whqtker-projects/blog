@@ -794,6 +794,56 @@ Once the repository adopted a real parent-child hierarchy, the old `network-prot
 
 ---
 
+## DL-017 — Child-series ordering and post title-prefix policy (#161)
+
+**Date:** 2026-05-09
+**Status:** confirmed
+
+### Context
+
+Child series currently have no explicit `order` field — `src/utils/series-hierarchy.ts` sorts them by `title`. Posts already carry `order`. Before adding an `order` field to child series and deciding whether post titles may include numeric prefixes (e.g. `01. TCP란 무엇인가`), four policy edges needed explicit answers: prefix scope, rendering behavior, migration approach for child-series `order`, and rollout breadth.
+
+### Alternatives considered
+
+**Post title prefix scope:**
+- Selectively required for some series (e.g. computer-architecture only): Inconsistency across series; introduces per-series authoring rules that are harder to document and enforce. Rejected.
+- Eventually required everywhere: Forces a global convention that may not suit all series styles. Rejected.
+- Globally optional (chosen): Authors choose per series whether prefixes add value. No enforcement added to validation; `order` remains the structural source of truth regardless of prefix presence.
+
+**Rendering behavior:**
+- Strip prefixes at build time: Keeps source readable while hiding ordinal numbers from readers. Adds a string-processing step to the build and requires a stable prefix format convention to parse reliably. Rejected.
+- Render as-is (chosen): No build-time transformation needed. What is in the source file title is what readers see. Simpler build pipeline; authors are responsible for prefix presentation.
+
+**Child-series `order` migration approach:**
+- Staged migration (optional first, then required): Lower immediate migration cost, but prolongs a period where some child series have `order` and others do not, making sort behavior inconsistent. Rejected.
+- Immediately required for all (chosen): One-time update across all child series indexes; consistent validation from day one; no ambiguous mixed state.
+
+**Rollout breadth:**
+- computer-architecture only as pilot: Allows verification before touching other series. Rejected — child-series count is small enough that simultaneous update is low risk and avoids a second migration pass.
+- All parent series simultaneously (chosen): Updates all child series indexes in one phase; validation catches any missing `order` fields immediately.
+
+### Decision
+
+- D-68: Numeric post title prefixes are globally optional. No validation enforces or forbids them.
+- D-69: Prefixes render as-is in public HTML; no stripping at build time.
+- D-70: Child-series `order` is immediately required for all existing child series; missing `order` is a validation error.
+- D-71: First rollout covers all parent series simultaneously.
+
+### Follow-up
+
+- Add `order: z.number()` to the `series_indexes` schema in `src/content.config.ts`.
+- Update `src/utils/series-hierarchy.ts` to sort child series by `order` instead of `title`.
+- Update `scripts/check-content.mjs` to validate child-series `order` presence and uniqueness per parent.
+- Add `order` to all existing child series index files under `src/content/series_indexes/`.
+- Update `docs/series-index-authoring.md` and `docs/post-metadata.md` to document the prefix optionality and child-series `order` requirement.
+
+### References
+
+- `confirmed-decisions.md`: D-68 through D-71
+- Issue #161 (closed after this entry)
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions
