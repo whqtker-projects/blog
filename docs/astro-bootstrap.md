@@ -6,9 +6,8 @@
 Quick reference for working with the Astro project in this repository.
 
 Hierarchy note:
-- Current committed routes are still flat-series-based.
-- The confirmed target IA for the migration is a two-level parent-child series model.
-- See [`docs/content-model.md`](content-model.md) for the authoritative parent/child contract that issues `#153` through `#157` should implement.
+- The repository now uses a two-level parent-child series model.
+- See [`docs/content-model.md`](content-model.md) for the authoritative parent/child contract behind the current routes.
 
 ---
 
@@ -139,13 +138,15 @@ new_blog/
 │   │   ├── BaseLayout.astro     # HTML shell (head, body)
 │   │   └── PostLayout.astro     # Post page wrapper (title, series, content)
 │   └── pages/
-│       ├── index.astro          # Home — series directory (one entry per series index)
+│       ├── index.astro          # Home — parent-series directory
 │       ├── concepts/
 │       │   └── [slug].astro     # Concept route — /concepts/<slug>
 │       ├── posts/
 │       │   └── [slug].astro     # Post route — /posts/<slug>
 │       └── series/
-│           └── [series].astro   # Series route — /series/<series>
+│           ├── [parent].astro   # Parent series route — /series/<parent>
+│           └── [parent]/
+│               └── [child].astro # Child series route — /series/<parent>/<child>
 ├── test/
 │   └── fixtures/
 │       └── obsidian-vault/      # Validation-only Obsidian source fixtures
@@ -178,16 +179,17 @@ status: idea | draft | published
 
 Concepts are loaded separately from `src/content/concepts/`. They require `title` and may include `aliases`; they do not use `series`, `order`, or `status`.
 
-Series index documents are loaded from `src/content/series_indexes/`. There must be exactly one per series. They are authored manually (not converted from Obsidian).
+Series index documents are loaded from `src/content/series_indexes/`. There must be exactly one per parent or child series slug. They are authored manually (not converted from Obsidian).
 
 **Required fields:**
 ```yaml
-title: string    # display name for the series
-series: string   # slug matching the series value used in posts
+title: string    # display name for the parent or child series
+series: string   # slug for this parent or child series
 ```
 
 **Optional field:**
 ```yaml
+parent: string        # set on child series only; omitted on parent series
 description: string   # one-line summary shown on the homepage and series page
 ```
 
@@ -199,21 +201,15 @@ Series index documents do not use `order`, `status`, or any post-specific fields
 
 | Route | Source | Notes |
 |---|---|---|
-| `/` | `src/pages/index.astro` | Series directory — one entry per series index document |
-| `/series/[series]` | `src/pages/series/[series].astro` | Series index title + description + ordered list of visible posts for the current environment |
+| `/` | `src/pages/index.astro` | Parent-series directory — one entry per parent series |
+| `/series/[parent]` | `src/pages/series/[parent].astro` | Parent series title + description + child-series listing |
+| `/series/[parent]/[child]` | `src/pages/series/[parent]/[child].astro` | Child series title + description + ordered list of visible posts for the current environment |
 | `/posts/[slug]` | `src/pages/posts/[slug].astro` | Individual post page; local dev includes all posts, staged/production builds include only `published` posts |
 | `/concepts/[slug]` | `src/pages/concepts/[slug].astro` | Individual concept reference page |
 
 Slug is derived from the Markdown file name (e.g., `b-plus-tree.md` → `/posts/b-plus-tree`).
 
-A `/series/[series]` route is only generated if a matching series index document exists in `src/content/series_indexes/`. Adding a new series requires creating the index document first.
-
-Confirmed migration target:
-- parent series page: `/series/<parent-slug>`
-- child series page: `/series/<parent-slug>/<child-slug>`
-- post page: `/posts/<slug>` with child-series context
-
-Until issues `#153` through `#156` land, treat the table above as the current implementation and `docs/content-model.md` as the target hierarchy contract.
+Series routes are generated from `series_indexes`. Parent pages are created from parent index documents, and child pages are created from child index documents with a valid `parent` reference. Adding a new child series requires creating both the parent index and the child index first.
 
 ---
 

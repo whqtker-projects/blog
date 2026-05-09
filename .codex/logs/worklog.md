@@ -189,3 +189,34 @@ Made the following implementation-facing rules explicit:
 - child pages list posts and provide the series context used by breadcrumbs and prev/next navigation
 
 Also updated `docs/astro-bootstrap.md` to distinguish the current flat implementation from the confirmed target hierarchy so route docs do not silently contradict the new IA contract.
+
+## 2026-05-09 — Implement hierarchical series schema and routing for Issues #153 and #154
+
+Extended `src/content.config.ts` so `series_indexes` can represent both parent and child series with an optional `parent` field. Added parent series index documents for:
+- `computer-networks`
+- `database-systems`
+- `data-structures-and-algorithms`
+
+Migrated the current real series index documents into child series by adding `parent`:
+- `network-protocols` -> `computer-networks`
+- `database-internals` -> `database-systems`
+- `data-structures` -> `data-structures-and-algorithms`
+
+Implemented the route split required by the IA contract:
+- homepage now lists parent series only
+- `src/pages/series/[parent].astro` renders parent pages with child-series listings
+- `src/pages/series/[parent]/[child].astro` renders child pages with ordered visible posts
+- `src/pages/posts/[slug].astro` and `src/layouts/PostLayout.astro` now resolve breadcrumb and series context through the parent/child hierarchy
+
+Added `src/utils/series-hierarchy.ts` so hierarchy lookup and route-path construction are shared instead of duplicated across routes.
+
+Updated the directly affected docs:
+- `docs/content-model.md`
+- `docs/astro-bootstrap.md`
+- `docs/series-index-authoring.md`
+
+Verification:
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`
+- confirmed static routes for `/series/computer-networks`, `/series/computer-networks/network-protocols`, `/series/database-systems/database-internals`, and `/series/data-structures-and-algorithms/data-structures`

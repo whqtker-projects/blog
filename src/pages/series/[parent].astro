@@ -1,0 +1,81 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import {
+  buildSeriesHierarchy,
+  childSeriesPath,
+} from '../../utils/series-hierarchy';
+
+export async function getStaticPaths() {
+  const allIndexes = await getCollection('series_indexes');
+  const { parentIndexes, childrenByParent } = buildSeriesHierarchy(allIndexes);
+
+  return parentIndexes.map((parentIndex) => ({
+    params: { parent: parentIndex.data.series },
+    props: {
+      parentIndex,
+      childIndexes: childrenByParent.get(parentIndex.data.series) ?? [],
+    },
+  }));
+}
+
+const { parentIndex, childIndexes } = Astro.props;
+---
+<BaseLayout title={parentIndex.data.title} description={parentIndex.data.description}>
+  <main>
+    <h1>{parentIndex.data.title}</h1>
+    {parentIndex.data.description && (
+      <p class="description">{parentIndex.data.description}</p>
+    )}
+    <ul>
+      {childIndexes.map((childIndex) => (
+        <li>
+          <a href={childSeriesPath(parentIndex.data.series, childIndex.data.series)}>
+            {childIndex.data.title}
+          </a>
+          {childIndex.data.description && (
+            <p class="description">{childIndex.data.description}</p>
+          )}
+        </li>
+      ))}
+    </ul>
+  </main>
+</BaseLayout>
+
+<style>
+  h1 {
+    margin-bottom: 0.75rem;
+  }
+
+  .description {
+    font-size: 0.9rem;
+    color: #555;
+    margin: 0 0 1.75rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    padding: 0.5rem 0;
+    margin: 0 0 0.75rem;
+  }
+
+  li a {
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  li a:hover {
+    text-decoration: underline;
+    opacity: 1;
+  }
+
+  li .description {
+    font-size: 0.875rem;
+    margin: 0.25rem 0 0;
+  }
+</style>

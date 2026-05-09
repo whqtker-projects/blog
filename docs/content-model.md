@@ -2,12 +2,9 @@
 
 This document defines the role boundaries for the three content types in this repository: `posts`, `concepts`, and `series_indexes`.
 
-It also serves as the authoritative information-architecture contract for the confirmed parent-child series migration from issues `#151` and `#152`.
+It also serves as the authoritative information-architecture contract for the current parent-child series model.
 
-Current implementation note:
-- The committed Astro routes are still flat-series-based today.
-- The target parent-child model documented here is the implementation contract for issues `#153` through `#157`.
-- Structural policy comes from `D-57` through `D-60`; page-role and attachment rules come from `D-61` through `D-64`.
+Structural policy comes from `D-57` through `D-60`; page-role and attachment rules come from `D-61` through `D-64`.
 
 ---
 
@@ -156,20 +153,20 @@ You do not write post links manually in the series index body.
 
 ---
 
-## Current Flat Model vs Target Hierarchy
+## Previous Flat Model vs Current Hierarchy
 
-Current flat implementation:
-- `src/pages/index.astro` lists every `series_indexes` document directly
-- `src/pages/series/[series].astro` treats each series slug as a terminal post-owning page
-- `src/content.config.ts` and current `series_indexes` files do not yet carry `parent`
+Previous flat implementation:
+- `src/pages/index.astro` listed every `series_indexes` document directly
+- `src/pages/series/[series].astro` treated each series slug as a terminal post-owning page
+- `src/content.config.ts` and `series_indexes` documents had no `parent` field
 
-Target hierarchy contract:
+Current hierarchy contract:
 - homepage lists parent series only
 - parent pages list child series
 - child pages list posts
 - post pages remain `/posts/<slug>` but derive their series context from one child series
 
-This distinction is intentional. The code remains flat today, but downstream issues should implement the target contract above instead of extending the flat model further.
+This distinction matters during migration work because existing content and older decision records may still reference the flat model.
 
 ---
 
@@ -177,7 +174,7 @@ This distinction is intentional. The code remains flat today, but downstream iss
 
 1. Create the parent series index in `src/content/series_indexes/` if it does not already exist
 2. Create the child series index in `src/content/series_indexes/` (see [series-index-authoring.md](series-index-authoring.md))
-3. Run `pnpm build` — verify `/series/<parent-slug>` and `/series/<parent-slug>/<child-slug>` are generated once routing work lands
+3. Run `pnpm build` — verify `/series/<parent-slug>` and `/series/<parent-slug>/<child-slug>` are generated
 4. Run `pnpm check:content` — verify no structural violations
 5. Commit the parent/child index files
 6. Write posts with `series: <child-slug>` in their frontmatter
