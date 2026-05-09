@@ -8,7 +8,7 @@ This document is the stable reference for decisions that have been explicitly ag
 - When a new decision is confirmed, add it here and remove it from `open-questions.md`.
 - For the full decision record with context and rationale, see `decision-log.md`.
 
-**Last updated:** 2026-05-09 (D-79–D-80 added: refined `operating-systems` child-series breakdown)
+**Last updated:** 2026-05-09 (D-81–D-82 added: split Spring Framework and Spring Boot into distinct parent directions)
 
 ---
 
@@ -225,6 +225,8 @@ This document is the stable reference for decisions that have been explicitly ag
 | D-78 | `database-internals` remains the stable published anchor under `database-systems`. Indexes, B+Tree, WAL, optimizer behavior, join algorithms, and deeper engine internals stay there rather than being moved into the new sibling child series. |
 | D-79 | The `operating-systems` parent direction is refined into five child series: `operating-systems-overview`, `processes-and-threads`, `scheduling-and-synchronization`, `memory-management`, and `file-systems-and-storage`. This turns the previously flat confirmed direction into an explicit textbook-style learning arc. |
 | D-80 | Within the refined `operating-systems` structure, deadlock remains inside `scheduling-and-synchronization`, and file-system interface, implementation, and storage-device coordination remain grouped inside `file-systems-and-storage`. |
+| D-81 | Spring content is split into two distinct parent directions under the backend/systems domain: `spring-framework` and `spring-boot`. `spring-framework` uses the child series `spring-core`, `spring-aop-and-transactions`, and `spring-web-mvc`; `spring-boot` uses `spring-boot-basics`, `spring-boot-configuration`, and `spring-boot-testing-and-operations`. |
+| D-82 | Topic boundary for the Spring rollout: `spring-framework` owns IoC/DI, bean container/lifecycle/scope, configuration classes/component scanning, AOP/proxies, transaction abstraction, and Spring MVC request flow. `spring-boot` owns Boot purpose, startup flow, starters, embedded server behavior, auto-configuration, externalized configuration, profiles, `application.yml`, `@ConfigurationProperties`, Boot testing patterns, Actuator, logging, metrics, and operational tooling. |
 
 ---
 

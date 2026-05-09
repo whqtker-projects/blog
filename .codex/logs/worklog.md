@@ -448,3 +448,13 @@ Synchronized the `operating-systems` parent rollout across `docs/series-backlog.
 Verification target:
 - `pnpm check:content`
 - `pnpm build`
+
+## 2026-05-09 — Add separate Spring Framework and Spring Boot parents
+
+Added two distinct Spring parent directions instead of collapsing them into one mixed tree. Created parent operating docs, parent and child series indexes, and idea-stage post stubs for `spring-framework` and `spring-boot`.
+
+Synchronized the repository-facing docs so the new slugs, child ordering, and backend-systems mapping are reflected consistently in `docs/series-backlog.md`, `docs/first-content-readiness.md`, `docs/post-metadata.md`, and the decision records.
+
+Verification target:
+- `pnpm check:content`
+- `pnpm build`

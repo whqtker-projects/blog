@@ -8,7 +8,7 @@ This document is the authoritative list of confirmed series. The original 12-ser
 Display-language note:
 - slugs remain English kebab-case identifiers
 - reader-facing series display names are allowed to be Korean
-- this rollout synchronizes the `operating-systems` parent and its child series first; other legacy English display names remain until their own migration work
+- reader-facing display-name migration happens per parent rollout; older parents may still keep legacy English display names until their own migration work
 
 ---
 
@@ -45,6 +45,12 @@ The repository now uses the parent-child structure in committed content. The rea
 | `operating-systems` | 운영체제 | `scheduling-and-synchronization` | 스케줄링과 동기화 |
 | `operating-systems` | 운영체제 | `memory-management` | 메모리 관리 |
 | `operating-systems` | 운영체제 | `file-systems-and-storage` | 파일 시스템과 저장장치 |
+| `spring-framework` | 스프링 프레임워크 | `spring-core` | 스프링 코어 |
+| `spring-framework` | 스프링 프레임워크 | `spring-aop-and-transactions` | 스프링 AOP와 트랜잭션 |
+| `spring-framework` | 스프링 프레임워크 | `spring-web-mvc` | 스프링 웹 MVC |
+| `spring-boot` | 스프링 부트 | `spring-boot-basics` | 스프링 부트 기초 |
+| `spring-boot` | 스프링 부트 | `spring-boot-configuration` | 스프링 부트 설정 |
+| `spring-boot` | 스프링 부트 | `spring-boot-testing-and-operations` | 스프링 부트 테스트와 운영 |
 | `data-structures-and-algorithms` | Data Structures and Algorithms | `data-structures` | Data Structures |
 
 Existing child slugs are preserved during migration, including `network-protocols`.
@@ -55,6 +61,8 @@ Parent-level operating documents:
 - [`docs/series/database-systems.md`](series/database-systems.md)
 - [`docs/series/data-structures-and-algorithms.md`](series/data-structures-and-algorithms.md)
 - [`docs/series/operating-systems.md`](series/operating-systems.md)
+- [`docs/series/spring-framework.md`](series/spring-framework.md)
+- [`docs/series/spring-boot.md`](series/spring-boot.md)
 
 ---
 
@@ -73,6 +81,12 @@ Parent-level operating documents:
 | `transport-and-reliability` | Transport and Reliability | Computer Networks backlog | TCP, UDP, QUIC, flow control, congestion, delivery guarantees |
 | `internet-addressing-and-routing` | Internet Addressing and Routing | Computer Networks backlog | IP addressing, subnetting, ARP, ICMP, NAT, fragmentation, and routing protocols |
 | `network-protocols` | Network Protocols | **In progress** | DNS, HTTP, TLS, HTTP/2, HTTP/3, and application/web protocol behavior |
+| `spring-core` | 스프링 코어 | Spring Framework backlog | Spring overview, IoC/DI, bean container, bean lifecycle/scope, and configuration/component scanning |
+| `spring-aop-and-transactions` | 스프링 AOP와 트랜잭션 | Spring Framework backlog | AOP basics, proxies, transaction abstraction, propagation/isolation, and common proxy pitfalls |
+| `spring-web-mvc` | 스프링 웹 MVC | Spring Framework backlog | DispatcherServlet, controller model, binding, validation, exception handling, filters/interceptors, and argument resolvers |
+| `spring-boot-basics` | 스프링 부트 기초 | Spring Boot backlog | Boot overview, Boot vs Spring, startup flow, starters, and embedded server behavior |
+| `spring-boot-configuration` | 스프링 부트 설정 | Spring Boot backlog | Auto-configuration, externalized configuration, profiles, `application.yml`, and `@ConfigurationProperties` |
+| `spring-boot-testing-and-operations` | 스프링 부트 테스트와 운영 | Spring Boot backlog | `@SpringBootTest`, test slices, MockMvc, Testcontainers integration, Actuator, logging, and metrics |
 | `backend-design` | Backend Design | Confirmed | API design, concurrency patterns, service architecture |
 
 ### CS Fundamentals (domain slug: `cs-fundamentals`)

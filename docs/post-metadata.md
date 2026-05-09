@@ -67,6 +67,12 @@ Domain is not stored as a frontmatter field. It is inferred from `series` via th
 | `network-protocols` | `backend-systems` |
 | `transport-and-reliability` | `backend-systems` |
 | `internet-addressing-and-routing` | `backend-systems` |
+| `spring-core` | `backend-systems` |
+| `spring-aop-and-transactions` | `backend-systems` |
+| `spring-web-mvc` | `backend-systems` |
+| `spring-boot-basics` | `backend-systems` |
+| `spring-boot-configuration` | `backend-systems` |
+| `spring-boot-testing-and-operations` | `backend-systems` |
 | `backend-design` | `backend-systems` |
 | `data-structures` | `cs-fundamentals` |
 | `algorithms` | `cs-fundamentals` |

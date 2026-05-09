@@ -1025,6 +1025,49 @@ Because `database-internals` is already the repository's most mature published c
 
 ---
 
+## DL-022 — Split Spring content into separate `spring-framework` and `spring-boot` parent directions
+
+**Date:** 2026-05-09
+**Status:** confirmed
+
+### Context
+
+The repository had no committed Spring-specific parent rollout, but the parent-child hierarchy and backlog-first operating pattern were already established for other directions. Spring content needed to be introduced in a way that respected the repository's hierarchy rules and also prevented a common taxonomy failure: treating Spring Boot as a loose subset inside a framework-only content tree without making the framework/Boot boundary explicit.
+
+The requested topic boundary matched the repository's architecture model well. Framework-level runtime mechanics such as IoC, bean lifecycle, proxy-based AOP, transaction abstraction, and MVC request flow behave like one coherent parent direction. Boot-specific startup, auto-configuration, externalized configuration, testing slices, and operational tooling behave like a separate application-assembly and operations direction.
+
+### Alternatives considered
+
+**One mixed Spring parent with many child series:**
+- Lower parent count, but it blurs the distinction between framework internals and Boot ergonomics. Auto-configuration and Boot testing would sit too close to container and MVC mechanics, weakening the boundary. Rejected.
+
+**`spring-boot` as a child series under `spring-framework`:**
+- Plausible in some conceptual taxonomies, but too asymmetric for this repository's parent-child model. Boot would become just one sibling beside AOP or MVC even though it carries its own startup, configuration, testing, and operational arc. Rejected.
+
+**Two distinct parent directions with explicit child-series boundaries (chosen):**
+- Matches the repository's existing parent-level operating-document pattern, keeps posts attached only to child series, and gives both Spring Framework and Spring Boot a clean learning arc. Chosen.
+
+### Decision
+
+- D-81: Spring content is split into two distinct parent directions under backend/systems: `spring-framework` and `spring-boot`.
+- D-82: `spring-framework` owns IoC/DI, bean container/lifecycle/scope, configuration classes/component scanning, AOP/proxies, transaction abstraction, and Spring MVC request flow. `spring-boot` owns Boot purpose, startup flow, starters, embedded server behavior, auto-configuration, externalized configuration, profiles, `application.yml`, `@ConfigurationProperties`, Boot testing patterns, Actuator, logging, metrics, and operational tooling.
+
+### Follow-up
+
+- Create parent operating documents at `docs/series/spring-framework.md` and `docs/series/spring-boot.md`.
+- Create parent and child series indexes under `src/content/series_indexes/`.
+- Add idea-stage post stubs so both parents have real committed backlogs rather than documentation-only intent.
+
+### References
+
+- `confirmed-decisions.md`: D-81, D-82
+- `docs/series-backlog.md`
+- `docs/first-content-readiness.md`
+- `docs/post-metadata.md`
+- `src/content/series_indexes/`
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions

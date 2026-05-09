@@ -10,7 +10,7 @@ Parent-level operating context now lives under `docs/series/`. Use those documen
 Language-policy note:
 - filenames and slugs remain English identifiers
 - post titles and planned post bodies are intended to be Korean for new and editable backlog content
-- this document only synchronizes the operating-systems backlog titles in this rollout; already published content is left unchanged
+- backlog title synchronization happens per rollout; already published content is left unchanged unless a task explicitly targets it
 
 Current operating documents:
 - [`docs/series/database-systems.md`](series/database-systems.md)
@@ -18,6 +18,8 @@ Current operating documents:
 - [`docs/series/data-structures-and-algorithms.md`](series/data-structures-and-algorithms.md)
 - [`docs/series/computer-architecture.md`](series/computer-architecture.md)
 - [`docs/series/operating-systems.md`](series/operating-systems.md)
+- [`docs/series/spring-framework.md`](series/spring-framework.md)
+- [`docs/series/spring-boot.md`](series/spring-boot.md)
 
 ---
 
@@ -258,6 +260,88 @@ This child series keeps persistent data structures and storage-device coordinati
 | 3 | `file-system-implementation.md` | 파일 시스템 구현 | On-disk structures, free-space tracking, and how file systems map names to blocks | `idea` |
 | 4 | `storage-layer-and-io-basics.md` | 저장장치 계층과 I/O 기초 | Device controllers, buffering, caching, and the OS path from request to device interaction | `idea` |
 | 5 | `mass-storage-and-disk-scheduling.md` | 대용량 저장장치와 디스크 스케줄링 | Disk structure, seek/rotation costs, and why storage scheduling policies exist | `idea` |
+
+---
+
+## Candidate Backlog — `spring-framework` Parent Series
+
+The `spring-framework` parent isolates framework fundamentals and runtime mechanics from Boot-specific application ergonomics. Its child series are meant to keep IoC/container internals, AOP/transaction boundaries, and MVC request flow distinct from Spring Boot startup and operational topics.
+
+### Child Series — `spring-core`
+
+This entry child series covers the conceptual and container-level baseline for the framework itself.
+
+| Order | File name | Title | Scope | Status |
+|-------|-----------|-------|-------|--------|
+| 1 | `what-is-spring-framework.md` | 스프링 프레임워크란 무엇인가 | What Spring Framework is, what problems it solves, and why the container model matters | `idea` |
+| 2 | `ioc-and-di.md` | IoC와 DI | Inversion of Control, dependency injection, and why object creation moves into the container | `idea` |
+| 3 | `bean-container-and-application-context.md` | 빈 컨테이너와 ApplicationContext | BeanFactory/ApplicationContext roles, bean lookup, and container responsibilities | `idea` |
+| 4 | `bean-lifecycle-and-scope.md` | 빈 생명주기와 스코프 | Bean creation lifecycle, initialization/destruction hooks, and singleton/prototype/request scope | `idea` |
+| 5 | `configuration-class-and-component-scan.md` | 구성 클래스와 컴포넌트 스캔 | `@Configuration`, `@Bean`, stereotype annotations, and component scanning mechanics | `idea` |
+
+### Child Series — `spring-aop-and-transactions`
+
+This child series keeps cross-cutting concerns and transaction behavior inside the framework boundary rather than mixing them into Boot usage.
+
+| Order | File name | Title | Scope | Status |
+|-------|-----------|-------|-------|--------|
+| 1 | `what-is-spring-aop.md` | 스프링 AOP란 무엇인가 | Why Spring uses AOP, join points, advice, and the practical shape of proxy-based AOP | `idea` |
+| 2 | `proxy-based-aop-in-spring.md` | 스프링의 프록시 기반 AOP | JDK dynamic proxy vs CGLIB, proxy creation, and what actually gets intercepted | `idea` |
+| 3 | `transaction-abstraction-in-spring.md` | 스프링의 트랜잭션 추상화 | PlatformTransactionManager, declarative transaction boundaries, and why Spring abstracts transaction handling | `idea` |
+| 4 | `transaction-propagation-and-isolation.md` | 트랜잭션 전파와 격리 수준 | Propagation modes, isolation levels, and how transaction boundaries interact across method calls | `idea` |
+| 5 | `proxy-and-transaction-pitfalls.md` | 프록시와 트랜잭션의 흔한 함정 | Self-invocation, visibility/final-method issues, and common surprises in transactional code | `idea` |
+
+### Child Series — `spring-web-mvc`
+
+This child series keeps the web request lifecycle under the framework parent instead of treating MVC as a Boot-only convenience layer.
+
+| Order | File name | Title | Scope | Status |
+|-------|-----------|-------|-------|--------|
+| 1 | `spring-mvc-request-flow.md` | 스프링 MVC 요청 흐름 | DispatcherServlet, handler mapping, adapter dispatch, and the end-to-end request lifecycle | `idea` |
+| 2 | `controller-and-request-mapping.md` | 컨트롤러와 요청 매핑 | Controller method model, `@RequestMapping` variants, and route-to-handler resolution | `idea` |
+| 3 | `request-body-and-message-converter.md` | 요청 본문과 HttpMessageConverter | Request/response body binding, message conversion, and JSON serialization flow | `idea` |
+| 4 | `validation-and-binding-in-spring-mvc.md` | 스프링 MVC의 검증과 바인딩 | Data binding, validation flow, `BindingResult`, and request-model error handling | `idea` |
+| 5 | `exception-handling-in-spring-mvc.md` | 스프링 MVC의 예외 처리 | `@ExceptionHandler`, `@ControllerAdvice`, and consistent HTTP error response handling | `idea` |
+| 6 | `filter-interceptor-and-argument-resolver.md` | 필터·인터셉터·ArgumentResolver | Servlet filter vs interceptor vs argument resolver responsibilities and ordering | `idea` |
+
+## Candidate Backlog — `spring-boot` Parent Series
+
+The `spring-boot` parent isolates application assembly, configuration ergonomics, testing workflow, and operational tooling from the framework's container and MVC internals.
+
+### Child Series — `spring-boot-basics`
+
+This entry child series covers what Boot adds on top of the framework and how a Boot application actually starts.
+
+| Order | File name | Title | Scope | Status |
+|-------|-----------|-------|-------|--------|
+| 1 | `what-is-spring-boot.md` | 스프링 부트란 무엇인가 | What Spring Boot is, what it automates, and why it exists separately from the core framework | `idea` |
+| 2 | `spring-framework-vs-spring-boot.md` | 스프링 프레임워크와 스프링 부트의 차이 | Conceptual boundary between framework fundamentals and Boot application ergonomics | `idea` |
+| 3 | `spring-boot-startup-flow.md` | 스프링 부트 시작 흐름 | `SpringApplication`, environment preparation, context creation, and startup phases | `idea` |
+| 4 | `spring-boot-starters.md` | 스프링 부트 스타터 | What starters do, how dependency curation works, and why starter selection shapes application setup | `idea` |
+| 5 | `embedded-server-in-spring-boot.md` | 스프링 부트의 내장 서버 | Embedded Tomcat/Jetty/Undertow roles and how Boot packages a runnable web application | `idea` |
+
+### Child Series — `spring-boot-configuration`
+
+This child series owns Boot-specific configuration behavior such as auto-configuration, externalized config, and environment/profile handling.
+
+| Order | File name | Title | Scope | Status |
+|-------|-----------|-------|-------|--------|
+| 1 | `auto-configuration-in-spring-boot.md` | 스프링 부트의 자동 구성 | Conditional auto-configuration, classpath-driven setup, and how Boot decides what to register | `idea` |
+| 2 | `externalized-configuration-in-spring-boot.md` | 스프링 부트의 외부 설정 | Property sources, override order, and separating configuration from packaged code | `idea` |
+| 3 | `profiles-and-environment-in-spring-boot.md` | 스프링 부트의 프로필과 환경 | Active profiles, environment-specific behavior, and profile-driven bean or property selection | `idea` |
+| 4 | `application-yml-and-configuration-properties.md` | `application.yml`과 `@ConfigurationProperties` | YAML structure, hierarchical binding, and type-safe configuration objects | `idea` |
+
+### Child Series — `spring-boot-testing-and-operations`
+
+This child series owns Boot-specific testing slices and operational tooling rather than framework internals.
+
+| Order | File name | Title | Scope | Status |
+|-------|-----------|-------|-------|--------|
+| 1 | `spring-boot-testing-overview.md` | 스프링 부트 테스트 개요 | The Boot testing model, context loading tradeoffs, and when to choose full-context vs narrower tests | `idea` |
+| 2 | `spring-boot-test-slices.md` | 스프링 부트 테스트 슬라이스 | `@WebMvcTest`, `@DataJpaTest`, and other focused test-slice boundaries | `idea` |
+| 3 | `mockmvc-testing.md` | MockMvc 테스트 | Request/response testing without a full external server and where MockMvc fits in the test pyramid | `idea` |
+| 4 | `testcontainers-with-spring-boot.md` | 스프링 부트와 Testcontainers | Containerized dependency testing, integration setup, and realistic infrastructure tests | `idea` |
+| 5 | `spring-boot-actuator-and-observability.md` | 스프링 부트 Actuator와 관측성 | Actuator endpoints, health/metrics exposure, and operational visibility concerns | `idea` |
 
 ---
 
