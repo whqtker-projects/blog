@@ -1,15 +1,15 @@
 # Series Index Authoring
 
-This document describes how to create and manage series index documents — the canonical entry point for each series.
+This document describes how to create and manage series index documents — the canonical entry point for each parent series and child series.
 
 ---
 
 ## What Is a Series Index?
 
-A series index document defines a series and drives two key behaviors:
+A series index document defines either a parent series or a child series and drives two key behaviors:
 
-- The homepage lists one entry per series index, linking to `/series/<series>`
-- The `/series/[series]` route exists only when a matching series index document exists
+- Parent series appear on the homepage at `/`
+- Series routes are generated from the parent/child index structure
 
 Series index documents are distinct from posts and concepts. They are authored manually and committed directly to `src/content/series_indexes/` — they are not converted from Obsidian.
 
@@ -33,24 +33,27 @@ File names follow the same kebab-case rule as posts (D-15). The file name is not
 ---
 title: "Database Internals"
 series: database-internals
+parent: database-systems
 ---
 ```
 
 | Field | Required | Notes |
 |-------|----------|-------|
-| `title` | Yes | Display name shown on the homepage and series page |
-| `series` | Yes | Must exactly match the `series` value used in posts for this series |
+| `title` | Yes | Display name shown on the homepage or series page |
+| `series` | Yes | Slug for this parent or child series |
 
 ---
 
 ## Optional Frontmatter
 
 ```yaml
+parent: database-systems
 description: "How relational databases store, index, and retrieve data."
 ```
 
 | Field | Required | Notes |
 |-------|----------|-------|
+| `parent` | No for parent series; Yes for child series | Omit on parent series. Set to the parent series slug on child series. |
 | `description` | No | One-line summary shown on the homepage and series page |
 
 ---
@@ -69,22 +72,23 @@ Do not add these fields to series index documents:
 
 ## Operating Rules
 
-**One index per series.** There must be exactly one series index document for each series slug. If two index documents share the same `series` value, Astro's `getStaticPaths` generates the same route twice — undefined behavior.
+**One index per series slug.** There must be exactly one series index document for each parent or child slug. If two index documents share the same `series` value, Astro generates duplicate routes.
 
-**The `series` field must exactly match posts.** The `series` field in the index document and in all posts for that series must be character-for-character identical. A mismatch silently drops those posts from the series page.
+**Posts attach only to child series.** The `series` field in post frontmatter must exactly match a child series slug, not a parent series slug.
 
-**A missing index means no route.** `/series/[series]` routes are generated from `series_indexes` only. If a series index document is missing, the route does not exist — posts in that series will have a breadcrumb link pointing to a 404.
+**A missing parent or child index breaks routes.** Parent pages come from parent indexes. Child pages come from child indexes with valid `parent` references. If either side is missing, the intended route cannot be generated correctly.
 
-**Create the index before the first post.** When starting a new series, create the series index document first. Without it, the series route cannot be generated and post breadcrumbs will be broken from day one.
+**Create the parent and child indexes before the first post.** Without them, the child-series route and post breadcrumb context cannot be generated correctly from day one.
 
 ---
 
-## Adding a New Series: Minimum Steps
+## Adding a New Child Series: Minimum Steps
 
-1. Create `src/content/series_indexes/<series-slug>.md` with the required fields
-2. Run `pnpm build` to verify the route is generated at `/series/<series-slug>`
-3. Run `pnpm check:content` to verify no structural violations
-4. Commit the index file before writing any posts in the series
+1. Create `src/content/series_indexes/<parent-slug>.md` for the parent series if it does not already exist
+2. Create `src/content/series_indexes/<child-slug>.md` with `parent: <parent-slug>`
+3. Run `pnpm build` to verify `/series/<parent-slug>` and `/series/<parent-slug>/<child-slug>` are generated
+4. Run `pnpm check:content` to verify no structural violations
+5. Commit the parent and child index files before writing posts in the child series
 
 ---
 
@@ -96,6 +100,7 @@ Do not add these fields to series index documents:
 ---
 title: "Database Internals"
 series: database-internals
+parent: database-systems
 description: "How relational databases store, index, and retrieve data — from on-disk structures to query execution."
 ---
 ```

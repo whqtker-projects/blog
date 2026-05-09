@@ -8,7 +8,7 @@ This document is the stable reference for decisions that have been explicitly ag
 - When a new decision is confirmed, add it here and remove it from `open-questions.md`.
 - For the full decision record with context and rationale, see `decision-log.md`.
 
-**Last updated:** 2026-05-08 (D-30–D-33 revised; D-54–D-56 added)
+**Last updated:** 2026-05-09 (D-57–D-67 added: hierarchical series architecture, IA contract, and Computer Networks child-series breakdown)
 
 ---
 
@@ -190,6 +190,24 @@ This document is the stable reference for decisions that have been explicitly ag
 | D-54 | Local development should show all posts regardless of status. |
 | D-55 | Vercel Preview / staging should follow production visibility, not local-development visibility. Only explicitly published posts should be reader-visible there. |
 | D-56 | The first bulk idea-stage batch is not limited to already-confirmed series. New series may be included if they fit the repository's existing content model and series-index requirements. |
+
+---
+
+## Hierarchical Series Architecture
+
+| # | Decision |
+|---|---|
+| D-57 | Parent-child series hierarchy uses the existing `series_indexes` content type. A `parent` field (series slug string) is added to the schema. Child series carry a `parent` field; parent series omit it. No new content type is introduced. |
+| D-58 | URL structure: parent series → `/series/<parent-slug>`, child series → `/series/<parent-slug>/<child-slug>`. Two levels only — no third level is permitted. |
+| D-59 | The homepage lists parent series only. Child series and their posts are accessible through the parent series page, not directly from the homepage. |
+| D-60 | Existing flat series slugs are preserved as child series slugs during migration. The `network-protocols` slug is retained unchanged when placed under a parent. The old flat URL `/series/network-protocols` will no longer be generated after migration; no redirect is added. |
+| D-61 | A parent series is a navigation and information-architecture container for child series. It may have title/description metadata and its own landing page, but it does not own posts directly. |
+| D-62 | A child series belongs to exactly one parent series and is the terminal ordered content container. Posts attach directly to child series only. |
+| D-63 | The parent series page is responsible for introducing the parent direction and listing its child series. It does not render a mixed flat list of all descendant posts. |
+| D-64 | The child series page is responsible for listing visible posts in that child series and providing the series context used by post navigation and breadcrumbs. |
+| D-65 | The `computer-networks` parent direction is currently split into three child series: `network-protocols`, `transport-and-reliability`, and `naming-and-routing`. |
+| D-66 | During the first backlog rebuild under `computer-networks`, the existing `network-protocols` child slug is retained and narrowed to the HTTP/TLS/HTTP2+/application-protocol portion of the backlog. Transport-focused and naming/routing-focused backlog items move into sibling child series. |
+| D-67 | The original 12-series flat inventory in D-21 remains the historical baseline, but the active child-series inventory may expand when a parent direction is rebuilt into multiple child series. |
 
 ---
 

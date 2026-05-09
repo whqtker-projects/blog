@@ -28,6 +28,7 @@ const series_indexes = defineCollection({
   schema: z.object({
     title: z.string(),
     series: z.string(),
+    parent: z.string().optional(),
     description: z.string().optional(),
   }),
 });

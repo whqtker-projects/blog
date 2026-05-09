@@ -1,17 +1,18 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { buildSeriesHierarchy, parentSeriesPath } from '../utils/series-hierarchy';
 
 const seriesIndexes = await getCollection('series_indexes');
-seriesIndexes.sort((a, b) => a.data.title.localeCompare(b.data.title));
+const { parentIndexes } = buildSeriesHierarchy(seriesIndexes);
 ---
 <BaseLayout title="Blog">
   <main>
     <h1>Series</h1>
     <ul>
-      {seriesIndexes.map((idx) => (
+      {parentIndexes.map((idx) => (
         <li>
-          <a href={`/series/${idx.data.series}`}>{idx.data.title}</a>
+          <a href={parentSeriesPath(idx.data.series)}>{idx.data.title}</a>
           {idx.data.description && <p class="description">{idx.data.description}</p>}
         </li>
       ))}

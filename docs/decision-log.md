@@ -642,6 +642,158 @@ After explicit publish-only production visibility was adopted, the repository st
 
 ---
 
+## DL-016 — Hierarchical series architecture policy (#151)
+
+**Date:** 2026-05-09
+**Status:** confirmed
+
+### Context
+
+The current implementation is flat-series-first: posts belong directly to one `series`, and `series_indexes` define which `/series/<slug>` pages exist. The homepage lists all `series_indexes` documents flat. Before migrating to a two-level parent-child model, five structural policy questions needed explicit answers to unblock schema, routing, validation, and migration work.
+
+### Alternatives considered
+
+**Content type for parent vs. child series:**
+- New `parent_series` content type separate from `series_indexes`: Cleaner type separation, but adds schema maintenance overhead and requires additional routing logic. Rejected.
+- Extend existing `series_indexes` with a `parent` field (chosen): One content type handles both levels. Parent series omit `parent`; child series carry it. Lower structural change; existing tooling continues to work.
+
+**URL structure:**
+- `/series/<child-slug>` (flat URLs preserved): Child series keep existing short URLs; parent series get new `/series/<parent-slug>` pages. No URL migration for existing content, but hierarchy is invisible in the URL. Rejected.
+- `/series/<parent-slug>/<child-slug>` (chosen): URL reflects the hierarchy. Easier for readers and crawlers to infer structure. Existing flat URLs are not preserved after migration — intentional given the site is not yet widely indexed.
+
+**Homepage content:**
+- Parent + grouped child structure (parent header with child list indented below): Gives full overview on one page; complexity grows as series expand. Rejected.
+- Parent series only (chosen): Homepage stays simple and stable. Child series are discovered through their parent's page.
+
+**network-protocols slug during migration:**
+- Replace slug with a new slug under a broader parent (e.g., `computer-networks`): More semantically accurate parent grouping, but requires renaming an already-used slug and updating all post frontmatter. Rejected.
+- Retain `network-protocols` slug as-is (chosen): No frontmatter migration required for existing posts. The slug remains the child-series identifier. No redirect added for the old flat URL — the site is pre-indexing at migration time.
+
+### Decision
+
+- D-57: Extend `series_indexes` with an optional `parent` field; no new content type.
+- D-58: Two-level URL scheme — `/series/<parent-slug>` and `/series/<parent-slug>/<child-slug>`.
+- D-59: Homepage lists parent series only.
+- D-60: Existing flat series slugs become child series slugs unchanged; no redirects from old flat URLs.
+
+### Follow-up
+
+- Schema migration: add `parent` field (optional string) to `series_indexes` in `src/content.config.ts`.
+- Routing: create `/series/[parent].astro` (parent page) and `/series/[parent]/[child].astro` (child page); retire flat `/series/[series].astro`.
+- Validation: update `scripts/check-content.mjs` to enforce that `post.series` matches a child `series_indexes` slug, and that every child slug has a corresponding parent.
+- Migration: add `parent` field to existing `series_indexes` documents (`network-protocols`, `data-structures`, `database-internals`) once a parent series for each is created.
+- Homepage: update `src/pages/index.astro` to list only parent `series_indexes` documents (those without `parent`).
+
+### References
+
+- `confirmed-decisions.md`: D-57 through D-60
+- Issue #151 (closed after this entry)
+- `docs/content-model.md` — will need updating after schema/routing changes land
+
+---
+
+## DL-017 — Parent-child series information architecture (#152)
+
+**Date:** 2026-05-09
+**Status:** confirmed
+
+### Context
+
+Issue #151 resolved the structural policy needed to start the hierarchical-series migration: one `series_indexes` content type, two URL levels, parent-only homepage entries, and preserved child slugs. Issue #152 needed to turn those structural answers into an IA contract that later schema, routing, validation, and migration issues can implement without making up page responsibilities case by case.
+
+The current repository still behaves like a flat series system:
+- `src/pages/index.astro` lists every `series_indexes` document as a homepage entry.
+- `src/pages/series/[series].astro` treats every series slug as a terminal listing page that directly owns posts.
+- `docs/content-model.md` and `docs/astro-bootstrap.md` still describe posts as belonging directly to one flat series.
+
+That makes the missing IA distinctions explicit work, not implied implementation detail.
+
+### Alternatives considered
+
+**Parent page behavior:**
+- Parent page renders all descendant posts in one combined list: gives a broad overview, but collapses the distinction between parent and child series and makes the child layer feel redundant. Rejected.
+- Parent page lists child series only (chosen): preserves the hierarchy and gives each child series its own terminal ordered post listing.
+
+**Post attachment point:**
+- Allow posts to attach to either parent or child series: flexible, but weakens validation and creates ambiguity for ordering, breadcrumbs, and navigation. Rejected.
+- Restrict posts to child series only (chosen): keeps one terminal ownership layer for ordered content.
+
+**Homepage discovery model:**
+- Continue listing every child series directly on the homepage: simpler migration, but keeps the old flat browsing model visible at the top level. Rejected.
+- List parent series only, with child discovery on the parent page (chosen): matches the intended two-level IA cleanly.
+
+### Decision
+
+- D-61: a parent series is a navigation and IA container for child series; it may have metadata and its own page, but it does not own posts directly.
+- D-62: a child series belongs to exactly one parent series and is the terminal ordered content container; posts attach to child series only.
+- D-63: the parent page introduces the parent direction and lists its child series; it does not flatten descendant posts into one mixed list.
+- D-64: the child page lists visible posts in that child series and provides the series context used by post navigation and breadcrumbs.
+
+### Follow-up
+
+- Issue #153 should encode these parent/child roles in the `series_indexes` schema shape.
+- Issue #154 should replace the flat homepage and flat `/series/[series]` behavior with separate parent and child page responsibilities.
+- Issue #155 should enforce that posts cannot attach directly to parent series.
+- Issue #156 should map existing flat series into explicit parent and child roles without leaving ambiguous ownership behind.
+
+### References
+
+- `confirmed-decisions.md`: D-61 through D-64
+- Issue #152
+- Issue #151
+- `docs/content-model.md`
+- `docs/astro-bootstrap.md`
+- `src/pages/index.astro`
+- `src/pages/series/[series].astro`
+
+---
+
+## DL-018 — Computer Networks child-series backlog breakdown (#157)
+
+**Date:** 2026-05-09
+**Status:** confirmed
+
+### Context
+
+Once the repository adopted a real parent-child hierarchy, the old `network-protocols` flat backlog became too broad to remain the only child series under `computer-networks`. The committed backlog mixed application/web protocols, transport reliability topics, and naming/addressing topics in one ordered list. Issue `#157` existed to turn that flat set into a reviewable child-series-based backlog without reopening status or deployment policy.
+
+### Alternatives considered
+
+**Keep all current backlog items in `network-protocols` only:**
+- Lowest migration cost, but leaves the new `computer-networks` parent with only one overloaded child series and does not create a meaningful child-series breakdown. Rejected.
+
+**Replace `network-protocols` entirely with new child slugs:**
+- Cleaner topical split on paper, but violates the confirmed migration rule that the existing `network-protocols` slug should be retained as a child series during transition. Rejected.
+
+**Retain `network-protocols` and add sibling child series (chosen):**
+- Preserves the confirmed slug while still separating the backlog into coherent units. Existing posts can be moved only where the topical split is strong enough, and additional idea-stage files can be added sparingly to avoid one-post dead ends.
+
+### Decision
+
+- D-65: `computer-networks` is currently split into three child series: `network-protocols`, `transport-and-reliability`, and `naming-and-routing`.
+- D-66: `network-protocols` is retained as the application/web-protocol child series. `what-is-http`, `tls-and-https`, and `http2-and-http3` stay there. `tcp-connection-and-reliability` moves to `transport-and-reliability`. `dns-resolution` moves to `naming-and-routing`.
+- D-67: the original 12-series flat inventory remains a historical baseline, but active child-series inventory can expand when a parent direction is rebuilt into multiple child series.
+- Added minimal idea-stage backlog files only where needed to make the new sibling series coherent: `udp-and-quic.md` and `ip-addressing-and-routing.md`.
+
+### Follow-up
+
+- Issue `#158` should update active docs so they describe the split `computer-networks` backlog accurately.
+- Future content work can grow each child series independently without reopening the parent-child routing or validation model.
+
+### References
+
+- `confirmed-decisions.md`: D-65, D-66
+- Issue `#157`
+- `src/content/series_indexes/computer-networks.md`
+- `src/content/series_indexes/network-protocols.md`
+- `src/content/series_indexes/transport-and-reliability.md`
+- `src/content/series_indexes/naming-and-routing.md`
+- `src/content/posts/what-is-http.md`
+- `src/content/posts/tcp-connection-and-reliability.md`
+- `src/content/posts/dns-resolution.md`
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions

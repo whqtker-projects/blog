@@ -1,27 +1,38 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import { seriesDisplayName } from '../utils/series';
-
 interface NavLink {
   slug: string;
   title: string;
 }
 
+interface SeriesContext {
+  parentSlug: string;
+  parentTitle: string;
+  childSlug: string;
+  childTitle: string;
+}
+
 interface Props {
   title: string;
   description?: string;
-  series: string;
+  seriesContext: SeriesContext;
   order: number;
   prev?: NavLink | null;
   next?: NavLink | null;
 }
-const { title, description, series, order, prev, next } = Astro.props;
+const { title, description, seriesContext, order, prev, next } = Astro.props;
 ---
 <BaseLayout title={title} description={description}>
   <article>
     <header>
       <p class="breadcrumb">
-        <a href={`/series/${series}`}>{seriesDisplayName(series)}</a> · #{order}
+        <a href={`/series/${seriesContext.parentSlug}`}>{seriesContext.parentTitle}</a>
+        {' / '}
+        <a href={`/series/${seriesContext.parentSlug}/${seriesContext.childSlug}`}>
+          {seriesContext.childTitle}
+        </a>
+        {' · '}
+        #{order}
       </p>
       <h1>{title}</h1>
     </header>

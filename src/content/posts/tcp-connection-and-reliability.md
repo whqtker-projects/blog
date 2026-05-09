@@ -1,7 +1,7 @@
 ---
 title: "TCP and Reliable Transmission"
-series: network-protocols
-order: 2
+series: transport-and-reliability
+order: 1
 status: draft
 ---
 

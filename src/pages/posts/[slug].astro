@@ -3,12 +3,26 @@ import { getCollection } from 'astro:content';
 import { render } from 'astro:content';
 import PostLayout from '../../layouts/PostLayout.astro';
 import { visiblePostsForCurrentBuild } from '../../utils/post-visibility.js';
+import {
+  buildSeriesHierarchy,
+  requireParentIndex,
+} from '../../utils/series-hierarchy';
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('posts');
+  const allIndexes = await getCollection('series_indexes');
   const visiblePosts = visiblePostsForCurrentBuild(allPosts);
+  const { seriesBySlug } = buildSeriesHierarchy(allIndexes);
 
   return visiblePosts.map((post) => {
+    const childIndex = seriesBySlug.get(post.data.series);
+    if (!childIndex) {
+      throw new Error(
+        `Post '${post.id}' references missing child series '${post.data.series}'.`
+      );
+    }
+
+    const parentIndex = requireParentIndex(childIndex, seriesBySlug);
     const seriesPosts = visiblePosts
       .filter((p) => p.data.series === post.data.series)
       .sort((a, b) => a.data.order - b.data.order);
@@ -19,6 +33,12 @@ export async function getStaticPaths() {
       params: { slug: post.id },
       props: {
         post,
+        seriesContext: {
+          parentSlug: parentIndex.data.series,
+          parentTitle: parentIndex.data.title,
+          childSlug: childIndex.data.series,
+          childTitle: childIndex.data.title,
+        },
         prev: prevPost ? { slug: prevPost.id, title: prevPost.data.title } : null,
         next: nextPost ? { slug: nextPost.id, title: nextPost.data.title } : null,
       },
@@ -26,13 +46,13 @@ export async function getStaticPaths() {
   });
 }
 
-const { post, prev, next } = Astro.props;
+const { post, seriesContext, prev, next } = Astro.props;
 const { Content } = await render(post);
 ---
 <PostLayout
   title={post.data.title}
   description={post.data.description}
-  series={post.data.series}
+  seriesContext={seriesContext}
   order={post.data.order}
   prev={prev}
   next={next}

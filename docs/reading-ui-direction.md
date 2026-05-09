@@ -7,6 +7,10 @@ This document records the design direction that guided the first reading-focused
 
 This document defines the reading-focused UI direction that was implemented in the first reading-focused phase. At design time, the blog had working navigation structure and published content but no visual layer yet. That phase added readability without introducing full branding or a component library.
 
+Hierarchy note:
+- This document is historical and reflects the pre-parent/child-series UI structure that existed during the first reading pass.
+- The current repository now uses `/series/<parent>` and `/series/<parent>/<child>` routes instead of the retired flat `/series/<series>` route.
+
 ---
 
 ## Purpose
@@ -29,7 +33,7 @@ Inspection of `src/layouts/BaseLayout.astro`, `src/layouts/PostLayout.astro`, an
 **Pages**
 
 - `src/pages/index.astro` — `<main>` > `<h1>Posts</h1>` > per-series `<section>` with `<h2>` (series slug as link) > `<ul>` of post title links. Series names display as raw slugs (e.g., `database-internals`).
-- `src/pages/series/[series].astro` — `<main>` > `<h1>` (series slug) > `<ol>` of post links. Same raw-slug display issue.
+- The pre-hierarchy series page was `src/pages/series/[series].astro` — `<main>` > `<h1>` (series slug) > `<ol>` of post links. That route has since been replaced by parent and child series pages.
 - `src/pages/posts/[slug].astro` — routes through `PostLayout`. No additional layout.
 - `src/pages/concepts/[slug].astro` — `<article>` > `<header>` (`<h1>` title, "Also known as" aliases paragraph) > `<Content />`. No link back to the homepage or related posts. No layout wrapper beyond `BaseLayout`.
 
@@ -39,7 +43,7 @@ Inspection of `src/layouts/BaseLayout.astro`, `src/layouts/PostLayout.astro`, an
 - Series names render as kebab-case slugs. D-23 defines a display name rule (Title Case, known acronyms uppercased) that is confirmed but not yet implemented.
 - No site-level navigation element links between page types.
 - The `<nav>` in `PostLayout` sits inline with post content with no visual separation.
-- `docs/astro-bootstrap.md` lists only two routes (`/` and `/posts/[slug]`); it is now outdated — `/series/[series]` and `/concepts/[slug]` also exist.
+- At design time, the series route was a single flat page. The current repository now has separate parent and child series routes.
 
 ---
 
@@ -83,7 +87,7 @@ The homepage lists all published posts grouped by series. Its job is to help a r
 
 **Open question — Series display names on homepage:** D-23 is confirmed (display name = Title Case from slug, known acronyms uppercased), but implementing this transformation requires either a compile-time utility or a runtime helper. This is a confirmed decision that needs implementation, not a design decision. It should be tracked as a separate implementation issue.
 
-### Series Page (`/series/[series]`)
+### Series Page (`/series/[series]` at design time)
 
 The series page shows all posts in a single series in reading order. Its job is to give a reader who arrives mid-series a full view of the arc and let them navigate to any post.
 
@@ -247,7 +251,7 @@ The following can serve as a practical checklist when implementation issues are 
 The following items are intentionally deferred from this phase:
 
 - **D-23 display name transformation** — Implement the series slug → display name conversion (Title Case, acronym uppercasing) in the UI. Confirmed decision, not yet implemented. Separate implementation issue needed.
-- **`docs/astro-bootstrap.md` route table update** — The route table in that document lists only `/` and `/posts/[slug]`. It should be updated to include `/series/[series]` and `/concepts/[slug]`. This is a Documentation Curator task, not a UI task.
+- **Historical route-table note** — This document originally noted stale route documentation. That cleanup has since been completed elsewhere; keep this section only as historical implementation context.
 - **Site-level navigation** — Whether to add a persistent `<header>` with a home link on all pages. Deferred pending user decision on concept page return navigation.
 - **Concept link visual treatment** — Distinct styling for inline `[[concept:...]]` links vs. normal post links. Deferred.
 - **Dark mode** — Out of scope for this phase entirely.
@@ -273,7 +277,9 @@ All four questions resolved 2026-05-08 via AskUserQuestion (Issue #117). Decisio
 - [`src/layouts/BaseLayout.astro`](../src/layouts/BaseLayout.astro) — current HTML shell; no styles
 - [`src/layouts/PostLayout.astro`](../src/layouts/PostLayout.astro) — post page structure with prev/next nav
 - [`src/pages/index.astro`](../src/pages/index.astro) — homepage series grouping
-- [`src/pages/series/[series].astro`](../src/pages/series/%5Bseries%5D.astro) — series landing page
+- Historical flat series route: retired during the parent-child hierarchy migration.
+- [`src/pages/series/[parent].astro`](../src/pages/series/%5Bparent%5D.astro) — current parent series page
+- [`src/pages/series/[parent]/[child].astro`](../src/pages/series/%5Bparent%5D/%5Bchild%5D.astro) — current child series page
 - [`src/pages/posts/[slug].astro`](../src/pages/posts/%5Bslug%5D.astro) — post route
 - [`src/pages/concepts/[slug].astro`](../src/pages/concepts/%5Bslug%5D.astro) — concept page
 - [`docs/concept-authoring-workflow.md`](concept-authoring-workflow.md) — concept page authoring contract

@@ -143,3 +143,154 @@ Verification:
 - `pnpm check:content`
 - `pnpm build`
 - Confirmed `/series/data-structures` is generated while no new public post routes are created for the idea-stage files
+
+## 2026-05-09 — Audit hierarchical-series issue structure for completeness
+
+Inspected the current hierarchical-series planning issues and the flat-series assumptions still present in repository docs and code.
+
+Confirmed that the previously missing structural issues already exist and are still open:
+- `#159` umbrella parent issue for the full parent-child migration phase
+- `#157` dedicated `Computer Networks` backlog restructuring issue
+- `#158` dedicated series-documentation refactor issue
+
+Also re-verified the repository state those issues are grounded in:
+- `docs/content-model.md`, `docs/astro-bootstrap.md`, `src/content.config.ts`, `scripts/check-content.mjs`, `src/pages/index.astro`, and `src/pages/series/[series].astro` still describe and implement a flat series model
+- `src/content/series_indexes/network-protocols.md` and `src/content/series_indexes/data-structures.md` are real current flat series
+- the simplified post status model and local-vs-production visibility split remain in place and should not be reopened by the hierarchy work
+
+Result:
+- No new GitHub issues were created in this audit because creating duplicates would have made the structure worse
+- No existing issue text needed edits; the current `#151`–`#159` set already forms a complete dependency chain for the migration
+
+## 2026-05-09 — Record parent-child series IA contract for Issue #152
+
+Used the decisions already confirmed in issue `#151` to define the actual information-architecture contract for the hierarchical-series migration.
+
+Documented in `docs/confirmed-decisions.md` and `docs/decision-log.md` that:
+- parent series are navigation containers and do not own posts directly
+- child series belong to exactly one parent and are the terminal ordered content containers
+- the homepage remains parent-only
+- parent pages list child series, while child pages list posts and provide breadcrumb/navigation context
+
+This keeps issue `#152` narrowly focused on IA responsibilities before schema, routing, validation, and migration implementation begin.
+
+## 2026-05-09 — Make hierarchical-series IA explicit in content docs
+
+Updated `docs/content-model.md` to become the authoritative parent-child series IA contract for the migration phase instead of leaving the target model implicit in decision records only.
+
+Made the following implementation-facing rules explicit:
+- the hierarchy is exactly parent series -> child series -> posts
+- no third hierarchy level is allowed
+- parent series do not own posts directly
+- posts attach to child series only
+- concepts remain outside the hierarchy
+- homepage lists parent series only
+- parent pages list child series
+- child pages list posts and provide the series context used by breadcrumbs and prev/next navigation
+
+Also updated `docs/astro-bootstrap.md` to distinguish the current flat implementation from the confirmed target hierarchy so route docs do not silently contradict the new IA contract.
+
+## 2026-05-09 — Implement hierarchical series schema and routing for Issues #153 and #154
+
+Extended `src/content.config.ts` so `series_indexes` can represent both parent and child series with an optional `parent` field. Added parent series index documents for:
+- `computer-networks`
+- `database-systems`
+- `data-structures-and-algorithms`
+
+Migrated the current real series index documents into child series by adding `parent`:
+- `network-protocols` -> `computer-networks`
+- `database-internals` -> `database-systems`
+- `data-structures` -> `data-structures-and-algorithms`
+
+Implemented the route split required by the IA contract:
+- homepage now lists parent series only
+- `src/pages/series/[parent].astro` renders parent pages with child-series listings
+- `src/pages/series/[parent]/[child].astro` renders child pages with ordered visible posts
+- `src/pages/posts/[slug].astro` and `src/layouts/PostLayout.astro` now resolve breadcrumb and series context through the parent/child hierarchy
+
+Added `src/utils/series-hierarchy.ts` so hierarchy lookup and route-path construction are shared instead of duplicated across routes.
+
+Updated the directly affected docs:
+- `docs/content-model.md`
+- `docs/astro-bootstrap.md`
+- `docs/series-index-authoring.md`
+
+Verification:
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`
+- confirmed static routes for `/series/computer-networks`, `/series/computer-networks/network-protocols`, `/series/database-systems/database-internals`, and `/series/data-structures-and-algorithms/data-structures`
+
+## 2026-05-09 — Finish hierarchical-series validation and content migration for Issues #155 and #156
+
+Extended `scripts/check-content.mjs` so repository validation now understands the parent-child series structure instead of only flat series membership.
+
+Added hierarchy-specific checks for:
+- invalid or self-referential parent links
+- children pointing at other children as parents
+- posts attaching directly to parent series instead of child series
+- preservation of the existing published-order and explicit-status invariants under the new structure
+
+Completed the migration-facing documentation so the current real child series are explicitly mapped under their new parents:
+- `database-internals` -> `database-systems`
+- `network-protocols` -> `computer-networks`
+- `data-structures` -> `data-structures-and-algorithms`
+
+Updated the directly affected docs:
+- `docs/series-backlog.md`
+- `docs/first-content-readiness.md`
+
+Verification:
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`
+
+## 2026-05-09 — Remove child-series count from homepage parent listing
+
+Removed the homepage `n child series` metadata from `src/pages/index.astro` so the parent-series directory stays focused on title and description only.
+
+## 2026-05-09 — Rebuild Computer Networks backlog and finish hierarchy doc refactor for Issues #157, #158, and #159
+
+Rebuilt the `computer-networks` parent backlog into three child series while keeping the confirmed `network-protocols` slug:
+- `network-protocols`
+- `transport-and-reliability`
+- `naming-and-routing`
+
+Moved the existing backlog items into those child series and added two minimal idea-stage backlog files so the new sibling series are coherent:
+- `tcp-connection-and-reliability.md` -> `transport-and-reliability`
+- `dns-resolution.md` -> `naming-and-routing`
+- added `udp-and-quic.md`
+- added `ip-addressing-and-routing.md`
+
+Kept `what-is-http.md`, `tls-and-https.md`, and `http2-and-http3.md` under the retained `network-protocols` child slug, with adjusted ordering for the narrowed scope.
+
+Completed the series-documentation refactor around the new backlog shape by updating:
+- `docs/confirmed-decisions.md`
+- `docs/decision-log.md`
+- `docs/series-backlog.md`
+- `docs/first-content-readiness.md`
+- `docs/post-metadata.md`
+- `docs/reading-ui-direction.md`
+
+Verification:
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`
+- confirmed static routes for `/series/computer-networks/network-protocols`, `/series/computer-networks/transport-and-reliability`, and `/series/computer-networks/naming-and-routing`
+
+## 2026-05-09 — Resolve `develop` vs `master` merge conflicts after hierarchical-series PR work
+
+Merged `origin/master` back into `develop` after the hierarchical series migration diverged from the earlier flat-series/status work now present on `master`.
+
+Resolved conflicts by preserving the hierarchy-aware `develop` implementation for:
+- parent/child series documentation
+- hierarchy-aware validation in `scripts/check-content.mjs`
+- parent/child route structure and post breadcrumb context
+- child-series content assignments such as `transport-and-reliability`
+
+Dropped the retired flat route `src/pages/series/[series].astro` during the merge and kept the homepage parent listing without the child-count metadata.
+
+Verification:
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`

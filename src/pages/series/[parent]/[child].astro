@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { visiblePostsForCurrentBuild } from '../../../utils/post-visibility.js';
+import {
+  buildSeriesHierarchy,
+  parentSeriesPath,
+  requireParentIndex,
+} from '../../../utils/series-hierarchy';
+
+export async function getStaticPaths() {
+  const allIndexes = await getCollection('series_indexes');
+  const allPosts = await getCollection('posts');
+  const visiblePosts = visiblePostsForCurrentBuild(allPosts);
+  const { childIndexes, seriesBySlug } = buildSeriesHierarchy(allIndexes);
+
+  return childIndexes.map((childIndex) => {
+    const parentIndex = requireParentIndex(childIndex, seriesBySlug);
+
+    return {
+      params: {
+        parent: parentIndex.data.series,
+        child: childIndex.data.series,
+      },
+      props: {
+        parentIndex,
+        childIndex,
+        posts: visiblePosts
+          .filter((post) => post.data.series === childIndex.data.series)
+          .sort((a, b) => a.data.order - b.data.order),
+      },
+    };
+  });
+}
+
+const { parentIndex, childIndex, posts } = Astro.props;
+---
+<BaseLayout title={childIndex.data.title} description={childIndex.data.description}>
+  <main>
+    <p class="breadcrumb">
+      <a href={parentSeriesPath(parentIndex.data.series)}>{parentIndex.data.title}</a>
+    </p>
+    <h1>{childIndex.data.title}</h1>
+    {childIndex.data.description && <p class="description">{childIndex.data.description}</p>}
+    <ol>
+      {posts.map((post) => (
+        <li>
+          <a href={`/posts/${post.id}`}>{post.data.title}</a>
+        </li>
+      ))}
+    </ol>
+  </main>
+</BaseLayout>
+
+<style>
+  .breadcrumb {
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+  }
+
+  .breadcrumb a {
+    color: #666;
+  }
+
+  h1 {
+    margin-bottom: 0.75rem;
+  }
+
+  .description {
+    font-size: 0.9rem;
+    color: #555;
+    margin: 0 0 1.75rem;
+  }
+
+  ol {
+    padding-left: 1.75rem;
+    margin: 0;
+  }
+
+  li {
+    padding: 0.4rem 0;
+    margin: 0;
+  }
+
+  li a {
+    text-decoration: none;
+  }
+
+  li a:hover {
+    text-decoration: underline;
+    opacity: 1;
+  }
+</style>
