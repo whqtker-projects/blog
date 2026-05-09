@@ -119,6 +119,14 @@ Verification:
 
 ## 2026-05-09 — Run pilot batch for idea-stage posts
 
+## 2026-05-09 — Physically nest child series indexes under parent directories
+
+Reorganized `src/content/series_indexes/` so the filesystem now mirrors the existing two-level series model: parent indexes remain at the root, and child indexes now live at `src/content/series_indexes/<parent-slug>/<child-slug>.md`.
+
+Updated `scripts/check-content.mjs` to read `series_indexes` recursively and to enforce the new path contract without replacing frontmatter as the source of truth. Parent indexes must stay at `src/content/series_indexes/<parent>.md`, child indexes must live under the directory named by their `parent`, and file names must match `series`.
+
+Synchronized `docs/content-model.md`, `docs/series-index-authoring.md`, and `docs/astro-bootstrap.md` so the physical directory layout is now documented as part of the repository contract.
+
 ## 2026-05-09 — Add computer-architecture parent and child series backlog
 
 Added the `computer-architecture` parent series in repository style and created eight child series under it: `architecture-overview`, `cpu-and-instruction-execution`, `computer-arithmetic`, `control-unit`, `memory-systems`, `storage-systems`, `bus-io-and-interrupts`, and `parallel-and-high-performance-architecture`.

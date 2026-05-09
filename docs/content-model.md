@@ -96,6 +96,11 @@ series: string   # slug for this parent or child series
 parent: string?  # omitted for parent series; required for child series
 ```
 
+Physical path contract:
+- Parent series index: `src/content/series_indexes/<parent-slug>.md`
+- Child series index: `src/content/series_indexes/<parent-slug>/<child-slug>.md`
+- File path and frontmatter must agree. Path structure is enforced by repository validation; it does not replace the required `series` and `parent` fields.
+
 Role rules:
 - A parent series omits `parent`.
 - A child series sets `parent` to the slug of exactly one parent series.
@@ -173,7 +178,7 @@ This distinction matters during migration work because existing content and olde
 ## Minimum Setup for a New Child Series
 
 1. Create the parent series index in `src/content/series_indexes/` if it does not already exist
-2. Create the child series index in `src/content/series_indexes/` (see [series-index-authoring.md](series-index-authoring.md))
+2. Create the child series index in `src/content/series_indexes/<parent-slug>/` (see [series-index-authoring.md](series-index-authoring.md))
 3. Run `pnpm build` — verify `/series/<parent-slug>` and `/series/<parent-slug>/<child-slug>` are generated
 4. Run `pnpm check:content` — verify no structural violations
 5. Commit the parent/child index files

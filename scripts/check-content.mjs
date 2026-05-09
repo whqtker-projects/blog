@@ -6,14 +6,14 @@
  *   1. No two series_indexes documents share the same series value
  *   2. Parent-child hierarchy is structurally valid
  *   3. Every series value in posts/ has a matching child series index
- *   4. No post attaches directly to a parent series
+ *   4. Series index file paths match the parent-child layout contract
  *   5. No two explicitly published posts in the same child series share the same order value
  *   6. Fail when a post omits status, because committed posts must set status explicitly
  *   7. Fail when a post uses a status outside the simplified vocabulary
  */
 
 import { readFileSync, readdirSync } from 'node:fs';
-import { join, dirname } from 'node:path';
+import { join, dirname, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -31,20 +31,36 @@ function parseFrontmatter(content) {
   return fm;
 }
 
-function readMdFiles(dir) {
-  return readdirSync(dir)
-    .filter((f) => f.endsWith('.md'))
-    .map((file) => {
-      const content = readFileSync(join(dir, file), 'utf-8');
-      return { file, ...parseFrontmatter(content) };
-    });
+function readMdFilesRecursive(dir) {
+  const files = [];
+
+  function walk(currentDir) {
+    for (const entry of readdirSync(currentDir, { withFileTypes: true })) {
+      const absolutePath = join(currentDir, entry.name);
+      if (entry.isDirectory()) {
+        walk(absolutePath);
+        continue;
+      }
+
+      if (!entry.isFile() || !entry.name.endsWith('.md')) continue;
+
+      const content = readFileSync(absolutePath, 'utf-8');
+      files.push({
+        file: relative(dir, absolutePath).split(sep).join('/'),
+        ...parseFrontmatter(content),
+      });
+    }
+  }
+
+  walk(dir);
+  return files;
 }
 
 const postsDir = join(ROOT, 'src/content/posts');
 const indexesDir = join(ROOT, 'src/content/series_indexes');
 
-const posts = readMdFiles(postsDir);
-const indexes = readMdFiles(indexesDir);
+const posts = readMdFilesRecursive(postsDir);
+const indexes = readMdFilesRecursive(indexesDir);
 const ALLOWED_POST_STATUSES = new Set(['idea', 'draft', 'published']);
 
 let errors = 0;
@@ -52,6 +68,10 @@ let errors = 0;
 function fail(msg) {
   console.error(`  ✗ ${msg}`);
   errors++;
+}
+
+function splitIndexPath(index) {
+  return index.file.replace(/\.md$/, '').split('/');
 }
 
 // --- Check 1: no duplicate series values in series_indexes ---
@@ -121,9 +141,53 @@ for (const s of postSeriesValues) {
 if (errors === errorsAfterCheck2) console.log('  ✓ passed');
 const errorsAfterCheck3 = errors;
 
-// --- Check 4: no published-order collision within a child series ---
+// --- Check 4: physical series index paths match the hierarchy contract ---
+console.log('Check 4: series index file paths match the parent-child layout contract');
+for (const idx of indexes) {
+  const pathParts = splitIndexPath(idx);
+
+  if (!idx.parent) {
+    if (pathParts.length !== 1) {
+      fail(
+        `${idx.file}: parent series '${idx.series}' must live at src/content/series_indexes/${idx.series}.md`
+      );
+      continue;
+    }
+
+    if (pathParts[0] !== idx.series) {
+      fail(
+        `${idx.file}: parent series file name must match its series field '${idx.series}'`
+      );
+    }
+    continue;
+  }
+
+  if (pathParts.length !== 2) {
+    fail(
+      `${idx.file}: child series '${idx.series}' must live at src/content/series_indexes/${idx.parent}/${idx.series}.md`
+    );
+    continue;
+  }
+
+  const [parentDir, childFile] = pathParts;
+  if (parentDir !== idx.parent) {
+    fail(
+      `${idx.file}: child series '${idx.series}' must be placed under parent directory '${idx.parent}'`
+    );
+  }
+
+  if (childFile !== idx.series) {
+    fail(
+      `${idx.file}: child series file name must match its series field '${idx.series}'`
+    );
+  }
+}
+if (errors === errorsAfterCheck3) console.log('  ✓ passed');
+const errorsAfterCheck4 = errors;
+
+// --- Check 5: no published-order collision within a child series ---
 console.log(
-  'Check 4: no duplicate order values within a child series (explicitly published posts)'
+  'Check 5: no duplicate order values within a child series (explicitly published posts)'
 );
 const publishedPosts = posts.filter((p) => p.status === 'published');
 const orderKeys = new Map();
@@ -138,11 +202,11 @@ for (const post of publishedPosts) {
     orderKeys.set(key, post.file);
   }
 }
-if (errors === errorsAfterCheck3) console.log('  ✓ passed');
-const errorsAfterCheck4 = errors;
+if (errors === errorsAfterCheck4) console.log('  ✓ passed');
+const errorsAfterCheck5 = errors;
 
-// --- Check 5: fail on missing status ---
-console.log('Check 5: no posts may omit status');
+// --- Check 6: fail on missing status ---
+console.log('Check 6: no posts may omit status');
 const statuslessPosts = posts.filter((post) => post.status === undefined);
 if (statuslessPosts.length === 0) {
   console.log('  ✓ passed');
@@ -153,10 +217,10 @@ if (statuslessPosts.length === 0) {
     );
   }
 }
-const errorsAfterCheck5 = errors;
+const errorsAfterCheck6 = errors;
 
-// --- Check 6: fail on invalid status values ---
-console.log('Check 6: status values use the simplified vocabulary');
+// --- Check 7: fail on invalid status values ---
+console.log('Check 7: status values use the simplified vocabulary');
 for (const post of posts) {
   if (post.status !== undefined && !ALLOWED_POST_STATUSES.has(post.status)) {
     fail(
@@ -164,7 +228,7 @@ for (const post of posts) {
     );
   }
 }
-if (errors === errorsAfterCheck5) console.log('  ✓ passed');
+if (errors === errorsAfterCheck6) console.log('  ✓ passed');
 
 // --- Result ---
 if (errors > 0) {

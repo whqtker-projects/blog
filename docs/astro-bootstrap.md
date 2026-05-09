@@ -132,7 +132,7 @@ new_blog/
 │   ├── content/
 │   │   ├── concepts/            # Converted Markdown for concept reference pages
 │   │   ├── posts/               # Converted Markdown for real publishable posts
-│   │   └── series_indexes/      # One index document per series (manually authored)
+│   │   └── series_indexes/      # Parent indexes at root; child indexes nested under parent dirs
 │   ├── content.config.ts        # Content collection schema
 │   ├── layouts/
 │   │   ├── BaseLayout.astro     # HTML shell (head, body)
@@ -179,7 +179,13 @@ status: idea | draft | published
 
 Concepts are loaded separately from `src/content/concepts/`. They require `title` and may include `aliases`; they do not use `series`, `order`, or `status`.
 
-Series index documents are loaded from `src/content/series_indexes/`. There must be exactly one per parent or child series slug. They are authored manually (not converted from Obsidian).
+Series index documents are loaded recursively from `src/content/series_indexes/` via `**/*.md`. There must be exactly one per parent or child series slug. They are authored manually (not converted from Obsidian).
+
+Physical layout contract:
+- Parent index: `src/content/series_indexes/<parent-slug>.md`
+- Child index: `src/content/series_indexes/<parent-slug>/<child-slug>.md`
+
+This directory structure mirrors the existing parent-child model for authoring clarity. Route behavior is unchanged: frontmatter still defines the series slug and parent relationship, and repository validation enforces that the file path matches that metadata.
 
 **Required fields:**
 ```yaml
