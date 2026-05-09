@@ -23,3 +23,9 @@ const posts = defineCollection({
 **Symptom**: `pnpm dev --host 127.0.0.1 --port 4321` failed during verification with `listen EPERM: operation not permitted 127.0.0.1:4321`.
 **Cause**: The current sandbox environment does not allow the process to bind a local listening port for ad hoc dev-server verification.
 **Fix**: Verified the visibility change with `pnpm build` and static route output instead. Local-development route behavior still needs browser verification outside the sandbox if exact runtime confirmation is required.
+
+## 2026-05-09 — Merge conflict while reconciling hierarchical-series work with `master`
+
+**Symptom**: Merging `origin/master` into `develop` after PR #160 work produced conflicts across hierarchy docs, validation, post metadata, route files, and the deleted flat route `src/pages/series/[series].astro`.
+**Cause**: `master` had advanced with the earlier status/visibility/content work while `develop` had subsequently replaced the flat series model with parent-child hierarchy changes touching many of the same files.
+**Fix**: Resolved the merge by restoring the intended hierarchy-aware versions from the latest `develop` implementation commit, removing the retired flat route, and then re-running `pnpm test:repo`, `pnpm check:content`, and `pnpm build` before concluding the merge.

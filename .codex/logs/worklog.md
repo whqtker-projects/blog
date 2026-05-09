@@ -277,3 +277,20 @@ Verification:
 - `pnpm check:content`
 - `pnpm build`
 - confirmed static routes for `/series/computer-networks/network-protocols`, `/series/computer-networks/transport-and-reliability`, and `/series/computer-networks/naming-and-routing`
+
+## 2026-05-09 — Resolve `develop` vs `master` merge conflicts after hierarchical-series PR work
+
+Merged `origin/master` back into `develop` after the hierarchical series migration diverged from the earlier flat-series/status work now present on `master`.
+
+Resolved conflicts by preserving the hierarchy-aware `develop` implementation for:
+- parent/child series documentation
+- hierarchy-aware validation in `scripts/check-content.mjs`
+- parent/child route structure and post breadcrumb context
+- child-series content assignments such as `transport-and-reliability`
+
+Dropped the retired flat route `src/pages/series/[series].astro` during the merge and kept the homepage parent listing without the child-count metadata.
+
+Verification:
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`
