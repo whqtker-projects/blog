@@ -1,9 +1,14 @@
 # Astro Bootstrap Documentation
 
 **Status:** Active — Astro skeleton initialized 2026-05-07.  
-**Last updated:** 2026-05-08
+**Last updated:** 2026-05-09
 
 Quick reference for working with the Astro project in this repository.
+
+Hierarchy note:
+- Current committed routes are still flat-series-based.
+- The confirmed target IA for the migration is a two-level parent-child series model.
+- See [`docs/content-model.md`](content-model.md) for the authoritative parent/child contract that issues `#153` through `#157` should implement.
 
 ---
 
@@ -202,6 +207,13 @@ Series index documents do not use `order`, `status`, or any post-specific fields
 Slug is derived from the Markdown file name (e.g., `b-plus-tree.md` → `/posts/b-plus-tree`).
 
 A `/series/[series]` route is only generated if a matching series index document exists in `src/content/series_indexes/`. Adding a new series requires creating the index document first.
+
+Confirmed migration target:
+- parent series page: `/series/<parent-slug>`
+- child series page: `/series/<parent-slug>/<child-slug>`
+- post page: `/posts/<slug>` with child-series context
+
+Until issues `#153` through `#156` land, treat the table above as the current implementation and `docs/content-model.md` as the target hierarchy contract.
 
 ---
 

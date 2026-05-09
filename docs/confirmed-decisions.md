@@ -8,7 +8,7 @@ This document is the stable reference for decisions that have been explicitly ag
 - When a new decision is confirmed, add it here and remove it from `open-questions.md`.
 - For the full decision record with context and rationale, see `decision-log.md`.
 
-**Last updated:** 2026-05-09 (D-57–D-60 added: hierarchical series architecture)
+**Last updated:** 2026-05-09 (D-57–D-64 added: hierarchical series architecture and IA contract)
 
 ---
 
@@ -201,6 +201,10 @@ This document is the stable reference for decisions that have been explicitly ag
 | D-58 | URL structure: parent series → `/series/<parent-slug>`, child series → `/series/<parent-slug>/<child-slug>`. Two levels only — no third level is permitted. |
 | D-59 | The homepage lists parent series only. Child series and their posts are accessible through the parent series page, not directly from the homepage. |
 | D-60 | Existing flat series slugs are preserved as child series slugs during migration. The `network-protocols` slug is retained unchanged when placed under a parent. The old flat URL `/series/network-protocols` will no longer be generated after migration; no redirect is added. |
+| D-61 | A parent series is a navigation and information-architecture container for child series. It may have title/description metadata and its own landing page, but it does not own posts directly. |
+| D-62 | A child series belongs to exactly one parent series and is the terminal ordered content container. Posts attach directly to child series only. |
+| D-63 | The parent series page is responsible for introducing the parent direction and listing its child series. It does not render a mixed flat list of all descendant posts. |
+| D-64 | The child series page is responsible for listing visible posts in that child series and providing the series context used by post navigation and breadcrumbs. |
 
 ---
 

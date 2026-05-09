@@ -692,6 +692,62 @@ The current implementation is flat-series-first: posts belong directly to one `s
 
 ---
 
+## DL-017 — Parent-child series information architecture (#152)
+
+**Date:** 2026-05-09
+**Status:** confirmed
+
+### Context
+
+Issue #151 resolved the structural policy needed to start the hierarchical-series migration: one `series_indexes` content type, two URL levels, parent-only homepage entries, and preserved child slugs. Issue #152 needed to turn those structural answers into an IA contract that later schema, routing, validation, and migration issues can implement without making up page responsibilities case by case.
+
+The current repository still behaves like a flat series system:
+- `src/pages/index.astro` lists every `series_indexes` document as a homepage entry.
+- `src/pages/series/[series].astro` treats every series slug as a terminal listing page that directly owns posts.
+- `docs/content-model.md` and `docs/astro-bootstrap.md` still describe posts as belonging directly to one flat series.
+
+That makes the missing IA distinctions explicit work, not implied implementation detail.
+
+### Alternatives considered
+
+**Parent page behavior:**
+- Parent page renders all descendant posts in one combined list: gives a broad overview, but collapses the distinction between parent and child series and makes the child layer feel redundant. Rejected.
+- Parent page lists child series only (chosen): preserves the hierarchy and gives each child series its own terminal ordered post listing.
+
+**Post attachment point:**
+- Allow posts to attach to either parent or child series: flexible, but weakens validation and creates ambiguity for ordering, breadcrumbs, and navigation. Rejected.
+- Restrict posts to child series only (chosen): keeps one terminal ownership layer for ordered content.
+
+**Homepage discovery model:**
+- Continue listing every child series directly on the homepage: simpler migration, but keeps the old flat browsing model visible at the top level. Rejected.
+- List parent series only, with child discovery on the parent page (chosen): matches the intended two-level IA cleanly.
+
+### Decision
+
+- D-61: a parent series is a navigation and IA container for child series; it may have metadata and its own page, but it does not own posts directly.
+- D-62: a child series belongs to exactly one parent series and is the terminal ordered content container; posts attach to child series only.
+- D-63: the parent page introduces the parent direction and lists its child series; it does not flatten descendant posts into one mixed list.
+- D-64: the child page lists visible posts in that child series and provides the series context used by post navigation and breadcrumbs.
+
+### Follow-up
+
+- Issue #153 should encode these parent/child roles in the `series_indexes` schema shape.
+- Issue #154 should replace the flat homepage and flat `/series/[series]` behavior with separate parent and child page responsibilities.
+- Issue #155 should enforce that posts cannot attach directly to parent series.
+- Issue #156 should map existing flat series into explicit parent and child roles without leaving ambiguous ownership behind.
+
+### References
+
+- `confirmed-decisions.md`: D-61 through D-64
+- Issue #152
+- Issue #151
+- `docs/content-model.md`
+- `docs/astro-bootstrap.md`
+- `src/pages/index.astro`
+- `src/pages/series/[series].astro`
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions

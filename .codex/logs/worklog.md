@@ -143,3 +143,49 @@ Verification:
 - `pnpm check:content`
 - `pnpm build`
 - Confirmed `/series/data-structures` is generated while no new public post routes are created for the idea-stage files
+
+## 2026-05-09 — Audit hierarchical-series issue structure for completeness
+
+Inspected the current hierarchical-series planning issues and the flat-series assumptions still present in repository docs and code.
+
+Confirmed that the previously missing structural issues already exist and are still open:
+- `#159` umbrella parent issue for the full parent-child migration phase
+- `#157` dedicated `Computer Networks` backlog restructuring issue
+- `#158` dedicated series-documentation refactor issue
+
+Also re-verified the repository state those issues are grounded in:
+- `docs/content-model.md`, `docs/astro-bootstrap.md`, `src/content.config.ts`, `scripts/check-content.mjs`, `src/pages/index.astro`, and `src/pages/series/[series].astro` still describe and implement a flat series model
+- `src/content/series_indexes/network-protocols.md` and `src/content/series_indexes/data-structures.md` are real current flat series
+- the simplified post status model and local-vs-production visibility split remain in place and should not be reopened by the hierarchy work
+
+Result:
+- No new GitHub issues were created in this audit because creating duplicates would have made the structure worse
+- No existing issue text needed edits; the current `#151`–`#159` set already forms a complete dependency chain for the migration
+
+## 2026-05-09 — Record parent-child series IA contract for Issue #152
+
+Used the decisions already confirmed in issue `#151` to define the actual information-architecture contract for the hierarchical-series migration.
+
+Documented in `docs/confirmed-decisions.md` and `docs/decision-log.md` that:
+- parent series are navigation containers and do not own posts directly
+- child series belong to exactly one parent and are the terminal ordered content containers
+- the homepage remains parent-only
+- parent pages list child series, while child pages list posts and provide breadcrumb/navigation context
+
+This keeps issue `#152` narrowly focused on IA responsibilities before schema, routing, validation, and migration implementation begin.
+
+## 2026-05-09 — Make hierarchical-series IA explicit in content docs
+
+Updated `docs/content-model.md` to become the authoritative parent-child series IA contract for the migration phase instead of leaving the target model implicit in decision records only.
+
+Made the following implementation-facing rules explicit:
+- the hierarchy is exactly parent series -> child series -> posts
+- no third hierarchy level is allowed
+- parent series do not own posts directly
+- posts attach to child series only
+- concepts remain outside the hierarchy
+- homepage lists parent series only
+- parent pages list child series
+- child pages list posts and provide the series context used by breadcrumbs and prev/next navigation
+
+Also updated `docs/astro-bootstrap.md` to distinguish the current flat implementation from the confirmed target hierarchy so route docs do not silently contradict the new IA contract.
