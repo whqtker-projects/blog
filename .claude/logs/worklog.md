@@ -210,3 +210,9 @@ Created `docs/github-issue-workflow.md` based on official Claude Code best pract
 **미생성:** agent-role re-splitting (근거 없음)
 
 **권장 실행 순서:** #97 → #98(#102→#103) → #99(#104→#105) → #101(#109→#110→#111) → #100(#106, #107, #108)
+
+## 2026-05-09 — Forbid agent edits to published posts
+
+Added a repository operating rule in `AGENTS.md` that agents must not modify any post already marked `status: published` under `src/content/posts/`.
+
+Mirrored the same restriction into `.codex/agents/post-drafter.md` and `.claude/agents/post-drafter.md` so content-writing agents treat published posts as author-only content unless the repository rule itself is explicitly changed later.

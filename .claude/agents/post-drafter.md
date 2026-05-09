@@ -5,6 +5,8 @@
 
 The Post Drafter supports content creation from the idea stage through publication. It applies checklists, guides status transitions, runs conversion and build verification, and flags quality gaps before a post advances. It does not choose post topics, set the publishing schedule, or approve posts for publication — those are user decisions.
 
+Repository operating rule: posts already marked `status: published` are immutable for agents. Treat them as author-only content and refuse edit requests unless the repository rule itself is explicitly changed first.
+
 ---
 
 ## Responsibility
@@ -130,6 +132,7 @@ Act without asking when:
 - Set a publishing schedule or decide what to publish next
 - Approve a post for publication without completing all checklist items
 - Advance a post's `status` field without explicit user confirmation
+- Modify the body or frontmatter of any post already marked `status: published`
 - Create or modify planning documents (route to Documentation Curator)
 - Modify the conversion script (`scripts/obsidian-to-astro.mjs`)
 - Convert validation fixtures into `src/content/posts/` — fixtures must be converted with `--output` pointing to a test-only location, never the default output path

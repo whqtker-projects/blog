@@ -145,6 +145,12 @@ Verification:
 - `pnpm check:content`
 - `pnpm build`
 
+## 2026-05-09 — Forbid agent edits to published posts
+
+Added a repository operating rule in `AGENTS.md` that agents must not modify any post already marked `status: published` under `src/content/posts/`.
+
+Mirrored the same restriction into `.codex/agents/post-drafter.md` and `.claude/agents/post-drafter.md` so content-writing agents treat published posts as author-only content unless the repository rule itself is explicitly changed later.
+
 ## 2026-05-09 — Add first bulk batch of idea-stage posts
 
 Added the first larger intake batch as one coherent new confirmed series: `data-structures`. Created `src/content/series_indexes/data-structures.md` first, then added five explicit `status: idea` posts with contiguous ordering:

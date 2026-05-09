@@ -23,3 +23,4 @@ Recent history favors short imperative subjects with issue references, for examp
 
 ## Content & Documentation Notes
 Do not hand-edit generated output without updating the source or converter logic that produced it. When changing workflow assumptions or structure, update the relevant files in `docs/` alongside code so planning records stay aligned with implementation. If agent responsibilities or operating rules change, keep `.claude/agents/`, `.codex/agents/`, and the corresponding log files in sync rather than updating only one tool-specific directory.
+Agents must not modify any post already marked `status: published` in `src/content/posts/`. Treat published posts as author-only unless the user explicitly asks to change this repository rule first.
