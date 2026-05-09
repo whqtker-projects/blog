@@ -220,3 +220,27 @@ Verification:
 - `pnpm check:content`
 - `pnpm build`
 - confirmed static routes for `/series/computer-networks`, `/series/computer-networks/network-protocols`, `/series/database-systems/database-internals`, and `/series/data-structures-and-algorithms/data-structures`
+
+## 2026-05-09 — Finish hierarchical-series validation and content migration for Issues #155 and #156
+
+Extended `scripts/check-content.mjs` so repository validation now understands the parent-child series structure instead of only flat series membership.
+
+Added hierarchy-specific checks for:
+- invalid or self-referential parent links
+- children pointing at other children as parents
+- posts attaching directly to parent series instead of child series
+- preservation of the existing published-order and explicit-status invariants under the new structure
+
+Completed the migration-facing documentation so the current real child series are explicitly mapped under their new parents:
+- `database-internals` -> `database-systems`
+- `network-protocols` -> `computer-networks`
+- `data-structures` -> `data-structures-and-algorithms`
+
+Updated the directly affected docs:
+- `docs/series-backlog.md`
+- `docs/first-content-readiness.md`
+
+Verification:
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`

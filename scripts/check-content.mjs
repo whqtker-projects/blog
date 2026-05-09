@@ -4,10 +4,12 @@
  *
  * Checks:
  *   1. No two series_indexes documents share the same series value
- *   2. Every series value in posts/ has a matching series_indexes document
- *   3. No two explicitly published posts in the same series share the same order value
- *   4. Fail when a post omits status, because committed posts must set status explicitly
- *   5. Fail when a post uses a status outside the simplified vocabulary
+ *   2. Parent-child hierarchy is structurally valid
+ *   3. Every series value in posts/ has a matching child series index
+ *   4. No post attaches directly to a parent series
+ *   5. No two explicitly published posts in the same child series share the same order value
+ *   6. Fail when a post omits status, because committed posts must set status explicitly
+ *   7. Fail when a post uses a status outside the simplified vocabulary
  */
 
 import { readFileSync, readdirSync } from 'node:fs';
@@ -62,30 +64,67 @@ for (const idx of indexes) {
   }
   if (indexesBySeries.has(idx.series)) {
     fail(
-      `series '${idx.series}' is declared in both '${indexesBySeries.get(idx.series)}' and '${idx.file}'`
+      `series '${idx.series}' is declared in both '${indexesBySeries.get(idx.series).file}' and '${idx.file}'`
     );
   } else {
-    indexesBySeries.set(idx.series, idx.file);
+    indexesBySeries.set(idx.series, idx);
   }
 }
 if (!errors) console.log('  ✓ passed');
 const errorsAfterCheck1 = errors;
 
-// --- Check 2: every post series has a matching series index ---
-console.log('Check 2: every post series has a matching series index');
-const postSeriesValues = new Set(posts.map((p) => p.series).filter(Boolean));
-for (const s of postSeriesValues) {
-  if (!indexesBySeries.has(s)) {
+// --- Check 2: parent-child hierarchy is structurally valid ---
+console.log('Check 2: parent-child series hierarchy is structurally valid');
+for (const idx of indexes) {
+  if (!idx.parent) continue;
+
+  if (idx.parent === idx.series) {
+    fail(`${idx.file}: series '${idx.series}' cannot reference itself as parent`);
+    continue;
+  }
+
+  const parentIndex = indexesBySeries.get(idx.parent);
+  if (!parentIndex) {
     fail(
-      `series '${s}' has posts but no series index document in src/content/series_indexes/`
+      `${idx.file}: child series '${idx.series}' references missing parent series '${idx.parent}'`
+    );
+    continue;
+  }
+
+  if (parentIndex.parent) {
+    fail(
+      `${idx.file}: child series '${idx.series}' references child series '${idx.parent}' as parent; only two levels are allowed`
     );
   }
 }
 if (errors === errorsAfterCheck1) console.log('  ✓ passed');
 const errorsAfterCheck2 = errors;
 
-// --- Check 3: no duplicate order within a series (published posts only) ---
-console.log('Check 3: no duplicate order values within a series (explicitly published posts)');
+// --- Check 3: every post series has a matching child series index ---
+console.log('Check 3: every post series has a matching child series index');
+const postSeriesValues = new Set(posts.map((p) => p.series).filter(Boolean));
+for (const s of postSeriesValues) {
+  const index = indexesBySeries.get(s);
+  if (!index) {
+    fail(
+      `series '${s}' has posts but no series index document in src/content/series_indexes/`
+    );
+    continue;
+  }
+
+  if (!index.parent) {
+    fail(
+      `series '${s}' is a parent series; posts must attach to a child series instead`
+    );
+  }
+}
+if (errors === errorsAfterCheck2) console.log('  ✓ passed');
+const errorsAfterCheck3 = errors;
+
+// --- Check 4: no published-order collision within a child series ---
+console.log(
+  'Check 4: no duplicate order values within a child series (explicitly published posts)'
+);
 const publishedPosts = posts.filter((p) => p.status === 'published');
 const orderKeys = new Map();
 for (const post of publishedPosts) {
@@ -99,10 +138,11 @@ for (const post of publishedPosts) {
     orderKeys.set(key, post.file);
   }
 }
-if (errors === errorsAfterCheck2) console.log('  ✓ passed');
+if (errors === errorsAfterCheck3) console.log('  ✓ passed');
+const errorsAfterCheck4 = errors;
 
-// --- Check 4: fail on missing status ---
-console.log('Check 4: no posts may omit status');
+// --- Check 5: fail on missing status ---
+console.log('Check 5: no posts may omit status');
 const statuslessPosts = posts.filter((post) => post.status === undefined);
 if (statuslessPosts.length === 0) {
   console.log('  ✓ passed');
@@ -113,10 +153,10 @@ if (statuslessPosts.length === 0) {
     );
   }
 }
-const errorsAfterCheck4 = errors;
+const errorsAfterCheck5 = errors;
 
-// --- Check 5: fail on invalid status values ---
-console.log('Check 5: status values use the simplified vocabulary');
+// --- Check 6: fail on invalid status values ---
+console.log('Check 6: status values use the simplified vocabulary');
 for (const post of posts) {
   if (post.status !== undefined && !ALLOWED_POST_STATUSES.has(post.status)) {
     fail(
@@ -124,7 +164,7 @@ for (const post of posts) {
     );
   }
 }
-if (errors === errorsAfterCheck4) console.log('  ✓ passed');
+if (errors === errorsAfterCheck5) console.log('  ✓ passed');
 
 // --- Result ---
 if (errors > 0) {

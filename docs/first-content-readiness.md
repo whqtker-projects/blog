@@ -7,9 +7,9 @@ This document defines the artifacts and criteria needed to move from planning in
 
 ---
 
-## Candidate Posts — `database-internals` Series
+## Candidate Posts — `database-internals` Child Series
 
-The first series is `database-internals` (D-22). The five candidate posts below cover its core topic areas: indexing structures, transaction guarantees, durability mechanisms, and query execution.
+The first series is `database-internals` (D-22). Under the current hierarchy model, it is now a child series under the parent `database-systems`. The five candidate posts below cover its core topic areas: indexing structures, transaction guarantees, durability mechanisms, and query execution.
 
 | Order | File name | Title | Scope |
 |-------|-----------|-------|-------|
@@ -25,9 +25,10 @@ The author may adjust order, add topics, or split a post — this list is a star
 
 ### Pilot Batch — Simplified Status Model
 
-The current pilot batch for large-scale idea intake is the committed `network-protocols` series. This batch was chosen because it already satisfies the repository's structural requirements:
+The current pilot batch for large-scale idea intake is the committed `network-protocols` child series under the parent `computer-networks`. This batch was chosen because it already satisfies the repository's structural requirements:
 
 - A real series index exists at `src/content/series_indexes/network-protocols.md`
+- The child series now has an explicit parent mapping to `computer-networks`
 - All five posts already have explicit `series`, `order`, and `status`
 - The batch exercises both non-public lifecycle states now in use: `draft` and `idea`
 - The `order` range is contiguous (`1` through `5`), so ordering and listing behavior can be checked without introducing new numbering rules
@@ -50,9 +51,10 @@ Pilot verification goals:
 
 ### First Bulk Batch — `data-structures`
 
-The first larger idea-stage batch is grouped as one new confirmed series: `data-structures`. This keeps the intake reviewable because the batch has a single series index, a contiguous ordering block, and a consistent all-`idea` status set.
+The first larger idea-stage batch is grouped as one new confirmed child series: `data-structures` under the parent `data-structures-and-algorithms`. This keeps the intake reviewable because the batch has a single child series index, a contiguous ordering block, and a consistent all-`idea` status set.
 
-Series index:
+Series indexes:
+- `src/content/series_indexes/data-structures-and-algorithms.md`
 - `src/content/series_indexes/data-structures.md`
 
 Initial bulk batch:
@@ -68,15 +70,15 @@ Initial bulk batch:
 Why this batch is suitable:
 
 - `data-structures` is already a confirmed series in `docs/series-backlog.md`
-- The repository now has a real series index before any posts in that series
+- The repository now has both parent and child series indexes before posts in that child series
 - All posts use explicit `status: idea`
 - The batch is reviewable as one coherent series-level diff instead of many unrelated one-off stubs
 
 ---
 
-## Candidate Posts — `network-protocols` Series
+## Candidate Posts — `network-protocols` Child Series
 
-The second series is `network-protocols` (D-39). The five candidate posts below cover foundational protocol knowledge across the transport, application, and security layers.
+The second series is `network-protocols` (D-39). Under the current hierarchy model, it is now a child series under the parent `computer-networks`. The five candidate posts below cover foundational protocol knowledge across the transport, application, and security layers.
 
 | Order | File name | Title | Scope |
 |-------|-----------|-------|-------|
