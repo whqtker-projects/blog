@@ -30,6 +30,14 @@ Every post must include the following content areas. Titles and ordering are dec
 | Target audience | Beginner to practitioner for all series (D-29) |
 | Quiz format | 5 MCQ, 4 options each, one correct answer (D-27) |
 
+## Language Policy
+
+- Post `title` is reader-facing display text and is intended to be written in Korean for new and editable backlog posts.
+- Post body content is intended to be written in Korean.
+- Exact code, CLI commands, API names, protocol names, and other technical identifiers may remain in their original form when needed.
+- English filenames and slugs remain identifier-only fields and do not imply English rendered content.
+- Quiz sections, when later written, follow the same Korean writing policy unless another repository rule explicitly overrides it.
+
 ---
 
 ## What This Document Is Not

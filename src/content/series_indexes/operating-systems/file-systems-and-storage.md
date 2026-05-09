@@ -1,5 +1,5 @@
 ---
-title: "File Systems and Storage"
+title: "파일 시스템과 저장장치"
 series: file-systems-and-storage
 parent: operating-systems
 order: 5

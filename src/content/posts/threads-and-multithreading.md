@@ -1,5 +1,5 @@
 ---
-title: "Threads and Multithreading"
+title: "스레드와 멀티스레딩"
 series: processes-and-threads
 order: 3
 status: idea

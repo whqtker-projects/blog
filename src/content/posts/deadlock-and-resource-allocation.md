@@ -1,5 +1,5 @@
 ---
-title: "Deadlock and Resource Allocation"
+title: "교착 상태와 자원 할당"
 series: scheduling-and-synchronization
 order: 5
 status: idea

@@ -1,5 +1,5 @@
 ---
-title: "Virtual Memory and Demand Paging"
+title: "가상 메모리와 요구 페이징"
 series: memory-management
 order: 4
 status: idea

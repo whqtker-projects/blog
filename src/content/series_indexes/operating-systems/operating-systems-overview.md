@@ -1,5 +1,5 @@
 ---
-title: "Operating Systems Overview"
+title: "운영체제 개요"
 series: operating-systems-overview
 parent: operating-systems
 order: 1

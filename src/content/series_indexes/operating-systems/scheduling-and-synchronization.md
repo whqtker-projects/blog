@@ -1,5 +1,5 @@
 ---
-title: "Scheduling and Synchronization"
+title: "스케줄링과 동기화"
 series: scheduling-and-synchronization
 parent: operating-systems
 order: 3

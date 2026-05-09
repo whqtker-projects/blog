@@ -10,7 +10,7 @@ This document defines the required frontmatter fields for every blog post.
 
 | Field | Type | Description |
 |---|---|---|
-| `title` | string | Display title of the post. Korean or English. Numeric prefixes such as `01. ...` are optional display aids only. |
+| `title` | string | Display title of the post. For new and editable backlog posts, write it in Korean. Numeric prefixes such as `01. ...` are optional display aids only. |
 | `series` | string (slug) | Series the post belongs to. Must match a confirmed series slug from `series-backlog.md`. |
 | `order` | integer | Position of the post within its series. Starts at 1. |
 | `status` | string | Post lifecycle stage. Required values: `idea`, `draft`, `published` (D-30, D-32). |
@@ -40,6 +40,13 @@ status: draft
 - Post pages do not add a separate breadcrumb `#order` label on top of the visible title.
 
 File naming is unchanged. Numeric title prefixes do not imply filename prefixes.
+
+Language policy for posts:
+- `title` is reader-facing display text, not an identifier field
+- filenames and slugs remain English-only identifiers even when the post title and body are Korean
+- post body content is intended to be written in Korean
+- exact code, CLI commands, API names, and other technical identifiers may remain in their original form when needed
+- already published posts may remain as-is until the user explicitly requests a title/body migration
 
 ---
 

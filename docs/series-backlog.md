@@ -5,6 +5,11 @@
 
 This document is the authoritative list of confirmed series. The original 12-series flat plan remains the historical baseline, and the active child-series inventory may expand where a parent-direction rebuild requires a more coherent hierarchy. Parent-level operating context now lives under `docs/series/`; use those documents for current child composition, ordering, backlog posture, and likely next expansion points.
 
+Display-language note:
+- slugs remain English kebab-case identifiers
+- reader-facing series display names are allowed to be Korean
+- this rollout synchronizes the `operating-systems` parent and its child series first; other legacy English display names remain until their own migration work
+
 ---
 
 ## What Is a Series?
@@ -35,11 +40,11 @@ The repository now uses the parent-child structure in committed content. The rea
 | `computer-networks` | Computer Networks | `transport-and-reliability` | Transport and Reliability |
 | `computer-networks` | Computer Networks | `internet-addressing-and-routing` | Internet Addressing and Routing |
 | `computer-networks` | Computer Networks | `network-protocols` | Network Protocols |
-| `operating-systems` | 운영체제 | `operating-systems-overview` | Operating Systems Overview |
-| `operating-systems` | 운영체제 | `processes-and-threads` | Processes and Threads |
-| `operating-systems` | 운영체제 | `scheduling-and-synchronization` | Scheduling and Synchronization |
-| `operating-systems` | 운영체제 | `memory-management` | Memory Management |
-| `operating-systems` | 운영체제 | `file-systems-and-storage` | File Systems and Storage |
+| `operating-systems` | 운영체제 | `operating-systems-overview` | 운영체제 개요 |
+| `operating-systems` | 운영체제 | `processes-and-threads` | 프로세스와 스레드 |
+| `operating-systems` | 운영체제 | `scheduling-and-synchronization` | 스케줄링과 동기화 |
+| `operating-systems` | 운영체제 | `memory-management` | 메모리 관리 |
+| `operating-systems` | 운영체제 | `file-systems-and-storage` | 파일 시스템과 저장장치 |
 | `data-structures-and-algorithms` | Data Structures and Algorithms | `data-structures` | Data Structures |
 
 Existing child slugs are preserved during migration, including `network-protocols`.
@@ -76,11 +81,11 @@ Parent-level operating documents:
 |---|---|---|---|
 | `data-structures` | Data Structures | Confirmed | Arrays, trees, graphs, hash tables |
 | `algorithms` | Algorithms | Confirmed | Sorting, search, dynamic programming, complexity |
-| `operating-systems-overview` | Operating Systems Overview | Operating Systems backlog | Introductory OS role, computer-system structure, kernel structure, and system-call boundary |
-| `processes-and-threads` | Processes and Threads | Operating Systems backlog | Process model, context switching, threads, and IPC |
-| `scheduling-and-synchronization` | Scheduling and Synchronization | Operating Systems backlog | CPU scheduling, synchronization primitives, and deadlock/resource waits |
-| `memory-management` | Memory Management | Operating Systems backlog | Address binding, allocation, paging, virtual memory, and replacement policy |
-| `file-systems-and-storage` | File Systems and Storage | Operating Systems backlog | File-system interface, implementation, directories, storage, and disk scheduling |
+| `operating-systems-overview` | 운영체제 개요 | Operating Systems backlog | Introductory OS role, computer-system structure, kernel structure, and system-call boundary |
+| `processes-and-threads` | 프로세스와 스레드 | Operating Systems backlog | Process model, context switching, threads, and IPC |
+| `scheduling-and-synchronization` | 스케줄링과 동기화 | Operating Systems backlog | CPU scheduling, synchronization primitives, and deadlock/resource waits |
+| `memory-management` | 메모리 관리 | Operating Systems backlog | Address binding, allocation, paging, virtual memory, and replacement policy |
+| `file-systems-and-storage` | 파일 시스템과 저장장치 | Operating Systems backlog | File-system interface, implementation, directories, storage, and disk scheduling |
 | `computer-architecture` | Computer Architecture | Confirmed | CPU pipeline, cache, memory hierarchy |
 | `computer-security` | Computer Security | Confirmed | Cryptography, authentication, common attack models |
 
@@ -106,6 +111,7 @@ Parent-level operating documents:
 - **Multiple series per domain:** Domains are not collapsed into single series (D-19).
 - **Two levels only:** Parent series → child series → posts. No third hierarchy layer is allowed.
 - **Slug format:** all-lowercase kebab-case, English only (D-15, D-16).
+- **Display-name policy:** visible series titles may be Korean while slug identifiers remain English.
 - **Series naming policy** (slug ↔ display name mapping): tracked in issue #33.
 - **Post metadata structure** (how a post declares its series): tracked in issue #34.
 

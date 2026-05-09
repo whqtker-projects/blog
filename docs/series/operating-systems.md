@@ -1,4 +1,4 @@
-# Operating Systems
+# 운영체제
 
 ## Purpose
 
@@ -6,13 +6,13 @@
 
 ## Child Series Composition
 
-| Order | Child series | Current posture |
-|---|---|---|
-| 1 | `operating-systems-overview` | 4 idea |
-| 2 | `processes-and-threads` | 4 idea |
-| 3 | `scheduling-and-synchronization` | 5 idea |
-| 4 | `memory-management` | 5 idea |
-| 5 | `file-systems-and-storage` | 5 idea |
+| Order | Child series slug | Display name | Current posture |
+|---|---|---|---|
+| 1 | `operating-systems-overview` | 운영체제 개요 | 4 idea |
+| 2 | `processes-and-threads` | 프로세스와 스레드 | 4 idea |
+| 3 | `scheduling-and-synchronization` | 스케줄링과 동기화 | 5 idea |
+| 4 | `memory-management` | 메모리 관리 | 5 idea |
+| 5 | `file-systems-and-storage` | 파일 시스템과 저장장치 | 5 idea |
 
 Current child indexes:
 - `src/content/series_indexes/operating-systems/operating-systems-overview.md`
@@ -26,6 +26,7 @@ Current child indexes:
 This parent is an early backlog-first rollout:
 - every current post in the parent is `status: idea`
 - child ordering is explicit across the full five-child structure
+- reader-facing child-series display names are now synchronized in Korean while slug identifiers remain unchanged
 - the current split is meant to keep a university-style OS learning arc reviewable without exploding into too many narrow sibling series
 
 ## Next Expansion Points

@@ -1,5 +1,5 @@
 ---
-title: "Address Binding and Memory Layout"
+title: "주소 바인딩과 메모리 배치"
 series: memory-management
 order: 1
 status: idea

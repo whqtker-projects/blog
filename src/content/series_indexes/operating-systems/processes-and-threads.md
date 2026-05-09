@@ -1,5 +1,5 @@
 ---
-title: "Processes and Threads"
+title: "프로세스와 스레드"
 series: processes-and-threads
 parent: operating-systems
 order: 2

@@ -13,3 +13,8 @@ The `computer-networks` parent is refined by adding `network-foundations` and re
 ## 2026-05-09 — Operating systems uses a moderate five-child course-style backlog split
 
 `operating-systems` is refined into `operating-systems-overview`, `processes-and-threads`, `scheduling-and-synchronization`, `memory-management`, and `file-systems-and-storage`. This keeps the learning arc textbook-like without turning the parent into a large set of tiny sibling series.
+## 2026-05-09 — Keep English identifiers and Korean display text separate
+
+This repository keeps filenames, slugs, and `series` identifiers in English kebab-case while allowing reader-facing series titles and post titles to be Korean. English technical identifiers such as code, CLI commands, API names, and exact protocol terms may remain in their original form inside Korean-facing metadata or content when needed.
+
+The rollout is migration-safe rather than retroactive: new and editable backlog content should follow the Korean display policy, but already published posts are not automatically rewritten unless explicitly requested.

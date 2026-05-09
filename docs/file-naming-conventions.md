@@ -106,3 +106,9 @@ This does not prohibit visible numeric prefixes in the post `title` frontmatter.
 - they are rendered as-is when present
 - post `order` remains the structural source of truth
 - validation requires a numeric title prefix to match `order` when such a prefix is present
+
+Filename and slug rules are separate from reader-facing language policy:
+- filenames and slugs remain English-only identifiers
+- visible series titles and post titles may be Korean
+- post bodies are intended to be written in Korean, while exact code, CLI commands, API names, and other technical identifiers may remain in their original form when needed
+- this repository does not treat an English filename or slug as a signal that the rendered content must also be English

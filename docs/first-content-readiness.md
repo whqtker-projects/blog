@@ -7,6 +7,11 @@ This document defines the artifacts and criteria needed to move from planning in
 
 Parent-level operating context now lives under `docs/series/`. Use those documents for current child-series composition, ordering, backlog posture, and next expansion points; use this document for readiness criteria and writing workflow.
 
+Language-policy note:
+- filenames and slugs remain English identifiers
+- post titles and planned post bodies are intended to be Korean for new and editable backlog content
+- this document only synchronizes the operating-systems backlog titles in this rollout; already published content is left unchanged
+
 Current operating documents:
 - [`docs/series/database-systems.md`](series/database-systems.md)
 - [`docs/series/computer-networks.md`](series/computer-networks.md)
@@ -202,10 +207,10 @@ This entry child series covers the opening OS layer before process and memory me
 
 | Order | File name | Title | Scope | Status |
 |-------|-----------|-------|-------|--------|
-| 1 | `what-is-an-operating-system.md` | What Is an Operating System? | Why operating systems exist, what abstractions they provide, and how they sit between hardware and programs | `idea` |
-| 2 | `computer-system-structure.md` | Computer System Structure | CPU, memory, devices, interrupts, and the basic machine environment an OS manages | `idea` |
-| 3 | `operating-system-structure.md` | Operating System Structure | Kernel responsibilities, service layering, and the difference between monolithic, modular, and layered views | `idea` |
-| 4 | `system-calls-and-user-kernel-boundary.md` | System Calls and the User-Kernel Boundary | User mode vs. kernel mode, traps, and how software crosses the protection boundary | `idea` |
+| 1 | `what-is-an-operating-system.md` | 운영체제란 무엇인가 | Why operating systems exist, what abstractions they provide, and how they sit between hardware and programs | `idea` |
+| 2 | `computer-system-structure.md` | 컴퓨터 시스템 구조 | CPU, memory, devices, interrupts, and the basic machine environment an OS manages | `idea` |
+| 3 | `operating-system-structure.md` | 운영체제 구조 | Kernel responsibilities, service layering, and the difference between monolithic, modular, and layered views | `idea` |
+| 4 | `system-calls-and-user-kernel-boundary.md` | 시스템 콜과 사용자-커널 경계 | User mode vs. kernel mode, traps, and how software crosses the protection boundary | `idea` |
 
 ### Child Series — `processes-and-threads`
 
@@ -213,10 +218,10 @@ This child series introduces the main execution units managed by an OS.
 
 | Order | File name | Title | Scope | Status |
 |-------|-----------|-------|-------|--------|
-| 1 | `process-concept-and-state.md` | Process Concept and State | Process abstraction, lifecycle, process control block, and state transitions | `idea` |
-| 2 | `context-switching.md` | Context Switching | What is saved and restored during a switch, and why switching has a runtime cost | `idea` |
-| 3 | `threads-and-multithreading.md` | Threads and Multithreading | Process vs. thread distinction, shared address space, and why multithreading exists | `idea` |
-| 4 | `interprocess-communication.md` | Interprocess Communication | Pipes, message passing, shared memory, and coordination between isolated execution contexts | `idea` |
+| 1 | `process-concept-and-state.md` | 프로세스 개념과 상태 | Process abstraction, lifecycle, process control block, and state transitions | `idea` |
+| 2 | `context-switching.md` | 문맥 교환 | What is saved and restored during a switch, and why switching has a runtime cost | `idea` |
+| 3 | `threads-and-multithreading.md` | 스레드와 멀티스레딩 | Process vs. thread distinction, shared address space, and why multithreading exists | `idea` |
+| 4 | `interprocess-communication.md` | 프로세스 간 통신 | Pipes, message passing, shared memory, and coordination between isolated execution contexts | `idea` |
 
 ### Child Series — `scheduling-and-synchronization`
 
@@ -224,11 +229,11 @@ This child series groups CPU sharing, concurrent coordination, and deadlock as o
 
 | Order | File name | Title | Scope | Status |
 |-------|-----------|-------|-------|--------|
-| 1 | `cpu-scheduling-basics.md` | CPU Scheduling Basics | Scheduling goals, turnaround/response metrics, and why policy matters | `idea` |
-| 2 | `scheduling-algorithms-and-tradeoffs.md` | Scheduling Algorithms and Tradeoffs | FCFS, SJF, priority, round-robin, and the tradeoffs behind each | `idea` |
-| 3 | `process-synchronization.md` | Process Synchronization | Critical sections, races, mutual exclusion, and the need for coordination primitives | `idea` |
-| 4 | `semaphores-and-monitors.md` | Semaphores and Monitors | Semaphores, monitors, condition variables, and structured synchronization patterns | `idea` |
-| 5 | `deadlock-and-resource-allocation.md` | Deadlock and Resource Allocation | Deadlock conditions, resource-allocation framing, and avoidance/detection/recovery overview | `idea` |
+| 1 | `cpu-scheduling-basics.md` | CPU 스케줄링 기초 | Scheduling goals, turnaround/response metrics, and why policy matters | `idea` |
+| 2 | `scheduling-algorithms-and-tradeoffs.md` | 스케줄링 알고리즘과 트레이드오프 | FCFS, SJF, priority, round-robin, and the tradeoffs behind each | `idea` |
+| 3 | `process-synchronization.md` | 프로세스 동기화 | Critical sections, races, mutual exclusion, and the need for coordination primitives | `idea` |
+| 4 | `semaphores-and-monitors.md` | 세마포어와 모니터 | Semaphores, monitors, condition variables, and structured synchronization patterns | `idea` |
+| 5 | `deadlock-and-resource-allocation.md` | 교착 상태와 자원 할당 | Deadlock conditions, resource-allocation framing, and avoidance/detection/recovery overview | `idea` |
 
 ### Child Series — `memory-management`
 
@@ -236,11 +241,11 @@ This child series covers physical allocation, address translation, and virtual-m
 
 | Order | File name | Title | Scope | Status |
 |-------|-----------|-------|-------|--------|
-| 1 | `address-binding-and-memory-layout.md` | Address Binding and Memory Layout | Logical vs. physical addresses, relocation, and the baseline memory layout seen by programs | `idea` |
-| 2 | `contiguous-allocation-and-fragmentation.md` | Contiguous Allocation and Fragmentation | Fixed/variable partitions, fragmentation, and why contiguous allocation scales poorly | `idea` |
-| 3 | `paging-and-segmentation.md` | Paging and Segmentation | Two classic address-translation models and their tradeoffs | `idea` |
-| 4 | `virtual-memory-and-demand-paging.md` | Virtual Memory and Demand Paging | Virtual address spaces, lazy loading, page faults, and why demand paging exists | `idea` |
-| 5 | `page-replacement-policies.md` | Page Replacement Policies | FIFO, LRU, locality, and what replacement policy tries to optimize | `idea` |
+| 1 | `address-binding-and-memory-layout.md` | 주소 바인딩과 메모리 배치 | Logical vs. physical addresses, relocation, and the baseline memory layout seen by programs | `idea` |
+| 2 | `contiguous-allocation-and-fragmentation.md` | 연속 할당과 단편화 | Fixed/variable partitions, fragmentation, and why contiguous allocation scales poorly | `idea` |
+| 3 | `paging-and-segmentation.md` | 페이징과 세그멘테이션 | Two classic address-translation models and their tradeoffs | `idea` |
+| 4 | `virtual-memory-and-demand-paging.md` | 가상 메모리와 요구 페이징 | Virtual address spaces, lazy loading, page faults, and why demand paging exists | `idea` |
+| 5 | `page-replacement-policies.md` | 페이지 교체 정책 | FIFO, LRU, locality, and what replacement policy tries to optimize | `idea` |
 
 ### Child Series — `file-systems-and-storage`
 
@@ -248,11 +253,11 @@ This child series keeps persistent data structures and storage-device coordinati
 
 | Order | File name | Title | Scope | Status |
 |-------|-----------|-------|-------|--------|
-| 1 | `file-system-interface.md` | File-System Interface | Files, directories, metadata, and the abstractions applications expect from a file system | `idea` |
-| 2 | `directory-structure-and-allocation.md` | Directory Structure and Allocation | Directory organization, block allocation, and how file layout affects access patterns | `idea` |
-| 3 | `file-system-implementation.md` | File-System Implementation | On-disk structures, free-space tracking, and how file systems map names to blocks | `idea` |
-| 4 | `storage-layer-and-io-basics.md` | Storage Layer and I/O Basics | Device controllers, buffering, caching, and the OS path from request to device interaction | `idea` |
-| 5 | `mass-storage-and-disk-scheduling.md` | Mass Storage and Disk Scheduling | Disk structure, seek/rotation costs, and why storage scheduling policies exist | `idea` |
+| 1 | `file-system-interface.md` | 파일 시스템 인터페이스 | Files, directories, metadata, and the abstractions applications expect from a file system | `idea` |
+| 2 | `directory-structure-and-allocation.md` | 디렉터리 구조와 할당 | Directory organization, block allocation, and how file layout affects access patterns | `idea` |
+| 3 | `file-system-implementation.md` | 파일 시스템 구현 | On-disk structures, free-space tracking, and how file systems map names to blocks | `idea` |
+| 4 | `storage-layer-and-io-basics.md` | 저장장치 계층과 I/O 기초 | Device controllers, buffering, caching, and the OS path from request to device interaction | `idea` |
+| 5 | `mass-storage-and-disk-scheduling.md` | 대용량 저장장치와 디스크 스케줄링 | Disk structure, seek/rotation costs, and why storage scheduling policies exist | `idea` |
 
 ---
 

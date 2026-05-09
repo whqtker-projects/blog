@@ -439,3 +439,12 @@ Verification:
 - `pnpm test:repo`
 - `pnpm check:content`
 - `pnpm build`
+## 2026-05-09 — Roll out Korean display policy for operating-systems metadata
+
+Locked the repository's language/display split more explicitly in docs so English filenames and slugs remain identifier-only fields while Korean is the intended display language for new and editable series titles, post titles, and future post bodies.
+
+Synchronized the `operating-systems` parent rollout across `docs/series-backlog.md`, `docs/first-content-readiness.md`, `docs/series/operating-systems.md`, `src/content/series_indexes/operating-systems*.md`, and the OS idea-stage post stubs under `src/content/posts/`. Only reader-facing `title` values changed; filenames, slugs, `series`, `order`, `status`, and stub bodies were preserved.
+
+Verification target:
+- `pnpm check:content`
+- `pnpm build`

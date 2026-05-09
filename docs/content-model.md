@@ -58,6 +58,13 @@ Post attachment rules:
 - A post does not attach to multiple child series.
 - A post page keeps its own `/posts/<slug>` URL, but it is understood in the context of one child series for breadcrumbs, prev/next navigation, and series back-links.
 
+Post language policy:
+- filenames and slugs stay English-only identifiers
+- the post `title` is reader-facing display text and may be Korean without changing metadata structure
+- new and editable backlog posts are intended to use Korean titles and Korean body content
+- already published posts are not retroactively changed by this policy unless the user explicitly asks for that migration
+- exact code, CLI commands, API names, and other technical identifiers may remain in their original form when needed
+
 ---
 
 ## `concepts`
@@ -110,6 +117,11 @@ Role rules:
 - Existing flat series slugs migrate into child-series slugs unchanged.
 - `network-protocols` remains the child-series slug during migration.
 - No third level is allowed. A child series cannot itself be the parent of another child series.
+
+Series display policy:
+- `series` and `parent` remain English kebab-case identifiers
+- `title` is the reader-facing display name and may be Korean
+- identifier fields and display text must not be conflated
 
 ---
 

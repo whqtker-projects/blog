@@ -1,5 +1,5 @@
 ---
-title: "Directory Structure and Allocation"
+title: "디렉터리 구조와 할당"
 series: file-systems-and-storage
 order: 2
 status: idea

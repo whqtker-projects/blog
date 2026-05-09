@@ -1,5 +1,5 @@
 ---
-title: "Memory Management"
+title: "메모리 관리"
 series: memory-management
 parent: operating-systems
 order: 4
