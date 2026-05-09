@@ -213,6 +213,14 @@ Verification:
 - `pnpm check:content`
 - `pnpm build`
 
+## 2026-05-09 — Refine the computer-networks parent around a course-style learning arc
+
+Reworked `computer-networks` so the child-series layout now starts with `network-foundations`, keeps `transport-and-reliability`, renames the old naming/routing child to `internet-addressing-and-routing`, and moves `network-protocols` to the last application-facing position.
+
+Added new idea-stage backlog files for foundations, TCP internals, and internet-layer topics; reassigned `dns-resolution.md` into `network-protocols`; and replaced the old broad `ip-addressing-and-routing.md` stub with `ip-addressing-and-subnetting.md` plus narrower sibling stubs.
+
+Synchronized the directly affected operating and decision docs: `docs/series/computer-networks.md`, `docs/series-backlog.md`, `docs/first-content-readiness.md`, `docs/post-metadata.md`, `docs/confirmed-decisions.md`, and `docs/decision-log.md`.
+
 Confirmed that the previously missing structural issues already exist and are still open:
 - `#159` umbrella parent issue for the full parent-child migration phase
 - `#157` dedicated `Computer Networks` backlog restructuring issue

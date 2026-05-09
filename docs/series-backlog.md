@@ -28,9 +28,10 @@ The repository now uses the parent-child structure in committed content. The rea
 | `computer-architecture` | 컴퓨터구조론 | `storage-systems` | Storage Systems |
 | `computer-architecture` | 컴퓨터구조론 | `bus-io-and-interrupts` | Bus, I/O, and Interrupts |
 | `computer-architecture` | 컴퓨터구조론 | `parallel-and-high-performance-architecture` | Parallel and High-Performance Architecture |
-| `computer-networks` | Computer Networks | `network-protocols` | Network Protocols |
+| `computer-networks` | Computer Networks | `network-foundations` | Network Foundations |
 | `computer-networks` | Computer Networks | `transport-and-reliability` | Transport and Reliability |
-| `computer-networks` | Computer Networks | `naming-and-routing` | Naming and Routing |
+| `computer-networks` | Computer Networks | `internet-addressing-and-routing` | Internet Addressing and Routing |
+| `computer-networks` | Computer Networks | `network-protocols` | Network Protocols |
 | `data-structures-and-algorithms` | Data Structures and Algorithms | `data-structures` | Data Structures |
 
 Existing child slugs are preserved during migration, including `network-protocols`.
@@ -51,9 +52,10 @@ Parent-level operating documents:
 |---|---|---|---|
 | `database-internals` | Database Internals | **First series** (D-22) | Storage engines, indexing, transactions, query execution |
 | `distributed-systems` | Distributed Systems | Confirmed | Consensus, replication, consistency models |
-| `network-protocols` | Network Protocols | **In progress** | HTTP, TLS, HTTP/2, HTTP/3, and application/web protocol behavior |
+| `network-foundations` | Network Foundations | Computer Networks backlog | Introductory network overview, layering, encapsulation, and networking technology |
 | `transport-and-reliability` | Transport and Reliability | Computer Networks backlog | TCP, UDP, QUIC, flow control, congestion, delivery guarantees |
-| `naming-and-routing` | Naming and Routing | Computer Networks backlog | DNS, IP addressing, forwarding, and route selection |
+| `internet-addressing-and-routing` | Internet Addressing and Routing | Computer Networks backlog | IP addressing, subnetting, ARP, ICMP, NAT, fragmentation, and routing protocols |
+| `network-protocols` | Network Protocols | **In progress** | DNS, HTTP, TLS, HTTP/2, HTTP/3, and application/web protocol behavior |
 | `backend-design` | Backend Design | Confirmed | API design, concurrency patterns, service architecture |
 
 ### CS Fundamentals (domain slug: `cs-fundamentals`)

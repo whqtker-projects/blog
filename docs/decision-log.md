@@ -887,6 +887,58 @@ After the hierarchy and ordering rollout, `order` drives both child-series and p
 
 ---
 
+## DL-019 — Refine the `computer-networks` parent around a university-style course flow
+
+**Date:** 2026-05-09
+**Status:** confirmed
+
+### Context
+
+After the first `computer-networks` split, the parent was more coherent than the original flat `network-protocols` backlog, but inspection still showed a strong backend/web bias. The committed child series were:
+- `network-protocols` for HTTP/TLS/HTTP2+/application protocols
+- `transport-and-reliability` for TCP/UDP/QUIC
+- `naming-and-routing` for DNS and IP/routing
+
+That structure worked for the initial migration, but a university-style networking outline made two gaps obvious:
+- there was no explicit foundations child series for overview, layering, encapsulation, and basic networking technology
+- `naming-and-routing` was too broad for the internet-layer topics that should eventually include subnetting, ARP, ICMP, NAT, fragmentation, and routing protocols
+
+The refinement needed to stay repository-aware. Existing `draft` work such as `what-is-http.md` and `tcp-connection-and-reliability.md` should not be discarded or buried under a textbook-perfect redesign.
+
+### Alternatives considered
+
+**Keep the current three-child breakdown unchanged:**
+- Lowest migration cost, but leaves the parent without a true entry layer and keeps too much internet-layer scope compressed into one child. Rejected.
+
+**Rebuild the parent into many narrow textbook children immediately:**
+- More academically pure, but creates too much churn for a repository that already has active draft work and explicitly discourages adding broad new child series too early. Rejected.
+
+**Add one foundations child and refine the routing/addressing child (chosen):**
+- Preserves the current practical work, fills the missing introductory layer, and makes the internet-layer backlog specific enough to become real post stubs. Chosen.
+
+### Decision
+
+- D-75: `computer-networks` now uses four child series: `network-foundations`, `transport-and-reliability`, `internet-addressing-and-routing`, and `network-protocols`.
+- D-76: `network-protocols` keeps DNS + HTTP/TLS/HTTP2+/application protocol scope, while `internet-addressing-and-routing` owns IP addressing, subnetting, ARP, ICMP, NAT, fragmentation, and routing protocols.
+
+### Follow-up
+
+- Update the actual child index files and post frontmatter to match the refined structure.
+- Split the old `ip-addressing-and-routing.md` idea stub into narrower idea-stage posts.
+- Keep future expansion conservative; this refinement is meant to improve the learning arc without reopening the whole hierarchy model.
+
+### References
+
+- `confirmed-decisions.md`: D-75, D-76
+- `docs/series/computer-networks.md`
+- `docs/series-backlog.md`
+- `docs/first-content-readiness.md`
+- `src/content/series_indexes/computer-networks/`
+- `src/content/posts/what-is-http.md`
+- `src/content/posts/tcp-connection-and-reliability.md`
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions

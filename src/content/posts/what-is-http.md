@@ -1,7 +1,7 @@
 ---
 title: "What Is HTTP?"
 series: network-protocols
-order: 1
+order: 2
 status: draft
 ---
 

@@ -53,9 +53,10 @@ Domain is not stored as a frontmatter field. It is inferred from `series` via th
 |---|---|
 | `database-internals` | `backend-systems` |
 | `distributed-systems` | `backend-systems` |
+| `network-foundations` | `backend-systems` |
 | `network-protocols` | `backend-systems` |
 | `transport-and-reliability` | `backend-systems` |
-| `naming-and-routing` | `backend-systems` |
+| `internet-addressing-and-routing` | `backend-systems` |
 | `backend-design` | `backend-systems` |
 | `data-structures` | `cs-fundamentals` |
 | `algorithms` | `cs-fundamentals` |

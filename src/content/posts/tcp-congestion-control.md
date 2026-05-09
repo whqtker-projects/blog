@@ -1,7 +1,7 @@
 ---
-title: "UDP, QUIC, and Delivery Tradeoffs"
+title: "TCP Congestion Control"
 series: transport-and-reliability
-order: 5
+order: 3
 status: idea
 ---
 

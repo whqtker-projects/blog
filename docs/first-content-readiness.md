@@ -88,35 +88,54 @@ Why this batch is suitable:
 
 ## Candidate Backlog — `computer-networks` Parent Series
 
-The second major direction is now the parent `computer-networks`. The original `network-protocols` flat backlog has been rebuilt into three child series so future intake can grow in coherent slices instead of one mixed list.
+The second major direction is now the parent `computer-networks`. The original `network-protocols` flat backlog has now been rebuilt into four child series so future intake can grow in coherent slices instead of one mixed list and so the learning order can start with real networking foundations.
+
+### Child Series — `network-foundations`
+
+This new entry child series covers the missing introductory layer that the current repository did not previously express.
+
+| Order | File name | Title | Scope | Status |
+|-------|-----------|-------|-------|--------|
+| 1 | `overview-of-computer-networks.md` | Overview of Computer Networks | Why networks exist, host/link/router roles, packet switching, and the shape of the internet as a system | `idea` |
+| 2 | `osi-and-tcp-ip-models.md` | OSI and TCP/IP Models | Layering purpose, OSI vs. TCP/IP correspondence, and what each layer is responsible for | `idea` |
+| 3 | `encapsulation-and-network-path.md` | Encapsulation and the Network Path | How data is encapsulated across layers and what happens along a real host-to-host path | `idea` |
+| 4 | `networking-technologies-and-media.md` | Networking Technologies and Media | Ethernet, wireless links, switching, access networks, and the physical/link baseline | `idea` |
 
 ### Child Series — `network-protocols`
 
-This retained child slug now covers the application/web-protocol portion of the backlog.
-
-| Order | File name | Title | Scope | Status |
-|-------|-----------|-------|-------|--------|
-| 1 | `what-is-http.md` | What Is HTTP? | HTTP request/response model, methods, status codes, statelessness, and the role of HTTP in the web stack | `draft` |
-| 2 | `tls-and-https.md` | TLS and HTTPS | TLS handshake, certificate chain, key exchange, and how HTTPS wraps HTTP | `idea` |
-| 3 | `http2-and-http3.md` | HTTP/2 and HTTP/3 | Multiplexing, HPACK, QUIC transport use, and protocol evolution | `idea` |
-
-### Child Series — `transport-and-reliability`
-
-This child series groups transport-layer delivery guarantees and latency/reliability tradeoffs.
-
-| Order | File name | Title | Scope | Status |
-|-------|-----------|-------|-------|--------|
-| 1 | `tcp-connection-and-reliability.md` | TCP and Reliable Transmission | Handshake, sequencing, acknowledgments, flow control, congestion control, retransmission | `draft` |
-| 2 | `udp-and-quic.md` | UDP, QUIC, and Delivery Tradeoffs | Connectionless delivery, latency tradeoffs, reliability moved to higher layers, and QUIC design motivation | `idea` |
-
-### Child Series — `naming-and-routing`
-
-This child series groups the naming, addressing, and path-selection part of the network stack.
+This retained child slug now covers the application/web-protocol portion of the backlog, including DNS as the name-to-service entry point above the internet layer.
 
 | Order | File name | Title | Scope | Status |
 |-------|-----------|-------|-------|--------|
 | 1 | `dns-resolution.md` | DNS and Name Resolution | Domain hierarchy, resolver flow, caching, and record types | `idea` |
-| 2 | `ip-addressing-and-routing.md` | IP Addressing and Routing | Address assignment, subnet boundaries, routers, and path selection | `idea` |
+| 2 | `what-is-http.md` | What Is HTTP? | HTTP request/response model, methods, status codes, statelessness, and the role of HTTP in the web stack | `draft` |
+| 3 | `tls-and-https.md` | TLS and HTTPS | TLS handshake, certificate chain, key exchange, and how HTTPS wraps HTTP | `idea` |
+| 4 | `http2-and-http3.md` | HTTP/2 and HTTP/3 | Multiplexing, HPACK, QUIC transport use, and protocol evolution | `idea` |
+
+### Child Series — `transport-and-reliability`
+
+This child series still groups transport-layer delivery guarantees and latency/reliability tradeoffs, but now breaks TCP internals into smaller post-sized units.
+
+| Order | File name | Title | Scope | Status |
+|-------|-----------|-------|-------|--------|
+| 1 | `tcp-connection-and-reliability.md` | TCP and Reliable Transmission | Handshake, sequencing, acknowledgments, flow control, congestion control, retransmission | `draft` |
+| 2 | `tcp-flow-control.md` | TCP Flow Control | Advertised window, receiver protection, throughput limits, and why flow control differs from congestion control | `idea` |
+| 3 | `tcp-congestion-control.md` | TCP Congestion Control | Congestion window, slow start, avoidance, and what packet loss tells the sender about the path | `idea` |
+| 4 | `tcp-header-options.md` | TCP Header Options and Performance | MSS, window scaling, SACK, timestamps, and why options change transport behavior | `idea` |
+| 5 | `udp-and-quic.md` | UDP, QUIC, and Delivery Tradeoffs | Connectionless delivery, latency tradeoffs, reliability moved to higher layers, and QUIC design motivation | `idea` |
+
+### Child Series — `internet-addressing-and-routing`
+
+This renamed child series groups the internet-layer addressing, local resolution, control messaging, and path-selection part of the stack.
+
+| Order | File name | Title | Scope | Status |
+|-------|-----------|-------|-------|--------|
+| 1 | `ip-addressing-and-subnetting.md` | IP Addressing, Subnetting, and CIDR | IPv4 address structure, subnet boundaries, CIDR notation, and why subnetting changes forwarding decisions | `idea` |
+| 2 | `arp-and-local-address-resolution.md` | ARP and Local Address Resolution | IP-to-MAC resolution, same-subnet delivery, and next-hop discovery on a LAN | `idea` |
+| 3 | `icmp-and-network-control-messages.md` | ICMP and Network Control Messages | Ping, error reporting, TTL exceeded, and why control messages matter for diagnosis and delivery | `idea` |
+| 4 | `nat-and-private-addressing.md` | NAT and Private Addressing | Private/public address roles, port translation, and why NAT became common in real networks | `idea` |
+| 5 | `ip-fragmentation-and-mtu.md` | IP Fragmentation and MTU | Fragmentation, reassembly, MTU mismatches, and why fragmentation is expensive | `idea` |
+| 6 | `routing-and-routing-protocols.md` | Routing and Routing Protocols | Static vs. dynamic routing, routing-table selection, and an introduction to routing protocols | `idea` |
 
 The author may still adjust order, add topics, or split a post, but the backlog is now intentionally grouped by child series under `computer-networks`.
 

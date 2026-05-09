@@ -1,7 +1,7 @@
 ---
-title: "UDP, QUIC, and Delivery Tradeoffs"
+title: "TCP Header Options and Performance"
 series: transport-and-reliability
-order: 5
+order: 4
 status: idea
 ---
 
