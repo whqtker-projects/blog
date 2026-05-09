@@ -8,7 +8,7 @@ This document is the stable reference for decisions that have been explicitly ag
 - When a new decision is confirmed, add it here and remove it from `open-questions.md`.
 - For the full decision record with context and rationale, see `decision-log.md`.
 
-**Last updated:** 2026-05-09 (D-77–D-78 added: refined `database-systems` child-series breakdown)
+**Last updated:** 2026-05-09 (D-79–D-80 added: refined `operating-systems` child-series breakdown)
 
 ---
 
@@ -223,6 +223,8 @@ This document is the stable reference for decisions that have been explicitly ag
 | D-76 | Within the refined `computer-networks` structure, `network-protocols` covers DNS, HTTP, TLS, and later HTTP versions; `internet-addressing-and-routing` covers IP addressing, subnetting, ARP, ICMP, NAT, fragmentation, and routing protocols. |
 | D-77 | The `database-systems` parent direction is refined into four child series: `database-foundations`, `data-modeling-and-design`, `relational-queries-and-joins`, and `database-internals`. This adds explicit pre-internals layers for database vocabulary, relational design, and query semantics. |
 | D-78 | `database-internals` remains the stable published anchor under `database-systems`. Indexes, B+Tree, WAL, optimizer behavior, join algorithms, and deeper engine internals stay there rather than being moved into the new sibling child series. |
+| D-79 | The `operating-systems` parent direction is refined into five child series: `operating-systems-overview`, `processes-and-threads`, `scheduling-and-synchronization`, `memory-management`, and `file-systems-and-storage`. This turns the previously flat confirmed direction into an explicit textbook-style learning arc. |
+| D-80 | Within the refined `operating-systems` structure, deadlock remains inside `scheduling-and-synchronization`, and file-system interface, implementation, and storage-device coordination remain grouped inside `file-systems-and-storage`. |
 
 ---
 

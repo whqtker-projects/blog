@@ -1,6 +1,6 @@
 # Series Backlog
 
-**Status:** Confirmed — series structure decided on 2026-05-07; current hierarchy migration plus `computer-networks` and `database-systems` backlog rebuilds are reflected here. See `confirmed-decisions.md` D-19–D-22, D-57–D-67, and D-75–D-78.  
+**Status:** Confirmed — series structure decided on 2026-05-07; current hierarchy migration plus `computer-networks`, `database-systems`, and `operating-systems` backlog rebuilds are reflected here. See `confirmed-decisions.md` D-19–D-22, D-57–D-67, and D-75–D-80.  
 **Last updated:** 2026-05-09
 
 This document is the authoritative list of confirmed series. The original 12-series flat plan remains the historical baseline, and the active child-series inventory may expand where a parent-direction rebuild requires a more coherent hierarchy. Parent-level operating context now lives under `docs/series/`; use those documents for current child composition, ordering, backlog posture, and likely next expansion points.
@@ -35,6 +35,11 @@ The repository now uses the parent-child structure in committed content. The rea
 | `computer-networks` | Computer Networks | `transport-and-reliability` | Transport and Reliability |
 | `computer-networks` | Computer Networks | `internet-addressing-and-routing` | Internet Addressing and Routing |
 | `computer-networks` | Computer Networks | `network-protocols` | Network Protocols |
+| `operating-systems` | 운영체제 | `operating-systems-overview` | Operating Systems Overview |
+| `operating-systems` | 운영체제 | `processes-and-threads` | Processes and Threads |
+| `operating-systems` | 운영체제 | `scheduling-and-synchronization` | Scheduling and Synchronization |
+| `operating-systems` | 운영체제 | `memory-management` | Memory Management |
+| `operating-systems` | 운영체제 | `file-systems-and-storage` | File Systems and Storage |
 | `data-structures-and-algorithms` | Data Structures and Algorithms | `data-structures` | Data Structures |
 
 Existing child slugs are preserved during migration, including `network-protocols`.
@@ -44,6 +49,7 @@ Parent-level operating documents:
 - [`docs/series/computer-networks.md`](series/computer-networks.md)
 - [`docs/series/database-systems.md`](series/database-systems.md)
 - [`docs/series/data-structures-and-algorithms.md`](series/data-structures-and-algorithms.md)
+- [`docs/series/operating-systems.md`](series/operating-systems.md)
 
 ---
 
@@ -70,7 +76,11 @@ Parent-level operating documents:
 |---|---|---|---|
 | `data-structures` | Data Structures | Confirmed | Arrays, trees, graphs, hash tables |
 | `algorithms` | Algorithms | Confirmed | Sorting, search, dynamic programming, complexity |
-| `operating-systems` | Operating Systems | Confirmed | Processes, scheduling, memory management, I/O |
+| `operating-systems-overview` | Operating Systems Overview | Operating Systems backlog | Introductory OS role, computer-system structure, kernel structure, and system-call boundary |
+| `processes-and-threads` | Processes and Threads | Operating Systems backlog | Process model, context switching, threads, and IPC |
+| `scheduling-and-synchronization` | Scheduling and Synchronization | Operating Systems backlog | CPU scheduling, synchronization primitives, and deadlock/resource waits |
+| `memory-management` | Memory Management | Operating Systems backlog | Address binding, allocation, paging, virtual memory, and replacement policy |
+| `file-systems-and-storage` | File Systems and Storage | Operating Systems backlog | File-system interface, implementation, directories, storage, and disk scheduling |
 | `computer-architecture` | Computer Architecture | Confirmed | CPU pipeline, cache, memory hierarchy |
 | `computer-security` | Computer Security | Confirmed | Cryptography, authentication, common attack models |
 

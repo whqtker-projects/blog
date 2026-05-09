@@ -145,6 +145,67 @@ Verification:
 - `pnpm check:content`
 - `pnpm build`
 
+## 2026-05-09 — Refine the database-systems parent with sibling pre-internals layers
+
+### 완료한 작업
+`database-systems` parent를 `database-foundations`, `data-modeling-and-design`, `relational-queries-and-joins`, `database-internals`의 4-child 구조로 정리했다.
+
+다음 파일들을 실제로 갱신했다.
+- `docs/series/database-systems.md`
+- `docs/series-backlog.md`
+- `docs/first-content-readiness.md`
+- `docs/post-metadata.md`
+- `docs/confirmed-decisions.md`
+- `docs/decision-log.md`
+- `src/content/series_indexes/database-systems/database-internals.md`
+
+다음 child series index를 새로 만들었다.
+- `src/content/series_indexes/database-systems/database-foundations.md`
+- `src/content/series_indexes/database-systems/data-modeling-and-design.md`
+- `src/content/series_indexes/database-systems/relational-queries-and-joins.md`
+
+새 child들 아래에 13개의 idea-stage post stub을 추가했다.
+
+검증을 완료했다.
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`
+
+변경은 커밋 `158a721` (`Refine database systems series structure`)로 `origin/develop`에 푸시했다.
+
+### 미완료
+없음
+
+### 주요 결정
+`database-internals`는 published anchor로 유지하고, foundations/modeling/query-semantics 층은 sibling child series로 앞단에 추가한다.
+
+## 2026-05-09 — Roll out the operating-systems parent as a backlog-first hierarchy
+
+### 완료한 작업
+`operating-systems` parent를 새로 만들고 `operating-systems-overview`, `processes-and-threads`, `scheduling-and-synchronization`, `memory-management`, `file-systems-and-storage`의 5-child 구조를 추가했다.
+
+다음 파일들을 실제로 만들거나 갱신했다.
+- `src/content/series_indexes/operating-systems.md`
+- `src/content/series_indexes/operating-systems/*.md`
+- `docs/series/operating-systems.md`
+- `docs/series-backlog.md`
+- `docs/first-content-readiness.md`
+- `docs/post-metadata.md`
+- `docs/confirmed-decisions.md`
+- `docs/decision-log.md`
+
+운영체제 parent 아래에 23개의 idea-stage post stub을 추가했다.
+
+검증을 완료했다.
+- `pnpm check:content`
+- `pnpm build`
+
+### 미완료
+없음
+
+### 주요 결정
+운영체제는 초기 backlog 단계이므로 child series를 과도하게 잘게 쪼개지 않고, deadlock은 `scheduling-and-synchronization`, 파일시스템과 저장장치는 `file-systems-and-storage`로 묶는다.
+
 ## 2026-05-09 — Roll out numeric title prefixes to the Computer Architecture backlog
 
 Applied optional numeric title prefixes to the idea-stage `computer-architecture` backlog posts only. File names and explicit `order` fields were left unchanged; the visible prefixes now mirror the existing `order` values within each child series.

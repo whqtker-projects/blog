@@ -63,7 +63,11 @@ Domain is not stored as a frontmatter field. It is inferred from `series` via th
 | `backend-design` | `backend-systems` |
 | `data-structures` | `cs-fundamentals` |
 | `algorithms` | `cs-fundamentals` |
-| `operating-systems` | `cs-fundamentals` |
+| `operating-systems-overview` | `cs-fundamentals` |
+| `processes-and-threads` | `cs-fundamentals` |
+| `scheduling-and-synchronization` | `cs-fundamentals` |
+| `memory-management` | `cs-fundamentals` |
+| `file-systems-and-storage` | `cs-fundamentals` |
 | `computer-architecture` | `cs-fundamentals` |
 | `computer-security` | `cs-fundamentals` |
 | `llm-internals` | `ai-ml-llm` |

@@ -984,6 +984,47 @@ Because `database-internals` is already the repository's most mature published c
 
 ---
 
+## DL-021 — Refine the `operating-systems` parent around a textbook-style OS course flow
+
+**Date:** 2026-05-09
+**Status:** confirmed
+
+### Context
+
+`operating-systems` existed only as a confirmed direction in the historical flat series inventory. Unlike `database-systems`, it had no parent index, no operating document, no child series, and no committed backlog files. A university-style OS outline made the missing shape clear: the repository needed a moderate number of child series that could carry introduction, execution units, concurrency, memory, and persistence/storage without turning the parent into either one giant bucket or a pile of tiny siblings.
+
+### Alternatives considered
+
+**Keep `operating-systems` as a single flat child-like direction with no hierarchy:**
+- Lowest initial effort, but it would contradict the repository's current parent-child model and would leave the backlog as one mixed list of OS topics. Rejected.
+
+**Split the parent into many narrow textbook children immediately:**
+- More granular on paper, but too fragmented for the current backlog-first stage and harder to review as a coherent initial rollout. Rejected.
+
+**Create a moderate five-child structure (chosen):**
+- Preserves a recognizable textbook learning arc while keeping the parent reviewable and repository-friendly. Chosen.
+
+### Decision
+
+- D-79: `operating-systems` now uses five child series: `operating-systems-overview`, `processes-and-threads`, `scheduling-and-synchronization`, `memory-management`, and `file-systems-and-storage`.
+- D-80: deadlock remains within `scheduling-and-synchronization`, and file-system/storage topics stay grouped within `file-systems-and-storage`.
+
+### Follow-up
+
+- Create the parent series index at `src/content/series_indexes/operating-systems.md`.
+- Add the five child index files under `src/content/series_indexes/operating-systems/`.
+- Create the initial idea-stage post stubs so the new parent has a real backlog instead of documentation-only intent.
+
+### References
+
+- `confirmed-decisions.md`: D-79, D-80
+- `docs/series/operating-systems.md`
+- `docs/series-backlog.md`
+- `docs/first-content-readiness.md`
+- `src/content/series_indexes/operating-systems/`
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions

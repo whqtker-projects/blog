@@ -257,3 +257,18 @@ Applied optional numeric title prefixes to the idea-stage `computer-architecture
 Cleaned up the remaining directly affected docs:
 - `docs/file-naming-conventions.md` now distinguishes filename prefixes from visible title prefixes
 - `docs/first-content-readiness.md` now uses the current nested child-series index paths
+
+## 2026-05-09 — Roll out the operating-systems parent as a backlog-first hierarchy
+
+Created the `operating-systems` parent and split it into five child series:
+- `operating-systems-overview`
+- `processes-and-threads`
+- `scheduling-and-synchronization`
+- `memory-management`
+- `file-systems-and-storage`
+
+Added the parent operating document at `docs/series/operating-systems.md`, updated the directly affected backlog/reference/decision docs, and created 23 idea-stage post stubs across the five child series.
+
+Verification:
+- `pnpm check:content`
+- `pnpm build`

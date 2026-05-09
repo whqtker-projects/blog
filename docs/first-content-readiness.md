@@ -12,6 +12,7 @@ Current operating documents:
 - [`docs/series/computer-networks.md`](series/computer-networks.md)
 - [`docs/series/data-structures-and-algorithms.md`](series/data-structures-and-algorithms.md)
 - [`docs/series/computer-architecture.md`](series/computer-architecture.md)
+- [`docs/series/operating-systems.md`](series/operating-systems.md)
 
 ---
 
@@ -188,6 +189,70 @@ This renamed child series groups the internet-layer addressing, local resolution
 | 6 | `routing-and-routing-protocols.md` | Routing and Routing Protocols | Static vs. dynamic routing, routing-table selection, and an introduction to routing protocols | `idea` |
 
 The author may still adjust order, add topics, or split a post, but the backlog is now intentionally grouped by child series under `computer-networks`.
+
+---
+
+## Candidate Backlog — `operating-systems` Parent Series
+
+The `operating-systems` parent is now expressed as a textbook-style backlog parent with explicit child series for introduction, execution units, concurrency, memory, and persistence/storage.
+
+### Child Series — `operating-systems-overview`
+
+This entry child series covers the opening OS layer before process and memory mechanics begin.
+
+| Order | File name | Title | Scope | Status |
+|-------|-----------|-------|-------|--------|
+| 1 | `what-is-an-operating-system.md` | What Is an Operating System? | Why operating systems exist, what abstractions they provide, and how they sit between hardware and programs | `idea` |
+| 2 | `computer-system-structure.md` | Computer System Structure | CPU, memory, devices, interrupts, and the basic machine environment an OS manages | `idea` |
+| 3 | `operating-system-structure.md` | Operating System Structure | Kernel responsibilities, service layering, and the difference between monolithic, modular, and layered views | `idea` |
+| 4 | `system-calls-and-user-kernel-boundary.md` | System Calls and the User-Kernel Boundary | User mode vs. kernel mode, traps, and how software crosses the protection boundary | `idea` |
+
+### Child Series — `processes-and-threads`
+
+This child series introduces the main execution units managed by an OS.
+
+| Order | File name | Title | Scope | Status |
+|-------|-----------|-------|-------|--------|
+| 1 | `process-concept-and-state.md` | Process Concept and State | Process abstraction, lifecycle, process control block, and state transitions | `idea` |
+| 2 | `context-switching.md` | Context Switching | What is saved and restored during a switch, and why switching has a runtime cost | `idea` |
+| 3 | `threads-and-multithreading.md` | Threads and Multithreading | Process vs. thread distinction, shared address space, and why multithreading exists | `idea` |
+| 4 | `interprocess-communication.md` | Interprocess Communication | Pipes, message passing, shared memory, and coordination between isolated execution contexts | `idea` |
+
+### Child Series — `scheduling-and-synchronization`
+
+This child series groups CPU sharing, concurrent coordination, and deadlock as one resource-control arc.
+
+| Order | File name | Title | Scope | Status |
+|-------|-----------|-------|-------|--------|
+| 1 | `cpu-scheduling-basics.md` | CPU Scheduling Basics | Scheduling goals, turnaround/response metrics, and why policy matters | `idea` |
+| 2 | `scheduling-algorithms-and-tradeoffs.md` | Scheduling Algorithms and Tradeoffs | FCFS, SJF, priority, round-robin, and the tradeoffs behind each | `idea` |
+| 3 | `process-synchronization.md` | Process Synchronization | Critical sections, races, mutual exclusion, and the need for coordination primitives | `idea` |
+| 4 | `semaphores-and-monitors.md` | Semaphores and Monitors | Semaphores, monitors, condition variables, and structured synchronization patterns | `idea` |
+| 5 | `deadlock-and-resource-allocation.md` | Deadlock and Resource Allocation | Deadlock conditions, resource-allocation framing, and avoidance/detection/recovery overview | `idea` |
+
+### Child Series — `memory-management`
+
+This child series covers physical allocation, address translation, and virtual-memory policy.
+
+| Order | File name | Title | Scope | Status |
+|-------|-----------|-------|-------|--------|
+| 1 | `address-binding-and-memory-layout.md` | Address Binding and Memory Layout | Logical vs. physical addresses, relocation, and the baseline memory layout seen by programs | `idea` |
+| 2 | `contiguous-allocation-and-fragmentation.md` | Contiguous Allocation and Fragmentation | Fixed/variable partitions, fragmentation, and why contiguous allocation scales poorly | `idea` |
+| 3 | `paging-and-segmentation.md` | Paging and Segmentation | Two classic address-translation models and their tradeoffs | `idea` |
+| 4 | `virtual-memory-and-demand-paging.md` | Virtual Memory and Demand Paging | Virtual address spaces, lazy loading, page faults, and why demand paging exists | `idea` |
+| 5 | `page-replacement-policies.md` | Page Replacement Policies | FIFO, LRU, locality, and what replacement policy tries to optimize | `idea` |
+
+### Child Series — `file-systems-and-storage`
+
+This child series keeps persistent data structures and storage-device coordination in one reviewable slice.
+
+| Order | File name | Title | Scope | Status |
+|-------|-----------|-------|-------|--------|
+| 1 | `file-system-interface.md` | File-System Interface | Files, directories, metadata, and the abstractions applications expect from a file system | `idea` |
+| 2 | `directory-structure-and-allocation.md` | Directory Structure and Allocation | Directory organization, block allocation, and how file layout affects access patterns | `idea` |
+| 3 | `file-system-implementation.md` | File-System Implementation | On-disk structures, free-space tracking, and how file systems map names to blocks | `idea` |
+| 4 | `storage-layer-and-io-basics.md` | Storage Layer and I/O Basics | Device controllers, buffering, caching, and the OS path from request to device interaction | `idea` |
+| 5 | `mass-storage-and-disk-scheduling.md` | Mass Storage and Disk Scheduling | Disk structure, seek/rotation costs, and why storage scheduling policies exist | `idea` |
 
 ---
 
