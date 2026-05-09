@@ -3,7 +3,7 @@
 **Status:** Confirmed — series structure decided on 2026-05-07; current hierarchy migration and `computer-networks` backlog rebuild reflected here. See `confirmed-decisions.md` D-19–D-22 and D-57–D-67.  
 **Last updated:** 2026-05-09
 
-This document is the authoritative list of confirmed series. The original 12-series flat plan remains the historical baseline, and the active child-series inventory may expand where a parent-direction rebuild requires a more coherent hierarchy. Individual series descriptions, post lists, and ordering are defined in their respective series files under `docs/series/` (not yet created; tracked in issue #35 and later issues).
+This document is the authoritative list of confirmed series. The original 12-series flat plan remains the historical baseline, and the active child-series inventory may expand where a parent-direction rebuild requires a more coherent hierarchy. Parent-level operating context now lives under `docs/series/`; use those documents for current child composition, ordering, backlog posture, and likely next expansion points.
 
 ---
 
@@ -15,17 +15,31 @@ Under the current hierarchy model, a child series is the named grouping of posts
 
 ## Current Hierarchy
 
-The repository is now migrating the current real flat series into parent-child structure. The real child series currently present in `src/content/series_indexes/` are mapped as follows:
+The repository now uses the parent-child structure in committed content. The real child series currently present in `src/content/series_indexes/` are mapped as follows:
 
 | Parent series slug | Parent display name | Child series slug | Child display name |
 |---|---|---|---|
 | `database-systems` | Database Systems | `database-internals` | Database Internals |
+| `computer-architecture` | 컴퓨터구조론 | `architecture-overview` | Architecture Overview |
+| `computer-architecture` | 컴퓨터구조론 | `cpu-and-instruction-execution` | CPU and Instruction Execution |
+| `computer-architecture` | 컴퓨터구조론 | `computer-arithmetic` | Computer Arithmetic |
+| `computer-architecture` | 컴퓨터구조론 | `control-unit` | Control Unit |
+| `computer-architecture` | 컴퓨터구조론 | `memory-systems` | Memory Systems |
+| `computer-architecture` | 컴퓨터구조론 | `storage-systems` | Storage Systems |
+| `computer-architecture` | 컴퓨터구조론 | `bus-io-and-interrupts` | Bus, I/O, and Interrupts |
+| `computer-architecture` | 컴퓨터구조론 | `parallel-and-high-performance-architecture` | Parallel and High-Performance Architecture |
 | `computer-networks` | Computer Networks | `network-protocols` | Network Protocols |
 | `computer-networks` | Computer Networks | `transport-and-reliability` | Transport and Reliability |
 | `computer-networks` | Computer Networks | `naming-and-routing` | Naming and Routing |
 | `data-structures-and-algorithms` | Data Structures and Algorithms | `data-structures` | Data Structures |
 
 Existing child slugs are preserved during migration, including `network-protocols`.
+
+Parent-level operating documents:
+- [`docs/series/computer-architecture.md`](series/computer-architecture.md)
+- [`docs/series/computer-networks.md`](series/computer-networks.md)
+- [`docs/series/database-systems.md`](series/database-systems.md)
+- [`docs/series/data-structures-and-algorithms.md`](series/data-structures-and-algorithms.md)
 
 ---
 

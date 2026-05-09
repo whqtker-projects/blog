@@ -199,6 +199,20 @@ Verification:
 
 Inspected the current hierarchical-series planning issues and the flat-series assumptions still present in repository docs and code.
 
+## 2026-05-09 — Stabilize series operations after hierarchy and ordering rollout
+
+Implemented the practical follow-up for the stabilization phase:
+- created `docs/series/` with one maintained parent-level operating document for each current real parent series
+- removed the post-page breadcrumb `#order` cue so title prefixes remain the only visible numbering on numbered posts
+- refactored `scripts/check-content.mjs` into reusable validation exports while preserving the existing CLI checks
+- added repository regression tests for series hierarchy ordering and content-validation invariants
+- aligned backlog/readiness/bootstrap/content-model docs with the new `docs/series/` operating layer and the finalized numbering presentation rule
+
+Verification:
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`
+
 Confirmed that the previously missing structural issues already exist and are still open:
 - `#159` umbrella parent issue for the full parent-child migration phase
 - `#157` dedicated `Computer Networks` backlog restructuring issue

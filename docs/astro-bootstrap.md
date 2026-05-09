@@ -208,6 +208,7 @@ Post ordering contract:
 - Posts continue to require explicit `order`.
 - Child pages and prev/next navigation use `order ASC`, with `title ASC` only as a fallback.
 - Numeric title prefixes such as `01. ...` are optional display aids only. They are rendered as-is when present, and validation requires them to match `order`.
+- Post pages do not render a separate breadcrumb `#order` cue.
 
 ---
 

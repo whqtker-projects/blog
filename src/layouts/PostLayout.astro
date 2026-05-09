@@ -16,11 +16,10 @@ interface Props {
   title: string;
   description?: string;
   seriesContext: SeriesContext;
-  order: number;
   prev?: NavLink | null;
   next?: NavLink | null;
 }
-const { title, description, seriesContext, order, prev, next } = Astro.props;
+const { title, description, seriesContext, prev, next } = Astro.props;
 ---
 <BaseLayout title={title} description={description}>
   <article>
@@ -31,8 +30,6 @@ const { title, description, seriesContext, order, prev, next } = Astro.props;
         <a href={`/series/${seriesContext.parentSlug}/${seriesContext.childSlug}`}>
           {seriesContext.childTitle}
         </a>
-        {' · '}
-        #{order}
       </p>
       <h1>{title}</h1>
     </header>

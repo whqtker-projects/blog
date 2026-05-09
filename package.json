@@ -12,7 +12,7 @@
     "astro": "astro",
     "convert": "node scripts/obsidian-to-astro.mjs",
     "test:convert": "node --test scripts/obsidian-to-astro.test.mjs",
-    "test:repo": "node --test scripts/post-visibility.test.mjs",
+    "test:repo": "node --test scripts/post-visibility.test.mjs scripts/series-hierarchy.test.mjs scripts/check-content.test.mjs",
     "check:content": "node scripts/check-content.mjs"
   },
   "dependencies": {

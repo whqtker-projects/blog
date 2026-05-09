@@ -5,6 +5,14 @@
 
 This document defines the artifacts and criteria needed to move from planning into active content creation. It covers the candidate post set for the first series, the process for starting a post, the drafting checklist, the quality bar for publication, and the pre-publication self-review checklist.
 
+Parent-level operating context now lives under `docs/series/`. Use those documents for current child-series composition, ordering, backlog posture, and next expansion points; use this document for readiness criteria and writing workflow.
+
+Current operating documents:
+- [`docs/series/database-systems.md`](series/database-systems.md)
+- [`docs/series/computer-networks.md`](series/computer-networks.md)
+- [`docs/series/data-structures-and-algorithms.md`](series/data-structures-and-algorithms.md)
+- [`docs/series/computer-architecture.md`](series/computer-architecture.md)
+
 ---
 
 ## Candidate Posts — `database-internals` Child Series

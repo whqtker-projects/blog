@@ -199,6 +199,20 @@ Created `docs/github-issue-workflow.md` based on official Claude Code best pract
 
 **Standalone:** #97 — docs/project-overview.md, docs/github-issue-workflow.md 콘텐츠 단계 반영
 
+## 2026-05-09 — Stabilize series operations after hierarchy and ordering rollout
+
+Implemented the practical follow-up for the stabilization phase:
+- created `docs/series/` with one maintained parent-level operating document for each current real parent series
+- removed the post-page breadcrumb `#order` cue so title prefixes remain the only visible numbering on numbered posts
+- refactored `scripts/check-content.mjs` into reusable validation exports while preserving the existing CLI checks
+- added repository regression tests for series hierarchy ordering and content-validation invariants
+- aligned backlog/readiness/bootstrap/content-model docs with the new `docs/series/` operating layer and the finalized numbering presentation rule
+
+Verification:
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`
+
 **Parent #98 (CI):** #102 conversion-script unit test step / #103 Astro build step
 
 **Parent #99 (image handling):** #104 image existence check / #105 vault-attachments auto-copy design

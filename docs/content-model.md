@@ -162,6 +162,7 @@ Post title-prefix rule:
 - Numeric title prefixes such as `01. ...` are optional display aids only.
 - They do not replace `order` as the structural source of truth.
 - When a numeric prefix is present, repository validation requires it to match the post's explicit `order`.
+- Post pages do not add a second visible `#order` breadcrumb cue on top of the title.
 
 You do not write post links manually in the series index body.
 

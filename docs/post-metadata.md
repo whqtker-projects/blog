@@ -28,8 +28,6 @@ status: draft
 
 ---
 
-## Domain Inference
-
 ## Ordering Rule
 
 `order` remains the structural source of truth for post ordering.
@@ -39,6 +37,7 @@ status: draft
 - `title` is used only as a deterministic fallback when two posts compare equal by `order`.
 - If a post title includes a numeric prefix such as `01. `, that prefix is a visible authoring/display aid only.
 - When a numeric title prefix is present, repository validation requires it to match the post's explicit `order`.
+- Post pages do not add a separate breadcrumb `#order` label on top of the visible title.
 
 File naming is unchanged. Numeric title prefixes do not imply filename prefixes.
 
