@@ -844,6 +844,49 @@ Child series currently have no explicit `order` field — `src/utils/series-hier
 
 ---
 
+## DL-018 — Reader-facing numbering presentation policy (#169)
+
+**Date:** 2026-05-09
+**Status:** confirmed
+
+### Context
+
+After the hierarchy and ordering rollout, `order` drives both child-series and post sort order. The remaining open question was how that structural ordering should surface to readers. `computer-architecture` already has numeric post title prefixes; `PostLayout.astro` renders `#order` in the breadcrumb. Three distinct presentation surfaces needed explicit policy: the parent page child-series list, the child page post title list, and the post page breadcrumb.
+
+### Alternatives considered
+
+**Parent page child-series numbering:**
+- Show `1. 2. 3.` labels alongside child series titles: Makes the ordering visible at a glance, but adds decoration that may feel mechanical and clutters the navigation layer whose purpose is discovery, not enumeration. Rejected.
+- No visible numbering, sort only (chosen): Readers see a clean title-and-description list in the correct order. The structural `order` field is the source of truth without surfacing as a displayed number.
+
+**Child page post title rendering:**
+- Strip numeric prefixes from the listing view, keep them on the post page title: Reduces visual noise in the listing, but creates an inconsistency between the list view and the post heading the reader sees after clicking. Rejected.
+- Render as-is (chosen): What is in the source is what appears in the list. Consistent with D-69. Authors who add `01.` prefixes see them displayed; those who omit them see no prefix.
+
+**Post page breadcrumb `#order`:**
+- Keep `#order` alongside prefix: Two numbering cues on the same page. The breadcrumb shows `#1` and the heading shows `01.` — redundant and visually noisy. Rejected.
+- Remove `#order` (chosen): When a post title already carries a numeric prefix, the breadcrumb shows only the series path and post title. No ordinal indicator in the breadcrumb.
+
+### Decision
+
+- D-72: Parent pages show child series sorted by `order`, no visible numeric label.
+- D-73: Child pages render post titles exactly as in source; no stripping.
+- D-74: Post page breadcrumbs omit `#order`; breadcrumb shows series path and title only.
+
+### Follow-up
+
+- Remove `#{order}` from `src/layouts/PostLayout.astro` breadcrumb template.
+- Verify `src/pages/series/[parent].astro` does not add numbering to child series list items (currently does not — no change needed).
+- Update `docs/reading-ui-direction.md` if it references breadcrumb numbering.
+
+### References
+
+- `confirmed-decisions.md`: D-72 through D-74
+- Issue #169 (closed after this entry)
+- `src/layouts/PostLayout.astro` — breadcrumb line to remove
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions

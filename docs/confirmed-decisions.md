@@ -8,7 +8,7 @@ This document is the stable reference for decisions that have been explicitly ag
 - When a new decision is confirmed, add it here and remove it from `open-questions.md`.
 - For the full decision record with context and rationale, see `decision-log.md`.
 
-**Last updated:** 2026-05-09 (D-68–D-71 added: child-series ordering and post title-prefix policy)
+**Last updated:** 2026-05-09 (D-72–D-74 added: reader-facing numbering presentation policy)
 
 ---
 
@@ -219,6 +219,16 @@ This document is the stable reference for decisions that have been explicitly ag
 | D-69 | When a post title includes a numeric prefix in the source file, the prefix is rendered as-is in the public HTML. No stripping or transformation is applied at build time. |
 | D-70 | Child-series `order` is introduced as an immediately required field for all existing child series. Every child series index must declare an explicit `order` value; missing `order` is a repository validation error. |
 | D-71 | The first rollout of child-series `order` covers all parent series simultaneously, not a staged per-series migration. All child series indexes are updated in the same phase. |
+
+---
+
+## Reader-Facing Numbering Presentation
+
+| # | Decision |
+|---|---|
+| D-72 | Parent series pages list child series sorted by `order`, but display no visible numeric label. Readers see only the child series title and optional description; the sort order is structural, not presented as a number. |
+| D-73 | Child series pages render post titles exactly as stored in source. When a post title includes a numeric prefix (e.g. `01. TCP란 무엇인가`), that prefix is shown to readers unchanged. No normalization or stripping is applied in the post listing. |
+| D-74 | Post pages remove the `#order` breadcrumb cue. When a post title already carries a numeric prefix, the `#order` indicator in the breadcrumb is redundant and is omitted. Breadcrumbs show the series path and post title only. |
 
 ---
 
