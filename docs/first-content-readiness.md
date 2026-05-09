@@ -25,7 +25,9 @@ The author may adjust order, add topics, or split a post — this list is a star
 
 ### Pilot Batch — Simplified Status Model
 
-The current pilot batch for large-scale idea intake is the committed `network-protocols` child series under the parent `computer-networks`. This batch was chosen because it already satisfies the repository's structural requirements:
+The original pilot batch for large-scale idea intake was the committed `network-protocols` child series under the parent `computer-networks`. That pilot is still important historically because it proved the simplified-status and visibility rules on real non-public content before the broader `computer-networks` backlog was split into multiple child series.
+
+Why the original pilot was suitable:
 
 - A real series index exists at `src/content/series_indexes/network-protocols.md`
 - The child series now has an explicit parent mapping to `computer-networks`
@@ -43,7 +45,7 @@ Current pilot statuses:
 | 4 | `tls-and-https.md` | `idea` |
 | 5 | `http2-and-http3.md` | `idea` |
 
-Pilot verification goals:
+Original pilot verification goals:
 
 - Local development should show all five `network-protocols` posts
 - Staged and production builds should keep all five posts off public post routes until each post is explicitly changed to `status: published`
@@ -76,19 +78,39 @@ Why this batch is suitable:
 
 ---
 
-## Candidate Posts — `network-protocols` Child Series
+## Candidate Backlog — `computer-networks` Parent Series
 
-The second series is `network-protocols` (D-39). Under the current hierarchy model, it is now a child series under the parent `computer-networks`. The five candidate posts below cover foundational protocol knowledge across the transport, application, and security layers.
+The second major direction is now the parent `computer-networks`. The original `network-protocols` flat backlog has been rebuilt into three child series so future intake can grow in coherent slices instead of one mixed list.
 
-| Order | File name | Title | Scope |
-|-------|-----------|-------|-------|
-| 1 | `what-is-http.md` | What Is HTTP? | HTTP as an application-layer protocol; request/response model, methods, status codes, statelessness, and the role of HTTP in the web stack |
-| 2 | `tcp-connection-and-reliability.md` | TCP and Reliable Transmission | Three-way handshake, sequence numbers, acknowledgment, flow control, congestion control, and retransmission mechanics |
-| 3 | `dns-resolution.md` | DNS and Name Resolution | Domain hierarchy, resolver flow (recursive vs. iterative), caching with TTL, record types (A, CNAME, MX, NS), and negative caching |
-| 4 | `tls-and-https.md` | TLS and HTTPS | TLS handshake, certificate chain and CA trust model, symmetric vs. asymmetric key exchange, and how HTTPS wraps HTTP |
-| 5 | `http2-and-http3.md` | HTTP/2 and HTTP/3 | HTTP/1.1 head-of-line blocking problem, HTTP/2 multiplexing and HPACK header compression, HTTP/3 on QUIC, and 0-RTT connection resumption |
+### Child Series — `network-protocols`
 
-The author may adjust order, add topics, or split a post — this list is a starting point, not a commitment. Any changes to the confirmed candidate set should be reflected here.
+This retained child slug now covers the application/web-protocol portion of the backlog.
+
+| Order | File name | Title | Scope | Status |
+|-------|-----------|-------|-------|--------|
+| 1 | `what-is-http.md` | What Is HTTP? | HTTP request/response model, methods, status codes, statelessness, and the role of HTTP in the web stack | `draft` |
+| 2 | `tls-and-https.md` | TLS and HTTPS | TLS handshake, certificate chain, key exchange, and how HTTPS wraps HTTP | `idea` |
+| 3 | `http2-and-http3.md` | HTTP/2 and HTTP/3 | Multiplexing, HPACK, QUIC transport use, and protocol evolution | `idea` |
+
+### Child Series — `transport-and-reliability`
+
+This child series groups transport-layer delivery guarantees and latency/reliability tradeoffs.
+
+| Order | File name | Title | Scope | Status |
+|-------|-----------|-------|-------|--------|
+| 1 | `tcp-connection-and-reliability.md` | TCP and Reliable Transmission | Handshake, sequencing, acknowledgments, flow control, congestion control, retransmission | `draft` |
+| 2 | `udp-and-quic.md` | UDP, QUIC, and Delivery Tradeoffs | Connectionless delivery, latency tradeoffs, reliability moved to higher layers, and QUIC design motivation | `idea` |
+
+### Child Series — `naming-and-routing`
+
+This child series groups the naming, addressing, and path-selection part of the network stack.
+
+| Order | File name | Title | Scope | Status |
+|-------|-----------|-------|-------|--------|
+| 1 | `dns-resolution.md` | DNS and Name Resolution | Domain hierarchy, resolver flow, caching, and record types | `idea` |
+| 2 | `ip-addressing-and-routing.md` | IP Addressing and Routing | Address assignment, subnet boundaries, routers, and path selection | `idea` |
+
+The author may still adjust order, add topics, or split a post, but the backlog is now intentionally grouped by child series under `computer-networks`.
 
 ---
 

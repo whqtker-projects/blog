@@ -8,7 +8,7 @@ This document is the stable reference for decisions that have been explicitly ag
 - When a new decision is confirmed, add it here and remove it from `open-questions.md`.
 - For the full decision record with context and rationale, see `decision-log.md`.
 
-**Last updated:** 2026-05-09 (D-57–D-64 added: hierarchical series architecture and IA contract)
+**Last updated:** 2026-05-09 (D-57–D-67 added: hierarchical series architecture, IA contract, and Computer Networks child-series breakdown)
 
 ---
 
@@ -205,6 +205,9 @@ This document is the stable reference for decisions that have been explicitly ag
 | D-62 | A child series belongs to exactly one parent series and is the terminal ordered content container. Posts attach directly to child series only. |
 | D-63 | The parent series page is responsible for introducing the parent direction and listing its child series. It does not render a mixed flat list of all descendant posts. |
 | D-64 | The child series page is responsible for listing visible posts in that child series and providing the series context used by post navigation and breadcrumbs. |
+| D-65 | The `computer-networks` parent direction is currently split into three child series: `network-protocols`, `transport-and-reliability`, and `naming-and-routing`. |
+| D-66 | During the first backlog rebuild under `computer-networks`, the existing `network-protocols` child slug is retained and narrowed to the HTTP/TLS/HTTP2+/application-protocol portion of the backlog. Transport-focused and naming/routing-focused backlog items move into sibling child series. |
+| D-67 | The original 12-series flat inventory in D-21 remains the historical baseline, but the active child-series inventory may expand when a parent direction is rebuilt into multiple child series. |
 
 ---
 

@@ -244,3 +244,36 @@ Verification:
 - `pnpm test:repo`
 - `pnpm check:content`
 - `pnpm build`
+
+## 2026-05-09 — Remove child-series count from homepage parent listing
+
+Removed the homepage `n child series` metadata from `src/pages/index.astro` so the parent-series directory stays focused on title and description only.
+
+## 2026-05-09 — Rebuild Computer Networks backlog and finish hierarchy doc refactor for Issues #157, #158, and #159
+
+Rebuilt the `computer-networks` parent backlog into three child series while keeping the confirmed `network-protocols` slug:
+- `network-protocols`
+- `transport-and-reliability`
+- `naming-and-routing`
+
+Moved the existing backlog items into those child series and added two minimal idea-stage backlog files so the new sibling series are coherent:
+- `tcp-connection-and-reliability.md` -> `transport-and-reliability`
+- `dns-resolution.md` -> `naming-and-routing`
+- added `udp-and-quic.md`
+- added `ip-addressing-and-routing.md`
+
+Kept `what-is-http.md`, `tls-and-https.md`, and `http2-and-http3.md` under the retained `network-protocols` child slug, with adjusted ordering for the narrowed scope.
+
+Completed the series-documentation refactor around the new backlog shape by updating:
+- `docs/confirmed-decisions.md`
+- `docs/decision-log.md`
+- `docs/series-backlog.md`
+- `docs/first-content-readiness.md`
+- `docs/post-metadata.md`
+- `docs/reading-ui-direction.md`
+
+Verification:
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`
+- confirmed static routes for `/series/computer-networks/network-protocols`, `/series/computer-networks/transport-and-reliability`, and `/series/computer-networks/naming-and-routing`

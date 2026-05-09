@@ -748,6 +748,52 @@ That makes the missing IA distinctions explicit work, not implied implementation
 
 ---
 
+## DL-018 — Computer Networks child-series backlog breakdown (#157)
+
+**Date:** 2026-05-09
+**Status:** confirmed
+
+### Context
+
+Once the repository adopted a real parent-child hierarchy, the old `network-protocols` flat backlog became too broad to remain the only child series under `computer-networks`. The committed backlog mixed application/web protocols, transport reliability topics, and naming/addressing topics in one ordered list. Issue `#157` existed to turn that flat set into a reviewable child-series-based backlog without reopening status or deployment policy.
+
+### Alternatives considered
+
+**Keep all current backlog items in `network-protocols` only:**
+- Lowest migration cost, but leaves the new `computer-networks` parent with only one overloaded child series and does not create a meaningful child-series breakdown. Rejected.
+
+**Replace `network-protocols` entirely with new child slugs:**
+- Cleaner topical split on paper, but violates the confirmed migration rule that the existing `network-protocols` slug should be retained as a child series during transition. Rejected.
+
+**Retain `network-protocols` and add sibling child series (chosen):**
+- Preserves the confirmed slug while still separating the backlog into coherent units. Existing posts can be moved only where the topical split is strong enough, and additional idea-stage files can be added sparingly to avoid one-post dead ends.
+
+### Decision
+
+- D-65: `computer-networks` is currently split into three child series: `network-protocols`, `transport-and-reliability`, and `naming-and-routing`.
+- D-66: `network-protocols` is retained as the application/web-protocol child series. `what-is-http`, `tls-and-https`, and `http2-and-http3` stay there. `tcp-connection-and-reliability` moves to `transport-and-reliability`. `dns-resolution` moves to `naming-and-routing`.
+- D-67: the original 12-series flat inventory remains a historical baseline, but active child-series inventory can expand when a parent direction is rebuilt into multiple child series.
+- Added minimal idea-stage backlog files only where needed to make the new sibling series coherent: `udp-and-quic.md` and `ip-addressing-and-routing.md`.
+
+### Follow-up
+
+- Issue `#158` should update active docs so they describe the split `computer-networks` backlog accurately.
+- Future content work can grow each child series independently without reopening the parent-child routing or validation model.
+
+### References
+
+- `confirmed-decisions.md`: D-65, D-66
+- Issue `#157`
+- `src/content/series_indexes/computer-networks.md`
+- `src/content/series_indexes/network-protocols.md`
+- `src/content/series_indexes/transport-and-reliability.md`
+- `src/content/series_indexes/naming-and-routing.md`
+- `src/content/posts/what-is-http.md`
+- `src/content/posts/tcp-connection-and-reliability.md`
+- `src/content/posts/dns-resolution.md`
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions

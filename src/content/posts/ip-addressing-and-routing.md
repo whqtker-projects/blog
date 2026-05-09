@@ -1,6 +1,6 @@
 ---
-title: "DNS and Name Resolution"
+title: "IP Addressing and Routing"
 series: naming-and-routing
-order: 1
+order: 2
 status: idea
 ---

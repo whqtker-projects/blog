@@ -4,7 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { buildSeriesHierarchy, parentSeriesPath } from '../utils/series-hierarchy';
 
 const seriesIndexes = await getCollection('series_indexes');
-const { parentIndexes, childrenByParent } = buildSeriesHierarchy(seriesIndexes);
+const { parentIndexes } = buildSeriesHierarchy(seriesIndexes);
 ---
 <BaseLayout title="Blog">
   <main>
@@ -14,9 +14,6 @@ const { parentIndexes, childrenByParent } = buildSeriesHierarchy(seriesIndexes);
         <li>
           <a href={parentSeriesPath(idx.data.series)}>{idx.data.title}</a>
           {idx.data.description && <p class="description">{idx.data.description}</p>}
-          <p class="meta">
-            {(childrenByParent.get(idx.data.series) ?? []).length} child series
-          </p>
         </li>
       ))}
     </ul>
@@ -53,11 +50,5 @@ const { parentIndexes, childrenByParent } = buildSeriesHierarchy(seriesIndexes);
     font-size: 0.875rem;
     color: #666;
     margin: 0.2rem 0 0;
-  }
-
-  .meta {
-    font-size: 0.8rem;
-    color: #888;
-    margin: 0.25rem 0 0;
   }
 </style>

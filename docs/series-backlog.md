@@ -1,9 +1,9 @@
 # Series Backlog
 
-**Status:** Confirmed — series structure decided on 2026-05-07; current hierarchy migration reflected here. See `confirmed-decisions.md` D-19–D-22 and D-57–D-64.  
+**Status:** Confirmed — series structure decided on 2026-05-07; current hierarchy migration and `computer-networks` backlog rebuild reflected here. See `confirmed-decisions.md` D-19–D-22 and D-57–D-67.  
 **Last updated:** 2026-05-09
 
-This document is the authoritative list of confirmed series. The structure is no longer a candidate list — all 12 series below have been decided. Individual series descriptions, post lists, and ordering are defined in their respective series files under `docs/series/` (not yet created; tracked in issue #35 and later issues).
+This document is the authoritative list of confirmed series. The original 12-series flat plan remains the historical baseline, and the active child-series inventory may expand where a parent-direction rebuild requires a more coherent hierarchy. Individual series descriptions, post lists, and ordering are defined in their respective series files under `docs/series/` (not yet created; tracked in issue #35 and later issues).
 
 ---
 
@@ -15,12 +15,14 @@ Under the current hierarchy model, a child series is the named grouping of posts
 
 ## Current Hierarchy
 
-The repository is now migrating the current real flat series into parent-child structure. The three real child series already present in `src/content/series_indexes/` are mapped as follows:
+The repository is now migrating the current real flat series into parent-child structure. The real child series currently present in `src/content/series_indexes/` are mapped as follows:
 
 | Parent series slug | Parent display name | Child series slug | Child display name |
 |---|---|---|---|
 | `database-systems` | Database Systems | `database-internals` | Database Internals |
 | `computer-networks` | Computer Networks | `network-protocols` | Network Protocols |
+| `computer-networks` | Computer Networks | `transport-and-reliability` | Transport and Reliability |
+| `computer-networks` | Computer Networks | `naming-and-routing` | Naming and Routing |
 | `data-structures-and-algorithms` | Data Structures and Algorithms | `data-structures` | Data Structures |
 
 Existing child slugs are preserved during migration, including `network-protocols`.
@@ -35,7 +37,9 @@ Existing child slugs are preserved during migration, including `network-protocol
 |---|---|---|---|
 | `database-internals` | Database Internals | **First series** (D-22) | Storage engines, indexing, transactions, query execution |
 | `distributed-systems` | Distributed Systems | Confirmed | Consensus, replication, consistency models |
-| `network-protocols` | Network Protocols | **In progress** | TCP/IP, HTTP, DNS, TLS internals |
+| `network-protocols` | Network Protocols | **In progress** | HTTP, TLS, HTTP/2, HTTP/3, and application/web protocol behavior |
+| `transport-and-reliability` | Transport and Reliability | Computer Networks backlog | TCP, UDP, QUIC, flow control, congestion, delivery guarantees |
+| `naming-and-routing` | Naming and Routing | Computer Networks backlog | DNS, IP addressing, forwarding, and route selection |
 | `backend-design` | Backend Design | Confirmed | API design, concurrency patterns, service architecture |
 
 ### CS Fundamentals (domain slug: `cs-fundamentals`)
