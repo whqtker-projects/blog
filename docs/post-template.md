@@ -38,22 +38,19 @@ Every post must include the following content areas. Titles and ordering are dec
 - English filenames and slugs remain identifier-only fields and do not imply English rendered content.
 - Quiz sections, when later written, follow the same Korean writing policy unless another repository rule explicitly overrides it.
 
-## Graph-Friendly Stub Pattern
+## Graph-Link Scope
 
 - Generic `[[wikilinks]]` are reserved for post links.
 - Use `[[concept:slug]]` for concept links.
 - Use `[[series:<parent>]]` for parent series pages.
 - Use `[[series:<parent>/<child>]]` for child series pages.
-- New idea-stage post stubs should include a short related-links block with at least:
-  - one series link
-  - one related post or concept link
+- Graph-oriented series links are for parent-series and child-series index bodies, not for post-stub requirements.
+- Idea-stage post stubs remain valid with frontmatter only or with a short minimal note.
 
 Minimal stub-safe pattern:
 
 ```md
-관련 링크:
-- 시리즈: [[series:database-systems/database-internals|데이터베이스 내부 구조]]
-- 관련 글: [[b-plus-tree-index]]
+아이디어 단계 메모.
 ```
 
 ---

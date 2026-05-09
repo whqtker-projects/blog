@@ -25,4 +25,4 @@ The repository treats `spring-framework` and `spring-boot` as separate parent se
 
 ## 2026-05-09 — Explicit series links are namespaced and generic wikilinks stay post-only
 
-Graph-friendly repository authoring now treats `[[series:<parent>]]` and `[[series:<parent>/<child>]]` as the explicit series-link namespace, keeps `[[concept:slug]]` for concepts, and reserves generic `[[wikilinks]]` for post targets. Idea-stage post stubs should include at least one series link plus one related post or concept link.
+Graph-friendly repository authoring treats `[[series:<parent>]]` and `[[series:<parent>/<child>]]` as the explicit series-link namespace, keeps `[[concept:slug]]` for concepts, and reserves generic `[[wikilinks]]` for post targets. Series-link usage is intentionally narrow: parent and child series index bodies may link to each other for graph-friendly navigation context, while idea-stage post stubs remain valid without explicit graph links.

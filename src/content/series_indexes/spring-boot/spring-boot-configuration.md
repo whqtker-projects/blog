@@ -8,5 +8,3 @@ description: "How Spring Boot uses auto-configuration, property sources, profile
 
 관련 링크:
 - 상위 시리즈: [[series:spring-boot|스프링 부트]]
-- 이전 시리즈: [[series:spring-boot/spring-boot-basics|스프링 부트 기초]]
-- 다음 시리즈: [[series:spring-boot/spring-boot-testing-and-operations|스프링 부트 테스트와 운영]]

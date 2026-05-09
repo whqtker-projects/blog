@@ -5,6 +5,4 @@ order: 2
 status: idea
 ---
 
-관련 링크:
-- 시리즈: [[series:spring-boot/spring-boot-configuration|스프링 부트 설정]]
-- 관련 글: [[profiles-and-environment-in-spring-boot|스프링 부트의 프로필과 환경]]
+아이디어 단계 메모.

@@ -13,10 +13,10 @@ Language-policy note:
 - backlog title synchronization happens per rollout; already published content is left unchanged unless a task explicitly targets it
 
 Graph-link note:
-- frontmatter alone is not enough for a useful Obsidian graph
 - generic `[[wikilinks]]` are reserved for post links
 - series pages use explicit `[[series:<parent>]]` or `[[series:<parent>/<child>]]` syntax
-- new idea-stage stubs should include a minimal related-links block rather than frontmatter only
+- graph-friendly series links are used in series index bodies for parent-child navigation context
+- idea-stage post stubs remain valid as frontmatter-only or minimal-body notes
 
 Current operating documents:
 - [`docs/series/database-systems.md`](series/database-systems.md)
@@ -380,7 +380,7 @@ write-ahead-log.md
 
 ### Step 2 — Write the minimum frontmatter for `idea` state
 
-A post in `idea` state must set the required frontmatter and should also include a short related-links block so the document participates in graph navigation. All three D-25 required fields must be set even at `idea` state, because the conversion script and Astro schema both require them.
+A post in `idea` state must set the required frontmatter. Frontmatter-only stubs or minimal-body notes remain valid; graph-friendly series links are handled in series index bodies rather than being required in post stubs. All three D-25 required fields must be set even at `idea` state, because the conversion script and Astro schema both require them.
 
 ```yaml
 ---
@@ -391,12 +391,10 @@ status: idea
 ---
 ```
 
-Recommended minimal body for graph-friendly idea stubs:
+Recommended minimal body for an idea stub:
 
 ```md
-관련 링크:
-- 시리즈: [[series:database-systems/database-internals|데이터베이스 내부 구조]]
-- 관련 글: [[what-is-a-database-index]]
+아이디어 단계 메모.
 ```
 
 Minimum fields at `idea` state:

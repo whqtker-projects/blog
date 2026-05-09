@@ -8,5 +8,3 @@ description: "How execution units are represented and coordinated, from process 
 
 관련 링크:
 - 상위 시리즈: [[series:operating-systems|운영체제]]
-- 이전 시리즈: [[series:operating-systems/operating-systems-overview|운영체제 개요]]
-- 다음 시리즈: [[series:operating-systems/scheduling-and-synchronization|스케줄링과 동기화]]

@@ -101,8 +101,9 @@ Clarification:
 **Create the parent and child indexes before the first post.** Without them, the child-series route and post breadcrumb context cannot be generated correctly from day one.
 
 **Body links are allowed, but they are not the post list.** Series index bodies may contain explicit series links for graph-friendly navigation:
-- parent series indexes may link to child series and related parent series
-- child series indexes may link to their parent series and sibling or adjacent child series
+- parent series indexes may link to child series
+- child series indexes may link to their parent series
+- sibling child-series links are optional and are not the default repository expectation
 - series index bodies must not become a manual list of post links, because the site generates the post inventory automatically
 
 Recommended explicit link syntax:

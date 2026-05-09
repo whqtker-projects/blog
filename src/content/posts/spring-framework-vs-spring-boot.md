@@ -5,6 +5,4 @@ order: 2
 status: idea
 ---
 
-관련 링크:
-- 시리즈: [[series:spring-boot/spring-boot-basics|스프링 부트 기초]]
-- 관련 글: [[spring-boot-startup-flow|스프링 부트 시작 흐름]]
+아이디어 단계 메모.

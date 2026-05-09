@@ -8,5 +8,3 @@ description: "How Spring handles cross-cutting concerns through proxies, AOP adv
 
 관련 링크:
 - 상위 시리즈: [[series:spring-framework|스프링 프레임워크]]
-- 이전 시리즈: [[series:spring-framework/spring-core|스프링 코어]]
-- 다음 시리즈: [[series:spring-framework/spring-web-mvc|스프링 웹 MVC]]

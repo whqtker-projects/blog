@@ -10,4 +10,3 @@ description: Operating Systems
 - [[series:operating-systems/scheduling-and-synchronization|스케줄링과 동기화]]
 - [[series:operating-systems/memory-management|메모리 관리]]
 - [[series:operating-systems/file-systems-and-storage|파일 시스템과 저장장치]]
-- [[series:computer-architecture|컴퓨터구조론]]

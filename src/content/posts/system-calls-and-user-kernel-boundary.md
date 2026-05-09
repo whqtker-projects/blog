@@ -5,6 +5,4 @@ order: 4
 status: idea
 ---
 
-관련 링크:
-- 시리즈: [[series:operating-systems/operating-systems-overview|운영체제 개요]]
-- 관련 글: [[what-is-an-operating-system|운영체제란 무엇인가]]
+아이디어 단계 메모.

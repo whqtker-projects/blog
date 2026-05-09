@@ -469,3 +469,9 @@ Verification:
 - `pnpm test:convert`
 - `pnpm check:content`
 - `pnpm build`
+
+## 2026-05-10 — Narrow graph-link rollout to series indexes only
+
+Kept explicit `[[series:<parent>]]` and `[[series:<parent>/<child>]]` conversion support intact, but narrowed the repository policy so graph-friendly link usage is limited to parent-series and child-series index bodies. Updated `docs/content-model.md`, `docs/post-template.md`, `docs/first-content-readiness.md`, and `docs/series-index-authoring.md` to remove the post-stub related-links expectation.
+
+Removed graph-connectivity backfill blocks from the recent operating-systems and Spring idea-stage post stubs, restoring them to minimal stub-safe bodies. Simplified the operating-systems, spring-framework, and spring-boot series index bodies so parent indexes link to child indexes and child indexes link back to their parent only.
