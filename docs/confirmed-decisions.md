@@ -8,7 +8,7 @@ This document is the stable reference for decisions that have been explicitly ag
 - When a new decision is confirmed, add it here and remove it from `open-questions.md`.
 - For the full decision record with context and rationale, see `decision-log.md`.
 
-**Last updated:** 2026-05-09 (D-81–D-82 added: split Spring Framework and Spring Boot into distinct parent directions)
+**Last updated:** 2026-05-09 (D-83–D-86 added: graph-link policy and series-link syntax)
 
 ---
 
@@ -237,6 +237,17 @@ This document is the stable reference for decisions that have been explicitly ag
 | D-72 | Parent series pages list child series sorted by `order`, but display no visible numeric label. Readers see only the child series title and optional description; the sort order is structural, not presented as a number. |
 | D-73 | Child series pages render post titles exactly as stored in source. When a post title includes a numeric prefix (e.g. `01. TCP란 무엇인가`), that prefix is shown to readers unchanged. No normalization or stripping is applied in the post listing. |
 | D-74 | Post pages remove the `#order` breadcrumb cue. When a post title already carries a numeric prefix, the `#order` indicator in the breadcrumb is redundant and is omitted. Breadcrumbs show the series path and post title only. |
+
+---
+
+## Graph-Link Policy and Series-Link Syntax
+
+| # | Decision |
+|---|---|
+| D-83 | The explicit syntax for series links is `[[series:<slug>]]` for parent series and `[[series:<parent>/<child>]]` for child series. This is a single namespaced form; there are no separate `[[parent:...]]` or `[[child:...]]` prefixes. |
+| D-84 | Generic `[[wikilinks]]` resolve to posts only. Linking to a series requires `[[series:...]]` syntax. Using a plain wikilink to reference a series index is not permitted. |
+| D-85 | Minimum internal-link expectations are soft guidelines, not validation rules. Recommended: posts include at least one `[[series:parent/child]]` link to their own child series; child series indexes include a `[[series:parent]]` link to their parent; parent series indexes optionally link to their child series. Missing links are not a build or validation error. |
+| D-86 | Series index bodies may include `[[series:...]]` links to related series. Generic `[[wikilinks]]` pointing to posts are not allowed in series index bodies — the post list is auto-generated and manual post links inside the index body are redundant and unsupported. |
 
 ---
 

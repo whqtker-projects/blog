@@ -1068,6 +1068,54 @@ The requested topic boundary matched the repository's architecture model well. F
 
 ---
 
+## DL-023 — Graph-link policy and series-link syntax (#176)
+
+**Date:** 2026-05-09
+**Status:** confirmed
+
+### Context
+
+Post stubs added during bulk intake are structurally connected through `series`, `parent`, and `order` fields, but the Obsidian graph treats them as isolated nodes because no in-document links connect them. The repository already has `[[concept:slug]]` for concept links and generic `[[wikilinks]]` for posts, but had no explicit syntax or documented expectations for linking series. Without a clear policy, authors have no guidance on how to wire graph connectivity, and the conversion script has no contract for what `[[series:...]]` links mean.
+
+### Alternatives considered
+
+**Series-link syntax:**
+- `[[parent:slug]]` / `[[child:slug]]` separate prefixes: Explicit about hierarchy level, but doubles the namespace count and requires authors to remember which prefix applies. Rejected.
+- `[[series:parent/child]]` single namespace (chosen): One prefix covers both levels — slash distinguishes child from parent. Consistent with the existing `[[concept:slug]]` pattern.
+
+**Generic wikilink scope:**
+- Allow `[[wikilinks]]` to resolve both posts and series indexes: Convenient fallback, but creates ambiguity when a file name collides across `posts/` and `series_indexes/`. Makes the conversion script's resolution order ambiguous. Rejected.
+- Post-only (chosen): `[[wikilinks]]` resolves posts; any series reference requires the explicit `[[series:...]]` form. Unambiguous and matches the existing `[[concept:...]]` analogy.
+
+**Minimum link enforcement:**
+- Hard validation in `check-content.mjs`: Guarantees graph connectivity but adds friction to stub creation and makes idea-stage posts fail validation before the author is ready to add cross-links. Rejected.
+- Soft guidelines (chosen): Documented recommendations without build enforcement. Authors are guided toward graph-friendly authoring without being blocked during early draft stages.
+
+**Series index body link scope:**
+- Allow `[[wikilinks]]` (post links) in index bodies: An author might want to call out specific posts. However, the post list on a child series page is already auto-generated — a manual post link in the index body is redundant, unsupported by the conversion pipeline, and inconsistent with the content model. Rejected.
+- Series links only (chosen): Index bodies may link to related series using `[[series:...]]`. Post links are excluded.
+
+### Decision
+
+- D-83: Series-link syntax — `[[series:<slug>]]` for parent, `[[series:<parent>/<child>]]` for child.
+- D-84: Generic `[[wikilinks]]` resolve to posts only; series references require `[[series:...]]`.
+- D-85: Minimum link expectations are soft guidelines, not enforced validation rules.
+- D-86: Series index bodies allow `[[series:...]]` links only; `[[wikilinks]]` are not permitted in index bodies.
+
+### Follow-up
+
+- Add `[[series:...]]` link handling to `scripts/obsidian-to-astro.mjs` so the syntax converts to the correct `/series/<parent>` or `/series/<parent>/<child>` URL.
+- Document the syntax and guidelines in `docs/content-model.md` and `docs/series-index-authoring.md`.
+- Optionally add a soft lint warning in `check-content.mjs` for posts with no series link (warn-only, not an error).
+
+### References
+
+- `confirmed-decisions.md`: D-83 through D-86
+- Issue #176 (closed after this entry)
+- `scripts/obsidian-to-astro.mjs` — where `[[series:...]]` conversion will be added
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions
