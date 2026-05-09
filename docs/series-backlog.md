@@ -1,6 +1,6 @@
 # Series Backlog
 
-**Status:** Confirmed — series structure decided on 2026-05-07; current hierarchy migration and `computer-networks` backlog rebuild reflected here. See `confirmed-decisions.md` D-19–D-22 and D-57–D-67.  
+**Status:** Confirmed — series structure decided on 2026-05-07; current hierarchy migration plus `computer-networks` and `database-systems` backlog rebuilds are reflected here. See `confirmed-decisions.md` D-19–D-22, D-57–D-67, and D-75–D-78.  
 **Last updated:** 2026-05-09
 
 This document is the authoritative list of confirmed series. The original 12-series flat plan remains the historical baseline, and the active child-series inventory may expand where a parent-direction rebuild requires a more coherent hierarchy. Parent-level operating context now lives under `docs/series/`; use those documents for current child composition, ordering, backlog posture, and likely next expansion points.
@@ -19,6 +19,9 @@ The repository now uses the parent-child structure in committed content. The rea
 
 | Parent series slug | Parent display name | Child series slug | Child display name |
 |---|---|---|---|
+| `database-systems` | Database Systems | `database-foundations` | Database Foundations |
+| `database-systems` | Database Systems | `data-modeling-and-design` | Data Modeling and Design |
+| `database-systems` | Database Systems | `relational-queries-and-joins` | Relational Queries and Joins |
 | `database-systems` | Database Systems | `database-internals` | Database Internals |
 | `computer-architecture` | 컴퓨터구조론 | `architecture-overview` | Architecture Overview |
 | `computer-architecture` | 컴퓨터구조론 | `cpu-and-instruction-execution` | CPU and Instruction Execution |
@@ -50,6 +53,9 @@ Parent-level operating documents:
 
 | Series slug | Display Name | Status | Notes |
 |---|---|---|---|
+| `database-foundations` | Database Foundations | Database Systems backlog | Database basics, schema vocabulary, keys, and relational vs. NoSQL overview |
+| `data-modeling-and-design` | Data Modeling and Design | Database Systems backlog | ERD, integrity constraints, functional dependency, and normalization |
+| `relational-queries-and-joins` | Relational Queries and Joins | Database Systems backlog | Relational operations, join types, grouping, and subquery structure |
 | `database-internals` | Database Internals | **First series** (D-22) | Storage engines, indexing, transactions, query execution |
 | `distributed-systems` | Distributed Systems | Confirmed | Consensus, replication, consistency models |
 | `network-foundations` | Network Foundations | Computer Networks backlog | Introductory network overview, layering, encapsulation, and networking technology |

@@ -221,6 +221,17 @@ Added new idea-stage backlog files for foundations, TCP internals, and internet-
 
 Synchronized the directly affected operating and decision docs: `docs/series/computer-networks.md`, `docs/series-backlog.md`, `docs/first-content-readiness.md`, `docs/post-metadata.md`, `docs/confirmed-decisions.md`, and `docs/decision-log.md`.
 
+## 2026-05-09 — Refine the database-systems parent around a course-style learning arc
+
+Expanded `database-systems` with three new sibling child series ahead of the existing published `database-internals` anchor:
+- `database-foundations`
+- `data-modeling-and-design`
+- `relational-queries-and-joins`
+
+Kept all published `database-internals` posts unchanged, moved only the child-series order metadata, and added idea-stage post stubs for the new child series.
+
+Updated the directly affected docs and decision records so the repository now describes `database-systems` as a full parent-level arc instead of a one-child shell.
+
 Confirmed that the previously missing structural issues already exist and are still open:
 - `#159` umbrella parent issue for the full parent-child migration phase
 - `#157` dedicated `Computer Networks` backlog restructuring issue

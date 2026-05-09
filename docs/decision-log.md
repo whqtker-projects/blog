@@ -939,6 +939,51 @@ The refinement needed to stay repository-aware. Existing `draft` work such as `w
 
 ---
 
+## DL-020 — Refine the `database-systems` parent around a university-style database course flow
+
+**Date:** 2026-05-09
+**Status:** confirmed
+
+### Context
+
+Inspection showed that `database-systems` was structurally much narrower than the parent name implied. The parent had only one child series, `database-internals`, and that child already contained five published posts covering indexes, B+Tree, transactions, WAL, and the optimizer. The current structure worked well as a backend/systems reading track, but it did not expose the earlier database-learning layers that a university-style database outline would usually cover first: database vocabulary, ERD, normalization, relational design, and join semantics.
+
+Because `database-internals` is already the repository's most mature published child series, the refinement needed to preserve it as a stable anchor instead of carelessly splitting or renaming it.
+
+### Alternatives considered
+
+**Leave `database-systems` unchanged with only `database-internals`:**
+- Lowest churn, but leaves the parent unable to express database foundations or relational design topics cleanly. Rejected.
+
+**Split `database-internals` itself into multiple smaller internals children:**
+- More textbook-like on paper, but would create unnecessary churn in a stable published series and would move existing public content without strong repository justification. Rejected.
+
+**Keep `database-internals` intact and add sibling children before it (chosen):**
+- Preserves the stable published anchor while adding the missing learning arc for foundations, modeling, and query semantics. Chosen.
+
+### Decision
+
+- D-77: `database-systems` now uses four child series: `database-foundations`, `data-modeling-and-design`, `relational-queries-and-joins`, and `database-internals`.
+- D-78: `database-internals` remains the stable published anchor. Indexes, B+Tree, WAL, optimizer behavior, join algorithms, and deeper engine internals stay there.
+
+### Follow-up
+
+- Add child index files under `src/content/series_indexes/database-systems/` for the three new sibling series.
+- Create idea-stage backlog files for foundations, modeling/design, and relational query semantics.
+- Keep the published `database-internals` posts unchanged while allowing future internals growth behind the new pre-internals layers.
+
+### References
+
+- `confirmed-decisions.md`: D-77, D-78
+- `docs/series/database-systems.md`
+- `docs/series-backlog.md`
+- `docs/first-content-readiness.md`
+- `src/content/series_indexes/database-systems/`
+- `src/content/posts/what-is-a-database-index.md`
+- `src/content/posts/query-execution-plan.md`
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions

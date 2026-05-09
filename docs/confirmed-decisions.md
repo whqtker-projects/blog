@@ -8,7 +8,7 @@ This document is the stable reference for decisions that have been explicitly ag
 - When a new decision is confirmed, add it here and remove it from `open-questions.md`.
 - For the full decision record with context and rationale, see `decision-log.md`.
 
-**Last updated:** 2026-05-09 (D-75–D-76 added: refined `computer-networks` child-series breakdown)
+**Last updated:** 2026-05-09 (D-77–D-78 added: refined `database-systems` child-series breakdown)
 
 ---
 
@@ -221,6 +221,8 @@ This document is the stable reference for decisions that have been explicitly ag
 | D-71 | The first rollout of child-series `order` covers all parent series simultaneously, not a staged per-series migration. All child series indexes are updated in the same phase. |
 | D-75 | The `computer-networks` parent direction is refined into four child series: `network-foundations`, `transport-and-reliability`, `internet-addressing-and-routing`, and `network-protocols`. This adds an explicit introductory layer and separates internet-layer addressing/routing from application-facing protocols. |
 | D-76 | Within the refined `computer-networks` structure, `network-protocols` covers DNS, HTTP, TLS, and later HTTP versions; `internet-addressing-and-routing` covers IP addressing, subnetting, ARP, ICMP, NAT, fragmentation, and routing protocols. |
+| D-77 | The `database-systems` parent direction is refined into four child series: `database-foundations`, `data-modeling-and-design`, `relational-queries-and-joins`, and `database-internals`. This adds explicit pre-internals layers for database vocabulary, relational design, and query semantics. |
+| D-78 | `database-internals` remains the stable published anchor under `database-systems`. Indexes, B+Tree, WAL, optimizer behavior, join algorithms, and deeper engine internals stay there rather than being moved into the new sibling child series. |
 
 ---
 

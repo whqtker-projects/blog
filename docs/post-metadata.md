@@ -51,6 +51,9 @@ Domain is not stored as a frontmatter field. It is inferred from `series` via th
 
 | Series slug | Domain slug |
 |---|---|
+| `database-foundations` | `backend-systems` |
+| `data-modeling-and-design` | `backend-systems` |
+| `relational-queries-and-joins` | `backend-systems` |
 | `database-internals` | `backend-systems` |
 | `distributed-systems` | `backend-systems` |
 | `network-foundations` | `backend-systems` |

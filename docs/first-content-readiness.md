@@ -31,6 +31,56 @@ The full initial `database-internals` post set is now committed as real content 
 
 The author may adjust order, add topics, or split a post — this list is a starting point, not a commitment. Any changes to the confirmed candidate set should be reflected here.
 
+## Candidate Backlog — `database-systems` Parent Series
+
+The parent `database-systems` is no longer only a shell around `database-internals`. It now has earlier-stage sibling child series so database learning can begin with fundamentals and relational design before engine internals.
+
+### Child Series — `database-foundations`
+
+This child series covers the missing introductory database layer.
+
+| Order | File name | Title | Scope | Status |
+|-------|-----------|-------|-------|--------|
+| 1 | `what-is-a-database-system.md` | What Is a Database System? | Why DBMSs exist, how they differ from file-based storage, and what problems they solve | `idea` |
+| 2 | `entities-relations-and-attributes.md` | Entities, Relations, and Attributes | Core database vocabulary: entity, relation, attribute, tuple, record, and field | `idea` |
+| 3 | `keys-and-schema-design.md` | Keys and Schema Design | Candidate key, primary key, foreign key, and why schema decisions shape data integrity | `idea` |
+| 4 | `relational-databases-and-nosql.md` | Relational Databases and NoSQL | High-level comparison between relational systems and NoSQL families, with use-case framing | `idea` |
+
+### Child Series — `data-modeling-and-design`
+
+This child series introduces conceptual modeling and normalization-oriented relational design.
+
+| Order | File name | Title | Scope | Status |
+|-------|-----------|-------|-------|--------|
+| 1 | `what-is-an-erd.md` | What Is an ERD? | Entity-relationship modeling, cardinality, and why ERD exists before table creation | `idea` |
+| 2 | `mapping-erd-to-relational-schema.md` | Mapping ERD to a Relational Schema | Turning entities and relationships into tables, keys, and foreign keys | `idea` |
+| 3 | `integrity-constraints-in-relational-design.md` | Integrity Constraints in Relational Design | Entity integrity, referential integrity, and domain constraints from a design point of view | `idea` |
+| 4 | `functional-dependency.md` | Functional Dependency | Functional dependency as the basis for redundancy analysis and normalization | `idea` |
+| 5 | `normalization-and-normal-forms.md` | Normalization and Normal Forms | 1NF, 2NF, 3NF, and BCNF with tradeoffs and practical examples | `idea` |
+
+### Child Series — `relational-queries-and-joins`
+
+This child series covers relational operations and join semantics before readers move into optimizer internals.
+
+| Order | File name | Title | Scope | Status |
+|-------|-----------|-------|-------|--------|
+| 1 | `relational-operations-and-result-sets.md` | Relational Operations and Result Sets | Selection, projection, join, and how relational operations transform result sets | `idea` |
+| 2 | `join-types-and-join-results.md` | Join Types and Join Results | Inner, outer, cross joins and how result shapes differ | `idea` |
+| 3 | `grouping-aggregation-and-having.md` | Grouping, Aggregation, and HAVING | Grouping semantics, aggregate functions, and post-group filtering | `idea` |
+| 4 | `subqueries-and-common-table-expressions.md` | Subqueries and Common Table Expressions | Subquery structure, CTE usage, and how they affect query readability and composition | `idea` |
+
+### Child Series — `database-internals`
+
+This existing child remains the mature published anchor for engine behavior and storage/query internals.
+
+| Order | File name | Title | Scope | Status |
+|-------|-----------|-------|-------|--------|
+| 1 | `what-is-a-database-index.md` | What Is a Database Index? | What an index is, why it exists, and the core read/write tradeoff | `published` |
+| 2 | `b-plus-tree-index.md` | B+Tree Index Structure | B+Tree layout, lookup path, range scans, and write tradeoffs | `published` |
+| 3 | `transaction-and-acid.md` | Transactions and ACID | Atomicity, consistency, isolation, durability, and transaction guarantees | `published` |
+| 4 | `write-ahead-log.md` | Write-Ahead Log and Durability | WAL ordering, checkpoints, and durability behavior after crashes | `published` |
+| 5 | `query-execution-plan.md` | Query Execution and the Optimizer | Execution planning, cost estimation, and scan/join strategy selection | `published` |
+
 ### Pilot Batch — Simplified Status Model
 
 The original pilot batch for large-scale idea intake was the committed `network-protocols` child series under the parent `computer-networks`. That pilot is still important historically because it proved the simplified-status and visibility rules on real non-public content before the broader `computer-networks` backlog was split into multiple child series.
