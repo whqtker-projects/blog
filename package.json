@@ -13,7 +13,9 @@
     "convert": "node scripts/obsidian-to-astro.mjs",
     "test:convert": "node --test scripts/obsidian-to-astro.test.mjs",
     "test:repo": "node --test scripts/post-visibility.test.mjs scripts/series-hierarchy.test.mjs scripts/check-content.test.mjs",
-    "check:content": "node scripts/check-content.mjs"
+    "check:content": "node scripts/check-content.mjs",
+    "print:series-tree": "python3 scripts/print_series_relationships.py --format tree",
+    "print:series-json": "python3 scripts/print_series_relationships.py --format json"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",

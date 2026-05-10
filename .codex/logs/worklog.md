@@ -475,3 +475,9 @@ Verification:
 Kept explicit `[[series:<parent>]]` and `[[series:<parent>/<child>]]` conversion support intact, but narrowed the repository policy so graph-friendly link usage is limited to parent-series and child-series index bodies. Updated `docs/content-model.md`, `docs/post-template.md`, `docs/first-content-readiness.md`, and `docs/series-index-authoring.md` to remove the post-stub related-links expectation.
 
 Removed graph-connectivity backfill blocks from the recent operating-systems and Spring idea-stage post stubs, restoring them to minimal stub-safe bodies. Simplified the operating-systems, spring-framework, and spring-boot series index bodies so parent indexes link to child indexes and child indexes link back to their parent only.
+
+## 2026-05-10 — Add Python series relationship printer
+
+Added `scripts/print_series_relationships.py` to read `src/content/series_indexes/` and `src/content/posts/`, build the current parent-series / child-series / post hierarchy, and print it in `tree` or `json` format. The script derives post slugs from filenames, respects child/post ordering metadata, supports filtering by parent slug and post status, and delegates structural validation to `pnpm check:content` unless `--skip-validation` is passed.
+
+Updated `package.json` with `pnpm print:series-tree` and `pnpm print:series-json` for direct execution.

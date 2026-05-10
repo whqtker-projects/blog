@@ -26,3 +26,7 @@ The repository treats `spring-framework` and `spring-boot` as separate parent se
 ## 2026-05-09 — Explicit series links are namespaced and generic wikilinks stay post-only
 
 Graph-friendly repository authoring treats `[[series:<parent>]]` and `[[series:<parent>/<child>]]` as the explicit series-link namespace, keeps `[[concept:slug]]` for concepts, and reserves generic `[[wikilinks]]` for post targets. Series-link usage is intentionally narrow: parent and child series index bodies may link to each other for graph-friendly navigation context, while idea-stage post stubs remain valid without explicit graph links.
+
+## 2026-05-10 — Relationship printer reuses repository validation instead of cloning it
+
+The Python relationship-printer script should not reimplement the repository's full hierarchy validator. It runs `pnpm check:content` before printing and only builds the parent/child/post structure after the existing validation workflow passes, keeping one structural source of truth.
