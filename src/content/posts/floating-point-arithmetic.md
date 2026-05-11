@@ -2,7 +2,21 @@
 title: "09. 부동소수점 산술 연산"
 series: computer-arithmetic
 order: 9
-status: idea
+status: draft
 ---
 
-아이디어 단계 메모.
+## 부동소수점 덧셈과 뺄셈
+
+### 지수 맞추기
+
+### 가수 연산과 정규화
+
+## 부동소수점 곱셈과 나눗셈
+
+### 지수 합산과 가수 곱셈
+
+## 반올림 오차
+
+## 예시
+
+## Quiz

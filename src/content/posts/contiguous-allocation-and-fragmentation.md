@@ -2,7 +2,21 @@
 title: "연속 할당과 단편화"
 series: memory-management
 order: 2
-status: idea
+status: draft
 ---
 
-아이디어 단계 메모.
+## 연속 할당이란
+
+## 고정 분할과 가변 분할
+
+## 단편화
+
+### 내부 단편화
+
+### 외부 단편화
+
+## 압축과 스와핑
+
+## 예시
+
+## Quiz

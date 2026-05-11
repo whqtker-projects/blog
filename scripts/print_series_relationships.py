@@ -35,6 +35,7 @@ class Post:
     series: str
     order: int | None
     status: str | None
+    headings: list[str]
 
 
 def parse_frontmatter(text: str) -> dict[str, Any]:
@@ -76,6 +77,29 @@ def parse_frontmatter(text: str) -> dict[str, Any]:
     return frontmatter
 
 
+def extract_headings(text: str) -> list[str]:
+    in_frontmatter = False
+    past_frontmatter = False
+    headings: list[str] = []
+    for i, line in enumerate(text.splitlines()):
+        if i == 0 and line == "---":
+            in_frontmatter = True
+            continue
+        if in_frontmatter and line == "---":
+            in_frontmatter = False
+            past_frontmatter = True
+            continue
+        if not past_frontmatter:
+            continue
+        if line.startswith("#### "):
+            headings.append("#### " + line[5:].strip())
+        elif line.startswith("### "):
+            headings.append("### " + line[4:].strip())
+        elif line.startswith("## "):
+            headings.append("## " + line[3:].strip())
+    return headings
+
+
 def read_md_files_recursive(base_dir: Path) -> list[tuple[Path, dict[str, Any]]]:
     records: list[tuple[Path, dict[str, Any]]] = []
     for path in sorted(base_dir.rglob("*.md")):
@@ -105,6 +129,7 @@ def load_series_indexes(base_dir: Path) -> list[SeriesIndex]:
 def load_posts(base_dir: Path) -> list[Post]:
     posts: list[Post] = []
     for path, frontmatter in read_md_files_recursive(base_dir):
+        text = path.read_text(encoding="utf-8")
         posts.append(
             Post(
                 file=path.relative_to(base_dir).as_posix(),
@@ -115,6 +140,7 @@ def load_posts(base_dir: Path) -> list[Post]:
                 if isinstance(frontmatter.get("order"), int)
                 else None,
                 status=frontmatter.get("status"),
+                headings=extract_headings(text),
             )
         )
     return posts
@@ -188,6 +214,7 @@ def build_relationship_tree(
                         "status": post.status,
                         "series": post.series,
                         "file": post.file,
+                        "headings": post.headings,
                     }
                 )
 
@@ -216,27 +243,81 @@ def build_relationship_tree(
     return parent_nodes
 
 
+def resolve_filters(
+    targets: list[str],
+    indexes: list[SeriesIndex],
+    posts: list[Post],
+) -> tuple[str | None, str | None, str | None]:
+    parent_by_slug = {i.series: i for i in indexes if not i.parent}
+    parent_by_title = {i.title.lower(): i.series for i in indexes if not i.parent}
+    child_by_slug = {i.series: i for i in indexes if i.parent}
+    child_by_title = {i.title.lower(): i.series for i in indexes if i.parent}
+    post_by_slug = {p.slug: p for p in posts}
+    post_by_title = {p.title.lower(): p.slug for p in posts}
+
+    parent_slug: str | None = None
+    child_slug: str | None = None
+    post_slug: str | None = None
+
+    for target in targets:
+        lower = target.lower()
+        if target in parent_by_slug or lower in parent_by_title:
+            parent_slug = target if target in parent_by_slug else parent_by_title[lower]
+        elif target in child_by_slug or lower in child_by_title:
+            child_slug = target if target in child_by_slug else child_by_title[lower]
+        elif target in post_by_slug or lower in post_by_title:
+            post_slug = target if target in post_by_slug else post_by_title[lower]
+        else:
+            raise SystemExit(
+                f"Unknown target: {target!r}\n"
+                "Expected a parent-series slug/title, child-series slug/title, or post slug/title."
+            )
+
+    return parent_slug, child_slug, post_slug
+
+
 def filter_tree(
-    tree: list[dict[str, Any]], parent_slug: str | None, status: str
+    tree: list[dict[str, Any]],
+    parent_slug: str | None,
+    child_slug: str | None,
+    post_slug: str | None,
+    status: str,
 ) -> list[dict[str, Any]]:
     filtered_tree = tree
     if parent_slug:
         filtered_tree = [node for node in filtered_tree if node["slug"] == parent_slug]
 
-    if status == "all":
-        return filtered_tree
-
     result: list[dict[str, Any]] = []
     for parent in filtered_tree:
+        children = parent["children"]
+        if child_slug:
+            children = [c for c in children if c["slug"] == child_slug]
+
         filtered_children = []
-        for child in parent["children"]:
-            filtered_posts = [post for post in child["posts"] if post["status"] == status]
-            filtered_children.append({**child, "posts": filtered_posts})
+        for child in children:
+            posts = child["posts"]
+            if post_slug:
+                posts = [p for p in posts if p["slug"] == post_slug]
+            if status != "all":
+                posts = [p for p in posts if p["status"] == status]
+            if post_slug and not posts:
+                continue
+            filtered_children.append({**child, "posts": posts})
+
+        if (child_slug or post_slug) and not filtered_children:
+            continue
         result.append({**parent, "children": filtered_children})
     return result
 
 
-def render_tree(tree: list[dict[str, Any]]) -> str:
+_HEADING_INDENT = {
+    "## ": "      ",
+    "### ": "        ",
+    "#### ": "          ",
+}
+
+
+def render_tree(tree: list[dict[str, Any]], show_headings: bool = False) -> str:
     lines: list[str] = []
 
     for parent in tree:
@@ -250,6 +331,12 @@ def render_tree(tree: list[dict[str, Any]]) -> str:
                 lines.append(
                     f"    - [{post_order}] {post['slug']} ({post['title']}) [{status}]"
                 )
+                if show_headings:
+                    for heading in post.get("headings", []):
+                        for prefix, indent in _HEADING_INDENT.items():
+                            if heading.startswith(prefix):
+                                lines.append(f"{indent}{heading}")
+                                break
 
     return "\n".join(lines)
 
@@ -260,7 +347,18 @@ def render_json(tree: list[dict[str, Any]]) -> str:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Print the repository's parent-series / child-series / post relationships."
+        description="Print the repository's parent-series / child-series / post relationships.",
+        epilog=(
+            "TARGETS: zero, one, or two slugs/titles drawn from parent series, "
+            "child series, or post slugs. The type of each argument is inferred "
+            "automatically from the repository data."
+        ),
+    )
+    parser.add_argument(
+        "targets",
+        nargs="*",
+        metavar="TARGET",
+        help="Parent-series, child-series, or post slug/title to filter by (optional).",
     )
     parser.add_argument(
         "--format",
@@ -269,8 +367,9 @@ def parse_args() -> argparse.Namespace:
         help="Output format. Defaults to tree.",
     )
     parser.add_argument(
-        "--parent",
-        help="Filter output to a single parent series slug.",
+        "--headings",
+        action="store_true",
+        help="Print h2/h3/h4 headings for each post.",
     )
     parser.add_argument(
         "--status",
@@ -292,16 +391,19 @@ def main() -> None:
 
     indexes = load_series_indexes(SERIES_INDEXES_DIR)
     posts = load_posts(POSTS_DIR)
+    parent_slug, child_slug, post_slug = resolve_filters(args.targets, indexes, posts)
+    show_headings = args.headings or bool(post_slug)
     tree = build_relationship_tree(indexes, posts)
-    filtered_tree = filter_tree(tree, args.parent, args.status)
-
-    if args.parent and not filtered_tree:
-        raise SystemExit(f"Unknown parent series slug: {args.parent}")
+    filtered_tree = filter_tree(tree, parent_slug, child_slug, post_slug, args.status)
 
     if args.status != "all" and args.status not in ALLOWED_STATUSES:
         raise SystemExit(f"Unsupported status: {args.status}")
 
-    output = render_tree(filtered_tree) if args.format == "tree" else render_json(filtered_tree)
+    output = (
+        render_tree(filtered_tree, show_headings=show_headings)
+        if args.format == "tree"
+        else render_json(filtered_tree)
+    )
     print(output)
 
 

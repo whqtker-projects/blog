@@ -2,7 +2,17 @@
 title: "스프링 MVC의 예외 처리"
 series: spring-web-mvc
 order: 5
-status: idea
+status: draft
 ---
 
-아이디어 단계 메모.
+## 예외 처리가 필요한 이유
+
+## @ExceptionHandler
+
+## @ControllerAdvice와 @RestControllerAdvice
+
+## HandlerExceptionResolver
+
+## 예시
+
+## Quiz

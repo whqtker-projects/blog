@@ -2,7 +2,23 @@
 title: "IP Addressing, Subnetting, and CIDR"
 series: internet-addressing-and-routing
 order: 1
-status: idea
+status: draft
 ---
 
-아이디어 단계 메모.
+## IP 주소란
+
+## 주소 클래스와 CIDR
+
+### 클래스 기반 주소 지정의 한계
+
+### CIDR 표기법
+
+## 서브네팅
+
+### 서브넷 마스크
+
+### 서브넷 분할 계산
+
+## 예시
+
+## Quiz

@@ -2,7 +2,19 @@
 title: "03. 반도체 기억장치"
 series: memory-systems
 order: 3
-status: idea
+status: draft
 ---
 
-아이디어 단계 메모.
+## 반도체 기억장치란
+
+## 동작 원리
+
+### SRAM 동작 원리
+
+### DRAM 동작 원리
+
+## 주요 특성 비교
+
+## 예시
+
+## Quiz

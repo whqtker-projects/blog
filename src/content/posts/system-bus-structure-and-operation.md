@@ -2,7 +2,19 @@
 title: "01. 시스템 버스의 구조와 동작"
 series: bus-io-and-interrupts
 order: 1
-status: idea
+status: draft
 ---
 
-아이디어 단계 메모.
+## 시스템 버스란
+
+## 버스의 종류
+
+### 데이터 버스, 주소 버스, 제어 버스
+
+## 버스 동작 방식
+
+### 동기 버스와 비동기 버스
+
+## 예시
+
+## Quiz
