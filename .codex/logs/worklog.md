@@ -481,3 +481,7 @@ Removed graph-connectivity backfill blocks from the recent operating-systems and
 Added `scripts/print_series_relationships.py` to read `src/content/series_indexes/` and `src/content/posts/`, build the current parent-series / child-series / post hierarchy, and print it in `tree` or `json` format. The script derives post slugs from filenames, respects child/post ordering metadata, supports filtering by parent slug and post status, and delegates structural validation to `pnpm check:content` unless `--skip-validation` is passed.
 
 Updated `package.json` with `pnpm print:series-tree` and `pnpm print:series-json` for direct execution.
+
+## 2026-05-11 — Fix pasted image rendering path
+
+Updated the Spring Framework draft so the IoC container pasted image uses standard Markdown image syntax and resolves from `src/content/attachments/`. Adjusted the Obsidian conversion script to percent-encode pasted image filenames and emit relative `../attachments/...` image paths, which keeps Obsidian-managed images inside the `src/content` vault without requiring a `public/images/` copy.

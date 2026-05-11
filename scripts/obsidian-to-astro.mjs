@@ -2,7 +2,7 @@
  * Obsidian → Astro conversion script (D-18)
  *
  * Transforms Obsidian Markdown posts and concepts into Astro-compatible content:
- * - ![[image]] wikilinks → standard Markdown image syntax (images served from /images/)
+ * - ![[image]] wikilinks → standard Markdown image syntax (images loaded from src/content/attachments/)
  * - [[concept:slug]] / [[concept:slug|alias]] → /concepts/<slug> links
  * - [[series:parent]] / [[series:parent/child]] → /series/... links
  * - [[wikilinks]] → standard Markdown links to posts
@@ -18,7 +18,7 @@
  * --concepts-output  Destination directory for concepts (default: ./src/content/concepts)
  * --strict           Exit with error on any unresolved wikilink or missing image (default: warn only)
  *
- * Image files referenced via ![[...]] must be present in public/images/ before running.
+ * Image files referenced via ![[...]] must be present in src/content/attachments/ before running.
  * Missing images produce a warning; --strict treats them as errors.
  */
 
@@ -74,7 +74,7 @@ export function extractImageFilenames(content) {
 
 /**
  * Converts ![[image.ext]] and ![[image.ext|alt]] to standard Markdown image syntax.
- * Images are assumed to be served from the /images/ public path.
+ * Images are assumed to be stored in src/content/attachments/.
  *
  * @param {string} content - Markdown body (no frontmatter)
  * @returns {string}
@@ -83,7 +83,7 @@ export function convertImageWikilinks(content) {
   return content.replace(IMAGE_WIKILINK_RE, (_match, filename, alt) => {
     const name = filename.trim();
     const altText = alt ? alt.trim() : name;
-    return `![${altText}](/images/${name})`;
+    return `![${altText}](../attachments/${encodeURI(name)})`;
   });
 }
 
@@ -135,6 +135,34 @@ function readMarkdownFilesRecursive(dir) {
 
   walk(dir);
   return files;
+}
+
+function imageExistsInSourceDir(imageSourceDir, imageFile) {
+  if (!existsSync(imageSourceDir)) return false;
+
+  if (imageFile.includes('/')) {
+    return existsSync(join(imageSourceDir, imageFile));
+  }
+
+  const stack = [imageSourceDir];
+  while (stack.length > 0) {
+    const currentDir = stack.pop();
+    for (const entry of readdirSync(currentDir, { withFileTypes: true })) {
+      if (entry.name === '.obsidian') continue;
+
+      const absolutePath = join(currentDir, entry.name);
+      if (entry.isDirectory()) {
+        stack.push(absolutePath);
+        continue;
+      }
+
+      if (entry.isFile() && entry.name === imageFile) {
+        return true;
+      }
+    }
+  }
+
+  return false;
 }
 
 /**
@@ -265,7 +293,7 @@ export function parseFrontmatter(content) {
  * @param {string} inputContent
  * @param {string} filename        - used only for error messages
  * @param {Set<string>|null} knownSlugs
- * @param {string|null} publicImagesDir - path to public/images/ on disk; null skips image validation
+ * @param {string|null} publicImagesDir - path to content attachments on disk; null skips image validation
  * @param {Map<string, string>|null} conceptAliasMap - alias map for concept link resolution
  * @param {Set<string>|null} knownConceptSlugs - known concept slugs; null skips resolution check
  * @returns {{ content: string, warnings: string[], conceptWarnings: string[], imageWarnings: string[] }}
@@ -285,7 +313,7 @@ export function convertFile(
   }
 
   const imageWarnings = publicImagesDir
-    ? extractImageFilenames(body).filter(f => !existsSync(join(publicImagesDir, f)))
+    ? extractImageFilenames(body).filter(f => !imageExistsInSourceDir(publicImagesDir, f))
     : [];
 
   // Conversion order: images first, then concept links, then series links, then post wikilinks
@@ -367,7 +395,7 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
 
     try {
       const { content: converted, warnings, conceptWarnings, seriesWarnings, imageWarnings } = convertFile(
-        inputContent, file, knownSlugs, './public/images', conceptAliasMap, knownConceptSlugs, knownSeriesTargets
+        inputContent, file, knownSlugs, './src/content/attachments', conceptAliasMap, knownConceptSlugs, knownSeriesTargets
       );
 
       for (const slug of warnings) {
@@ -389,7 +417,7 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
       }
 
       for (const imgFile of imageWarnings) {
-        console.warn(`Warn: ${file} — missing image public/images/${imgFile}`);
+        console.warn(`Warn: ${file} — missing image src/content/attachments/${imgFile}`);
         warnCount++;
         if (values.strict) errorCount++;
       }
@@ -415,7 +443,7 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
       try {
         // Concepts use same conversion pipeline; post knownSlugs passed for any [[post]] refs
         const { content: converted, warnings, conceptWarnings, seriesWarnings, imageWarnings } = convertFile(
-          inputContent, file, knownSlugs, './public/images', conceptAliasMap, knownConceptSlugs, knownSeriesTargets
+          inputContent, file, knownSlugs, './src/content/attachments', conceptAliasMap, knownConceptSlugs, knownSeriesTargets
         );
         for (const slug of warnings) {
           console.warn(`Warn (concept): ${file} — unresolved wikilink [[${slug}]]`);
@@ -433,7 +461,7 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
           if (values.strict) errorCount++;
         }
         for (const imgFile of imageWarnings) {
-          console.warn(`Warn (concept): ${file} — missing image public/images/${imgFile}`);
+          console.warn(`Warn (concept): ${file} — missing image src/content/attachments/${imgFile}`);
           warnCount++;
           if (values.strict) errorCount++;
         }

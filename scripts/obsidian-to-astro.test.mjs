@@ -183,22 +183,30 @@ See [[nonexistent-post]].`;
 
 test('convertImageWikilinks: ![[image.png]]', () => {
   const result = convertImageWikilinks('See ![[diagram.png]] below.');
-  assert.equal(result, 'See ![diagram.png](/images/diagram.png) below.');
+  assert.equal(result, 'See ![diagram.png](../attachments/diagram.png) below.');
 });
 
 test('convertImageWikilinks: ![[image.png|alt text]]', () => {
   const result = convertImageWikilinks('![[btree-structure.png|B+Tree structure]]');
-  assert.equal(result, '![B+Tree structure](/images/btree-structure.png)');
+  assert.equal(result, '![B+Tree structure](../attachments/btree-structure.png)');
+});
+
+test('convertImageWikilinks: encodes pasted image filenames with spaces', () => {
+  const result = convertImageWikilinks('![[Pasted image 20260511171546.png|IoC 컨테이너]]');
+  assert.equal(
+    result,
+    '![IoC 컨테이너](../attachments/Pasted%20image%2020260511171546.png)'
+  );
 });
 
 test('convertImageWikilinks: multiple images', () => {
   const result = convertImageWikilinks('![[a.png]] and ![[b.png|B image]]');
-  assert.equal(result, '![a.png](/images/a.png) and ![B image](/images/b.png)');
+  assert.equal(result, '![a.png](../attachments/a.png) and ![B image](../attachments/b.png)');
 });
 
 test('convertImageWikilinks: does not affect regular wikilinks', () => {
   const result = convertImageWikilinks('See [[database-index]] and ![[diagram.png]].');
-  assert.equal(result, 'See [[database-index]] and ![diagram.png](/images/diagram.png).');
+  assert.equal(result, 'See [[database-index]] and ![diagram.png](../attachments/diagram.png).');
 });
 
 test('convertImageWikilinks: no image wikilinks passes content through unchanged', () => {
@@ -216,7 +224,7 @@ order: 1
 See ![[btree.png|B+Tree]] for the structure.`;
 
   const { content } = convertFile(input, 'test.md');
-  assert.ok(content.includes('![B+Tree](/images/btree.png)'));
+  assert.ok(content.includes('![B+Tree](../attachments/btree.png)'));
   assert.ok(!content.includes('![[btree.png'));
 });
 
@@ -231,7 +239,7 @@ order: 1
 ![[diagram.png]] and [[database-index]].`;
 
   const { content } = convertFile(input, 'test.md');
-  assert.ok(content.includes('![diagram.png](/images/diagram.png)'));
+  assert.ok(content.includes('![diagram.png](../attachments/diagram.png)'));
   assert.ok(content.includes('[database-index](/posts/database-index)'));
 });
 
@@ -290,6 +298,24 @@ order: 1
 
 ![[present.png]]`;
 
+    const { imageWarnings } = convertFile(input, 'test.md', null, imagesDir);
+    assert.deepEqual(imageWarnings, []);
+  } finally {
+    rmSync(imagesDir, { recursive: true });
+  }
+});
+
+test('convertFile: attachments image produces no imageWarning', () => {
+  const imagesDir = mkdtempSync(join(tmpdir(), 'test-images-'));
+  try {
+    writeFileSync(join(imagesDir, 'present.png'), '');
+    const input = `---
+title: Test
+series: database-internals
+order: 1
+---
+
+![[present.png]]`;
     const { imageWarnings } = convertFile(input, 'test.md', null, imagesDir);
     assert.deepEqual(imageWarnings, []);
   } finally {

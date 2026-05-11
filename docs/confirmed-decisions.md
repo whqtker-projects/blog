@@ -155,7 +155,7 @@ This document is the stable reference for decisions that have been explicitly ag
 | D-35 | Astro project is initialized at the repository root. Planning docs (`docs/`) and Astro source (`src/`) coexist at the same level. |
 | D-36 | Post URL structure: `/posts/[slug]`. Slug is derived from the Markdown file name. |
 | D-37 | Posts are loaded from `src/content/posts/` via Astro glob loader. Content collection name: `posts`. |
-| D-38 | Image copying from vault attachments to `public/images/` is manual. No `--attachments` auto-copy flag is added to the conversion script. Rationale: vault path is machine-specific; copying is a deliberate step with a reviewable git diff; `--strict` image validation catches missing images before they produce broken HTML. |
+| D-38 | Obsidian-managed pasted images live under `src/content/attachments/`. The converter rewrites `![[image.ext]]` to a relative `../attachments/image.ext` Markdown image path, and Astro processes that content-adjacent asset during build. Existing legacy `public/images/` assets may remain when already referenced by published content. |
 
 ---
 

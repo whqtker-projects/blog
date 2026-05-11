@@ -28,8 +28,8 @@ Image rendering validated: `public/images/btree-structure.svg` is committed and 
 | Post wikilink | `[[page-name]]` | `[page-name](/posts/page-name)` via conversion script; routes validated (#69) | ✅ Supported (via script) |
 | Post wikilink with alias | `[[page-name\|alias]]` | `[alias](/posts/page-name)` via conversion script | ✅ Supported (via script) |
 | Post wikilink with heading | `[[page-name#heading]]` | `[page-name](/posts/page-name#heading)`; anchor validated (#69) | ✅ Supported (via script) |
-| Image wikilink | `![[image.png]]` | `![image.png](/images/image.png)` via conversion script | ✅ Supported (via script) |
-| Image wikilink with alt | `![[image.png\|alt]]` | `![alt](/images/image.png)` via conversion script | ✅ Supported (via script) |
+| Image wikilink | `![[image.png]]` | `![image.png](../attachments/image.png)` via conversion script | ✅ Supported (via script) |
+| Image wikilink with alt | `![[image.png\|alt]]` | `![alt](../attachments/image.png)` via conversion script | ✅ Supported (via script) |
 | Callouts / admonitions | `> [!NOTE]` | Not natively rendered | ⛔ Not used — avoid |
 | Embedded queries (Dataview) | ` ```dataview ... ``` ` | Rendered as plain text | ⛔ Not used — avoid |
 | Obsidian tags | `#tag` in body | Rendered as `<h1>tag` (Markdown heading) | ⛔ Not used — use frontmatter only |
@@ -122,9 +122,11 @@ All three links are `<a href="…">` elements in the rendered HTML. No broken li
 
 ## Image Path Convention
 
-Image files referenced via `![[filename.ext]]` in Obsidian must be placed in `public/images/` before the Astro build runs. The conversion script rewrites the reference to `/images/filename.ext`.
+Image files referenced via `![[filename.ext]]` in Obsidian should live under `src/content/attachments/`, because `src/content` is the Obsidian vault root. The conversion script rewrites the reference to `../attachments/filename.ext`.
 
-Copying image files from the vault to `public/images/` is a manual step until a dedicated copy script is added.
+Pasted image filenames may keep their Obsidian-generated names. Spaces are percent-encoded in the rendered Markdown URL while the file itself remains under `src/content/attachments/` with its original name.
+
+Astro processes the relative image reference during build; no `public/images/` copy is needed for these pasted content images.
 
 ---
 

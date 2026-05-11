@@ -364,7 +364,7 @@ Recommended vault layout:
   posts/            ← create new post files here
     what-is-a-database-index.md
     b-plus-tree-index.md       ← new file goes here
-  attachments/      ← images and other assets
+  attachments/      ← images and other assets referenced from posts
   templates/        ← Obsidian templates (not processed by the script)
 ```
 
