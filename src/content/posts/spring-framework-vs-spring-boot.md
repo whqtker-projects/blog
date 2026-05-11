@@ -3,7 +3,13 @@ title: "스프링 프레임워크와 스프링 부트의 차이"
 series: spring-boot-basics
 order: 2
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/spring-boot/spring-boot-basics|스프링 부트 기초]]
+- 이전 글: [[what-is-spring-boot|스프링 부트란 무엇인가]]
+- 다음 글: [[spring-boot-startup-flow|스프링 부트 시작 흐름]]
 
 ## 두 프레임워크의 관계
 

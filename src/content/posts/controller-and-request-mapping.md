@@ -3,7 +3,13 @@ title: "컨트롤러와 요청 매핑"
 series: spring-web-mvc
 order: 2
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/spring-framework/spring-web-mvc|스프링 웹 MVC]]
+- 이전 글: [[spring-mvc-request-flow|스프링 MVC 요청 흐름]]
+- 다음 글: [[request-body-and-message-converter|요청 본문과 HttpMessageConverter]]
 
 ## 컨트롤러란
 

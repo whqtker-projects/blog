@@ -3,7 +3,12 @@ title: "05. SSD의 구조와 특징"
 series: storage-systems
 order: 5
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/computer-architecture/storage-systems|Storage Systems]]
+- 이전 글: [[flash-memory|04. 플래시 메모리]]
 
 ## SSD란
 

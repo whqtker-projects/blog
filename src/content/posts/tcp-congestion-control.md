@@ -3,7 +3,13 @@ title: "TCP Congestion Control"
 series: transport-and-reliability
 order: 3
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/computer-networks/transport-and-reliability|Transport and Reliability]]
+- 이전 글: [[tcp-flow-control|TCP Flow Control]]
+- 다음 글: [[tcp-header-options|TCP Header Options and Performance]]
 
 ## 혼잡 제어란
 

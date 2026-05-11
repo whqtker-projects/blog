@@ -3,7 +3,13 @@ title: "Stack and Queue Basics"
 series: data-structures
 order: 3
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/data-structures-and-algorithms/data-structures|Data Structures]]
+- 이전 글: [[linked-list|Linked List Structure]]
+- 다음 글: [[hash-table|Hash Table Basics]]
 
 ## 스택이란
 

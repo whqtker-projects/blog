@@ -3,6 +3,8 @@ title: "Query Execution and the Optimizer"
 series: database-internals
 order: 5
 status: published
+tags:
+  - graph/post
 ---
 
 When you send SQL to a database, the engine does not execute the text directly from left to right. It first turns the query into an execution plan: a concrete sequence of operations such as scanning a table, probing an index, filtering rows, joining two inputs, and sorting results. The optimizer is the part of the database that searches for a good plan and estimates which one will be cheapest.

@@ -14,9 +14,10 @@ Language-policy note:
 
 Graph-link note:
 - generic `[[wikilinks]]` are reserved for post links
-- series pages use explicit `[[series:<parent>]]` or `[[series:<parent>/<child>]]` syntax
-- graph-friendly series links are used in series index bodies for parent-child navigation context
-- idea-stage post stubs remain valid as frontmatter-only or minimal-body notes
+- Obsidian graph links to series use `[[series_indexes/<parent>]]` or `[[series_indexes/<parent>/<child>]]`
+- child series indexes may include ordered post wikilinks so graph view shows post membership and sequence
+- draft and idea-stage posts may include child series links plus previous/next post links, but `order` remains canonical
+- posts should not link directly to parent series when graph view should preserve the parent → child → post shape
 
 Current operating documents:
 - [`docs/series/database-systems.md`](series/database-systems.md)
@@ -380,7 +381,7 @@ write-ahead-log.md
 
 ### Step 2 — Write the minimum frontmatter for `idea` state
 
-A post in `idea` state must set the required frontmatter. Frontmatter-only stubs or minimal-body notes remain valid; graph-friendly series links are handled in series index bodies rather than being required in post stubs. All three D-25 required fields must be set even at `idea` state, because the conversion script and Astro schema both require them.
+A post in `idea` state must set the required frontmatter. Frontmatter-only stubs or minimal-body notes remain valid, but optional graph links to the child series or adjacent posts are allowed when they improve Obsidian visibility. All three D-25 required fields must be set even at `idea` state, because the conversion script and Astro schema both require them.
 
 ```yaml
 ---

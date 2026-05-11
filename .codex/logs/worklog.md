@@ -485,3 +485,119 @@ Updated `package.json` with `pnpm print:series-tree` and `pnpm print:series-json
 ## 2026-05-11 — Fix pasted image rendering path
 
 Updated the Spring Framework draft so the IoC container pasted image uses standard Markdown image syntax and resolves from `src/content/attachments/`. Adjusted the Obsidian conversion script to percent-encode pasted image filenames and emit relative `../attachments/...` image paths, which keeps Obsidian-managed images inside the `src/content` vault without requiring a `public/images/` copy.
+
+## 2026-05-11 — Push attachment workflow and all remaining local changes
+
+### 완료한 작업
+Obsidian pasted image workflow를 `src/content/attachments/` 기준으로 정리하고, 관련 변환기와 문서를 검증했다. 먼저 이미지 처리 인프라와 문서만 분리해서 `Support Obsidian attachments under src/content` 커밋으로 푸시했고, 이후 사용자 요청에 따라 남아 있던 draft post 수정, `src/content/.obsidian/` 설정과 플러그인 파일, `src/content/attachments/` 이미지 파일까지 전부 `Add in-progress content and Obsidian updates` 커밋으로 추가 푸시했다.
+
+검증은 두 단계 모두에서 `pnpm check:content`와 `pnpm build`로 확인했고, 이미지 변환 관련 변경은 `pnpm test:convert`까지 통과했다. 최종 상태에서 로컬 작업 트리는 비워졌다.
+
+### 미완료
+없음
+
+### 주요 결정
+사용자가 명시적으로 요청하기 전까지는 대량의 draft post와 `.obsidian` 변경을 인프라 변경 커밋에 섞지 않고 분리한다. 사용자가 전체 푸시를 명시하면 그 시점에 남은 draft/Obsidian/attachment 변경까지 한 번에 커밋해 반영한다.
+
+## 2026-05-11 — Add child series operating notes
+
+`docs/series/README.md`를 추가해 parent note와 child note의 역할을 분리하고, `docs/series/<parent>/<child>.md` 경로 규약을 문서화했다. 각 child series마다 하나씩 운영 노트를 만들어 `Current focus`, `Next target`, 그리고 `Order | Slug | Working title | Status | Notes` 표를 넣어 Obsidian에서 다음 글을 별도 개요 문서로 확인할 수 있게 했다.
+
+기존 parent 운영 문서도 함께 정리했다. child operating note 링크를 추가했고, stale 했던 `idea` 기준 posture를 현재 실제 `draft`/`published` 상태에 맞게 갱신했다. `docs/first-content-readiness.md`와 `docs/series-backlog.md`도 `docs/series/`가 parent-only 레이어가 아니라 parent+child 운영 레이어라는 현재 규약에 맞게 수정했다.
+
+검증:
+- `find docs/series -mindepth 2 -maxdepth 2 -type f | wc -l` = `28`
+- `find src/content/series_indexes -mindepth 2 -maxdepth 2 -type f | wc -l` = `28`
+
+## 2026-05-11 — Replace child notes with graph links in content files
+
+사용자 목표를 `docs/series` child note가 아니라 Obsidian 그래프뷰 기준으로 다시 맞췄다. 잘못 추가했던 `docs/series/<parent>/<child>.md` child 운영 노트와 `docs/series/README.md`는 제거하고, 실제 그래프에 잡히는 콘텐츠 파일 쪽에 링크를 넣는 방식으로 정리했다.
+
+`src/content/series_indexes/`는 parent index가 ordered child series 링크를, child index가 상위 시리즈 링크와 ordered post wikilink 목록을 갖도록 정규화했다. `src/content/posts/`의 editable `draft` 포스트들은 frontmatter 아래에 상위 시리즈, 소속 child series, 이전 글, 다음 글 링크 블록을 넣어 그래프에서 시리즈 관계와 순서를 함께 볼 수 있게 했다. `published` 포스트는 저장소 규칙에 따라 수정하지 않았다.
+
+관련 문서도 새 방향에 맞춰 갱신했다. `docs/content-model.md`, `docs/post-template.md`, `docs/series-index-authoring.md`, `docs/first-content-readiness.md`, `docs/series-backlog.md`, `docs/confirmed-decisions.md`, `docs/decision-log.md`에서 series index body의 ordered post links와 post-level graph links를 허용하도록 설명을 바꿨다.
+
+검증:
+- `pnpm test:convert`
+
+## 2026-05-11 — Add graph tags and Obsidian color groups
+
+Obsidian 그래프에서 대시리즈, 소시리즈, 게시글 노드를 색으로 구분할 수 있도록 `src/content/series_indexes/`와 `src/content/posts/` frontmatter에 태그를 일괄 추가했다. parent series index에는 `graph/parent-series`, child series index에는 `graph/child-series`, post에는 `graph/post`를 넣었다.
+
+`src/content/.obsidian/graph.json`에는 세 가지 색상 그룹을 추가했다. query는 `tag:#graph/parent-series`, `tag:#graph/child-series`, `tag:#graph/post`를 사용하고, 색상은 각각 파랑, 주황, 회색 계열로 설정했다. `showTags`는 그대로 `false`로 두어 태그 노드 자체는 보이지 않게 유지했다.
+
+검증:
+- `pnpm test:convert`
+- `pnpm check:content`
+
+## 2026-05-11 — Automate series graph aliases
+
+`series:*` 링크가 Obsidian 그래프에서 실제 series index 노드로 resolve되도록 series index frontmatter에 `aliases`를 추가하되, 수동 관리 비용이 생기지 않도록 자동화했다.
+
+추가한 작업:
+- `scripts/sync-series-graph-metadata.mjs`: `series`와 `parent`에서 `aliases`와 graph `tags`를 파생해 `src/content/series_indexes/`에 반영
+- `package.json`: `pnpm sync:series-graph` 명령 추가
+- `scripts/check-content.mjs`: Check 10으로 series graph alias/tag가 파생값과 일치하는지 검증
+- `scripts/check-content.test.mjs`: stale alias/tag 거부 테스트 추가
+- `src/content.config.ts`: posts `tags`, series indexes `aliases`/`tags`를 schema에 명시
+
+문서도 갱신했다. `docs/series-index-authoring.md`, `docs/content-model.md`, `docs/obsidian-conversion-contract.md`, `docs/post-metadata.md`, `docs/confirmed-decisions.md`, `docs/decision-log.md`에서 `aliases`와 graph tags를 사람이 직접 설계하는 필드가 아니라 파생 호환 메타데이터로 정의했다.
+
+검증:
+- `pnpm sync:series-graph`
+- `pnpm test:convert`
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`
+
+## 2026-05-11 — Use real file links for Obsidian graph wiring
+
+Obsidian 그래프에서 parent series의 자식 노드가 child series 색상으로 보이지 않는 문제를 정리했다. 원인은 `[[series:<parent>/<child>]]`가 변환기에는 의미 있는 네임스페이스 링크지만, Obsidian 그래프에서는 콜론과 슬래시가 섞인 경로형 unresolved 링크로 남을 수 있다는 점이었다.
+
+`pnpm sync:series-graph`를 확장해 graph-visible 링크를 실제 vault 파일 링크로 재생성하도록 바꿨다. Parent series index는 `[[series_indexes/<parent>/<child>]]`로 child series 파일을 직접 가리키고, child series index와 draft posts도 `[[series_indexes/<parent>]]`, `[[series_indexes/<parent>/<child>]]` 형태로 연결한다. `series:*` aliases는 변환기 호환 메타데이터로 유지하지만 그래프 연결선의 기준으로는 쓰지 않는다.
+
+Obsidian graph color group query도 `tag:#graph/...` 형태로 조정했다.
+
+검증:
+- `pnpm sync:series-graph`
+- `pnpm test:convert`
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`
+
+## 2026-05-11 — Keep parent series nodes disconnected from post nodes
+
+Obsidian 그래프에서 파란 parent series 노드가 회색 post 노드와 직접 연결되지 않도록 graph block 규칙을 조정했다. `scripts/sync-series-graph-metadata.mjs`가 draft post에 생성하는 `관련 링크` 블록에서 parent series 링크를 제거하고, post는 child series와 이전/다음 post에만 직접 연결되도록 했다.
+
+결과 그래프 구조는 parent series → child series → post가 된다. Parent-child 연결은 series index 파일끼리, child-post 연결은 child series index의 ordered post list와 post의 소속 child link가 담당한다.
+
+검증:
+- `pnpm sync:series-graph`
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm test:convert`
+- `pnpm build`
+
+## 2026-05-11 — Restore Obsidian graph color groups through sync script
+
+Obsidian 그래프 뷰를 닫고 다시 열 때 `src/content/.obsidian/graph.json`의 `colorGroups`가 빈 배열로 저장되어 색상 설정이 사라지는 문제를 확인했다. 단순 수동 설정은 Obsidian의 마지막 UI 상태 저장에 의해 지워질 수 있으므로, `pnpm sync:series-graph`가 graph metadata뿐 아니라 Obsidian graph color groups까지 복구하도록 확장했다.
+
+색상 그룹은 `tag:#graph/parent-series`, `tag:#graph/child-series`, `tag:#graph/post` 세 query를 사용한다. `showTags`는 `false`로 유지해 태그 노드는 숨기고, 태그는 노드 색상 분류에만 사용한다.
+
+검증:
+- `pnpm sync:series-graph`
+- `pnpm check:content`
+- `pnpm test:repo`
+
+## 2026-05-11 — Hide Obsidian graph link blocks from web rendering
+
+Post 원본의 `관련 링크:` 블록은 Obsidian graph view에서 시리즈와 이전/다음 글 관계를 보기 위한 authoring metadata로 유지하되, 웹 페이지에는 노출되지 않도록 Markdown 렌더링 단계에서 제거했다.
+
+`astro.config.mjs`에 `remarkHideObsidianRelatedLinks` plugin을 연결했다. 이 plugin은 top-level `관련 링크:` 문단 뒤에 `상위 시리즈:`, `소속 시리즈:`, `이전 글:`, `다음 글:` 라벨만 포함된 bullet list 또는 plain paragraph가 있을 때 해당 블록을 제거한다. 일반적인 reader-facing `관련 링크:` 섹션은 제거하지 않는다.
+
+검증:
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`
+- `pnpm test:convert`
+- `rg -n "관련 링크" dist || true`

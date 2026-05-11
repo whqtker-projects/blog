@@ -3,7 +3,12 @@ title: "Relational Operations and Result Sets"
 series: relational-queries-and-joins
 order: 1
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/database-systems/relational-queries-and-joins|Relational Queries and Joins]]
+- 다음 글: [[join-types-and-join-results|Join Types and Join Results]]
 
 ## 관계형 연산이란
 

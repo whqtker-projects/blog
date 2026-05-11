@@ -3,7 +3,13 @@ title: "TCP Flow Control"
 series: transport-and-reliability
 order: 2
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/computer-networks/transport-and-reliability|Transport and Reliability]]
+- 이전 글: [[tcp-connection-and-reliability|TCP and Reliable Transmission]]
+- 다음 글: [[tcp-congestion-control|TCP Congestion Control]]
 
 ## 흐름 제어란
 

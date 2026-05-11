@@ -8,10 +8,10 @@
 
 | Order | Child series | Current posture |
 |---|---|---|
-| 1 | `network-foundations` | 4 idea |
-| 2 | `transport-and-reliability` | 1 draft, 4 idea |
-| 3 | `internet-addressing-and-routing` | 6 idea |
-| 4 | `network-protocols` | 1 draft, 3 idea |
+| 1 | `network-foundations` | 4 draft |
+| 2 | `transport-and-reliability` | 5 draft |
+| 3 | `internet-addressing-and-routing` | 6 draft |
+| 4 | `network-protocols` | 4 draft |
 
 Current child indexes:
 - `src/content/series_indexes/computer-networks/network-foundations.md`
@@ -24,7 +24,7 @@ Current child indexes:
 This parent is mid-rollout:
 - the former flat `network-protocols` backlog has now been rebuilt into a four-part arc
 - explicit child ordering is in place
-- post statuses are still mostly `idea` or `draft`, so this parent remains backlog-heavy rather than publication-complete
+- current work is concentrated in `draft` posts across all four child series, so this parent remains backlog-heavy rather than publication-complete
 - the current structure now balances the repository's backend/web orientation against a more textbook-like networking progression
 
 ## Next Expansion Points

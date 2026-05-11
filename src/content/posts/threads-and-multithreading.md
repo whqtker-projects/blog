@@ -3,7 +3,13 @@ title: "스레드와 멀티스레딩"
 series: processes-and-threads
 order: 3
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/operating-systems/processes-and-threads|프로세스와 스레드]]
+- 이전 글: [[context-switching|문맥 교환]]
+- 다음 글: [[interprocess-communication|프로세스 간 통신]]
 
 ## 스레드란
 

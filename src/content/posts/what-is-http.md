@@ -3,7 +3,13 @@ title: "What Is HTTP?"
 series: network-protocols
 order: 2
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/computer-networks/network-protocols|Network Protocols]]
+- 이전 글: [[dns-resolution|DNS and Name Resolution]]
+- 다음 글: [[tls-and-https|TLS and HTTPS]]
 
 HTTP is the application-layer protocol that lets a client ask for a resource and a server answer with a response. When you open a web page, load an API endpoint, or submit a form, the application usually speaks HTTP on top of lower-level protocols such as [DNS](/concepts/dns), [TCP](/concepts/tcp), and sometimes [TLS](/concepts/tls). HTTP does not move bytes across the network by itself; it defines the structure and meaning of the messages exchanged between two endpoints.
 

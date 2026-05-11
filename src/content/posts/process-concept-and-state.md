@@ -3,7 +3,12 @@ title: "프로세스 개념과 상태"
 series: processes-and-threads
 order: 1
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/operating-systems/processes-and-threads|프로세스와 스레드]]
+- 다음 글: [[context-switching|문맥 교환]]
 
 ## 프로세스란
 

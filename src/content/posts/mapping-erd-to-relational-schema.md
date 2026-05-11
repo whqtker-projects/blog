@@ -3,7 +3,13 @@ title: "Mapping ERD to a Relational Schema"
 series: data-modeling-and-design
 order: 2
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/database-systems/data-modeling-and-design|Data Modeling and Design]]
+- 이전 글: [[what-is-an-erd|What Is an ERD?]]
+- 다음 글: [[integrity-constraints-in-relational-design|Integrity Constraints in Relational Design]]
 
 ## 변환이란
 

@@ -61,11 +61,12 @@ The conversion script passes the entire frontmatter block through to the output 
 | `series` | series slug string | `series` | None |
 | `order` | integer | `order` | None |
 | `status` | enum string (required) | `status` | None |
+| `tags` | array | `tags` | None |
 | Any other field | any | same name | Passed through as-is; Astro's Zod schema strips unknown fields at build time |
 
-**Astro schema consistency:** The Astro content collection schema (`src/content.config.ts`) defines `title`, `series`, `order`, and `status` as required. Fields not listed in the schema are silently dropped by Zod during the build — they do not cause errors but do not appear in `post.data`.
+**Astro schema consistency:** The Astro content collection schema (`src/content.config.ts`) defines `title`, `series`, `order`, and `status` as required for posts. `description` and `tags` are optional. Fields not listed in the schema are silently dropped by Zod during the build — they do not cause errors but do not appear in `post.data`.
 
-**No Obsidian-only fields are added by the script.** If Obsidian generates metadata fields (e.g., `aliases`, `tags`, `cssclass`), they will be passed through by the script and silently dropped by Astro. They do not affect the build or the rendered output.
+**No Obsidian-only fields are added by the converter.** If Obsidian generates metadata fields such as `cssclass`, they will be passed through by the script and silently dropped by Astro unless the schema defines them. Repository-managed graph tags are retained by the schema so Obsidian graph color groups can use them.
 
 ---
 

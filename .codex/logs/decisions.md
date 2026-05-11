@@ -30,3 +30,31 @@ Graph-friendly repository authoring treats `[[series:<parent>]]` and `[[series:<
 ## 2026-05-10 — Relationship printer reuses repository validation instead of cloning it
 
 The Python relationship-printer script should not reimplement the repository's full hierarchy validator. It runs `pnpm check:content` before printing and only builds the parent/child/post structure after the existing validation workflow passes, keeping one structural source of truth.
+
+## 2026-05-11 — Series operations docs now include child-level writing queues
+
+`docs/series/` is no longer parent-only. Parent notes stay responsible for child composition, ordering, and expansion guidance, while child notes at `docs/series/<parent>/<child>.md` carry the per-series writing queue with explicit current/next targets.
+
+This operating layer does not replace structural metadata. `posts.order` remains the only sequencing source of truth for site sorting and prev/next behavior, and generic `[[wikilinks]]` are not repurposed as sequence metadata.
+
+## 2026-05-11 — Graph view uses content links while order stays canonical
+
+Obsidian graph visibility should come from actual content links, not from a parallel child-note layer under `docs/series/`. Parent series indexes link to child series, child series indexes may list posts in order, and editable posts may link to their parent series, child series, and adjacent posts.
+
+These links are graph aids, not sorting metadata. `posts.order` remains the canonical sequence for rendering and prev/next behavior, and published posts are not retrofitted when repository rules forbid editing them.
+
+## 2026-05-11 — Graph node colors are driven by dedicated frontmatter tags
+
+Obsidian graph color separation should use explicit frontmatter tags rather than path-based queries. The repository now uses `graph/parent-series`, `graph/child-series`, and `graph/post` so color grouping stays stable even if files move or routing conventions evolve.
+
+## 2026-05-11 — Series graph aliases are generated metadata
+
+`series:*` links remain the canonical syntax for distinguishing series links from post wikilinks, but Obsidian resolves them through generated `aliases` on series index notes. Those aliases are not manually curated; they are derived from `series` and `parent` by `pnpm sync:series-graph` and enforced by `pnpm check:content`.
+
+## 2026-05-11 — Obsidian graph wiring uses actual series index file links
+
+`series:*` remains supported converter syntax, but graph-visible content should use actual vault file links such as `[[series_indexes/<parent>]]` and `[[series_indexes/<parent>/<child>]]`. This avoids unresolved Obsidian graph nodes caused by colon/slash namespace links and lets graph color groups apply to the real parent and child series notes.
+
+## 2026-05-11 — Posts link to child series, not parent series
+
+For graph readability, post notes should not link directly to parent series notes. Parent series nodes connect to child series nodes, and child series nodes connect to their posts. Draft post graph blocks therefore include the child series and adjacent posts only.

@@ -3,7 +3,12 @@ title: "UDP, QUIC, and Delivery Tradeoffs"
 series: transport-and-reliability
 order: 5
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/computer-networks/transport-and-reliability|Transport and Reliability]]
+- 이전 글: [[tcp-header-options|TCP Header Options and Performance]]
 
 ## UDP란
 

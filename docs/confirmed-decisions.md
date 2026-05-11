@@ -246,8 +246,10 @@ This document is the stable reference for decisions that have been explicitly ag
 |---|---|
 | D-83 | The explicit syntax for series links is `[[series:<slug>]]` for parent series and `[[series:<parent>/<child>]]` for child series. This is a single namespaced form; there are no separate `[[parent:...]]` or `[[child:...]]` prefixes. |
 | D-84 | Generic `[[wikilinks]]` resolve to posts only. Linking to a series requires `[[series:...]]` syntax. Using a plain wikilink to reference a series index is not permitted. |
-| D-85 | Minimum internal-link expectations are soft guidelines, not validation rules. Recommended: posts include at least one `[[series:parent/child]]` link to their own child series; child series indexes include a `[[series:parent]]` link to their parent; parent series indexes optionally link to their child series. Missing links are not a build or validation error. |
-| D-86 | Series index bodies may include `[[series:...]]` links to related series. Generic `[[wikilinks]]` pointing to posts are not allowed in series index bodies — the post list is auto-generated and manual post links inside the index body are redundant and unsupported. |
+| D-85 | Minimum internal-link expectations are soft guidelines, not validation rules. Recommended: posts may include links to their child series and adjacent posts; child series indexes link to their parent; parent series indexes link to their child series. Posts avoid direct parent-series links so the graph keeps the parent → child → post shape. Missing links are not a build or validation error. |
+| D-86 | Series index bodies may include both `[[series:...]]` links and ordered post `[[wikilinks]]` for Obsidian graph visibility. These links are an authoring aid only; the site still treats frontmatter and generated listings as the rendering source of truth. |
+| D-87 | Series index `aliases` and graph `tags` are generated compatibility metadata derived from `series` and `parent`. Authors run `pnpm sync:series-graph`; `pnpm check:content` rejects stale aliases or graph tags. |
+| D-88 | Obsidian graph wiring uses actual series index file links such as `[[series_indexes/<parent>]]` and `[[series_indexes/<parent>/<child>]]`. The `series:*` syntax remains converter-supported, but graph-visible content uses real file links so nodes resolve and color groups apply correctly. |
 
 ---
 

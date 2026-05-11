@@ -3,7 +3,13 @@ title: "스프링 부트 스타터"
 series: spring-boot-basics
 order: 4
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/spring-boot/spring-boot-basics|스프링 부트 기초]]
+- 이전 글: [[spring-boot-startup-flow|스프링 부트 시작 흐름]]
+- 다음 글: [[embedded-server-in-spring-boot|스프링 부트의 내장 서버]]
 
 ## 스타터란
 

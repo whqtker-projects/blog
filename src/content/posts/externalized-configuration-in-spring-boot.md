@@ -3,7 +3,13 @@ title: "스프링 부트의 외부 설정"
 series: spring-boot-configuration
 order: 2
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/spring-boot/spring-boot-configuration|스프링 부트 설정]]
+- 이전 글: [[auto-configuration-in-spring-boot|스프링 부트의 자동 구성]]
+- 다음 글: [[profiles-and-environment-in-spring-boot|스프링 부트의 프로필과 환경]]
 
 ## 외부 설정이란
 

@@ -20,17 +20,26 @@ function index(file, data) {
     series: data.series,
     parent: data.parent,
     order: data.order,
+    aliases: data.aliases,
+    tags: data.tags,
   };
 }
 
 function validIndexes() {
   return [
-    index('database-systems.md', { series: 'database-systems', title: 'Database Systems' }),
+    index('database-systems.md', {
+      series: 'database-systems',
+      title: 'Database Systems',
+      aliases: ['series:database-systems'],
+      tags: ['graph/parent-series'],
+    }),
     index('database-systems/database-internals.md', {
       series: 'database-internals',
       title: 'Database Internals',
       parent: 'database-systems',
       order: 1,
+      aliases: ['series:database-systems/database-internals'],
+      tags: ['graph/child-series'],
     }),
   ];
 }
@@ -72,6 +81,8 @@ test('validateContent rejects duplicate child-series order under the same parent
       title: 'Query Processing',
       parent: 'database-systems',
       order: 1,
+      aliases: ['series:database-systems/query-processing'],
+      tags: ['graph/child-series'],
     }),
   ];
 
@@ -86,12 +97,19 @@ test('validateContent rejects duplicate child-series order under the same parent
 
 test('validateContent rejects path/frontmatter mismatches for child indexes', () => {
   const indexes = [
-    index('computer-networks.md', { series: 'computer-networks', title: 'Computer Networks' }),
+    index('computer-networks.md', {
+      series: 'computer-networks',
+      title: 'Computer Networks',
+      aliases: ['series:computer-networks'],
+      tags: ['graph/parent-series'],
+    }),
     index('network-protocols.md', {
       series: 'network-protocols',
       title: 'Network Protocols',
       parent: 'computer-networks',
       order: 1,
+      aliases: ['series:computer-networks/network-protocols'],
+      tags: ['graph/child-series'],
     }),
   ];
 
@@ -126,4 +144,30 @@ test('validateContent rejects numeric title-prefix mismatch against post order',
 test('parseNumericTitlePrefix handles numbered and unnumbered titles', () => {
   assert.equal(parseNumericTitlePrefix('What Is HTTP?'), null);
   assert.equal(parseNumericTitlePrefix('03. 메모리 계층 구조'), 3);
+});
+
+test('validateContent rejects stale series graph alias', () => {
+  const indexes = validIndexes();
+  indexes[1].aliases = ['series:database-internals'];
+
+  const { errors } = validateContent({ posts: validPosts(), indexes });
+
+  assert.ok(
+    errors.some((message) =>
+      /aliases must be exactly \['series:database-systems\/database-internals'\]/.test(message)
+    )
+  );
+});
+
+test('validateContent rejects stale series graph tag', () => {
+  const indexes = validIndexes();
+  indexes[0].tags = ['graph/child-series'];
+
+  const { errors } = validateContent({ posts: validPosts(), indexes });
+
+  assert.ok(
+    errors.some((message) =>
+      /tags must be exactly \['graph\/parent-series'\]/.test(message)
+    )
+  );
 });

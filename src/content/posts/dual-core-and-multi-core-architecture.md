@@ -3,7 +3,13 @@ title: "07. 듀얼 코어와 멀티 코어 구조"
 series: cpu-and-instruction-execution
 order: 7
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/computer-architecture/cpu-and-instruction-execution|CPU and Instruction Execution]]
+- 이전 글: [[superscalar-and-dynamic-execution|06. 슈퍼스칼라와 동적 실행]]
+- 다음 글: [[instruction-set-architecture|08. 명령어 세트의 구조]]
 
 ## 멀티 코어란
 

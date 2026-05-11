@@ -3,6 +3,8 @@ title: "What Is a Database Index?"
 series: database-internals
 order: 1
 status: published
+tags:
+  - graph/post
 ---
 
 A database index is a separate data structure that stores a subset of a table's data in a way that makes lookups faster. Without an index, the database must scan every row to find matching records. With an index, it narrows the search to a small subset.

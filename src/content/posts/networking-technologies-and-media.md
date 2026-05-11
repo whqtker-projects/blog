@@ -3,7 +3,12 @@ title: "Networking Technologies and Media"
 series: network-foundations
 order: 4
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/computer-networks/network-foundations|Network Foundations]]
+- 이전 글: [[encapsulation-and-network-path|Encapsulation and the Network Path]]
 
 ## 물리 매체의 종류
 

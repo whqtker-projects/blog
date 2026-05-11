@@ -8,14 +8,14 @@
 
 | Order | Child series | Current posture |
 |---|---|---|
-| 1 | `architecture-overview` | 4 idea |
-| 2 | `cpu-and-instruction-execution` | 10 idea |
-| 3 | `computer-arithmetic` | 9 idea |
-| 4 | `control-unit` | 4 idea |
-| 5 | `memory-systems` | 11 idea |
-| 6 | `storage-systems` | 5 idea |
-| 7 | `bus-io-and-interrupts` | 5 idea |
-| 8 | `parallel-and-high-performance-architecture` | 7 idea |
+| 1 | `architecture-overview` | 4 draft |
+| 2 | `cpu-and-instruction-execution` | 10 draft |
+| 3 | `computer-arithmetic` | 9 draft |
+| 4 | `control-unit` | 4 draft |
+| 5 | `memory-systems` | 11 draft |
+| 6 | `storage-systems` | 5 draft |
+| 7 | `bus-io-and-interrupts` | 5 draft |
+| 8 | `parallel-and-high-performance-architecture` | 7 draft |
 
 Current child indexes:
 - `src/content/series_indexes/computer-architecture/architecture-overview.md`
@@ -30,7 +30,7 @@ Current child indexes:
 ## Backlog Posture
 
 This parent is the first full-scale hierarchy and numbering rollout target:
-- every current post is `status: idea`
+- every current post is `status: draft`
 - child ordering is explicit across all eight child series
 - many posts use visible numeric title prefixes, but `order` remains the structural truth
 

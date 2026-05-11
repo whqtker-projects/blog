@@ -55,7 +55,7 @@ The repository now uses the parent-child structure in committed content. The rea
 
 Existing child slugs are preserved during migration, including `network-protocols`.
 
-Parent-level operating documents:
+Series operating documents:
 - [`docs/series/computer-architecture.md`](series/computer-architecture.md)
 - [`docs/series/computer-networks.md`](series/computer-networks.md)
 - [`docs/series/database-systems.md`](series/database-systems.md)

@@ -1092,15 +1092,17 @@ Post stubs added during bulk intake are structurally connected through `series`,
 - Soft guidelines (chosen): Documented recommendations without build enforcement. Authors are guided toward graph-friendly authoring without being blocked during early draft stages.
 
 **Series index body link scope:**
-- Allow `[[wikilinks]]` (post links) in index bodies: An author might want to call out specific posts. However, the post list on a child series page is already auto-generated — a manual post link in the index body is redundant, unsupported by the conversion pipeline, and inconsistent with the content model. Rejected.
-- Series links only (chosen): Index bodies may link to related series using `[[series:...]]`. Post links are excluded.
+- Allow `[[wikilinks]]` (post links) in index bodies for graph visibility (updated): Child series indexes may list their posts in order so Obsidian graph view shows post membership and sequence. The site still auto-generates the rendered post list, so these links are an authoring aid rather than the rendering source of truth. Chosen.
+- Series links only: This kept index bodies cleaner, but it prevented graph view from showing ordered post membership at the child-series level. Rejected after authoring workflow review.
 
 ### Decision
 
 - D-83: Series-link syntax — `[[series:<slug>]]` for parent, `[[series:<parent>/<child>]]` for child.
 - D-84: Generic `[[wikilinks]]` resolve to posts only; series references require `[[series:...]]`.
-- D-85: Minimum link expectations are soft guidelines, not enforced validation rules.
-- D-86: Series index bodies allow `[[series:...]]` links only; `[[wikilinks]]` are not permitted in index bodies.
+- D-85: Minimum link expectations are soft guidelines, not enforced validation rules. Posts may carry child-series links plus previous/next post links, and avoid direct parent-series links so graph view keeps the parent → child → post shape.
+- D-86: Series index bodies allow both `[[series:...]]` links and ordered post `[[wikilinks]]` for graph visibility.
+- D-87: Series index aliases and graph tags are generated from `series` and `parent`; they are checked by repository validation rather than manually maintained.
+- D-88: Obsidian graph-visible series links use actual `series_indexes/...` file links. `series:*` remains converter-supported syntax but is not used for graph wiring.
 
 ### Follow-up
 

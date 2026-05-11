@@ -3,7 +3,12 @@ title: "HTTP/2 and HTTP/3"
 series: network-protocols
 order: 4
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/computer-networks/network-protocols|Network Protocols]]
+- 이전 글: [[tls-and-https|TLS and HTTPS]]
 
 ## HTTP/1.1의 한계
 

@@ -3,7 +3,13 @@ title: "05. 기억장치 모듈의 설계"
 series: memory-systems
 order: 5
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/computer-architecture/memory-systems|Memory Systems]]
+- 이전 글: [[ram-and-rom|04. RAM과 ROM]]
+- 다음 글: [[cache-memory|06. 캐시 메모리]]
 
 ## 기억장치 모듈이란
 

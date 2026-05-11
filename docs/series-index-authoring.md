@@ -61,6 +61,10 @@ order: 1
 parent: database-systems
 order: 1
 description: "How relational databases store, index, and retrieve data."
+tags:
+  - graph/child-series
+aliases:
+  - series:database-systems/database-internals
 ```
 
 | Field | Required | Notes |
@@ -68,6 +72,8 @@ description: "How relational databases store, index, and retrieve data."
 | `parent` | No for parent series; Yes for child series | Omit on parent series. Set to the parent series slug on child series. |
 | `order` | No for parent series; Yes for child series | Omit on parent series. Set the child series position within its parent, starting at 1. |
 | `description` | No | One-line summary shown on the homepage and series page |
+| `tags` | Yes, generated | `graph/parent-series` for parent indexes; `graph/child-series` for child indexes. Managed by `pnpm sync:series-graph`. |
+| `aliases` | Yes, generated | Obsidian graph alias derived from `series` and `parent`. Managed by `pnpm sync:series-graph`. |
 
 ---
 
@@ -78,11 +84,11 @@ Do not add these fields to series index documents:
 | Field | Reason |
 |-------|--------|
 | `status` | Series indexes are always rendered; there is no draft state |
-| `aliases` | Concept-specific field |
 
 Clarification:
 - `order` is forbidden on parent series indexes.
 - `order` is required on child series indexes.
+- `aliases` and graph `tags` are generated compatibility metadata, not manually authored taxonomy.
 
 ---
 
@@ -92,6 +98,12 @@ Clarification:
 
 **Path and frontmatter must agree.** The file layout expresses the hierarchy physically, but it does not replace frontmatter. A child index under `src/content/series_indexes/computer-networks/network-protocols.md` must still declare `series: network-protocols` and `parent: computer-networks`.
 
+**Graph metadata is derived.** Run `pnpm sync:series-graph` after adding or moving a series index. Repository validation requires:
+- parent alias: `series:<parent>`
+- child alias: `series:<parent>/<child>`
+- parent tag: `graph/parent-series`
+- child tag: `graph/child-series`
+
 **Child series are explicitly ordered.** Parent pages sort child series by `order` ascending. `title` is only a deterministic fallback when comparing items that otherwise tie.
 
 **Posts attach only to child series.** The `series` field in post frontmatter must exactly match a child series slug, not a parent series slug.
@@ -100,15 +112,16 @@ Clarification:
 
 **Create the parent and child indexes before the first post.** Without them, the child-series route and post breadcrumb context cannot be generated correctly from day one.
 
-**Body links are allowed, but they are not the post list.** Series index bodies may contain explicit series links for graph-friendly navigation:
-- parent series indexes may link to child series
-- child series indexes may link to their parent series
-- sibling child-series links are optional and are not the default repository expectation
-- series index bodies must not become a manual list of post links, because the site generates the post inventory automatically
+**Body links are allowed for graph view.** Series index bodies may contain actual series-index file links and ordered post links for graph-friendly navigation:
+- parent series indexes may link to child series files
+- child series indexes may link to their parent series file
+- child series indexes may include ordered post wikilinks so Obsidian graph view shows membership and sequence
+- the site still auto-generates the real post inventory; index-body links are for authoring visibility rather than page rendering
 
-Recommended explicit link syntax:
-- parent series: `[[series:<parent>]]`
-- child series: `[[series:<parent>/<child>]]`
+Recommended graph link syntax:
+- parent series file: `[[series_indexes/<parent>]]`
+- child series file: `[[series_indexes/<parent>/<child>]]`
+- post sequence inside a child series: `[[post-slug]]` or `[[post-slug|display title]]`
 
 Generic `[[wikilinks]]` remain post-only, and `[[concept:slug]]` remains concept-only.
 

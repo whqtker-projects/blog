@@ -3,7 +3,12 @@ title: "05. DMA를 이용한 I/O"
 series: bus-io-and-interrupts
 order: 5
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/computer-architecture/bus-io-and-interrupts|Bus, I/O, and Interrupts]]
+- 이전 글: [[interrupt-driven-io|04. 인터럽트를 이용한 I/O]]
 
 ## DMA란
 

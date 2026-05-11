@@ -3,7 +3,12 @@ title: "04. 마이크로프로그램의 순서제어"
 series: control-unit
 order: 4
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/computer-architecture/control-unit|Control Unit]]
+- 이전 글: [[microprogramming|03. 마이크로프로그래밍]]
 
 ## 순서제어란
 

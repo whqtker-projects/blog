@@ -8,9 +8,9 @@
 
 | Order | Child series slug | Display name | Current posture |
 |---|---|---|---|
-| 1 | `spring-boot-basics` | 스프링 부트 기초 | 5 idea |
-| 2 | `spring-boot-configuration` | 스프링 부트 설정 | 4 idea |
-| 3 | `spring-boot-testing-and-operations` | 스프링 부트 테스트와 운영 | 5 idea |
+| 1 | `spring-boot-basics` | 스프링 부트 기초 | 5 draft |
+| 2 | `spring-boot-configuration` | 스프링 부트 설정 | 4 draft |
+| 3 | `spring-boot-testing-and-operations` | 스프링 부트 테스트와 운영 | 5 draft |
 
 Current child indexes:
 - `src/content/series_indexes/spring-boot/spring-boot-basics.md`
@@ -20,7 +20,7 @@ Current child indexes:
 ## Backlog Posture
 
 This parent also starts as a backlog-first rollout:
-- every current post in the parent is `status: idea`
+- every current post in the parent is `status: draft`
 - child ordering is explicit across startup basics, configuration behavior, and test/operations concerns
 - the parent boundary intentionally excludes IoC/DI, bean lifecycle internals, and framework-level MVC dispatch mechanics
 

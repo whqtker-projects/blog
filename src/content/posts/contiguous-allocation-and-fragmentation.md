@@ -3,7 +3,13 @@ title: "연속 할당과 단편화"
 series: memory-management
 order: 2
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/operating-systems/memory-management|메모리 관리]]
+- 이전 글: [[address-binding-and-memory-layout|주소 바인딩과 메모리 배치]]
+- 다음 글: [[paging-and-segmentation|페이징과 세그멘테이션]]
 
 ## 연속 할당이란
 

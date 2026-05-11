@@ -3,7 +3,12 @@ title: "TCP and Reliable Transmission"
 series: transport-and-reliability
 order: 1
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/computer-networks/transport-and-reliability|Transport and Reliability]]
+- 다음 글: [[tcp-flow-control|TCP Flow Control]]
 
 ## What TCP Is
 - transport-layer protocol for reliable, ordered byte delivery between two endpoints

@@ -3,7 +3,12 @@ title: "Subqueries and Common Table Expressions"
 series: relational-queries-and-joins
 order: 4
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/database-systems/relational-queries-and-joins|Relational Queries and Joins]]
+- 이전 글: [[grouping-aggregation-and-having|Grouping, Aggregation, and HAVING]]
 
 ## 서브쿼리란
 

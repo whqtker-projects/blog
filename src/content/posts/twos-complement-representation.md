@@ -3,7 +3,13 @@ title: "03. 2의 보수 표현"
 series: computer-arithmetic
 order: 3
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/computer-architecture/computer-arithmetic|Computer Arithmetic]]
+- 이전 글: [[integer-representation|02. 정수의 표현 방식]]
+- 다음 글: [[sign-extension|04. 부호 확장]]
 
 ## 2의 보수란
 

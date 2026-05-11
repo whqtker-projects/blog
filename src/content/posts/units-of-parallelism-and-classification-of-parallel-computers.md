@@ -3,7 +3,13 @@ title: "02. 병렬처리의 단위와 병렬컴퓨터의 분류"
 series: parallel-and-high-performance-architecture
 order: 2
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/computer-architecture/parallel-and-high-performance-architecture|Parallel and High-Performance Architecture]]
+- 이전 글: [[concept-and-need-for-parallel-processing|01. 병렬처리의 개념과 필요성]]
+- 다음 글: [[multiprocessor-system-architecture|03. 다중프로세서시스템 구조]]
 
 ## 병렬처리의 단위
 

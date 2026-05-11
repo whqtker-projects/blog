@@ -3,7 +3,13 @@ title: "TLS and HTTPS"
 series: network-protocols
 order: 3
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/computer-networks/network-protocols|Network Protocols]]
+- 이전 글: [[what-is-http|What Is HTTP?]]
+- 다음 글: [[http2-and-http3|HTTP/2 and HTTP/3]]
 
 ## TLS란
 

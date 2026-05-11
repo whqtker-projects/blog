@@ -3,7 +3,13 @@ title: "07. 캐시 사상 방식"
 series: memory-systems
 order: 7
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/computer-architecture/memory-systems|Memory Systems]]
+- 이전 글: [[cache-memory|06. 캐시 메모리]]
+- 다음 글: [[cache-replacement-and-write-policies|08. 캐시 교체 알고리즘과 쓰기 정책]]
 
 ## 캐시 사상이란
 

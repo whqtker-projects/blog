@@ -3,7 +3,12 @@ title: "교착 상태와 자원 할당"
 series: scheduling-and-synchronization
 order: 5
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/operating-systems/scheduling-and-synchronization|스케줄링과 동기화]]
+- 이전 글: [[semaphores-and-monitors|세마포어와 모니터]]
 
 ## 교착 상태란
 

@@ -8,7 +8,7 @@
 
 | Order | Child series | Current posture |
 |---|---|---|
-| 1 | `data-structures` | 5 idea |
+| 1 | `data-structures` | 5 draft |
 
 Current child index:
 - `src/content/series_indexes/data-structures-and-algorithms/data-structures.md`
@@ -16,7 +16,7 @@ Current child index:
 ## Backlog Posture
 
 This parent is still in the early backlog stage:
-- `data-structures` has a contiguous five-post idea batch
+- `data-structures` has a contiguous five-post draft batch
 - no post in this parent is published yet
 - the parent exists to make later expansion reviewable without forcing a flat mixed fundamentals list
 

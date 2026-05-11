@@ -12,6 +12,7 @@
  *   7. Fail when a post omits status, because committed posts must set status explicitly
  *   8. Fail when a post uses a status outside the simplified vocabulary
  *   9. Numeric post title prefixes, when present, must match post order
+ *   10. Series graph aliases and graph tags match derived parent/child metadata
  */
 
 import { readFileSync, readdirSync } from 'node:fs';
@@ -26,9 +27,26 @@ export function parseFrontmatter(content) {
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!match) return {};
   const fm = {};
-  for (const line of match[1].split(/\r?\n/)) {
+  const lines = match[1].split(/\r?\n/);
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i];
     const m = line.match(/^(\w+):\s*(.+)/);
-    if (m) fm[m[1]] = m[2].replace(/^["']|["']$/g, '').trim();
+    if (m) {
+      fm[m[1]] = m[2].replace(/^["']|["']$/g, '').trim();
+      continue;
+    }
+
+    const list = line.match(/^(\w+):\s*$/);
+    if (!list) continue;
+
+    const values = [];
+    while (i + 1 < lines.length) {
+      const item = lines[i + 1].match(/^\s+-\s*(.+)$/);
+      if (!item) break;
+      values.push(item[1].replace(/^["']|["']$/g, '').trim());
+      i += 1;
+    }
+    fm[list[1]] = values;
   }
   if (fm.order !== undefined) fm.order = Number(fm.order);
   return fm;
@@ -66,6 +84,14 @@ function splitIndexPath(index) {
 export function parseNumericTitlePrefix(title) {
   const match = title.match(/^(\d+)\.\s+/);
   return match ? Number(match[1]) : null;
+}
+
+function expectedSeriesAlias(index) {
+  return index.parent ? `series:${index.parent}/${index.series}` : `series:${index.series}`;
+}
+
+function expectedSeriesGraphTag(index) {
+  return index.parent ? 'graph/child-series' : 'graph/parent-series';
 }
 
 export function validateContent({ posts, indexes }) {
@@ -269,6 +295,26 @@ export function validateContent({ posts, indexes }) {
       if (prefixOrder !== post.order) {
         fail(
           `${post.file}: title prefix '${String(prefixOrder).padStart(2, '0')}' does not match explicit order ${post.order}`
+        );
+      }
+    }
+  });
+
+  runCheck('Check 10: series graph aliases and tags match derived metadata', (fail) => {
+    for (const idx of indexes) {
+      if (!idx.series) continue;
+
+      const expectedAlias = expectedSeriesAlias(idx);
+      if (!Array.isArray(idx.aliases) || idx.aliases.length !== 1 || idx.aliases[0] !== expectedAlias) {
+        fail(
+          `${idx.file}: aliases must be exactly ['${expectedAlias}']; run pnpm sync:series-graph`
+        );
+      }
+
+      const expectedTag = expectedSeriesGraphTag(idx);
+      if (!Array.isArray(idx.tags) || idx.tags.length !== 1 || idx.tags[0] !== expectedTag) {
+        fail(
+          `${idx.file}: tags must be exactly ['${expectedTag}']; run pnpm sync:series-graph`
         );
       }
     }

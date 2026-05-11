@@ -3,7 +3,13 @@ title: "Linked List Structure"
 series: data-structures
 order: 2
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/data-structures-and-algorithms/data-structures|Data Structures]]
+- 이전 글: [[what-is-an-array|What Is an Array?]]
+- 다음 글: [[stack-and-queue|Stack and Queue Basics]]
 
 ## 연결 리스트란
 

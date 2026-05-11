@@ -94,8 +94,9 @@ Domain is not stored as a frontmatter field. It is inferred from `series` via th
 | Field | Type | Description |
 |---|---|---|
 | `description` | string | Optional summary used for metadata and previews when present. |
+| `tags` | string[] | Optional metadata tags. Current repository-managed graph tags use `graph/post` for posts. |
 
-Optional fields other than `description` (for example `tags`) are not yet defined and must not be added until decided during Astro implementation (Issue #27 sub-issues).
+Other optional fields must not be added until they have a documented schema role.
 
 ---
 

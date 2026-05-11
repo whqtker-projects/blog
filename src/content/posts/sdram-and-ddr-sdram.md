@@ -3,7 +3,13 @@ title: "10. SDRAM과 DDR SDRAM"
 series: memory-systems
 order: 10
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/computer-architecture/memory-systems|Memory Systems]]
+- 이전 글: [[multi-level-cache|09. 다중 캐시 구조]]
+- 다음 글: [[next-generation-nonvolatile-memory|11. 차세대 비휘발성 기억장치]]
 
 ## SDRAM이란
 

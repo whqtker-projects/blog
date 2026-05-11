@@ -42,10 +42,12 @@ Every post must include the following content areas. Titles and ordering are dec
 
 - Generic `[[wikilinks]]` are reserved for post links.
 - Use `[[concept:slug]]` for concept links.
-- Use `[[series:<parent>]]` for parent series pages.
-- Use `[[series:<parent>/<child>]]` for child series pages.
-- Graph-oriented series links are for parent-series and child-series index bodies, not for post-stub requirements.
-- Idea-stage post stubs remain valid with frontmatter only or with a short minimal note.
+- Use `[[series_indexes/<parent>/<child>]]` for child series graph links.
+- `[[series:<parent>]]` syntax remains converter-supported, but actual file links are preferred inside the Obsidian vault so graph nodes resolve and color correctly.
+- Draft or idea-stage posts may include a short graph block with their child series and adjacent post links.
+- Posts should not link directly to parent series if the graph should keep parent nodes connected only to child-series nodes.
+- `order` remains canonical even when previous/next post wikilinks are present.
+- A leading `관련 링크:` graph block is for Obsidian only. Astro removes that block during Markdown rendering, so it must not be used for reader-facing web navigation.
 
 Minimal stub-safe pattern:
 

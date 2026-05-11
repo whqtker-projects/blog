@@ -3,7 +3,13 @@ title: "스케줄링 알고리즘과 트레이드오프"
 series: scheduling-and-synchronization
 order: 2
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/operating-systems/scheduling-and-synchronization|스케줄링과 동기화]]
+- 이전 글: [[cpu-scheduling-basics|CPU 스케줄링 기초]]
+- 다음 글: [[process-synchronization|프로세스 동기화]]
 
 ## 스케줄링 성능 지표
 

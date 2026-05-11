@@ -3,7 +3,12 @@ title: "스프링 부트의 내장 서버"
 series: spring-boot-basics
 order: 5
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/spring-boot/spring-boot-basics|스프링 부트 기초]]
+- 이전 글: [[spring-boot-starters|스프링 부트 스타터]]
 
 ## 내장 서버란
 

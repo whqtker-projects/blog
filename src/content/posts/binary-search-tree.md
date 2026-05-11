@@ -3,7 +3,12 @@ title: "Binary Search Tree"
 series: data-structures
 order: 5
 status: draft
+tags:
+  - graph/post
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/data-structures-and-algorithms/data-structures|Data Structures]]
+- 이전 글: [[hash-table|Hash Table Basics]]
 
 ## 이진 탐색 트리란
 

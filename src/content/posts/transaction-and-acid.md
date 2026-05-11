@@ -3,6 +3,8 @@ title: "Transactions and ACID"
 series: database-internals
 order: 3
 status: published
+tags:
+  - graph/post
 ---
 
 A transaction is a group of database operations that should succeed or fail as one unit. When an application transfers money, places an order, or updates several related tables, it needs the database to treat that work as a single logical action rather than as unrelated statements. ACID is the contract that explains what the database must protect while that transaction runs.
