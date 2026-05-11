@@ -132,7 +132,7 @@ new_blog/
 │   ├── content/
 │   │   ├── concepts/            # Converted Markdown for concept reference pages
 │   │   ├── posts/               # Converted Markdown for real publishable posts
-│   │   └── series_indexes/      # One index document per series (manually authored)
+│   │   └── series_indexes/      # Parent indexes at root; child indexes nested under parent dirs
 │   ├── content.config.ts        # Content collection schema
 │   ├── layouts/
 │   │   ├── BaseLayout.astro     # HTML shell (head, body)
@@ -179,7 +179,13 @@ status: idea | draft | published
 
 Concepts are loaded separately from `src/content/concepts/`. They require `title` and may include `aliases`; they do not use `series`, `order`, or `status`.
 
-Series index documents are loaded from `src/content/series_indexes/`. There must be exactly one per parent or child series slug. They are authored manually (not converted from Obsidian).
+Series index documents are loaded recursively from `src/content/series_indexes/` via `**/*.md`. There must be exactly one per parent or child series slug. They are authored manually (not converted from Obsidian).
+
+Physical layout contract:
+- Parent index: `src/content/series_indexes/<parent-slug>.md`
+- Child index: `src/content/series_indexes/<parent-slug>/<child-slug>.md`
+
+This directory structure mirrors the existing parent-child model for authoring clarity. Route behavior is unchanged: frontmatter still defines the series slug and parent relationship, and repository validation enforces that the file path matches that metadata.
 
 **Required fields:**
 ```yaml
@@ -190,10 +196,19 @@ series: string   # slug for this parent or child series
 **Optional field:**
 ```yaml
 parent: string        # set on child series only; omitted on parent series
+order: number         # set on child series only; omitted on parent series
 description: string   # one-line summary shown on the homepage and series page
 ```
 
-Series index documents do not use `order`, `status`, or any post-specific fields.
+Repository contract:
+- Parent series omit `order`.
+- Child series require `order` and are sorted on parent pages by `order ASC`, with `title ASC` only as a fallback.
+
+Post ordering contract:
+- Posts continue to require explicit `order`.
+- Child pages and prev/next navigation use `order ASC`, with `title ASC` only as a fallback.
+- Numeric title prefixes such as `01. ...` are optional display aids only. They are rendered as-is when present, and validation requires them to match `order`.
+- Post pages do not render a separate breadcrumb `#order` cue.
 
 ---
 

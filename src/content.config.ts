@@ -12,6 +12,7 @@ const posts = defineCollection({
     status: z.enum(['idea', 'draft', 'published']),
     // Optional field (D-51); used for meta description and OG tags
     description: z.string().optional(),
+    tags: z.array(z.string()).optional(),
   }),
 });
 
@@ -29,7 +30,11 @@ const series_indexes = defineCollection({
     title: z.string(),
     series: z.string(),
     parent: z.string().optional(),
+    // Parent series omit this; child series require it by repository validation.
+    order: z.number().optional(),
     description: z.string().optional(),
+    aliases: z.array(z.string()).optional(),
+    tags: z.array(z.string()).optional(),
   }),
 });
 

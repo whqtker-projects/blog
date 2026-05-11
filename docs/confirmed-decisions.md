@@ -8,7 +8,7 @@ This document is the stable reference for decisions that have been explicitly ag
 - When a new decision is confirmed, add it here and remove it from `open-questions.md`.
 - For the full decision record with context and rationale, see `decision-log.md`.
 
-**Last updated:** 2026-05-09 (D-57–D-67 added: hierarchical series architecture, IA contract, and Computer Networks child-series breakdown)
+**Last updated:** 2026-05-09 (D-83–D-86 added: graph-link policy and series-link syntax)
 
 ---
 
@@ -155,7 +155,7 @@ This document is the stable reference for decisions that have been explicitly ag
 | D-35 | Astro project is initialized at the repository root. Planning docs (`docs/`) and Astro source (`src/`) coexist at the same level. |
 | D-36 | Post URL structure: `/posts/[slug]`. Slug is derived from the Markdown file name. |
 | D-37 | Posts are loaded from `src/content/posts/` via Astro glob loader. Content collection name: `posts`. |
-| D-38 | Image copying from vault attachments to `public/images/` is manual. No `--attachments` auto-copy flag is added to the conversion script. Rationale: vault path is machine-specific; copying is a deliberate step with a reviewable git diff; `--strict` image validation catches missing images before they produce broken HTML. |
+| D-38 | Obsidian-managed pasted images live under `src/content/attachments/`. The converter rewrites `![[image.ext]]` to a relative `../attachments/image.ext` Markdown image path, and Astro processes that content-adjacent asset during build. Existing legacy `public/images/` assets may remain when already referenced by published content. |
 
 ---
 
@@ -208,6 +208,48 @@ This document is the stable reference for decisions that have been explicitly ag
 | D-65 | The `computer-networks` parent direction is currently split into three child series: `network-protocols`, `transport-and-reliability`, and `naming-and-routing`. |
 | D-66 | During the first backlog rebuild under `computer-networks`, the existing `network-protocols` child slug is retained and narrowed to the HTTP/TLS/HTTP2+/application-protocol portion of the backlog. Transport-focused and naming/routing-focused backlog items move into sibling child series. |
 | D-67 | The original 12-series flat inventory in D-21 remains the historical baseline, but the active child-series inventory may expand when a parent direction is rebuilt into multiple child series. |
+
+---
+
+## Child-Series Ordering and Post Title-Prefix Policy
+
+| # | Decision |
+|---|---|
+| D-68 | Numeric post title prefixes (e.g. `01. TCP란 무엇인가`) are globally optional. No series requires them; no series forbids them. Authors may add them as a display aid at their discretion. |
+| D-69 | When a post title includes a numeric prefix in the source file, the prefix is rendered as-is in the public HTML. No stripping or transformation is applied at build time. |
+| D-70 | Child-series `order` is introduced as an immediately required field for all existing child series. Every child series index must declare an explicit `order` value; missing `order` is a repository validation error. |
+| D-71 | The first rollout of child-series `order` covers all parent series simultaneously, not a staged per-series migration. All child series indexes are updated in the same phase. |
+| D-75 | The `computer-networks` parent direction is refined into four child series: `network-foundations`, `transport-and-reliability`, `internet-addressing-and-routing`, and `network-protocols`. This adds an explicit introductory layer and separates internet-layer addressing/routing from application-facing protocols. |
+| D-76 | Within the refined `computer-networks` structure, `network-protocols` covers DNS, HTTP, TLS, and later HTTP versions; `internet-addressing-and-routing` covers IP addressing, subnetting, ARP, ICMP, NAT, fragmentation, and routing protocols. |
+| D-77 | The `database-systems` parent direction is refined into four child series: `database-foundations`, `data-modeling-and-design`, `relational-queries-and-joins`, and `database-internals`. This adds explicit pre-internals layers for database vocabulary, relational design, and query semantics. |
+| D-78 | `database-internals` remains the stable published anchor under `database-systems`. Indexes, B+Tree, WAL, optimizer behavior, join algorithms, and deeper engine internals stay there rather than being moved into the new sibling child series. |
+| D-79 | The `operating-systems` parent direction is refined into five child series: `operating-systems-overview`, `processes-and-threads`, `scheduling-and-synchronization`, `memory-management`, and `file-systems-and-storage`. This turns the previously flat confirmed direction into an explicit textbook-style learning arc. |
+| D-80 | Within the refined `operating-systems` structure, deadlock remains inside `scheduling-and-synchronization`, and file-system interface, implementation, and storage-device coordination remain grouped inside `file-systems-and-storage`. |
+| D-81 | Spring content is split into two distinct parent directions under the backend/systems domain: `spring-framework` and `spring-boot`. `spring-framework` uses the child series `spring-core`, `spring-aop-and-transactions`, and `spring-web-mvc`; `spring-boot` uses `spring-boot-basics`, `spring-boot-configuration`, and `spring-boot-testing-and-operations`. |
+| D-82 | Topic boundary for the Spring rollout: `spring-framework` owns IoC/DI, bean container/lifecycle/scope, configuration classes/component scanning, AOP/proxies, transaction abstraction, and Spring MVC request flow. `spring-boot` owns Boot purpose, startup flow, starters, embedded server behavior, auto-configuration, externalized configuration, profiles, `application.yml`, `@ConfigurationProperties`, Boot testing patterns, Actuator, logging, metrics, and operational tooling. |
+
+---
+
+## Reader-Facing Numbering Presentation
+
+| # | Decision |
+|---|---|
+| D-72 | Parent series pages list child series sorted by `order`, but display no visible numeric label. Readers see only the child series title and optional description; the sort order is structural, not presented as a number. |
+| D-73 | Child series pages render post titles exactly as stored in source. When a post title includes a numeric prefix (e.g. `01. TCP란 무엇인가`), that prefix is shown to readers unchanged. No normalization or stripping is applied in the post listing. |
+| D-74 | Post pages remove the `#order` breadcrumb cue. When a post title already carries a numeric prefix, the `#order` indicator in the breadcrumb is redundant and is omitted. Breadcrumbs show the series path and post title only. |
+
+---
+
+## Graph-Link Policy and Series-Link Syntax
+
+| # | Decision |
+|---|---|
+| D-83 | The explicit syntax for series links is `[[series:<slug>]]` for parent series and `[[series:<parent>/<child>]]` for child series. This is a single namespaced form; there are no separate `[[parent:...]]` or `[[child:...]]` prefixes. |
+| D-84 | Generic `[[wikilinks]]` resolve to posts only. Linking to a series requires `[[series:...]]` syntax. Using a plain wikilink to reference a series index is not permitted. |
+| D-85 | Minimum internal-link expectations are soft guidelines, not validation rules. Recommended: posts may include links to their child series and adjacent posts; child series indexes link to their parent; parent series indexes link to their child series. Posts avoid direct parent-series links so the graph keeps the parent → child → post shape. Missing links are not a build or validation error. |
+| D-86 | Series index bodies may include both `[[series:...]]` links and ordered post `[[wikilinks]]` for Obsidian graph visibility. These links are an authoring aid only; the site still treats frontmatter and generated listings as the rendering source of truth. |
+| D-87 | Series index `aliases` and graph `tags` are generated compatibility metadata derived from `series` and `parent`. Authors run `pnpm sync:series-graph`; `pnpm check:content` rejects stale aliases or graph tags. |
+| D-88 | Obsidian graph wiring uses actual series index file links such as `[[series_indexes/<parent>]]` and `[[series_indexes/<parent>/<child>]]`. The `series:*` syntax remains converter-supported, but graph-visible content uses real file links so nodes resolve and color groups apply correctly. |
 
 ---
 

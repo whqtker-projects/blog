@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, writeFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, writeFileSync, rmSync, mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import {
@@ -13,6 +13,8 @@ import {
   convertFile,
   convertConceptLinks,
   buildConceptAliasMap,
+  convertSeriesLinks,
+  buildSeriesTargetSet,
 } from './obsidian-to-astro.mjs';
 
 // ── validateFileName ─────────────────────────────────────────────────────────
@@ -181,22 +183,30 @@ See [[nonexistent-post]].`;
 
 test('convertImageWikilinks: ![[image.png]]', () => {
   const result = convertImageWikilinks('See ![[diagram.png]] below.');
-  assert.equal(result, 'See ![diagram.png](/images/diagram.png) below.');
+  assert.equal(result, 'See ![diagram.png](../attachments/diagram.png) below.');
 });
 
 test('convertImageWikilinks: ![[image.png|alt text]]', () => {
   const result = convertImageWikilinks('![[btree-structure.png|B+Tree structure]]');
-  assert.equal(result, '![B+Tree structure](/images/btree-structure.png)');
+  assert.equal(result, '![B+Tree structure](../attachments/btree-structure.png)');
+});
+
+test('convertImageWikilinks: encodes pasted image filenames with spaces', () => {
+  const result = convertImageWikilinks('![[Pasted image 20260511171546.png|IoC 컨테이너]]');
+  assert.equal(
+    result,
+    '![IoC 컨테이너](../attachments/Pasted%20image%2020260511171546.png)'
+  );
 });
 
 test('convertImageWikilinks: multiple images', () => {
   const result = convertImageWikilinks('![[a.png]] and ![[b.png|B image]]');
-  assert.equal(result, '![a.png](/images/a.png) and ![B image](/images/b.png)');
+  assert.equal(result, '![a.png](../attachments/a.png) and ![B image](../attachments/b.png)');
 });
 
 test('convertImageWikilinks: does not affect regular wikilinks', () => {
   const result = convertImageWikilinks('See [[database-index]] and ![[diagram.png]].');
-  assert.equal(result, 'See [[database-index]] and ![diagram.png](/images/diagram.png).');
+  assert.equal(result, 'See [[database-index]] and ![diagram.png](../attachments/diagram.png).');
 });
 
 test('convertImageWikilinks: no image wikilinks passes content through unchanged', () => {
@@ -214,7 +224,7 @@ order: 1
 See ![[btree.png|B+Tree]] for the structure.`;
 
   const { content } = convertFile(input, 'test.md');
-  assert.ok(content.includes('![B+Tree](/images/btree.png)'));
+  assert.ok(content.includes('![B+Tree](../attachments/btree.png)'));
   assert.ok(!content.includes('![[btree.png'));
 });
 
@@ -229,7 +239,7 @@ order: 1
 ![[diagram.png]] and [[database-index]].`;
 
   const { content } = convertFile(input, 'test.md');
-  assert.ok(content.includes('![diagram.png](/images/diagram.png)'));
+  assert.ok(content.includes('![diagram.png](../attachments/diagram.png)'));
   assert.ok(content.includes('[database-index](/posts/database-index)'));
 });
 
@@ -288,6 +298,24 @@ order: 1
 
 ![[present.png]]`;
 
+    const { imageWarnings } = convertFile(input, 'test.md', null, imagesDir);
+    assert.deepEqual(imageWarnings, []);
+  } finally {
+    rmSync(imagesDir, { recursive: true });
+  }
+});
+
+test('convertFile: attachments image produces no imageWarning', () => {
+  const imagesDir = mkdtempSync(join(tmpdir(), 'test-images-'));
+  try {
+    writeFileSync(join(imagesDir, 'present.png'), '');
+    const input = `---
+title: Test
+series: database-internals
+order: 1
+---
+
+![[present.png]]`;
     const { imageWarnings } = convertFile(input, 'test.md', null, imagesDir);
     assert.deepEqual(imageWarnings, []);
   } finally {
@@ -405,6 +433,49 @@ test('convertConceptLinks: no concept links passes content through unchanged', (
   assert.deepEqual(warnings, []);
 });
 
+// ── convertSeriesLinks ───────────────────────────────────────────────────────
+
+test('convertSeriesLinks: [[series:parent]]', () => {
+  const { result } = convertSeriesLinks('See [[series:operating-systems]].');
+  assert.equal(result, 'See [operating-systems](/series/operating-systems).');
+});
+
+test('convertSeriesLinks: [[series:parent|alias]]', () => {
+  const { result } = convertSeriesLinks('See [[series:operating-systems|운영체제]].');
+  assert.equal(result, 'See [운영체제](/series/operating-systems).');
+});
+
+test('convertSeriesLinks: [[series:parent/child|alias]]', () => {
+  const { result } = convertSeriesLinks(
+    'See [[series:operating-systems/processes-and-threads|프로세스와 스레드]].'
+  );
+  assert.equal(
+    result,
+    'See [프로세스와 스레드](/series/operating-systems/processes-and-threads).'
+  );
+});
+
+test('convertSeriesLinks: warns on unresolved series target when knownSeriesTargets provided', () => {
+  const known = new Set(['operating-systems', 'operating-systems/processes-and-threads']);
+  const { warnings } = convertSeriesLinks('See [[series:operating-systems/missing-child]].', known);
+  assert.deepEqual(warnings, ['operating-systems/missing-child']);
+});
+
+test('convertSeriesLinks: no warning for resolved series target', () => {
+  const known = new Set(['operating-systems', 'operating-systems/processes-and-threads']);
+  const { warnings } = convertSeriesLinks(
+    'See [[series:operating-systems/processes-and-threads]].', known
+  );
+  assert.deepEqual(warnings, []);
+});
+
+test('convertSeriesLinks: does not affect normal wikilinks', () => {
+  const input = 'See [[database-index]] and [[series:operating-systems]].';
+  const { result } = convertSeriesLinks(input);
+  assert.ok(result.includes('[[database-index]]'));
+  assert.ok(result.includes('[operating-systems](/series/operating-systems)'));
+});
+
 // ── buildConceptAliasMap ─────────────────────────────────────────────────────
 
 test('buildConceptAliasMap: returns empty map for nonexistent dir', () => {
@@ -445,6 +516,22 @@ test('buildConceptAliasMap: alias lookup is case-insensitive', () => {
   }
 });
 
+test('buildSeriesTargetSet: collects parent and child targets from series indexes', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'test-series-indexes-'));
+  try {
+    writeFileSync(join(dir, 'operating-systems.md'), '---\ntitle: 운영체제\nseries: operating-systems\n---\n');
+    writeFileSync(join(dir, 'ignore.txt'), 'not markdown');
+    const childDir = join(dir, 'operating-systems');
+    mkdirSync(childDir);
+    writeFileSync(join(childDir, 'processes-and-threads.md'), '---\ntitle: 프로세스와 스레드\nseries: processes-and-threads\nparent: operating-systems\norder: 2\n---\n');
+    const targets = buildSeriesTargetSet(dir);
+    assert.ok(targets.has('operating-systems'));
+    assert.ok(targets.has('operating-systems/processes-and-threads'));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 // ── concept links in convertFile ─────────────────────────────────────────────
 
 test('convertFile: concept links in body are converted', () => {
@@ -473,6 +560,55 @@ order: 1
   const { content } = convertFile(input, 'test.md');
   assert.ok(content.includes('[tcp](/concepts/tcp)'));
   assert.ok(content.includes('[what-is-http](/posts/what-is-http)'));
+});
+
+test('convertFile: series links convert before post wikilinks', () => {
+  const input = `---
+title: Test
+series: network-protocols
+order: 1
+---
+
+[[series:computer-networks/network-protocols|네트워크 프로토콜]] and [[what-is-http]].`;
+
+  const knownPosts = new Set(['what-is-http']);
+  const knownSeries = new Set(['computer-networks/network-protocols']);
+  const { content, seriesWarnings, warnings } = convertFile(
+    input,
+    'test.md',
+    knownPosts,
+    null,
+    null,
+    null,
+    knownSeries,
+  );
+
+  assert.ok(content.includes('[네트워크 프로토콜](/series/computer-networks/network-protocols)'));
+  assert.ok(content.includes('[what-is-http](/posts/what-is-http)'));
+  assert.deepEqual(seriesWarnings, []);
+  assert.deepEqual(warnings, []);
+});
+
+test('convertFile: returns seriesWarnings for unresolved series links', () => {
+  const input = `---
+title: Test
+series: network-protocols
+order: 1
+---
+
+See [[series:computer-networks/missing-child]].`;
+
+  const knownSeries = new Set(['computer-networks', 'computer-networks/network-protocols']);
+  const { seriesWarnings } = convertFile(
+    input,
+    'test.md',
+    null,
+    null,
+    null,
+    null,
+    knownSeries,
+  );
+  assert.deepEqual(seriesWarnings, ['computer-networks/missing-child']);
 });
 
 test('convertFile: returns conceptWarnings for unresolved concept links', () => {

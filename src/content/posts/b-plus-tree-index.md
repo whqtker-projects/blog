@@ -3,6 +3,8 @@ title: "B+Tree Index Structure"
 series: database-internals
 order: 2
 status: published
+tags:
+  - graph/post
 ---
 
 A B+Tree is the data structure that most relational databases use to implement indexes. If you have read [What Is a Database Index?](/posts/what-is-a-database-index), you already know why indexes exist. This post explains how the B+Tree makes them fast.

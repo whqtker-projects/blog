@@ -794,6 +794,330 @@ Once the repository adopted a real parent-child hierarchy, the old `network-prot
 
 ---
 
+## DL-017 — Child-series ordering and post title-prefix policy (#161)
+
+**Date:** 2026-05-09
+**Status:** confirmed
+
+### Context
+
+Child series currently have no explicit `order` field — `src/utils/series-hierarchy.ts` sorts them by `title`. Posts already carry `order`. Before adding an `order` field to child series and deciding whether post titles may include numeric prefixes (e.g. `01. TCP란 무엇인가`), four policy edges needed explicit answers: prefix scope, rendering behavior, migration approach for child-series `order`, and rollout breadth.
+
+### Alternatives considered
+
+**Post title prefix scope:**
+- Selectively required for some series (e.g. computer-architecture only): Inconsistency across series; introduces per-series authoring rules that are harder to document and enforce. Rejected.
+- Eventually required everywhere: Forces a global convention that may not suit all series styles. Rejected.
+- Globally optional (chosen): Authors choose per series whether prefixes add value. No enforcement added to validation; `order` remains the structural source of truth regardless of prefix presence.
+
+**Rendering behavior:**
+- Strip prefixes at build time: Keeps source readable while hiding ordinal numbers from readers. Adds a string-processing step to the build and requires a stable prefix format convention to parse reliably. Rejected.
+- Render as-is (chosen): No build-time transformation needed. What is in the source file title is what readers see. Simpler build pipeline; authors are responsible for prefix presentation.
+
+**Child-series `order` migration approach:**
+- Staged migration (optional first, then required): Lower immediate migration cost, but prolongs a period where some child series have `order` and others do not, making sort behavior inconsistent. Rejected.
+- Immediately required for all (chosen): One-time update across all child series indexes; consistent validation from day one; no ambiguous mixed state.
+
+**Rollout breadth:**
+- computer-architecture only as pilot: Allows verification before touching other series. Rejected — child-series count is small enough that simultaneous update is low risk and avoids a second migration pass.
+- All parent series simultaneously (chosen): Updates all child series indexes in one phase; validation catches any missing `order` fields immediately.
+
+### Decision
+
+- D-68: Numeric post title prefixes are globally optional. No validation enforces or forbids them.
+- D-69: Prefixes render as-is in public HTML; no stripping at build time.
+- D-70: Child-series `order` is immediately required for all existing child series; missing `order` is a validation error.
+- D-71: First rollout covers all parent series simultaneously.
+
+### Follow-up
+
+- Add `order: z.number()` to the `series_indexes` schema in `src/content.config.ts`.
+- Update `src/utils/series-hierarchy.ts` to sort child series by `order` instead of `title`.
+- Update `scripts/check-content.mjs` to validate child-series `order` presence and uniqueness per parent.
+- Add `order` to all existing child series index files under `src/content/series_indexes/`.
+- Update `docs/series-index-authoring.md` and `docs/post-metadata.md` to document the prefix optionality and child-series `order` requirement.
+
+### References
+
+- `confirmed-decisions.md`: D-68 through D-71
+- Issue #161 (closed after this entry)
+
+---
+
+## DL-018 — Reader-facing numbering presentation policy (#169)
+
+**Date:** 2026-05-09
+**Status:** confirmed
+
+### Context
+
+After the hierarchy and ordering rollout, `order` drives both child-series and post sort order. The remaining open question was how that structural ordering should surface to readers. `computer-architecture` already has numeric post title prefixes; `PostLayout.astro` renders `#order` in the breadcrumb. Three distinct presentation surfaces needed explicit policy: the parent page child-series list, the child page post title list, and the post page breadcrumb.
+
+### Alternatives considered
+
+**Parent page child-series numbering:**
+- Show `1. 2. 3.` labels alongside child series titles: Makes the ordering visible at a glance, but adds decoration that may feel mechanical and clutters the navigation layer whose purpose is discovery, not enumeration. Rejected.
+- No visible numbering, sort only (chosen): Readers see a clean title-and-description list in the correct order. The structural `order` field is the source of truth without surfacing as a displayed number.
+
+**Child page post title rendering:**
+- Strip numeric prefixes from the listing view, keep them on the post page title: Reduces visual noise in the listing, but creates an inconsistency between the list view and the post heading the reader sees after clicking. Rejected.
+- Render as-is (chosen): What is in the source is what appears in the list. Consistent with D-69. Authors who add `01.` prefixes see them displayed; those who omit them see no prefix.
+
+**Post page breadcrumb `#order`:**
+- Keep `#order` alongside prefix: Two numbering cues on the same page. The breadcrumb shows `#1` and the heading shows `01.` — redundant and visually noisy. Rejected.
+- Remove `#order` (chosen): When a post title already carries a numeric prefix, the breadcrumb shows only the series path and post title. No ordinal indicator in the breadcrumb.
+
+### Decision
+
+- D-72: Parent pages show child series sorted by `order`, no visible numeric label.
+- D-73: Child pages render post titles exactly as in source; no stripping.
+- D-74: Post page breadcrumbs omit `#order`; breadcrumb shows series path and title only.
+
+### Follow-up
+
+- Remove `#{order}` from `src/layouts/PostLayout.astro` breadcrumb template.
+- Verify `src/pages/series/[parent].astro` does not add numbering to child series list items (currently does not — no change needed).
+- Update `docs/reading-ui-direction.md` if it references breadcrumb numbering.
+
+### References
+
+- `confirmed-decisions.md`: D-72 through D-74
+- Issue #169 (closed after this entry)
+- `src/layouts/PostLayout.astro` — breadcrumb line to remove
+
+---
+
+## DL-019 — Refine the `computer-networks` parent around a university-style course flow
+
+**Date:** 2026-05-09
+**Status:** confirmed
+
+### Context
+
+After the first `computer-networks` split, the parent was more coherent than the original flat `network-protocols` backlog, but inspection still showed a strong backend/web bias. The committed child series were:
+- `network-protocols` for HTTP/TLS/HTTP2+/application protocols
+- `transport-and-reliability` for TCP/UDP/QUIC
+- `naming-and-routing` for DNS and IP/routing
+
+That structure worked for the initial migration, but a university-style networking outline made two gaps obvious:
+- there was no explicit foundations child series for overview, layering, encapsulation, and basic networking technology
+- `naming-and-routing` was too broad for the internet-layer topics that should eventually include subnetting, ARP, ICMP, NAT, fragmentation, and routing protocols
+
+The refinement needed to stay repository-aware. Existing `draft` work such as `what-is-http.md` and `tcp-connection-and-reliability.md` should not be discarded or buried under a textbook-perfect redesign.
+
+### Alternatives considered
+
+**Keep the current three-child breakdown unchanged:**
+- Lowest migration cost, but leaves the parent without a true entry layer and keeps too much internet-layer scope compressed into one child. Rejected.
+
+**Rebuild the parent into many narrow textbook children immediately:**
+- More academically pure, but creates too much churn for a repository that already has active draft work and explicitly discourages adding broad new child series too early. Rejected.
+
+**Add one foundations child and refine the routing/addressing child (chosen):**
+- Preserves the current practical work, fills the missing introductory layer, and makes the internet-layer backlog specific enough to become real post stubs. Chosen.
+
+### Decision
+
+- D-75: `computer-networks` now uses four child series: `network-foundations`, `transport-and-reliability`, `internet-addressing-and-routing`, and `network-protocols`.
+- D-76: `network-protocols` keeps DNS + HTTP/TLS/HTTP2+/application protocol scope, while `internet-addressing-and-routing` owns IP addressing, subnetting, ARP, ICMP, NAT, fragmentation, and routing protocols.
+
+### Follow-up
+
+- Update the actual child index files and post frontmatter to match the refined structure.
+- Split the old `ip-addressing-and-routing.md` idea stub into narrower idea-stage posts.
+- Keep future expansion conservative; this refinement is meant to improve the learning arc without reopening the whole hierarchy model.
+
+### References
+
+- `confirmed-decisions.md`: D-75, D-76
+- `docs/series/computer-networks.md`
+- `docs/series-backlog.md`
+- `docs/first-content-readiness.md`
+- `src/content/series_indexes/computer-networks/`
+- `src/content/posts/what-is-http.md`
+- `src/content/posts/tcp-connection-and-reliability.md`
+
+---
+
+## DL-020 — Refine the `database-systems` parent around a university-style database course flow
+
+**Date:** 2026-05-09
+**Status:** confirmed
+
+### Context
+
+Inspection showed that `database-systems` was structurally much narrower than the parent name implied. The parent had only one child series, `database-internals`, and that child already contained five published posts covering indexes, B+Tree, transactions, WAL, and the optimizer. The current structure worked well as a backend/systems reading track, but it did not expose the earlier database-learning layers that a university-style database outline would usually cover first: database vocabulary, ERD, normalization, relational design, and join semantics.
+
+Because `database-internals` is already the repository's most mature published child series, the refinement needed to preserve it as a stable anchor instead of carelessly splitting or renaming it.
+
+### Alternatives considered
+
+**Leave `database-systems` unchanged with only `database-internals`:**
+- Lowest churn, but leaves the parent unable to express database foundations or relational design topics cleanly. Rejected.
+
+**Split `database-internals` itself into multiple smaller internals children:**
+- More textbook-like on paper, but would create unnecessary churn in a stable published series and would move existing public content without strong repository justification. Rejected.
+
+**Keep `database-internals` intact and add sibling children before it (chosen):**
+- Preserves the stable published anchor while adding the missing learning arc for foundations, modeling, and query semantics. Chosen.
+
+### Decision
+
+- D-77: `database-systems` now uses four child series: `database-foundations`, `data-modeling-and-design`, `relational-queries-and-joins`, and `database-internals`.
+- D-78: `database-internals` remains the stable published anchor. Indexes, B+Tree, WAL, optimizer behavior, join algorithms, and deeper engine internals stay there.
+
+### Follow-up
+
+- Add child index files under `src/content/series_indexes/database-systems/` for the three new sibling series.
+- Create idea-stage backlog files for foundations, modeling/design, and relational query semantics.
+- Keep the published `database-internals` posts unchanged while allowing future internals growth behind the new pre-internals layers.
+
+### References
+
+- `confirmed-decisions.md`: D-77, D-78
+- `docs/series/database-systems.md`
+- `docs/series-backlog.md`
+- `docs/first-content-readiness.md`
+- `src/content/series_indexes/database-systems/`
+- `src/content/posts/what-is-a-database-index.md`
+- `src/content/posts/query-execution-plan.md`
+
+---
+
+## DL-021 — Refine the `operating-systems` parent around a textbook-style OS course flow
+
+**Date:** 2026-05-09
+**Status:** confirmed
+
+### Context
+
+`operating-systems` existed only as a confirmed direction in the historical flat series inventory. Unlike `database-systems`, it had no parent index, no operating document, no child series, and no committed backlog files. A university-style OS outline made the missing shape clear: the repository needed a moderate number of child series that could carry introduction, execution units, concurrency, memory, and persistence/storage without turning the parent into either one giant bucket or a pile of tiny siblings.
+
+### Alternatives considered
+
+**Keep `operating-systems` as a single flat child-like direction with no hierarchy:**
+- Lowest initial effort, but it would contradict the repository's current parent-child model and would leave the backlog as one mixed list of OS topics. Rejected.
+
+**Split the parent into many narrow textbook children immediately:**
+- More granular on paper, but too fragmented for the current backlog-first stage and harder to review as a coherent initial rollout. Rejected.
+
+**Create a moderate five-child structure (chosen):**
+- Preserves a recognizable textbook learning arc while keeping the parent reviewable and repository-friendly. Chosen.
+
+### Decision
+
+- D-79: `operating-systems` now uses five child series: `operating-systems-overview`, `processes-and-threads`, `scheduling-and-synchronization`, `memory-management`, and `file-systems-and-storage`.
+- D-80: deadlock remains within `scheduling-and-synchronization`, and file-system/storage topics stay grouped within `file-systems-and-storage`.
+
+### Follow-up
+
+- Create the parent series index at `src/content/series_indexes/operating-systems.md`.
+- Add the five child index files under `src/content/series_indexes/operating-systems/`.
+- Create the initial idea-stage post stubs so the new parent has a real backlog instead of documentation-only intent.
+
+### References
+
+- `confirmed-decisions.md`: D-79, D-80
+- `docs/series/operating-systems.md`
+- `docs/series-backlog.md`
+- `docs/first-content-readiness.md`
+- `src/content/series_indexes/operating-systems/`
+
+---
+
+## DL-022 — Split Spring content into separate `spring-framework` and `spring-boot` parent directions
+
+**Date:** 2026-05-09
+**Status:** confirmed
+
+### Context
+
+The repository had no committed Spring-specific parent rollout, but the parent-child hierarchy and backlog-first operating pattern were already established for other directions. Spring content needed to be introduced in a way that respected the repository's hierarchy rules and also prevented a common taxonomy failure: treating Spring Boot as a loose subset inside a framework-only content tree without making the framework/Boot boundary explicit.
+
+The requested topic boundary matched the repository's architecture model well. Framework-level runtime mechanics such as IoC, bean lifecycle, proxy-based AOP, transaction abstraction, and MVC request flow behave like one coherent parent direction. Boot-specific startup, auto-configuration, externalized configuration, testing slices, and operational tooling behave like a separate application-assembly and operations direction.
+
+### Alternatives considered
+
+**One mixed Spring parent with many child series:**
+- Lower parent count, but it blurs the distinction between framework internals and Boot ergonomics. Auto-configuration and Boot testing would sit too close to container and MVC mechanics, weakening the boundary. Rejected.
+
+**`spring-boot` as a child series under `spring-framework`:**
+- Plausible in some conceptual taxonomies, but too asymmetric for this repository's parent-child model. Boot would become just one sibling beside AOP or MVC even though it carries its own startup, configuration, testing, and operational arc. Rejected.
+
+**Two distinct parent directions with explicit child-series boundaries (chosen):**
+- Matches the repository's existing parent-level operating-document pattern, keeps posts attached only to child series, and gives both Spring Framework and Spring Boot a clean learning arc. Chosen.
+
+### Decision
+
+- D-81: Spring content is split into two distinct parent directions under backend/systems: `spring-framework` and `spring-boot`.
+- D-82: `spring-framework` owns IoC/DI, bean container/lifecycle/scope, configuration classes/component scanning, AOP/proxies, transaction abstraction, and Spring MVC request flow. `spring-boot` owns Boot purpose, startup flow, starters, embedded server behavior, auto-configuration, externalized configuration, profiles, `application.yml`, `@ConfigurationProperties`, Boot testing patterns, Actuator, logging, metrics, and operational tooling.
+
+### Follow-up
+
+- Create parent operating documents at `docs/series/spring-framework.md` and `docs/series/spring-boot.md`.
+- Create parent and child series indexes under `src/content/series_indexes/`.
+- Add idea-stage post stubs so both parents have real committed backlogs rather than documentation-only intent.
+
+### References
+
+- `confirmed-decisions.md`: D-81, D-82
+- `docs/series-backlog.md`
+- `docs/first-content-readiness.md`
+- `docs/post-metadata.md`
+- `src/content/series_indexes/`
+
+---
+
+## DL-023 — Graph-link policy and series-link syntax (#176)
+
+**Date:** 2026-05-09
+**Status:** confirmed
+
+### Context
+
+Post stubs added during bulk intake are structurally connected through `series`, `parent`, and `order` fields, but the Obsidian graph treats them as isolated nodes because no in-document links connect them. The repository already has `[[concept:slug]]` for concept links and generic `[[wikilinks]]` for posts, but had no explicit syntax or documented expectations for linking series. Without a clear policy, authors have no guidance on how to wire graph connectivity, and the conversion script has no contract for what `[[series:...]]` links mean.
+
+### Alternatives considered
+
+**Series-link syntax:**
+- `[[parent:slug]]` / `[[child:slug]]` separate prefixes: Explicit about hierarchy level, but doubles the namespace count and requires authors to remember which prefix applies. Rejected.
+- `[[series:parent/child]]` single namespace (chosen): One prefix covers both levels — slash distinguishes child from parent. Consistent with the existing `[[concept:slug]]` pattern.
+
+**Generic wikilink scope:**
+- Allow `[[wikilinks]]` to resolve both posts and series indexes: Convenient fallback, but creates ambiguity when a file name collides across `posts/` and `series_indexes/`. Makes the conversion script's resolution order ambiguous. Rejected.
+- Post-only (chosen): `[[wikilinks]]` resolves posts; any series reference requires the explicit `[[series:...]]` form. Unambiguous and matches the existing `[[concept:...]]` analogy.
+
+**Minimum link enforcement:**
+- Hard validation in `check-content.mjs`: Guarantees graph connectivity but adds friction to stub creation and makes idea-stage posts fail validation before the author is ready to add cross-links. Rejected.
+- Soft guidelines (chosen): Documented recommendations without build enforcement. Authors are guided toward graph-friendly authoring without being blocked during early draft stages.
+
+**Series index body link scope:**
+- Allow `[[wikilinks]]` (post links) in index bodies for graph visibility (updated): Child series indexes may list their posts in order so Obsidian graph view shows post membership and sequence. The site still auto-generates the rendered post list, so these links are an authoring aid rather than the rendering source of truth. Chosen.
+- Series links only: This kept index bodies cleaner, but it prevented graph view from showing ordered post membership at the child-series level. Rejected after authoring workflow review.
+
+### Decision
+
+- D-83: Series-link syntax — `[[series:<slug>]]` for parent, `[[series:<parent>/<child>]]` for child.
+- D-84: Generic `[[wikilinks]]` resolve to posts only; series references require `[[series:...]]`.
+- D-85: Minimum link expectations are soft guidelines, not enforced validation rules. Posts may carry child-series links plus previous/next post links, and avoid direct parent-series links so graph view keeps the parent → child → post shape.
+- D-86: Series index bodies allow both `[[series:...]]` links and ordered post `[[wikilinks]]` for graph visibility.
+- D-87: Series index aliases and graph tags are generated from `series` and `parent`; they are checked by repository validation rather than manually maintained.
+- D-88: Obsidian graph-visible series links use actual `series_indexes/...` file links. `series:*` remains converter-supported syntax but is not used for graph wiring.
+
+### Follow-up
+
+- Add `[[series:...]]` link handling to `scripts/obsidian-to-astro.mjs` so the syntax converts to the correct `/series/<parent>` or `/series/<parent>/<child>` URL.
+- Document the syntax and guidelines in `docs/content-model.md` and `docs/series-index-authoring.md`.
+- Optionally add a soft lint warning in `check-content.mjs` for posts with no series link (warn-only, not an error).
+
+### References
+
+- `confirmed-decisions.md`: D-83 through D-86
+- Issue #176 (closed after this entry)
+- `scripts/obsidian-to-astro.mjs` — where `[[series:...]]` conversion will be added
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions

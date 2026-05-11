@@ -2,8 +2,9 @@
  * Obsidian → Astro conversion script (D-18)
  *
  * Transforms Obsidian Markdown posts and concepts into Astro-compatible content:
- * - ![[image]] wikilinks → standard Markdown image syntax (images served from /images/)
+ * - ![[image]] wikilinks → standard Markdown image syntax (images loaded from src/content/attachments/)
  * - [[concept:slug]] / [[concept:slug|alias]] → /concepts/<slug> links
+ * - [[series:parent]] / [[series:parent/child]] → /series/... links
  * - [[wikilinks]] → standard Markdown links to posts
  * - Validates file names against D-15 (lowercase kebab-case, English)
  * - Passes frontmatter through unchanged
@@ -17,7 +18,7 @@
  * --concepts-output  Destination directory for concepts (default: ./src/content/concepts)
  * --strict           Exit with error on any unresolved wikilink or missing image (default: warn only)
  *
- * Image files referenced via ![[...]] must be present in public/images/ before running.
+ * Image files referenced via ![[...]] must be present in src/content/attachments/ before running.
  * Missing images produce a warning; --strict treats them as errors.
  */
 
@@ -33,6 +34,9 @@ const IMAGE_WIKILINK_RE = /!\[\[([^\]|\n]+?)(?:\|([^\]\n]+?))?\]\]/g;
 
 // [[concept:slug]] or [[concept:slug|display]] — must match before WIKILINK_RE
 const CONCEPT_LINK_RE = /\[\[concept:([^\]|\n]+?)(?:\|([^\]\n]+?))?\]\]/g;
+
+// [[series:parent]] or [[series:parent/child|display]] — must match before WIKILINK_RE
+const SERIES_LINK_RE = /\[\[series:([^\]|\n]+?)(?:\|([^\]\n]+?))?\]\]/g;
 
 // [[page]], [[page|alias]], [[page#heading]], [[page#heading|alias]]
 const WIKILINK_RE = /\[\[([^\]|#\n]+?)(?:#([^\]|\n]+?))?(?:\|([^\]\n]+?))?\]\]/g;
@@ -70,7 +74,7 @@ export function extractImageFilenames(content) {
 
 /**
  * Converts ![[image.ext]] and ![[image.ext|alt]] to standard Markdown image syntax.
- * Images are assumed to be served from the /images/ public path.
+ * Images are assumed to be stored in src/content/attachments/.
  *
  * @param {string} content - Markdown body (no frontmatter)
  * @returns {string}
@@ -79,7 +83,7 @@ export function convertImageWikilinks(content) {
   return content.replace(IMAGE_WIKILINK_RE, (_match, filename, alt) => {
     const name = filename.trim();
     const altText = alt ? alt.trim() : name;
-    return `![${altText}](/images/${name})`;
+    return `![${altText}](../attachments/${encodeURI(name)})`;
   });
 }
 
@@ -112,6 +116,89 @@ export function buildConceptAliasMap(conceptsDir) {
   return aliasMap;
 }
 
+function readMarkdownFilesRecursive(dir) {
+  const files = [];
+
+  function walk(currentDir) {
+    for (const entry of readdirSync(currentDir, { withFileTypes: true })) {
+      const absolutePath = join(currentDir, entry.name);
+      if (entry.isDirectory()) {
+        walk(absolutePath);
+        continue;
+      }
+
+      if (entry.isFile() && extname(entry.name) === '.md') {
+        files.push(absolutePath);
+      }
+    }
+  }
+
+  walk(dir);
+  return files;
+}
+
+function imageExistsInSourceDir(imageSourceDir, imageFile) {
+  if (!existsSync(imageSourceDir)) return false;
+
+  if (imageFile.includes('/')) {
+    return existsSync(join(imageSourceDir, imageFile));
+  }
+
+  const stack = [imageSourceDir];
+  while (stack.length > 0) {
+    const currentDir = stack.pop();
+    for (const entry of readdirSync(currentDir, { withFileTypes: true })) {
+      if (entry.name === '.obsidian') continue;
+
+      const absolutePath = join(currentDir, entry.name);
+      if (entry.isDirectory()) {
+        stack.push(absolutePath);
+        continue;
+      }
+
+      if (entry.isFile() && entry.name === imageFile) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Builds a set of valid explicit series-link targets from committed series index files.
+ * Parent series target format: <parent>
+ * Child series target format: <parent>/<child>
+ *
+ * @param {string} seriesIndexesDir
+ * @returns {Set<string>}
+ */
+export function buildSeriesTargetSet(seriesIndexesDir) {
+  const targets = new Set();
+  if (!existsSync(seriesIndexesDir)) return targets;
+
+  for (const file of readMarkdownFilesRecursive(seriesIndexesDir)) {
+    const raw = readFileSync(file, 'utf8');
+    const { frontmatter } = parseFrontmatter(raw);
+    if (!frontmatter) continue;
+
+    const seriesMatch = frontmatter.match(/^series:\s*(.+)$/m);
+    if (!seriesMatch) continue;
+    const series = seriesMatch[1].replace(/^["']|["']$/g, '').trim();
+
+    const parentMatch = frontmatter.match(/^parent:\s*(.+)$/m);
+    if (parentMatch) {
+      const parent = parentMatch[1].replace(/^["']|["']$/g, '').trim();
+      if (parent && series) targets.add(`${parent}/${series}`);
+      continue;
+    }
+
+    if (series) targets.add(series);
+  }
+
+  return targets;
+}
+
 /**
  * Converts [[concept:slug]] and [[concept:slug|display]] to /concepts/<slug> links.
  * Resolves via alias map when provided.
@@ -134,6 +221,30 @@ export function convertConceptLinks(content, conceptAliasMap = null, knownConcep
 
     const text = alias ? alias.trim() : target.trim();
     return `[${text}](/concepts/${slug})`;
+  });
+
+  return { result, warnings };
+}
+
+/**
+ * Converts [[series:parent]] and [[series:parent/child]] to /series/... links.
+ *
+ * @param {string} content
+ * @param {Set<string>|null} knownSeriesTargets - allowed targets such as parent or parent/child
+ * @returns {{ result: string, warnings: string[] }}
+ */
+export function convertSeriesLinks(content, knownSeriesTargets = null) {
+  const warnings = [];
+
+  const result = content.replace(SERIES_LINK_RE, (_match, target, alias) => {
+    const normalized = target.trim().toLowerCase();
+
+    if (knownSeriesTargets !== null && !knownSeriesTargets.has(normalized)) {
+      warnings.push(normalized);
+    }
+
+    const text = alias ? alias.trim() : target.trim();
+    return `[${text}](/series/${normalized})`;
   });
 
   return { result, warnings };
@@ -182,7 +293,7 @@ export function parseFrontmatter(content) {
  * @param {string} inputContent
  * @param {string} filename        - used only for error messages
  * @param {Set<string>|null} knownSlugs
- * @param {string|null} publicImagesDir - path to public/images/ on disk; null skips image validation
+ * @param {string|null} publicImagesDir - path to content attachments on disk; null skips image validation
  * @param {Map<string, string>|null} conceptAliasMap - alias map for concept link resolution
  * @param {Set<string>|null} knownConceptSlugs - known concept slugs; null skips resolution check
  * @returns {{ content: string, warnings: string[], conceptWarnings: string[], imageWarnings: string[] }}
@@ -194,6 +305,7 @@ export function convertFile(
   publicImagesDir = null,
   conceptAliasMap = null,
   knownConceptSlugs = null,
+  knownSeriesTargets = null,
 ) {
   const { frontmatter, body } = parseFrontmatter(inputContent);
   if (!frontmatter) {
@@ -201,20 +313,24 @@ export function convertFile(
   }
 
   const imageWarnings = publicImagesDir
-    ? extractImageFilenames(body).filter(f => !existsSync(join(publicImagesDir, f)))
+    ? extractImageFilenames(body).filter(f => !imageExistsInSourceDir(publicImagesDir, f))
     : [];
 
-  // Conversion order: images first, then concept links, then post wikilinks
+  // Conversion order: images first, then concept links, then series links, then post wikilinks
   const imageConverted = convertImageWikilinks(body);
   const { result: conceptConverted, warnings: conceptWarnings } = convertConceptLinks(
     imageConverted, conceptAliasMap, knownConceptSlugs
   );
-  const { result: convertedBody, warnings } = convertWikilinks(conceptConverted, knownSlugs);
+  const { result: seriesConverted, warnings: seriesWarnings } = convertSeriesLinks(
+    conceptConverted, knownSeriesTargets
+  );
+  const { result: convertedBody, warnings } = convertWikilinks(seriesConverted, knownSlugs);
 
   return {
     content: `---\n${frontmatter}\n---\n${convertedBody}`,
     warnings,
     conceptWarnings,
+    seriesWarnings,
     imageWarnings,
   };
 }
@@ -228,13 +344,14 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
       output:           { type: 'string',  short: 'o', default: './src/content/posts' },
       concepts:         { type: 'string' },
       'concepts-output': { type: 'string',             default: './src/content/concepts' },
+      'series-indexes': { type: 'string',              default: './src/content/series_indexes' },
       strict:           { type: 'boolean',             default: false },
     },
   });
 
   if (!values.input) {
     console.error(
-      'Usage: node scripts/obsidian-to-astro.mjs --input <vault-posts-dir> [--output <dir>] [--concepts <vault-concepts-dir>] [--concepts-output <dir>] [--strict]'
+      'Usage: node scripts/obsidian-to-astro.mjs --input <vault-posts-dir> [--output <dir>] [--concepts <vault-concepts-dir>] [--concepts-output <dir>] [--series-indexes <dir>] [--strict]'
     );
     process.exit(1);
   }
@@ -243,6 +360,7 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
   const outputDir       = values.output;
   const conceptsDir     = values.concepts ?? null;
   const conceptsOutput  = values['concepts-output'];
+  const seriesIndexesDir = values['series-indexes'];
 
   if (!existsSync(outputDir)) mkdirSync(outputDir, { recursive: true });
 
@@ -257,6 +375,8 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
     );
     if (!existsSync(conceptsOutput)) mkdirSync(conceptsOutput, { recursive: true });
   }
+
+  const knownSeriesTargets = buildSeriesTargetSet(seriesIndexesDir);
 
   const files = readdirSync(inputDir).filter(f => extname(f) === '.md');
   const knownSlugs = new Set(files.map(fileNameToSlug));
@@ -274,8 +394,8 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
     const inputContent = readFileSync(join(inputDir, file), 'utf8');
 
     try {
-      const { content: converted, warnings, conceptWarnings, imageWarnings } = convertFile(
-        inputContent, file, knownSlugs, './public/images', conceptAliasMap, knownConceptSlugs
+      const { content: converted, warnings, conceptWarnings, seriesWarnings, imageWarnings } = convertFile(
+        inputContent, file, knownSlugs, './src/content/attachments', conceptAliasMap, knownConceptSlugs, knownSeriesTargets
       );
 
       for (const slug of warnings) {
@@ -290,8 +410,14 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
         if (values.strict) errorCount++;
       }
 
+      for (const target of seriesWarnings) {
+        console.warn(`Warn: ${file} — unresolved series link [[series:${target}]]`);
+        warnCount++;
+        if (values.strict) errorCount++;
+      }
+
       for (const imgFile of imageWarnings) {
-        console.warn(`Warn: ${file} — missing image public/images/${imgFile}`);
+        console.warn(`Warn: ${file} — missing image src/content/attachments/${imgFile}`);
         warnCount++;
         if (values.strict) errorCount++;
       }
@@ -316,8 +442,8 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
       const inputContent = readFileSync(join(conceptsDir, file), 'utf8');
       try {
         // Concepts use same conversion pipeline; post knownSlugs passed for any [[post]] refs
-        const { content: converted, warnings, conceptWarnings, imageWarnings } = convertFile(
-          inputContent, file, knownSlugs, './public/images', conceptAliasMap, knownConceptSlugs
+        const { content: converted, warnings, conceptWarnings, seriesWarnings, imageWarnings } = convertFile(
+          inputContent, file, knownSlugs, './src/content/attachments', conceptAliasMap, knownConceptSlugs, knownSeriesTargets
         );
         for (const slug of warnings) {
           console.warn(`Warn (concept): ${file} — unresolved wikilink [[${slug}]]`);
@@ -329,8 +455,13 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
           warnCount++;
           if (values.strict) errorCount++;
         }
+        for (const target of seriesWarnings) {
+          console.warn(`Warn (concept): ${file} — unresolved series link [[series:${target}]]`);
+          warnCount++;
+          if (values.strict) errorCount++;
+        }
         for (const imgFile of imageWarnings) {
-          console.warn(`Warn (concept): ${file} — missing image public/images/${imgFile}`);
+          console.warn(`Warn (concept): ${file} — missing image src/content/attachments/${imgFile}`);
           warnCount++;
           if (values.strict) errorCount++;
         }

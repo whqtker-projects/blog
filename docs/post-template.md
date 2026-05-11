@@ -30,6 +30,31 @@ Every post must include the following content areas. Titles and ordering are dec
 | Target audience | Beginner to practitioner for all series (D-29) |
 | Quiz format | 5 MCQ, 4 options each, one correct answer (D-27) |
 
+## Language Policy
+
+- Post `title` is reader-facing display text and is intended to be written in Korean for new and editable backlog posts.
+- Post body content is intended to be written in Korean.
+- Exact code, CLI commands, API names, protocol names, and other technical identifiers may remain in their original form when needed.
+- English filenames and slugs remain identifier-only fields and do not imply English rendered content.
+- Quiz sections, when later written, follow the same Korean writing policy unless another repository rule explicitly overrides it.
+
+## Graph-Link Scope
+
+- Generic `[[wikilinks]]` are reserved for post links.
+- Use `[[concept:slug]]` for concept links.
+- Use `[[series_indexes/<parent>/<child>]]` for child series graph links.
+- `[[series:<parent>]]` syntax remains converter-supported, but actual file links are preferred inside the Obsidian vault so graph nodes resolve and color correctly.
+- Draft or idea-stage posts may include a short graph block with their child series and adjacent post links.
+- Posts should not link directly to parent series if the graph should keep parent nodes connected only to child-series nodes.
+- `order` remains canonical even when previous/next post wikilinks are present.
+- A leading `관련 링크:` graph block is for Obsidian only. Astro removes that block during Markdown rendering, so it must not be used for reader-facing web navigation.
+
+Minimal stub-safe pattern:
+
+```md
+아이디어 단계 메모.
+```
+
 ---
 
 ## What This Document Is Not

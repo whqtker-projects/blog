@@ -27,7 +27,9 @@ export async function getStaticPaths() {
         childIndex,
         posts: visiblePosts
           .filter((post) => post.data.series === childIndex.data.series)
-          .sort((a, b) => a.data.order - b.data.order),
+          .sort(
+            (a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title)
+          ),
       },
     };
   });

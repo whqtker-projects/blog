@@ -37,6 +37,7 @@ The repository is in the **active content-creation stage**. The Astro build, con
 | [post-template.md](post-template.md) | Confirmed post structure rules (D-6, D-7, D-8) |
 | [post-metadata.md](post-metadata.md) | Frontmatter field definitions |
 | [series-backlog.md](series-backlog.md) | Confirmed series and topic domain organization |
+| [series/](series/) | Parent-series operating documents: current child composition, ordering, and backlog posture |
 | [rendering-compatibility.md](rendering-compatibility.md) | Validated Markdown constructs and rendering behavior |
 
 ### Technical decisions

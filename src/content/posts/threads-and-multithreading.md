@@ -1,0 +1,28 @@
+---
+title: "스레드와 멀티스레딩"
+series: processes-and-threads
+order: 3
+status: draft
+tags:
+  - graph/post
+---
+관련 링크:
+- 소속 시리즈: [[series_indexes/operating-systems/processes-and-threads|프로세스와 스레드]]
+- 이전 글: [[context-switching|문맥 교환]]
+- 다음 글: [[interprocess-communication|프로세스 간 통신]]
+
+## 스레드란
+
+## 프로세스와 스레드의 차이
+
+### 공유 자원과 독립 자원
+
+## 멀티스레딩 모델
+
+### 사용자 수준 스레드와 커널 수준 스레드
+
+### 다대일, 일대일, 다대다 모델
+
+## 예시
+
+## Quiz

@@ -29,3 +29,9 @@ const posts = defineCollection({
 **Symptom**: Merging `origin/master` into `develop` after PR #160 work produced conflicts across hierarchy docs, validation, post metadata, route files, and the deleted flat route `src/pages/series/[series].astro`.
 **Cause**: `master` had advanced with the earlier status/visibility/content work while `develop` had subsequently replaced the flat series model with parent-child hierarchy changes touching many of the same files.
 **Fix**: Resolved the merge by restoring the intended hierarchy-aware versions from the latest `develop` implementation commit, removing the retired flat route, and then re-running `pnpm test:repo`, `pnpm check:content`, and `pnpm build` before concluding the merge.
+
+## 2026-05-11 — `git restore --staged` failed with sandboxed index lock error
+
+**Symptom**: `git restore --staged ...` failed with `fatal: Unable to create '.git/index.lock': Operation not permitted` while trying to narrow the staged set before commit.
+**Cause**: The sandboxed command could not update the git index in that attempt, even though no persistent `.git/index.lock` file remained afterward.
+**Fix**: Re-ran the unstage step with escalated permissions, then confirmed the staged set contained only the intended files before proceeding with commit and push.

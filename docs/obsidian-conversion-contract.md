@@ -16,7 +16,7 @@ The script accepts a single flat directory of `.md` post files. The recommended 
     database-index.md
     b-plus-tree-index.md
     ...
-  attachments/      ← image files; copy to public/images/ separately
+  attachments/      ← image files referenced from posts
   templates/        ← Obsidian templates; not passed to the script
 ```
 
@@ -61,11 +61,12 @@ The conversion script passes the entire frontmatter block through to the output 
 | `series` | series slug string | `series` | None |
 | `order` | integer | `order` | None |
 | `status` | enum string (required) | `status` | None |
+| `tags` | array | `tags` | None |
 | Any other field | any | same name | Passed through as-is; Astro's Zod schema strips unknown fields at build time |
 
-**Astro schema consistency:** The Astro content collection schema (`src/content.config.ts`) defines `title`, `series`, `order`, and `status` as required. Fields not listed in the schema are silently dropped by Zod during the build — they do not cause errors but do not appear in `post.data`.
+**Astro schema consistency:** The Astro content collection schema (`src/content.config.ts`) defines `title`, `series`, `order`, and `status` as required for posts. `description` and `tags` are optional. Fields not listed in the schema are silently dropped by Zod during the build — they do not cause errors but do not appear in `post.data`.
 
-**No Obsidian-only fields are added by the script.** If Obsidian generates metadata fields (e.g., `aliases`, `tags`, `cssclass`), they will be passed through by the script and silently dropped by Astro. They do not affect the build or the rendered output.
+**No Obsidian-only fields are added by the converter.** If Obsidian generates metadata fields such as `cssclass`, they will be passed through by the script and silently dropped by Astro unless the schema defines them. Repository-managed graph tags are retained by the schema so Obsidian graph color groups can use them.
 
 ---
 
@@ -122,26 +123,28 @@ This allows CI pipelines to enforce strict link integrity without blocking local
 
 ## Image Validation
 
-When the script encounters `![[image.ext]]`, it converts the reference to standard Markdown syntax and checks whether the referenced file exists in `./public/images/` on disk.
+When the script encounters `![[image.ext]]`, it converts the reference to standard Markdown syntax and checks whether the referenced file exists under `./src/content/attachments/` on disk.
+
+Image filenames are preserved on disk. If a pasted image filename contains spaces, the generated Markdown URL percent-encodes the path, such as `../attachments/Pasted%20image%2020260511171546.png`.
 
 | Mode | Behaviour |
 |------|-----------|
 | Default | Convert the image reference; print a warning to stderr if the file is missing. Exit code 0. |
 | `--strict` | Convert the image reference; print a warning to stderr if the file is missing. Exit code 1 after processing all files. |
 
-Warning format: `Warn: <file> — missing image public/images/<filename>`
+Warning format: `Warn: <file> — missing image src/content/attachments/<filename>`
 
 Each missing filename is reported once per file, even if the same image is referenced multiple times.
 
-The check runs against `./public/images/` relative to the working directory where the script is invoked (the project root). Image files must be copied to `public/images/` before running `pnpm convert`. See the recommended workflow below.
+The check runs against `./src/content/attachments/` relative to the working directory where the script is invoked (the project root). Image files stay inside the Obsidian vault rooted at `src/content`.
 
 ### Recommended image workflow
 
-1. Copy image files from the Obsidian vault's `attachments/` directory to `public/images/` manually
+1. Configure Obsidian to store pasted images in `attachments/` under the `src/content` vault
 2. Run `pnpm convert --input <vault/posts> --strict` — any missing images are reported as errors
-3. Commit both the converted `.md` files and any new files in `public/images/`
+3. Commit both the converted post and the image file under `src/content/attachments/`
 
-This workflow is intentionally manual: the vault path is machine-specific, and copying images is a deliberate step that pairs with a reviewable git diff.
+This workflow keeps Obsidian-managed images in the vault and lets Astro process them as content-adjacent assets.
 
 ---
 

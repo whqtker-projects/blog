@@ -3,6 +3,8 @@ title: "Write-Ahead Log and Durability"
 series: database-internals
 order: 4
 status: published
+tags:
+  - graph/post
 ---
 
 A write-ahead log, usually shortened to WAL, is the mechanism a database uses to make committed changes survive crashes. The core idea is simple: before the database writes a changed data page back to its main table files, it first records the change in a sequential log. That ordering rule lets the engine recover committed transactions even if the process stops halfway through writing ordinary pages.

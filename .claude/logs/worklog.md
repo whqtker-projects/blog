@@ -199,6 +199,39 @@ Created `docs/github-issue-workflow.md` based on official Claude Code best pract
 
 **Standalone:** #97 — docs/project-overview.md, docs/github-issue-workflow.md 콘텐츠 단계 반영
 
+## 2026-05-09 — Stabilize series operations after hierarchy and ordering rollout
+
+Implemented the practical follow-up for the stabilization phase:
+- created `docs/series/` with one maintained parent-level operating document for each current real parent series
+- removed the post-page breadcrumb `#order` cue so title prefixes remain the only visible numbering on numbered posts
+- refactored `scripts/check-content.mjs` into reusable validation exports while preserving the existing CLI checks
+- added repository regression tests for series hierarchy ordering and content-validation invariants
+- aligned backlog/readiness/bootstrap/content-model docs with the new `docs/series/` operating layer and the finalized numbering presentation rule
+
+Verification:
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`
+
+## 2026-05-09 — Refine the computer-networks parent around a course-style learning arc
+
+Reworked `computer-networks` so the child-series layout now starts with `network-foundations`, keeps `transport-and-reliability`, renames the old naming/routing child to `internet-addressing-and-routing`, and moves `network-protocols` to the last application-facing position.
+
+Added new idea-stage backlog files for foundations, TCP internals, and internet-layer topics; reassigned `dns-resolution.md` into `network-protocols`; and replaced the old broad `ip-addressing-and-routing.md` stub with `ip-addressing-and-subnetting.md` plus narrower sibling stubs.
+
+Synchronized the directly affected operating and decision docs: `docs/series/computer-networks.md`, `docs/series-backlog.md`, `docs/first-content-readiness.md`, `docs/post-metadata.md`, `docs/confirmed-decisions.md`, and `docs/decision-log.md`.
+
+## 2026-05-09 — Refine the database-systems parent around a course-style learning arc
+
+Expanded `database-systems` with three new sibling child series ahead of the existing published `database-internals` anchor:
+- `database-foundations`
+- `data-modeling-and-design`
+- `relational-queries-and-joins`
+
+Kept all published `database-internals` posts unchanged, moved only the child-series order metadata, and added idea-stage post stubs for the new child series.
+
+Updated the directly affected docs and decision records so the repository now describes `database-systems` as a full parent-level arc instead of a one-child shell.
+
 **Parent #98 (CI):** #102 conversion-script unit test step / #103 Astro build step
 
 **Parent #99 (image handling):** #104 image existence check / #105 vault-attachments auto-copy design
@@ -210,3 +243,32 @@ Created `docs/github-issue-workflow.md` based on official Claude Code best pract
 **미생성:** agent-role re-splitting (근거 없음)
 
 **권장 실행 순서:** #97 → #98(#102→#103) → #99(#104→#105) → #101(#109→#110→#111) → #100(#106, #107, #108)
+
+## 2026-05-09 — Forbid agent edits to published posts
+
+Added a repository operating rule in `AGENTS.md` that agents must not modify any post already marked `status: published` under `src/content/posts/`.
+
+Mirrored the same restriction into `.codex/agents/post-drafter.md` and `.claude/agents/post-drafter.md` so content-writing agents treat published posts as author-only content unless the repository rule itself is explicitly changed later.
+
+## 2026-05-09 — Roll out numeric title prefixes to the Computer Architecture backlog
+
+Applied optional numeric title prefixes to the idea-stage `computer-architecture` backlog posts only. File names and explicit `order` fields were left unchanged; the visible prefixes now mirror the existing `order` values within each child series.
+
+Cleaned up the remaining directly affected docs:
+- `docs/file-naming-conventions.md` now distinguishes filename prefixes from visible title prefixes
+- `docs/first-content-readiness.md` now uses the current nested child-series index paths
+
+## 2026-05-09 — Roll out the operating-systems parent as a backlog-first hierarchy
+
+Created the `operating-systems` parent and split it into five child series:
+- `operating-systems-overview`
+- `processes-and-threads`
+- `scheduling-and-synchronization`
+- `memory-management`
+- `file-systems-and-storage`
+
+Added the parent operating document at `docs/series/operating-systems.md`, updated the directly affected backlog/reference/decision docs, and created 23 idea-stage post stubs across the five child series.
+
+Verification:
+- `pnpm check:content`
+- `pnpm build`
