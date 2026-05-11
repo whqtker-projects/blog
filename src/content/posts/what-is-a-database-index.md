@@ -1,8 +1,8 @@
 ---
-title: "What Is a Database Index?"
+title: What Is a Database Index?
 series: database-internals
 order: 1
-status: published
+status: draft
 tags:
   - graph/post
 ---

@@ -1,8 +1,8 @@
 ---
-title: "스프링 프레임워크란 무엇인가"
+title: 스프링 프레임워크란 무엇인가
 series: spring-core
 order: 1
-status: draft
+status: published
 tags:
   - graph/post
 ---
