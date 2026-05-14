@@ -601,3 +601,14 @@ Post 원본의 `관련 링크:` 블록은 Obsidian graph view에서 시리즈와
 - `pnpm build`
 - `pnpm test:convert`
 - `rg -n "관련 링크" dist || true`
+
+## 2026-05-14 — Render Obsidian image wikilinks directly in Astro
+
+게시글 원문에 `![[Pasted image ...]]` 형식을 그대로 유지하면서도 Astro 웹 렌더링에서 이미지를 정상 처리하도록 remark plugin을 추가했다. 이 plugin은 Markdown AST의 text node 안에 있는 Obsidian 이미지 wikilink를 찾아 현재 파일 위치 기준 상대 `attachments/` 경로의 image node로 바꾼다.
+
+이제 `src/content/posts/`와 `src/content/series_indexes/`에서 직접 작성한 `![[...]]`도 별도 수동 변환 없이 렌더링된다. Astro build는 이를 최적화 이미지로 처리하고, 기존 `관련 링크` 제거 plugin과 함께 동작한다.
+
+검증:
+- `pnpm test:repo`
+- `pnpm build`
+- `rg -n "!\\[\\[|_astro/" dist/posts/configuration-class-and-component-scan/index.html dist/posts/bean-lifecycle-and-scope/index.html`
