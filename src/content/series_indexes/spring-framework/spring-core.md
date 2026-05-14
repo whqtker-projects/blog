@@ -1,9 +1,9 @@
 ---
-title: "스프링 코어"
+title: 스프링 코어
 series: spring-core
 parent: spring-framework
 order: 1
-description: "How Spring Framework defines its core container model, from IoC and DI to bean registration, lifecycle, scope, and component scanning."
+description: Spring Framework가 IoC와 DI부터, 빈 등록, 라이프사이클, 스코프, 컴포넌트 스캔에 이르기까지 핵심 컨테이너 모델을 어떻게 정의하는지 설명합니다.
 tags:
   - graph/child-series
 aliases:
