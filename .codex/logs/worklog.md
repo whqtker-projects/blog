@@ -666,3 +666,9 @@ Astro 쪽에서는 post ordering을 `src/utils/post-ordering.ts`로 공통화하
 - `pnpm test:convert`
 - `pnpm check:content`
 - `pnpm build`
+
+## 2026-05-15 — Add direct tests for shared Node content helpers
+
+`scripts/node-content-helpers.mjs`가 repository validation과 sync script의 공통 기반이므로, helper 자체 계약을 직접 고정하는 `scripts/node-content-helpers.test.mjs`를 추가했다. 테스트는 frontmatter scalar/list parsing, nested markdown discovery, normalized relative record 반환을 temp directory 기반으로 검증한다.
+
+`package.json`의 `pnpm test:repo`에도 이 테스트를 포함해 helper 변경이 다른 script 테스트에 간접적으로만 의존하지 않도록 했다.
