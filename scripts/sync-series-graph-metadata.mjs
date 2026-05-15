@@ -17,7 +17,6 @@ import { fileURLToPath } from 'node:url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const SERIES_INDEXES_DIR = join(ROOT, 'src/content/series_indexes');
-const POSTS_DIR = join(ROOT, 'src/content/posts');
 const OBSIDIAN_GRAPH_FILE = join(ROOT, 'src/content/.obsidian/graph.json');
 const GRAPH_COLOR_GROUPS = [
   {
@@ -103,10 +102,6 @@ function seriesIndexLink(index, title = index.data.title) {
   return `[[${target}|${title}]]`;
 }
 
-function postLink(post) {
-  return `[[${post.slug}|${post.data.title}]]`;
-}
-
 function replaceYamlList(frontmatter, key, values) {
   const lines = frontmatter.split(/\r?\n/);
   const output = [];
@@ -154,7 +149,7 @@ export function syncSeriesGraphMetadata(content, body = null) {
   return `${parsed.open}${frontmatter}${parsed.close}${body ?? parsed.body}`;
 }
 
-function buildSeriesIndexBody(index, children, parent, posts) {
+export function buildSeriesIndexBody(index, children, parent) {
   if (!index.data.parent) {
     const lines = ['관련 시리즈:'];
     children.forEach((child, childIndex) => {
@@ -163,36 +158,11 @@ function buildSeriesIndexBody(index, children, parent, posts) {
     return `${lines.join('\n')}\n`;
   }
 
-  const lines = [
-    '관련 링크:',
-    `- 상위 시리즈: ${seriesIndexLink(parent)}`,
-    '',
-    '게시글 순서:',
-  ];
-  posts.forEach((post, postIndex) => {
-    lines.push(`${postIndex + 1}. ${postLink(post)}`);
-  });
-  return `${lines.join('\n')}\n`;
-}
-
-function buildPostBody(post, child, parent, seriesPosts) {
-  if (post.data.status !== 'draft') return post.body;
-
-  const index = seriesPosts.findIndex((candidate) => candidate.slug === post.slug);
-  const prev = index > 0 ? seriesPosts[index - 1] : null;
-  const next = index >= 0 && index < seriesPosts.length - 1 ? seriesPosts[index + 1] : null;
-  let body = post.body.replace(/^\s+/, '');
-  while (body.startsWith('관련 링크:')) {
-    body = body.replace(/^관련 링크:\r?\n(?:- [^\r\n]*(?:\r?\n|$))+\r?\n*/, '').replace(/^\s+/, '');
+  if (!parent) {
+    throw new Error(`missing parent index for child series '${index.data.series}'`);
   }
-  const lines = [
-    '관련 링크:',
-    `- 소속 시리즈: ${seriesIndexLink(child)}`,
-  ];
-  if (prev) lines.push(`- 이전 글: ${postLink(prev)}`);
-  if (next) lines.push(`- 다음 글: ${postLink(next)}`);
 
-  return `${lines.join('\n')}\n\n${body.replace(/^\s+/, '')}`;
+  return `관련 링크:\n- 상위 시리즈: ${seriesIndexLink(parent)}\n`;
 }
 
 function syncGraphSettings() {
@@ -209,14 +179,8 @@ function syncGraphSettings() {
 function main() {
   let changed = 0;
   const indexFiles = readMdFilesRecursive(SERIES_INDEXES_DIR);
-  const postFiles = readMdFilesRecursive(POSTS_DIR);
   const indexes = indexFiles.map((file) => ({
     file,
-    ...parseFrontmatter(readFileSync(file, 'utf8')),
-  }));
-  const posts = postFiles.map((file) => ({
-    file,
-    slug: relative(POSTS_DIR, file).replace(/\.md$/, '').split(sep).join('/'),
     ...parseFrontmatter(readFileSync(file, 'utf8')),
   }));
   const parents = indexes
@@ -227,7 +191,6 @@ function main() {
     .sort((a, b) => a.data.parent.localeCompare(b.data.parent) || a.data.order - b.data.order);
   const indexBySeries = new Map(indexes.map((index) => [index.data.series, index]));
   const childrenByParent = new Map();
-  const postsBySeries = new Map();
 
   for (const child of children) {
     const list = childrenByParent.get(child.data.parent) ?? [];
@@ -235,51 +198,20 @@ function main() {
     childrenByParent.set(child.data.parent, list);
   }
 
-  for (const post of posts) {
-    const list = postsBySeries.get(post.data.series) ?? [];
-    list.push(post);
-    postsBySeries.set(post.data.series, list);
-  }
-
   for (const list of childrenByParent.values()) {
-    list.sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title));
-  }
-
-  for (const list of postsBySeries.values()) {
     list.sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title));
   }
 
   for (const index of [...parents, ...children]) {
     const original = readFileSync(index.file, 'utf8');
     const parent = index.data.parent ? indexBySeries.get(index.data.parent) : null;
-    const body = buildSeriesIndexBody(
-      index,
-      childrenByParent.get(index.data.series) ?? [],
-      parent,
-      postsBySeries.get(index.data.series) ?? []
-    );
+    const body = buildSeriesIndexBody(index, childrenByParent.get(index.data.series) ?? [], parent);
     const next = syncSeriesGraphMetadata(original, body);
     if (next === original) continue;
 
     writeFileSync(index.file, next);
     changed += 1;
     console.log(`updated ${relative(ROOT, index.file).split(sep).join('/')}`);
-  }
-
-  for (const post of posts) {
-    if (post.data.status !== 'draft') continue;
-
-    const child = indexBySeries.get(post.data.series);
-    if (!child) continue;
-    const parent = indexBySeries.get(child.data.parent);
-    const body = buildPostBody(post, child, parent, postsBySeries.get(post.data.series) ?? []);
-    const next = `${post.open}${post.frontmatter}${post.close}${body}`;
-    const original = readFileSync(post.file, 'utf8');
-    if (next === original) continue;
-
-    writeFileSync(post.file, next);
-    changed += 1;
-    console.log(`updated ${relative(ROOT, post.file).split(sep).join('/')}`);
   }
 
   if (syncGraphSettings()) {

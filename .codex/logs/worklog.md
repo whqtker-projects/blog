@@ -612,3 +612,21 @@ Post 원본의 `관련 링크:` 블록은 Obsidian graph view에서 시리즈와
 - `pnpm test:repo`
 - `pnpm build`
 - `rg -n "!\\[\\[|_astro/" dist/posts/configuration-class-and-component-scan/index.html dist/posts/bean-lifecycle-and-scope/index.html`
+
+## 2026-05-15 — Create repository-maintenance backlog issues for series tooling and rendering
+
+코드베이스 레벨 개선 항목만 대상으로 기존 open issue 중복 여부를 먼저 확인한 뒤, 시리즈 그래프 동기화 정책 정렬, 문서 동기화, Python relationship printer 테스트, 타이틀 기반 필터 ambiguity 처리, post ordering 유틸 추출, SeriesList 컴포넌트 추출, `remark-hide-obsidian-related-links` 유지 여부 검토, script helper 통합, SEO metadata 개선, visibility 모드 문서화에 대한 GitHub issue 10건을 생성했다.
+
+모호한 설계 선택은 issue 본문에서 모두 `Decision required`로 분리했고, 구현 범위와 acceptance criteria는 결정 이후 바로 작업 가능한 수준으로 구체화했다. 생성된 이슈는 `#184`부터 `#193`까지다.
+
+## 2026-05-15 — Narrow series graph sync to series-index relationships only
+
+`#184` 결정에 따라 `scripts/sync-series-graph-metadata.mjs`는 이제 series index frontmatter(`aliases`, `tags`), parent/child series index body links, `src/content/.obsidian/graph.json` color groups만 관리한다. child series index body에 들어가던 `게시글 순서` inventory 생성과 draft post 본문 `관련 링크:` 주입 로직은 제거했다.
+
+동시에 `docs/content-model.md`와 `docs/series-index-authoring.md`의 직접 충돌 문구를 줄여 현재 정책과 스크립트 동작이 어긋나지 않도록 맞췄고, `scripts/sync-series-graph-metadata.test.mjs`를 추가해 child body가 parent link만 유지하고 post inventory를 다시 만들지 않음을 고정했다. `pnpm sync:series-graph` 실행으로 child series index 본문에 남아 있던 generated post inventory도 정리됐다.
+
+검증:
+- `pnpm sync:series-graph`
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`

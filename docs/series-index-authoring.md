@@ -112,16 +112,15 @@ Clarification:
 
 **Create the parent and child indexes before the first post.** Without them, the child-series route and post breadcrumb context cannot be generated correctly from day one.
 
-**Body links are allowed for graph view.** Series index bodies may contain actual series-index file links and ordered post links for graph-friendly navigation:
+**Body links are allowed for graph view.** Series index bodies may contain actual series-index file links for graph-friendly navigation:
 - parent series indexes may link to child series files
 - child series indexes may link to their parent series file
-- child series indexes may include ordered post wikilinks so Obsidian graph view shows membership and sequence
-- the site still auto-generates the real post inventory; index-body links are for authoring visibility rather than page rendering
+- child series indexes must not become manual post inventories
+- the site still auto-generates the real post inventory; index-body links are for parent/child navigation visibility rather than page rendering
 
 Recommended graph link syntax:
 - parent series file: `[[series_indexes/<parent>]]`
 - child series file: `[[series_indexes/<parent>/<child>]]`
-- post sequence inside a child series: `[[post-slug]]` or `[[post-slug|display title]]`
 
 Generic `[[wikilinks]]` remain post-only, and `[[concept:slug]]` remains concept-only.
 

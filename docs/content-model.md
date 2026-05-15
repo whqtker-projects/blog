@@ -71,10 +71,9 @@ Graph-friendly internal-link policy:
 - Obsidian graph links to series use actual vault paths such as `[[series_indexes/<parent>]]` and `[[series_indexes/<parent>/<child>]]`
 - `[[series:<parent>]]` and `[[series:<parent>/<child>]]` remain supported converter syntax, but they are not used for graph wiring because Obsidian may treat them as unresolved path-like links
 - use `|display text` when the reader-facing label should differ from the slug target
-- draft and idea-stage posts may include their child-series link plus previous/next post wikilinks for graph visibility
-- posts do not link directly to parent series when graph view should show only parent -> child -> post structure
-- `order` remains the structural source of truth even when posts also carry previous/next wikilinks
-- a leading `관련 링크:` block is Obsidian-only graph metadata and is stripped from rendered web pages by the Markdown pipeline
+- series graph wiring is limited to parent/child series index relationships
+- post bodies are not required to carry graph-link blocks
+- `order` remains the structural source of truth for post sequencing
 
 ---
 
@@ -140,8 +139,8 @@ Series display policy:
 Series index body-link policy:
 - parent series index bodies may include actual child-series file links for graph-friendly navigation context
 - child series index bodies may link to their parent series file
-- child series index bodies may include an ordered post wikilink list for graph visibility
-- the site still auto-generates the real post list; the index-body links are an authoring aid for Obsidian graph view, not the rendering source of truth
+- child series index bodies must not become manual post inventories
+- the site still auto-generates the real post list; index-body links are only for parent/child series navigation context
 
 ---
 
@@ -196,7 +195,7 @@ Post title-prefix rule:
 - When a numeric prefix is present, repository validation requires it to match the post's explicit `order`.
 - Post pages do not add a second visible `#order` breadcrumb cue on top of the title.
 
-You may write ordered post links manually in the series index body for Obsidian graph visibility, but page rendering still relies on generated listings rather than those links.
+Series pages still rely on generated listings rather than any links written in the index body.
 
 ---
 

@@ -12,7 +12,7 @@
     "astro": "astro",
     "convert": "node scripts/obsidian-to-astro.mjs",
     "test:convert": "node --test scripts/obsidian-to-astro.test.mjs",
-    "test:repo": "node --test scripts/post-visibility.test.mjs scripts/series-hierarchy.test.mjs scripts/check-content.test.mjs src/utils/remark-hide-obsidian-related-links.test.mjs src/utils/remark-obsidian-image-wikilinks.test.mjs",
+    "test:repo": "node --test scripts/post-visibility.test.mjs scripts/series-hierarchy.test.mjs scripts/check-content.test.mjs scripts/sync-series-graph-metadata.test.mjs src/utils/remark-hide-obsidian-related-links.test.mjs src/utils/remark-obsidian-image-wikilinks.test.mjs",
     "check:content": "node scripts/check-content.mjs",
     "sync:series-graph": "node scripts/sync-series-graph-metadata.mjs",
     "print:series-tree": "python3 scripts/print_series_relationships.py --format tree",

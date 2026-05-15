@@ -11,10 +11,3 @@ aliases:
 ---
 관련 링크:
 - 상위 시리즈: [[series_indexes/database-systems|데이터베이스]]
-
-게시글 순서:
-1. [[what-is-an-erd|What Is an ERD?]]
-2. [[mapping-erd-to-relational-schema|Mapping ERD to a Relational Schema]]
-3. [[integrity-constraints-in-relational-design|Integrity Constraints in Relational Design]]
-4. [[functional-dependency|Functional Dependency]]
-5. [[normalization-and-normal-forms|Normalization and Normal Forms]]
