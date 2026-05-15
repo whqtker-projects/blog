@@ -139,6 +139,7 @@ Series display policy:
 Series index body-link policy:
 - parent series index bodies may include actual child-series file links for graph-friendly navigation context
 - child series index bodies may link to their parent series file
+- sibling child-series links are optional, not the default pattern
 - child series index bodies must not become manual post inventories
 - the site still auto-generates the real post list; index-body links are only for parent/child series navigation context
 

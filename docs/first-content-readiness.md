@@ -1,7 +1,7 @@
 # First-Content Readiness
 
 **Status:** Active — produced by Issue #30.  
-**Last updated:** 2026-05-09
+**Last updated:** 2026-05-15
 
 This document defines the artifacts and criteria needed to move from planning into active content creation. It covers the candidate post set for the first series, the process for starting a post, the drafting checklist, the quality bar for publication, and the pre-publication self-review checklist.
 
@@ -15,9 +15,10 @@ Language-policy note:
 Graph-link note:
 - generic `[[wikilinks]]` are reserved for post links
 - Obsidian graph links to series use `[[series_indexes/<parent>]]` or `[[series_indexes/<parent>/<child>]]`
-- child series indexes may include ordered post wikilinks so graph view shows post membership and sequence
-- draft and idea-stage posts may include child series links plus previous/next post links, but `order` remains canonical
-- posts should not link directly to parent series when graph view should preserve the parent → child → post shape
+- series graph wiring is limited to parent/child series index relationships
+- child series indexes must not become manual post inventories
+- post stubs remain valid without graph-link blocks
+- `order` remains canonical for post sequencing
 
 Current operating documents:
 - [`docs/series/database-systems.md`](series/database-systems.md)

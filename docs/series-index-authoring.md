@@ -115,12 +115,15 @@ Clarification:
 **Body links are allowed for graph view.** Series index bodies may contain actual series-index file links for graph-friendly navigation:
 - parent series indexes may link to child series files
 - child series indexes may link to their parent series file
+- sibling child-series cross-links are optional, not the default pattern
 - child series indexes must not become manual post inventories
 - the site still auto-generates the real post inventory; index-body links are for parent/child navigation visibility rather than page rendering
 
 Recommended graph link syntax:
 - parent series file: `[[series_indexes/<parent>]]`
 - child series file: `[[series_indexes/<parent>/<child>]]`
+
+`[[series:<parent>]]` and `[[series:<parent>/<child>]]` remain converter-supported syntax, but series authoring docs treat actual `series_indexes/...` file links as the default graph-wiring form inside the Obsidian vault.
 
 Generic `[[wikilinks]]` remain post-only, and `[[concept:slug]]` remains concept-only.
 
