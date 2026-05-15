@@ -636,3 +636,9 @@ Post 원본의 `관련 링크:` 블록은 Obsidian graph view에서 시리즈와
 `#185` 결정에 따라 series graph authoring 표준 예시는 `[[series_indexes/<parent>]]`, `[[series_indexes/<parent>/<child>]]` 형태의 실제 Obsidian file link로 통일했다. `docs/content-model.md`, `docs/series-index-authoring.md`, `docs/post-template.md`, `docs/first-content-readiness.md`에서 child series index의 ordered post wikilink 허용, post body graph block 기대, sibling child link를 기본처럼 읽히게 하는 문구를 제거하거나 축소했다.
 
 문서 전반에서 현재 정책을 명시적으로 맞췄다: parent index는 child index를 링크할 수 있고, child index는 parent index를 링크할 수 있으며, sibling child link는 선택적이다. post stub은 frontmatter와 최소 본문만으로 유효하고 graph-link block이 필요하지 않다. `[[series:...]]` 표기는 converter-supported syntax로만 남기고 기본 graph wiring 예시에서는 제외했다.
+
+## 2026-05-15 — Tighten idea-state stub guidance in first-content-readiness
+
+`docs/first-content-readiness.md`의 `idea` 상태 안내에서 post body graph link를 선택적으로 허용하거나 권장하는 뉘앙스를 제거했다. 현재 정책에 맞게 `idea` 상태의 핵심은 required frontmatter 충족이며, frontmatter-only stub 또는 최소 본문 메모만으로도 유효하다고 다시 명시했다.
+
+또한 `status`는 초기 작성 단계에서도 명시적으로 필요하고, `status: published`만 staged/production에 포함되므로 `idea` 글은 공개 사이트에 나오지 않는다는 설명만 남겼다.

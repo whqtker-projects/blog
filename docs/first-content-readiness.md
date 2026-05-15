@@ -382,7 +382,7 @@ write-ahead-log.md
 
 ### Step 2 — Write the minimum frontmatter for `idea` state
 
-A post in `idea` state must set the required frontmatter. Frontmatter-only stubs or minimal-body notes remain valid, but optional graph links to the child series or adjacent posts are allowed when they improve Obsidian visibility. All three D-25 required fields must be set even at `idea` state, because the conversion script and Astro schema both require them.
+A post in `idea` state must set the required frontmatter. Frontmatter-only stubs or minimal-body notes remain valid. All three D-25 required fields must be set even at `idea` state, because the conversion script and Astro schema both require them.
 
 ```yaml
 ---
@@ -408,7 +408,7 @@ Minimum fields at `idea` state:
 | `order` | Yes (D-25) | Intended position in the series (integer) |
 | `status` | Yes (D-32) | `idea` — marks the post as not yet written |
 
-No other frontmatter fields are required at `idea` state. `status` must still be set explicitly even for early drafts so lifecycle and visibility remain unambiguous. Under D-33, only `status: published` is included in staged and production output, so `idea` posts stay off the public site. Graph-friendly body links remain recommended even when the rest of the post body is still a stub.
+No other frontmatter fields are required at `idea` state. `status` must still be set explicitly even for early drafts so lifecycle and visibility remain unambiguous. Under D-33, only `status: published` is included in staged and production output, so `idea` posts stay off the public site.
 
 ### Step 3 — Advance to `draft`
 
