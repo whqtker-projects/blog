@@ -1,6 +1,6 @@
 # Content Model
 
-This document defines the role boundaries for the four content types in this repository: `posts`, `examples`, `concepts`, and `series_indexes`.
+This document defines the role boundaries for the three active content types in this repository: `posts`, `examples`, and `series_indexes`.
 
 It also serves as the authoritative information-architecture contract for the current parent-child series model.
 
@@ -10,17 +10,17 @@ Structural policy comes from `D-57` through `D-60`; page-role and attachment rul
 
 ## Content Types at a Glance
 
-| | `posts` | `examples` | `concepts` | `series_indexes` |
-|---|---|---|---|---|
-| URL | `/posts/<slug>` | `/posts/<slug>/examples/<example>` | `/concepts/<slug>` | Parent: `/series/<parent>`; Child: `/series/<parent>/<child>` |
-| Location | `src/content/posts/` | `src/content/examples/` | `src/content/concepts/` | `src/content/series_indexes/` |
-| Belongs to series | Yes (required; child series only) | No | No | Defines either a parent series or a child series |
-| Attaches to post | No | Yes (required; exactly one post) | No | No |
-| Has `order` | Yes (required) | Yes (required) | No | Child only |
-| Has `status` | Yes (required) | Yes (required) | No | No |
-| Created via | `pnpm convert` from Obsidian | Manual authoring | `pnpm convert` from Obsidian | Manual authoring |
-| Appears on homepage | No | No | No | Parent series only |
-| Prev/next navigation | Yes | No | No | No |
+| | `posts` | `examples` | `series_indexes` |
+|---|---|---|---|
+| URL | `/posts/<slug>` | `/posts/<slug>/examples/<example>` | Parent: `/series/<parent>`; Child: `/series/<parent>/<child>` |
+| Location | `src/content/posts/` | `src/content/examples/` | `src/content/series_indexes/` |
+| Belongs to series | Yes (required; child series only) | No | Defines either a parent series or a child series |
+| Attaches to post | No | Yes (required; exactly one post) | No |
+| Has `order` | Yes (required) | Yes (required) | Child only |
+| Has `status` | Yes (required) | Yes (required) | No |
+| Created via | `pnpm convert` from Obsidian | Manual authoring | Manual authoring |
+| Appears on homepage | No | No | Parent series only |
+| Prev/next navigation | Yes | No | No |
 
 ---
 
@@ -36,8 +36,6 @@ This repository does not allow a third level such as parent → middle → child
 
 `examples` are auxiliary pages attached to posts. They do not create a new series hierarchy level and do not change the parent → child → post structure.
 
-`concepts` remain outside this hierarchy. They continue to render as standalone reference pages and do not belong to any series level.
-
 ---
 
 ## `posts`
@@ -46,7 +44,7 @@ Posts are in-depth explanations of a topic within a child series. Each post belo
 
 **Create a post when** you want to explain a concept in depth with examples and progression, as part of a named series.
 
-**Do not use a post for** one-paragraph reference definitions (use a concept) or series introductions (use a series index).
+**Do not use a post for** series introductions (use a series index). Short term definitions stay inline inside post bodies. If a term needs a full standalone explanation, write it as a normal post in the relevant child series.
 
 **Required frontmatter:**
 ```yaml
@@ -71,13 +69,17 @@ Post language policy:
 
 Graph-friendly internal-link policy:
 - generic `[[wikilinks]]` remain post-only and resolve to `/posts/<slug>`
-- `[[concept:slug]]` links remain concept-only and resolve to `/concepts/<slug>`
 - Obsidian graph links to series use actual vault paths such as `[[series_indexes/<parent>]]` and `[[series_indexes/<parent>/<child>]]`
 - `[[series:<parent>]]` and `[[series:<parent>/<child>]]` remain supported converter syntax, but they are not used for graph wiring because Obsidian may treat them as unresolved path-like links
+- `[[concept:slug]]` is no longer supported
 - use `|display text` when the reader-facing label should differ from the slug target
 - series graph wiring primarily lives in series index bodies
 - post bodies are not required to carry graph-link blocks
 - `order` remains the structural source of truth for post sequencing
+
+Definition policy:
+- short definitions stay inline inside post bodies
+- if a term needs a full explanation, create a normal post in the relevant child series instead of a standalone glossary page
 
 Example policy:
 - short code snippets remain inline inside post bodies
@@ -113,27 +115,10 @@ sourcePath: string
 Example attachment rules:
 - each example attaches to exactly one post through `post`
 - a post may have zero or more examples
-- examples do not attach directly to parent series, child series, or concepts
+- examples do not attach directly to parent series or child series
 - local development shows `idea`, `draft`, and `published` examples
 - staged and production builds show only `published` examples
 - example pages are routed under their owning post as `/posts/<slug>/examples/<example>`
-
----
-
-## `concepts`
-
-Concepts are short reference definitions for individual technical terms. They are linked from posts using `[[concept:slug]]` syntax and render at `/concepts/<slug>`.
-
-**Create a concept when** a term recurs across posts and would benefit from a one-paragraph definition at a stable URL.
-
-**Do not use a concept for** multi-section explanations or series-specific content (use a post).
-
-**Required frontmatter:**
-```yaml
-title: string
-```
-
-Concepts remain outside the parent-child series hierarchy. They are not parent series, not child series, and not attached to either one.
 
 ---
 
@@ -276,6 +261,5 @@ Do not commit posts in a child series before both the parent and child series in
 ## Related Documents
 
 - [`docs/series-index-authoring.md`](series-index-authoring.md) — rules and workflow for series index documents
-- [`docs/concept-authoring-workflow.md`](concept-authoring-workflow.md) — rules and workflow for concept pages
 - [`docs/astro-bootstrap.md`](astro-bootstrap.md) — build commands, routes, and directory structure
 - [`docs/post-metadata.md`](post-metadata.md) — full post frontmatter field definitions

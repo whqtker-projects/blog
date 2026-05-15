@@ -10,6 +10,7 @@ This document defines the reading-focused UI direction that was implemented in t
 Hierarchy note:
 - This document is historical and reflects the pre-parent/child-series UI structure that existed during the first reading pass.
 - The current repository now uses `/series/<parent>` and `/series/<parent>/<child>` routes instead of the retired flat `/series/<series>` route.
+- Any concept-page references below are also historical only. Standalone concept pages were removed from the active repository model on 2026-05-16 and must not be treated as current authoring or routing guidance.
 
 ---
 

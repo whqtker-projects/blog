@@ -77,7 +77,7 @@ li {
   margin-bottom: 0.35rem;
 }
 
-/* Links (D-43: no special concept-link treatment) */
+/* Links (D-43: standalone concept pages removed; no separate concept-link styling) */
 a {
   color: #1a1a1a;
 }

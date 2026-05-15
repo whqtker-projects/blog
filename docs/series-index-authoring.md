@@ -11,7 +11,7 @@ A series index document defines either a parent series or a child series and dri
 - Parent series appear on the homepage at `/`
 - Series routes are generated from the parent/child index structure
 
-Series index documents are distinct from posts and concepts. They are authored manually and committed under `src/content/series_indexes/` — they are not converted from Obsidian.
+Series index documents are distinct from posts and examples. They are authored manually and committed under `src/content/series_indexes/` — they are not converted from Obsidian.
 
 ---
 
@@ -126,7 +126,7 @@ Recommended graph link syntax:
 
 `[[series:<parent>]]` and `[[series:<parent>/<child>]]` remain converter-supported syntax, but series authoring docs treat actual `series_indexes/...` file links as the default graph-wiring form inside the Obsidian vault.
 
-Generic `[[wikilinks]]` remain post-only, and `[[concept:slug]]` remains concept-only.
+Generic `[[wikilinks]]` remain post-only. `[[concept:slug]]` is not supported.
 
 ---
 
@@ -168,6 +168,6 @@ description: "How relational databases store, index, and retrieve data — from 
 
 ## Related Documents
 
-- [`docs/content-model.md`](content-model.md) — role boundaries for all three content types
+- [`docs/content-model.md`](content-model.md) — role boundaries for all active content types
 - [`docs/astro-bootstrap.md`](astro-bootstrap.md) — build commands and directory structure
 - [`src/content.config.ts`](../src/content.config.ts) — Zod schema for `series_indexes`

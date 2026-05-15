@@ -85,7 +85,7 @@ Because D-15 mandates lowercase kebab-case filenames, slugs require no further t
 
 ## Wikilink Conversion Rules
 
-All `[[wikilink]]` patterns in the post body are converted to standard Markdown links before writing to the output directory.
+Supported `[[wikilink]]` patterns in the post body are converted to standard Markdown links before writing to the output directory.
 
 | Obsidian syntax                      | Converted Markdown                          |
 |--------------------------------------|---------------------------------------------|
@@ -97,6 +97,24 @@ All `[[wikilink]]` patterns in the post body are converted to standard Markdown 
 Page names in wikilinks are normalised to slug form: lowercased, spaces replaced with hyphens, non-word characters stripped. This means `[[Database Index]]` and `[[database-index]]` both resolve to `/posts/database-index`.
 
 Heading anchors follow the same normalisation (lowercase, spaces → hyphens).
+
+### Unsupported link namespaces
+
+The converter continues to support explicit series links:
+
+| Obsidian syntax | Converted Markdown |
+|---|---|
+| `[[series:parent]]` | `[parent](/series/parent)` |
+| `[[series:parent/child\|display]]` | `[display](/series/parent/child)` |
+
+`[[concept:slug]]` is no longer supported. When the converter encounters that legacy namespace:
+
+| Mode | Behaviour |
+|---|---|
+| Default | Fail conversion for that file with an explicit cleanup error |
+| `--strict` | Fail conversion for that file with the same explicit cleanup error |
+
+The error message tells the author to use inline definition text or link to a normal post instead. No `/concepts/<slug>` link is generated, and no automatic fallback conversion happens.
 
 ---
 
@@ -155,7 +173,7 @@ The script is a one-shot Node.js process, not an Astro integration. Conversion i
 **Trigger:** run by the author whenever Obsidian vault content has changed.
 
 ```bash
-# Standard sync (warn on unresolved links)
+# Standard sync (warn on unresolved links or unsupported concept links)
 pnpm convert --input /path/to/obsidian-vault/posts
 
 # Strict sync — required before committing (fail on unresolved links)

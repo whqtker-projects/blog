@@ -11,7 +11,7 @@ tags:
 - 이전 글: [[dns-resolution|DNS and Name Resolution]]
 - 다음 글: [[tls-and-https|TLS and HTTPS]]
 
-HTTP is the application-layer protocol that lets a client ask for a resource and a server answer with a response. When you open a web page, load an API endpoint, or submit a form, the application usually speaks HTTP on top of lower-level protocols such as [DNS](/concepts/dns), [TCP](/concepts/tcp), and sometimes [TLS](/concepts/tls). HTTP does not move bytes across the network by itself; it defines the structure and meaning of the messages exchanged between two endpoints.
+HTTP is the application-layer protocol that lets a client ask for a resource and a server answer with a response. When you open a web page, load an API endpoint, or submit a form, the application usually speaks HTTP on top of lower-level protocols such as DNS, TCP, and sometimes TLS. HTTP does not move bytes across the network by itself; it defines the structure and meaning of the messages exchanged between two endpoints.
 
 ## What HTTP Is
 
@@ -79,19 +79,19 @@ This separation is useful operationally. Stateless protocol messages are easier 
 
 To fetch `https://example.com/articles/42`, the client moves through several layers:
 
-1. Resolve the domain name with [DNS](/concepts/dns).
-2. Open a connection to the server, usually with [TCP](/concepts/tcp).
-3. If the URL is HTTPS, negotiate encryption with [TLS](/concepts/tls).
+1. Resolve the domain name with DNS.
+2. Open a connection to the server, usually with TCP.
+3. If the URL is HTTPS, negotiate encryption with TLS.
 4. Send the HTTP request over that established channel.
 5. Read the HTTP response and render or process the result.
 
-This layering matters because HTTP and TCP solve different problems. [TCP](/concepts/tcp) handles ordered, reliable byte delivery. HTTP defines the application meaning of the bytes. [TLS](/concepts/tls) adds confidentiality and integrity. Keeping those responsibilities separate is what lets the same HTTP semantics run over plain TCP, encrypted HTTPS, or newer transports in later protocol versions.
+This layering matters because HTTP and TCP solve different problems. TCP handles ordered, reliable byte delivery. HTTP defines the application meaning of the bytes. TLS adds confidentiality and integrity. Keeping those responsibilities separate is what lets the same HTTP semantics run over plain TCP, encrypted HTTPS, or newer transports in later protocol versions.
 
 ## Example: Loading One Web Page
 
 Suppose you enter `https://example.com/docs/http` into a browser.
 
-First, the browser asks [DNS](/concepts/dns) for the IP address of `example.com`. Next, it opens a [TCP](/concepts/tcp) connection to that address. Because the URL is HTTPS, it then performs a [TLS](/concepts/tls) handshake so the traffic is encrypted and the server can prove its identity. Only after those lower layers are ready does the browser send an HTTP request such as:
+First, the browser asks DNS for the IP address of `example.com`. Next, it opens a TCP connection to that address. Because the URL is HTTPS, it then performs a TLS handshake so the traffic is encrypted and the server can prove its identity. Only after those lower layers are ready does the browser send an HTTP request such as:
 
 ```http
 GET /docs/http HTTP/1.1

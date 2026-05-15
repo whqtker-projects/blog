@@ -48,10 +48,10 @@ Every post must include the following content areas. Titles and ordering are dec
 ## Graph-Link Scope
 
 - Generic `[[wikilinks]]` are reserved for post links.
-- Use `[[concept:slug]]` for concept links.
 - Series graph wiring is handled through series index bodies, not post bodies.
 - When a series graph link is needed in authoring docs or examples, prefer actual Obsidian file links such as `[[series_indexes/<parent>]]` or `[[series_indexes/<parent>/<child>]]`.
 - `[[series:<parent>]]` and `[[series:<parent>/<child>]]` remain converter-supported syntax, but they are not the default graph-wiring form in the vault.
+- `[[concept:slug]]` is not supported.
 - Post stubs remain valid without any leading `관련 링크:` block.
 - `order` remains canonical for sequencing.
 

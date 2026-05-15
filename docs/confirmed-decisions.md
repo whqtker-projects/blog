@@ -8,7 +8,7 @@ This document is the stable reference for decisions that have been explicitly ag
 - When a new decision is confirmed, add it here and remove it from `open-questions.md`.
 - For the full decision record with context and rationale, see `decision-log.md`.
 
-**Last updated:** 2026-05-09 (D-83–D-86 added: graph-link policy and series-link syntax)
+**Last updated:** 2026-05-16 (D-43 updated: standalone concept pages removed)
 
 ---
 
@@ -104,7 +104,7 @@ This document is the stable reference for decisions that have been explicitly ag
 | D-40 | Content width: `max-width: 65ch` applied to all page types. |
 | D-41 | Font stack: system font stack (`-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", sans-serif`). No web font import. |
 | D-42 | Site-level header with a home link is added to `BaseLayout.astro`, making it visible on all pages. |
-| D-43 | Inline concept links (`/concepts/<slug>`) are styled identically to normal post links. No distinct visual treatment. |
+| D-43 | Standalone concept pages are not supported. Short term definitions stay inline inside posts; fuller explanations become normal posts in the relevant child series. |
 
 ---
 

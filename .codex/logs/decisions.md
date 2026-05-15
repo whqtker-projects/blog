@@ -75,3 +75,9 @@ The repository now centralizes browser-title formatting and shared social metada
 Longer implementation walkthroughs live in a separate `examples` collection and route under `/posts/<slug>/examples/<example>`. They attach to exactly one post through frontmatter and remain optional, so the repository hierarchy stays parent → child → post rather than growing a new series-owned level.
 
 Visibility for examples follows the same build rule as posts: local development can inspect all statuses, while staged and production output include only `published` examples. Short explanatory snippets remain inline in the post body rather than moving into the `examples` collection.
+
+## 2026-05-16 — Standalone concept pages are removed from the active repository model
+
+The active repository content model now supports only `posts`, `examples`, and `series_indexes`. Short term definitions stay inline inside post bodies, and any term that needs a fuller explanation should become a normal post in the relevant child series rather than a separate `concepts` page.
+
+The Obsidian converter no longer resolves `[[concept:slug]]` to `/concepts/<slug>`. Legacy concept links now fail conversion with an explicit cleanup error so authors must replace them intentionally with inline definition text or a normal post link.

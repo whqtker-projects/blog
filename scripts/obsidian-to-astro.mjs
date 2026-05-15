@@ -1,11 +1,11 @@
 /**
  * Obsidian → Astro conversion script (D-18)
  *
- * Transforms Obsidian Markdown posts and concepts into Astro-compatible content:
+ * Transforms Obsidian Markdown posts into Astro-compatible content:
  * - ![[image]] wikilinks → standard Markdown image syntax (images loaded from src/content/attachments/)
- * - [[concept:slug]] / [[concept:slug|alias]] → /concepts/<slug> links
  * - [[series:parent]] / [[series:parent/child]] → /series/... links
  * - [[wikilinks]] → standard Markdown links to posts
+ * - [[concept:slug]] is no longer supported; conversion fails with a cleanup error
  * - Validates file names against D-15 (lowercase kebab-case, English)
  * - Passes frontmatter through unchanged
  *
@@ -14,8 +14,6 @@
  *
  * --input            Path to the Obsidian vault posts directory (required)
  * --output           Destination directory for posts (default: ./src/content/posts)
- * --concepts         Path to the Obsidian vault concepts directory (optional)
- * --concepts-output  Destination directory for concepts (default: ./src/content/concepts)
  * --strict           Exit with error on any unresolved wikilink or missing image (default: warn only)
  *
  * Image files referenced via ![[...]] must be present in src/content/attachments/ before running.
@@ -33,8 +31,8 @@ const VALID_FILENAME_RE = /^[a-z0-9]+(-[a-z0-9]+)*\.md$/;
 // ![[image.ext]] or ![[image.ext|alt text]] — must match before WIKILINK_RE
 const IMAGE_WIKILINK_RE = /!\[\[([^\]|\n]+?)(?:\|([^\]\n]+?))?\]\]/g;
 
-// [[concept:slug]] or [[concept:slug|display]] — must match before WIKILINK_RE
-const CONCEPT_LINK_RE = /\[\[concept:([^\]|\n]+?)(?:\|([^\]\n]+?))?\]\]/g;
+// [[concept:slug]] or [[concept:slug|display]] — unsupported legacy namespace
+const UNSUPPORTED_CONCEPT_LINK_RE = /\[\[concept:([^\]|\n]+?)(?:\|([^\]\n]+?))?\]\]/g;
 
 // [[series:parent]] or [[series:parent/child|display]] — must match before WIKILINK_RE
 const SERIES_LINK_RE = /\[\[series:([^\]|\n]+?)(?:\|([^\]\n]+?))?\]\]/g;
@@ -86,35 +84,6 @@ export function convertImageWikilinks(content) {
     const altText = alt ? alt.trim() : name;
     return `![${altText}](../attachments/${encodeURI(name)})`;
   });
-}
-
-/**
- * Builds an alias map from a concepts vault directory.
- * Maps lowercased alias (and canonical slug) → canonical slug.
- *
- * @param {string} conceptsDir - path to vault concepts directory
- * @returns {Map<string, string>}
- */
-export function buildConceptAliasMap(conceptsDir) {
-  const aliasMap = new Map();
-  if (!existsSync(conceptsDir)) return aliasMap;
-
-  const files = readdirSync(conceptsDir).filter(f => extname(f) === '.md');
-  for (const file of files) {
-    const slug = fileNameToSlug(file);
-    aliasMap.set(slug, slug);
-    const raw = readFileSync(join(conceptsDir, file), 'utf8');
-    const { frontmatter } = parseFrontmatter(raw);
-    if (!frontmatter) continue;
-    // Parse YAML inline array: aliases: [TCP, tcp] or aliases: ['TCP', "tcp"]
-    const match = frontmatter.match(/^aliases:\s*\[([^\]]*)\]/m);
-    if (!match) continue;
-    for (const alias of match[1].split(',')) {
-      const normalized = alias.trim().replace(/^['"]|['"]$/g, '').toLowerCase();
-      if (normalized) aliasMap.set(normalized, slug);
-    }
-  }
-  return aliasMap;
 }
 
 function imageExistsInSourceDir(imageSourceDir, imageFile) {
@@ -180,30 +149,19 @@ export function buildSeriesTargetSet(seriesIndexesDir) {
 }
 
 /**
- * Converts [[concept:slug]] and [[concept:slug|display]] to /concepts/<slug> links.
- * Resolves via alias map when provided.
+ * Finds unsupported legacy [[concept:...]] links.
  *
  * @param {string} content
- * @param {Map<string, string>|null} conceptAliasMap - lowercased-alias → canonical slug
- * @param {Set<string>|null} knownConceptSlugs - canonical slug set; null skips resolution check
- * @returns {{ result: string, warnings: string[] }}
+ * @returns {string[]}
  */
-export function convertConceptLinks(content, conceptAliasMap = null, knownConceptSlugs = null) {
-  const warnings = [];
+export function findDeprecatedConceptLinks(content) {
+  const matches = [];
 
-  const result = content.replace(CONCEPT_LINK_RE, (_match, target, alias) => {
-    const normalized = target.trim().toLowerCase();
-    const slug = conceptAliasMap ? (conceptAliasMap.get(normalized) ?? normalized) : normalized;
+  for (const match of content.matchAll(UNSUPPORTED_CONCEPT_LINK_RE)) {
+    matches.push(match[0]);
+  }
 
-    if (knownConceptSlugs !== null && !knownConceptSlugs.has(slug)) {
-      warnings.push(target.trim());
-    }
-
-    const text = alias ? alias.trim() : target.trim();
-    return `[${text}](/concepts/${slug})`;
-  });
-
-  return { result, warnings };
+  return matches;
 }
 
 /**
@@ -274,17 +232,13 @@ export function parseFrontmatter(content) {
  * @param {string} filename        - used only for error messages
  * @param {Set<string>|null} knownSlugs
  * @param {string|null} publicImagesDir - path to content attachments on disk; null skips image validation
- * @param {Map<string, string>|null} conceptAliasMap - alias map for concept link resolution
- * @param {Set<string>|null} knownConceptSlugs - known concept slugs; null skips resolution check
- * @returns {{ content: string, warnings: string[], conceptWarnings: string[], imageWarnings: string[] }}
+ * @returns {{ content: string, warnings: string[], seriesWarnings: string[], imageWarnings: string[] }}
  */
 export function convertFile(
   inputContent,
   filename,
   knownSlugs = null,
   publicImagesDir = null,
-  conceptAliasMap = null,
-  knownConceptSlugs = null,
   knownSeriesTargets = null,
 ) {
   const { frontmatter, body } = parseFrontmatter(inputContent);
@@ -296,20 +250,22 @@ export function convertFile(
     ? extractImageFilenames(body).filter(f => !imageExistsInSourceDir(publicImagesDir, f))
     : [];
 
-  // Conversion order: images first, then concept links, then series links, then post wikilinks
+  // Conversion order: images first, then deprecated concept-link guard, then series links, then post wikilinks
   const imageConverted = convertImageWikilinks(body);
-  const { result: conceptConverted, warnings: conceptWarnings } = convertConceptLinks(
-    imageConverted, conceptAliasMap, knownConceptSlugs
-  );
+  const deprecatedConceptLinks = findDeprecatedConceptLinks(imageConverted);
+  if (deprecatedConceptLinks.length > 0) {
+    throw new Error(
+      `${filename}: concept links are no longer supported (${deprecatedConceptLinks.join(', ')}); use inline definition text or link to a normal post`
+    );
+  }
   const { result: seriesConverted, warnings: seriesWarnings } = convertSeriesLinks(
-    conceptConverted, knownSeriesTargets
+    imageConverted, knownSeriesTargets
   );
   const { result: convertedBody, warnings } = convertWikilinks(seriesConverted, knownSlugs);
 
   return {
     content: `---\n${frontmatter}\n---\n${convertedBody}`,
     warnings,
-    conceptWarnings,
     seriesWarnings,
     imageWarnings,
   };
@@ -322,8 +278,6 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
     options: {
       input:            { type: 'string',  short: 'i' },
       output:           { type: 'string',  short: 'o', default: './src/content/posts' },
-      concepts:         { type: 'string' },
-      'concepts-output': { type: 'string',             default: './src/content/concepts' },
       'series-indexes': { type: 'string',              default: './src/content/series_indexes' },
       strict:           { type: 'boolean',             default: false },
     },
@@ -331,30 +285,16 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
 
   if (!values.input) {
     console.error(
-      'Usage: node scripts/obsidian-to-astro.mjs --input <vault-posts-dir> [--output <dir>] [--concepts <vault-concepts-dir>] [--concepts-output <dir>] [--series-indexes <dir>] [--strict]'
+      'Usage: node scripts/obsidian-to-astro.mjs --input <vault-posts-dir> [--output <dir>] [--series-indexes <dir>] [--strict]'
     );
     process.exit(1);
   }
 
   const inputDir        = values.input;
   const outputDir       = values.output;
-  const conceptsDir     = values.concepts ?? null;
-  const conceptsOutput  = values['concepts-output'];
   const seriesIndexesDir = values['series-indexes'];
 
   if (!existsSync(outputDir)) mkdirSync(outputDir, { recursive: true });
-
-  // Build concept alias map and known slugs from vault concepts directory (if provided)
-  let conceptAliasMap    = null;
-  let knownConceptSlugs  = null;
-
-  if (conceptsDir) {
-    conceptAliasMap = buildConceptAliasMap(conceptsDir);
-    knownConceptSlugs = new Set(
-      readdirSync(conceptsDir).filter(f => extname(f) === '.md').map(fileNameToSlug)
-    );
-    if (!existsSync(conceptsOutput)) mkdirSync(conceptsOutput, { recursive: true });
-  }
 
   const knownSeriesTargets = buildSeriesTargetSet(seriesIndexesDir);
 
@@ -374,18 +314,12 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
     const inputContent = readFileSync(join(inputDir, file), 'utf8');
 
     try {
-      const { content: converted, warnings, conceptWarnings, seriesWarnings, imageWarnings } = convertFile(
-        inputContent, file, knownSlugs, './src/content/attachments', conceptAliasMap, knownConceptSlugs, knownSeriesTargets
+      const { content: converted, warnings, seriesWarnings, imageWarnings } = convertFile(
+        inputContent, file, knownSlugs, './src/content/attachments', knownSeriesTargets
       );
 
       for (const slug of warnings) {
         console.warn(`Warn: ${file} — unresolved wikilink [[${slug}]]`);
-        warnCount++;
-        if (values.strict) errorCount++;
-      }
-
-      for (const target of conceptWarnings) {
-        console.warn(`Warn: ${file} — unresolved concept link [[concept:${target}]]`);
         warnCount++;
         if (values.strict) errorCount++;
       }
@@ -410,52 +344,7 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
     }
   }
 
-  // Process concept files if --concepts was provided
-  if (conceptsDir) {
-    const conceptFiles = readdirSync(conceptsDir).filter(f => extname(f) === '.md');
-    for (const file of conceptFiles) {
-      if (!validateFileName(file)) {
-        console.error(`Skip (concept): ${file} — filename violates D-15`);
-        errorCount++;
-        continue;
-      }
-      const inputContent = readFileSync(join(conceptsDir, file), 'utf8');
-      try {
-        // Concepts use same conversion pipeline; post knownSlugs passed for any [[post]] refs
-        const { content: converted, warnings, conceptWarnings, seriesWarnings, imageWarnings } = convertFile(
-          inputContent, file, knownSlugs, './src/content/attachments', conceptAliasMap, knownConceptSlugs, knownSeriesTargets
-        );
-        for (const slug of warnings) {
-          console.warn(`Warn (concept): ${file} — unresolved wikilink [[${slug}]]`);
-          warnCount++;
-          if (values.strict) errorCount++;
-        }
-        for (const target of conceptWarnings) {
-          console.warn(`Warn (concept): ${file} — unresolved concept link [[concept:${target}]]`);
-          warnCount++;
-          if (values.strict) errorCount++;
-        }
-        for (const target of seriesWarnings) {
-          console.warn(`Warn (concept): ${file} — unresolved series link [[series:${target}]]`);
-          warnCount++;
-          if (values.strict) errorCount++;
-        }
-        for (const imgFile of imageWarnings) {
-          console.warn(`Warn (concept): ${file} — missing image src/content/attachments/${imgFile}`);
-          warnCount++;
-          if (values.strict) errorCount++;
-        }
-        writeFileSync(join(conceptsOutput, file), converted, 'utf8');
-        console.log(`OK (concept): ${file}`);
-      } catch (err) {
-        console.error(`Error (concept): ${err.message}`);
-        errorCount++;
-      }
-    }
-    console.log(`\n${files.length} post(s), ${conceptFiles.length} concept(s), ${warnCount} warning(s), ${errorCount} error(s).`);
-  } else {
-    console.log(`\n${files.length} file(s), ${warnCount} warning(s), ${errorCount} error(s).`);
-  }
+  console.log(`\n${files.length} file(s), ${warnCount} warning(s), ${errorCount} error(s).`);
 
   if (errorCount > 0) process.exit(1);
 }

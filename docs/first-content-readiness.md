@@ -1,7 +1,7 @@
 # First-Content Readiness
 
 **Status:** Active — produced by Issue #30.  
-**Last updated:** 2026-05-15
+**Last updated:** 2026-05-16
 
 This document defines the artifacts and criteria needed to move from planning into active content creation. It covers the candidate post set for the first series, the process for starting a post, the drafting checklist, the quality bar for publication, and the pre-publication self-review checklist.
 
@@ -16,11 +16,13 @@ Graph-link note:
 - generic `[[wikilinks]]` are reserved for post links
 - Obsidian graph links to series use `[[series_indexes/<parent>]]` or `[[series_indexes/<parent>/<child>]]`
 - child series indexes may include ordered post wikilinks for Obsidian authoring visibility
+- `[[concept:slug]]` is not supported
 - post stubs remain valid without graph-link blocks
 - `order` remains canonical for post sequencing
 
 Example note:
 - short explanatory snippets stay inside the post body
+- short term definitions also stay inline inside the post body
 - project-style implementation examples may later be added as separate example pages attached to a post
 - a post remains valid without any attached example pages
 
