@@ -35,3 +35,9 @@ const posts = defineCollection({
 **Symptom**: `git restore --staged ...` failed with `fatal: Unable to create '.git/index.lock': Operation not permitted` while trying to narrow the staged set before commit.
 **Cause**: The sandboxed command could not update the git index in that attempt, even though no persistent `.git/index.lock` file remained afterward.
 **Fix**: Re-ran the unstage step with escalated permissions, then confirmed the staged set contained only the intended files before proceeding with commit and push.
+
+## 2026-05-15 — `gh issue create` failed from sandboxed environment
+
+**Symptom**: `gh issue create` failed with `error connecting to api.github.com` while creating repository-maintenance issues for `whqtker-projects/blog`.
+**Cause**: Networked GitHub API write access was blocked in the sandboxed execution environment.
+**Fix**: Re-ran the `gh issue create` commands with escalated permissions and created issues `#184` through `#193` successfully.
