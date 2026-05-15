@@ -1,6 +1,6 @@
 # Content Model
 
-This document defines the role boundaries for the three content types in this repository: `posts`, `concepts`, and `series_indexes`.
+This document defines the role boundaries for the four content types in this repository: `posts`, `examples`, `concepts`, and `series_indexes`.
 
 It also serves as the authoritative information-architecture contract for the current parent-child series model.
 
@@ -10,16 +10,17 @@ Structural policy comes from `D-57` through `D-60`; page-role and attachment rul
 
 ## Content Types at a Glance
 
-| | `posts` | `concepts` | `series_indexes` |
-|---|---|---|---|
-| URL | `/posts/<slug>` | `/concepts/<slug>` | Parent: `/series/<parent>`; Child: `/series/<parent>/<child>` |
-| Location | `src/content/posts/` | `src/content/concepts/` | `src/content/series_indexes/` |
-| Belongs to series | Yes (required; child series only) | No | Defines either a parent series or a child series |
-| Has `order` | Yes (required) | No | Child only |
-| Has `status` | Yes (required) | No | No |
-| Created via | `pnpm convert` from Obsidian | `pnpm convert` from Obsidian | Manual authoring |
-| Appears on homepage | No | No | Parent series only |
-| Prev/next navigation | Yes | No | No |
+| | `posts` | `examples` | `concepts` | `series_indexes` |
+|---|---|---|---|---|
+| URL | `/posts/<slug>` | `/posts/<slug>/examples/<example>` | `/concepts/<slug>` | Parent: `/series/<parent>`; Child: `/series/<parent>/<child>` |
+| Location | `src/content/posts/` | `src/content/examples/` | `src/content/concepts/` | `src/content/series_indexes/` |
+| Belongs to series | Yes (required; child series only) | No | No | Defines either a parent series or a child series |
+| Attaches to post | No | Yes (required; exactly one post) | No | No |
+| Has `order` | Yes (required) | Yes (required) | No | Child only |
+| Has `status` | Yes (required) | Yes (required) | No | No |
+| Created via | `pnpm convert` from Obsidian | Manual authoring | `pnpm convert` from Obsidian | Manual authoring |
+| Appears on homepage | No | No | No | Parent series only |
+| Prev/next navigation | Yes | No | No | No |
 
 ---
 
@@ -32,6 +33,8 @@ The hierarchy is exactly:
 3. Posts attached to child series
 
 This repository does not allow a third level such as parent → middle → child. Parent series do not directly own posts. Child series are the only direct attachment point for posts.
+
+`examples` are auxiliary pages attached to posts. They do not create a new series hierarchy level and do not change the parent → child → post structure.
 
 `concepts` remain outside this hierarchy. They continue to render as standalone reference pages and do not belong to any series level.
 
@@ -57,6 +60,7 @@ Post attachment rules:
 - A post's `series` value must resolve to a child series, not a parent series.
 - A post does not attach to multiple child series.
 - A post page keeps its own `/posts/<slug>` URL, but it is understood in the context of one child series for breadcrumbs, prev/next navigation, and series back-links.
+- A post may have zero or more attached project-style examples.
 
 Post language policy:
 - filenames and slugs stay English-only identifiers
@@ -74,6 +78,45 @@ Graph-friendly internal-link policy:
 - series graph wiring primarily lives in series index bodies
 - post bodies are not required to carry graph-link blocks
 - `order` remains the structural source of truth for post sequencing
+
+Example policy:
+- short code snippets remain inline inside post bodies
+- longer implementation walkthroughs may move into separate `examples` pages
+- project-style examples are optional and do not affect whether a post is valid
+
+---
+
+## `examples`
+
+Examples are optional project-style implementation pages attached to exactly one post. They exist for longer demonstrations that may need project structure, multiple files, commands, tests, or outputs without expanding the main post body into a full walkthrough.
+
+**Create an example when** the implementation artifact is large enough that it would distract from the explanatory flow of the post.
+
+**Do not use an example for** short inline snippets that directly support a paragraph or section inside the post.
+
+**Required frontmatter:**
+```yaml
+title: string
+post: string     # must match a post slug in src/content/posts/
+order: number    # position among examples attached to that post
+status: string   # one of idea, draft, published
+```
+
+**Optional frontmatter:**
+```yaml
+description: string
+language: string
+framework: string
+sourcePath: string
+```
+
+Example attachment rules:
+- each example attaches to exactly one post through `post`
+- a post may have zero or more examples
+- examples do not attach directly to parent series, child series, or concepts
+- local development shows `idea`, `draft`, and `published` examples
+- staged and production builds show only `published` examples
+- example pages are routed under their owning post as `/posts/<slug>/examples/<example>`
 
 ---
 

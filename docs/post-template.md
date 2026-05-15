@@ -15,7 +15,7 @@ Every post must include the following content areas. Titles and ordering are dec
 |---|---|---|
 | Definition-level explanation | Required (D-6) | What the topic is; accessible to beginners |
 | Operational principles | Required (D-6) | How it works internally |
-| Examples | Required (D-7) | Concrete, inline — not external links or appendices |
+| Examples | Required (D-7) | Concrete support for the explanation; short snippets stay inline |
 | Quiz | Required, always last (D-8) | 5 MCQ, 4 options, 1 correct answer (D-27) |
 
 ---
@@ -29,6 +29,13 @@ Every post must include the following content areas. Titles and ordering are dec
 | Post length | No word count limit; determined by the topic (D-28) |
 | Target audience | Beginner to practitioner for all series (D-29) |
 | Quiz format | 5 MCQ, 4 options each, one correct answer (D-27) |
+
+## Example Policy
+
+- Short code snippets remain inside the post body.
+- Project-style implementation examples may live as separate `examples` pages attached to the post.
+- Separate example pages are optional; a post remains valid without them.
+- Use a separate example page when the material needs project structure, multiple files, commands, tests, or outputs.
 
 ## Language Policy
 

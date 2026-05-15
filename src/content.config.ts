@@ -16,6 +16,20 @@ const posts = defineCollection({
   }),
 });
 
+const examples = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/examples' }),
+  schema: z.object({
+    title: z.string(),
+    post: z.string(),
+    order: z.number(),
+    status: z.enum(['idea', 'draft', 'published']),
+    description: z.string().optional(),
+    language: z.string().optional(),
+    framework: z.string().optional(),
+    sourcePath: z.string().optional(),
+  }),
+});
+
 const concepts = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/concepts' }),
   schema: z.object({
@@ -38,4 +52,4 @@ const series_indexes = defineCollection({
   }),
 });
 
-export const collections = { posts, concepts, series_indexes };
+export const collections = { posts, examples, concepts, series_indexes };

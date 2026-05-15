@@ -1,0 +1,62 @@
+---
+interface ExampleListItem {
+  title: string;
+  href: string;
+  description?: string;
+  language?: string;
+  framework?: string;
+}
+
+interface Props {
+  items: ExampleListItem[];
+}
+
+const { items } = Astro.props;
+---
+<ul class="example-list">
+  {items.map((item) => (
+    <li>
+      <a href={item.href}>{item.title}</a>
+      {item.description && <p class="description">{item.description}</p>}
+      {(item.language || item.framework) && (
+        <p class="meta">
+          {[item.framework, item.language].filter(Boolean).join(' · ')}
+        </p>
+      )}
+    </li>
+  ))}
+</ul>
+
+<style>
+  .example-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .example-list li {
+    padding: 0.75rem 0;
+    border-top: 1px solid #e5e5e5;
+  }
+
+  .example-list li:last-child {
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .example-list a {
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .example-list a:hover {
+    text-decoration: underline;
+    opacity: 1;
+  }
+
+  .description,
+  .meta {
+    color: #666;
+    margin: 0.25rem 0 0;
+    font-size: 0.875rem;
+  }
+</style>

@@ -13,6 +13,10 @@
  *   8. Fail when a post uses a status outside the simplified vocabulary
  *   9. Numeric post title prefixes, when present, must match post order
  *   10. Series graph aliases and graph tags match derived parent/child metadata
+ *   11. Every example attaches to an existing post
+ *   12. Example file paths match the post-attached layout contract
+ *   13. No two explicitly published examples attached to the same post share the same order value
+ *   14. Example status values are explicit and use the simplified vocabulary
  */
 
 import { join, dirname } from 'node:path';
@@ -40,9 +44,10 @@ function expectedSeriesGraphTag(index) {
   return index.parent ? 'graph/child-series' : 'graph/parent-series';
 }
 
-export function validateContent({ posts, indexes }) {
+export function validateContent({ posts, examples = [], indexes }) {
   const errors = [];
   const indexesBySeries = new Map();
+  const postsBySlug = new Map(posts.map((post) => [post.file.replace(/\.md$/, ''), post]));
   const checks = [];
 
   function runCheck(label, fn) {
@@ -266,15 +271,89 @@ export function validateContent({ posts, indexes }) {
     }
   });
 
+  runCheck('Check 11: every example attaches to an existing post', (fail) => {
+    for (const example of examples) {
+      if (!example.post) {
+        fail(`${example.file}: missing required 'post' field`);
+        continue;
+      }
+
+      if (!postsBySlug.has(example.post)) {
+        fail(
+          `${example.file}: example references missing post '${example.post}' in src/content/posts/`
+        );
+      }
+    }
+  });
+
+  runCheck('Check 12: example file paths match the post-attached layout contract', (fail) => {
+    for (const example of examples) {
+      const pathParts = example.file.replace(/\.md$/, '').split('/');
+      if (pathParts.length !== 2) {
+        fail(
+          `${example.file}: examples must live at src/content/examples/<post-slug>/<example-slug>.md`
+        );
+        continue;
+      }
+
+      const [postDir] = pathParts;
+      if (example.post && postDir !== example.post) {
+        fail(
+          `${example.file}: example path directory '${postDir}' must match post '${example.post}'`
+        );
+      }
+    }
+  });
+
+  runCheck(
+    'Check 13: no duplicate order values within a post for explicitly published examples',
+    (fail) => {
+      const publishedExamples = examples.filter((example) => example.status === 'published');
+      const orderKeys = new Map();
+
+      for (const example of publishedExamples) {
+        if (!example.post || example.order === undefined) continue;
+
+        const key = `${example.post}::${example.order}`;
+        if (orderKeys.has(key)) {
+          fail(
+            `example order ${example.order} for post '${example.post}' is used by both '${orderKeys.get(key)}' and '${example.file}'`
+          );
+        } else {
+          orderKeys.set(key, example.file);
+        }
+      }
+    }
+  );
+
+  runCheck('Check 14: example status values are explicit and use the simplified vocabulary', (fail) => {
+    for (const example of examples) {
+      if (example.status === undefined) {
+        fail(
+          `${example.file}: missing required 'status' field — committed examples must set one of ${Array.from(ALLOWED_POST_STATUSES).join(', ')}`
+        );
+        continue;
+      }
+
+      if (!ALLOWED_POST_STATUSES.has(example.status)) {
+        fail(
+          `${example.file}: invalid status '${example.status}' — allowed values are ${Array.from(ALLOWED_POST_STATUSES).join(', ')}`
+        );
+      }
+    }
+  });
+
   return { errors, checks };
 }
 
 export function loadRepositoryContent() {
   const postsDir = join(ROOT, 'src/content/posts');
+  const examplesDir = join(ROOT, 'src/content/examples');
   const indexesDir = join(ROOT, 'src/content/series_indexes');
 
   return {
     posts: readMarkdownFrontmatterRecords(postsDir),
+    examples: readMarkdownFrontmatterRecords(examplesDir),
     indexes: readMarkdownFrontmatterRecords(indexesDir),
   };
 }
@@ -294,8 +373,8 @@ function runCheck(label, startIndex, errors) {
   return errors.length;
 }
 
-export function runContentCheck({ posts, indexes } = loadRepositoryContent()) {
-  const { errors, checks } = validateContent({ posts, indexes });
+export function runContentCheck({ posts, examples, indexes } = loadRepositoryContent()) {
+  const { errors, checks } = validateContent({ posts, examples, indexes });
 
   for (const check of checks) {
     runCheck(check.label, 0, check.errors);

@@ -42,6 +42,8 @@ pnpm test:convert                                    # Run conversion script uni
 
 > `src/content/posts/` is reserved for real publishable content candidates. Validation fixtures belong under `test/fixtures/obsidian-vault/` and should be converted only into a temporary or test-only output location when rendering checks are needed.
 
+> `src/content/examples/` is for manually authored project-style implementation examples attached to posts. It is separate from the Obsidian conversion flow.
+
 ---
 
 ## Content Workflow
@@ -131,6 +133,7 @@ new_blog/
 ├── src/
 │   ├── content/
 │   │   ├── concepts/            # Converted Markdown for concept reference pages
+│   │   ├── examples/            # Manual project-style examples attached to posts
 │   │   ├── posts/               # Converted Markdown for real publishable posts
 │   │   └── series_indexes/      # Parent indexes at root; child indexes nested under parent dirs
 │   ├── content.config.ts        # Content collection schema
@@ -142,7 +145,10 @@ new_blog/
 │       ├── concepts/
 │       │   └── [slug].astro     # Concept route — /concepts/<slug>
 │       ├── posts/
-│       │   └── [slug].astro     # Post route — /posts/<slug>
+│       │   ├── [slug].astro     # Post route — /posts/<slug>
+│       │   └── [slug]/
+│       │       └── examples/
+│       │           └── [example].astro # Example route — /posts/<slug>/examples/<example>
 │       └── series/
 │           ├── [parent].astro   # Parent series route — /series/<parent>
 │           └── [parent]/
@@ -182,6 +188,29 @@ Visibility behavior is currently fixed rather than environment-configurable:
 - `src/pages/series/[parent]/[child].astro` uses that rule when building child-series post lists.
 - `src/pages/posts/[slug].astro` uses the same rule when deciding which post routes and prev/next links exist in the current build.
 - There is no `CONTENT_VISIBILITY` env var today; changing visibility policy would be a separate implementation decision.
+
+Examples are loaded separately from `src/content/examples/`. They are manually authored rather than converted from Obsidian and attach to posts instead of series.
+
+**Required example fields:**
+```yaml
+title: string
+post: string
+order: number
+status: idea | draft | published
+```
+
+**Optional example fields:**
+```yaml
+description: string
+language: string
+framework: string
+sourcePath: string
+```
+
+Example visibility follows the same build contract as posts:
+- local development includes `idea`, `draft`, and `published` examples
+- staged and production builds include only `published` examples
+- example pages are generated only when their owning post is present in the current build
 
 Concepts are loaded separately from `src/content/concepts/`. They require `title` and may include `aliases`; they do not use `series`, `order`, or `status`.
 
@@ -226,6 +255,7 @@ Post ordering contract:
 | `/series/[parent]` | `src/pages/series/[parent].astro` | Parent series title + description + child-series listing |
 | `/series/[parent]/[child]` | `src/pages/series/[parent]/[child].astro` | Child series title + description + ordered list of visible posts for the current environment |
 | `/posts/[slug]` | `src/pages/posts/[slug].astro` | Individual post page; local dev includes all posts, staged/production builds include only `published` posts |
+| `/posts/[slug]/examples/[example]` | `src/pages/posts/[slug]/examples/[example].astro` | Optional project-style example page attached to one post; follows the same visibility contract as posts |
 | `/concepts/[slug]` | `src/pages/concepts/[slug].astro` | Individual concept reference page |
 
 Slug is derived from the Markdown file name (e.g., `b-plus-tree.md` → `/posts/b-plus-tree`).

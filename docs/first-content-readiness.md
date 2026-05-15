@@ -19,6 +19,11 @@ Graph-link note:
 - post stubs remain valid without graph-link blocks
 - `order` remains canonical for post sequencing
 
+Example note:
+- short explanatory snippets stay inside the post body
+- project-style implementation examples may later be added as separate example pages attached to a post
+- a post remains valid without any attached example pages
+
 Current operating documents:
 - [`docs/series/database-systems.md`](series/database-systems.md)
 - [`docs/series/computer-networks.md`](series/computer-networks.md)

@@ -2,7 +2,11 @@
 import { getCollection } from 'astro:content';
 import { render } from 'astro:content';
 import PostLayout from '../../layouts/PostLayout.astro';
-import { visiblePostsForCurrentBuild } from '../../utils/post-visibility.js';
+import ExampleList from '../../components/ExampleList.astro';
+import {
+  visibleExamplesForCurrentBuild,
+  visiblePostsForCurrentBuild,
+} from '../../utils/post-visibility.js';
 import { postsForSeries, prevNextPosts } from '../../utils/post-ordering.ts';
 import {
   buildSeriesHierarchy,
@@ -11,8 +15,10 @@ import {
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('posts');
+  const allExamples = await getCollection('examples');
   const allIndexes = await getCollection('series_indexes');
   const visiblePosts = visiblePostsForCurrentBuild(allPosts);
+  const visibleExamples = visibleExamplesForCurrentBuild(allExamples);
   const { seriesBySlug } = buildSeriesHierarchy(allIndexes);
 
   return visiblePosts.map((post) => {
@@ -36,6 +42,9 @@ export async function getStaticPaths() {
           childSlug: childIndex.data.series,
           childTitle: childIndex.data.title,
         },
+        examples: visibleExamples
+          .filter((example) => example.data.post === post.id)
+          .sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title)),
         prev: prevPost ? { slug: prevPost.id, title: prevPost.data.title } : null,
         next: nextPost ? { slug: nextPost.id, title: nextPost.data.title } : null,
       },
@@ -43,8 +52,15 @@ export async function getStaticPaths() {
   });
 }
 
-const { post, seriesContext, prev, next } = Astro.props;
+const { post, seriesContext, examples, prev, next } = Astro.props;
 const { Content } = await render(post);
+const exampleItems = examples.map((example) => ({
+  title: example.data.title,
+  href: `/posts/${post.id}/examples/${example.id.split('/').pop()}`,
+  description: example.data.description,
+  language: example.data.language,
+  framework: example.data.framework,
+}));
 ---
 <PostLayout
   title={post.data.title}
@@ -54,4 +70,24 @@ const { Content } = await render(post);
   next={next}
 >
   <Content />
+  {exampleItems.length > 0 && (
+    <section class="examples">
+      <h2>Project Examples</h2>
+      <p class="examples-intro">
+        Longer implementation walkthroughs, project structure notes, and command-level examples for this post.
+      </p>
+      <ExampleList items={exampleItems} />
+    </section>
+  )}
 </PostLayout>
+
+<style>
+  .examples {
+    margin-top: 3rem;
+  }
+
+  .examples-intro {
+    color: #555;
+    margin-bottom: 1rem;
+  }
+</style>

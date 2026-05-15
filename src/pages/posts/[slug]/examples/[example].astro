@@ -1,0 +1,63 @@
+---
+import { getCollection, render } from 'astro:content';
+import ExampleLayout from '../../../../layouts/ExampleLayout.astro';
+import { visibleExamplesForCurrentBuild, visiblePostsForCurrentBuild } from '../../../../utils/post-visibility.js';
+import { buildSeriesHierarchy, requireParentIndex } from '../../../../utils/series-hierarchy';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('posts');
+  const allExamples = await getCollection('examples');
+  const allIndexes = await getCollection('series_indexes');
+  const visiblePosts = visiblePostsForCurrentBuild(allPosts);
+  const visibleExamples = visibleExamplesForCurrentBuild(allExamples);
+  const visiblePostsBySlug = new Map(visiblePosts.map((post) => [post.id, post]));
+  const { seriesBySlug } = buildSeriesHierarchy(allIndexes);
+
+  return visibleExamples.flatMap((example) => {
+    const attachedPost = visiblePostsBySlug.get(example.data.post);
+    if (!attachedPost) return [];
+
+    const childIndex = seriesBySlug.get(attachedPost.data.series);
+    if (!childIndex) {
+      throw new Error(
+        `Example '${example.id}' references post '${attachedPost.id}', but that post references missing child series '${attachedPost.data.series}'.`
+      );
+    }
+
+    const parentIndex = requireParentIndex(childIndex, seriesBySlug);
+
+    return {
+      params: {
+        slug: attachedPost.id,
+        example: example.id.split('/').pop(),
+      },
+      props: {
+        example,
+        post: attachedPost,
+        seriesContext: {
+          parentSlug: parentIndex.data.series,
+          parentTitle: parentIndex.data.title,
+          childSlug: childIndex.data.series,
+          childTitle: childIndex.data.title,
+        },
+      },
+    };
+  });
+}
+
+const { example, post, seriesContext } = Astro.props;
+const { Content } = await render(example);
+---
+<ExampleLayout
+  title={example.data.title}
+  description={example.data.description}
+  seriesContext={seriesContext}
+  post={{ slug: post.id, title: post.data.title }}
+  meta={{
+    language: example.data.language,
+    framework: example.data.framework,
+    sourcePath: example.data.sourcePath,
+  }}
+>
+  <Content />
+</ExampleLayout>

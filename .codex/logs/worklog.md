@@ -684,3 +684,14 @@ Astro 쪽에서는 post ordering을 `src/utils/post-ordering.ts`로 공통화하
 - `pnpm test:repo`
 - `pnpm check:content`
 - `pnpm build`
+
+## 2026-05-15 — Add optional project-style examples as post-attached pages
+
+`examples` collection과 `/posts/<slug>/examples/<example>` route를 추가해 긴 구현 예시를 post 본문 밖의 별도 페이지로 분리할 수 있게 했다. Inline snippet은 여전히 post body에 남고, project-style example만 `src/content/examples/<post-slug>/<example-slug>.md`에 수동 authoring하는 구조다.
+
+Validation도 확장했다. 각 example은 정확히 하나의 post slug를 가리켜야 하고, file path의 상위 디렉터리도 그 post slug와 일치해야 하며, published example끼리는 같은 post 아래에서 `order`가 중복되면 안 된다. Visibility는 posts와 동일하게 local dev에서는 `idea`/`draft`/`published`, staged/production에서는 `published`만 노출되도록 맞췄다.
+
+검증:
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`

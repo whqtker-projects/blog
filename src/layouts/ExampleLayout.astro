@@ -1,0 +1,91 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface SeriesContext {
+  parentSlug: string;
+  parentTitle: string;
+  childSlug: string;
+  childTitle: string;
+}
+
+interface PostLink {
+  slug: string;
+  title: string;
+}
+
+interface ExampleMeta {
+  language?: string;
+  framework?: string;
+  sourcePath?: string;
+}
+
+interface Props {
+  title: string;
+  description?: string;
+  seriesContext: SeriesContext;
+  post: PostLink;
+  meta: ExampleMeta;
+}
+
+const { title, description, seriesContext, post, meta } = Astro.props;
+const badges = [
+  meta.framework ? `Framework: ${meta.framework}` : null,
+  meta.language ? `Language: ${meta.language}` : null,
+  meta.sourcePath ? `Source path: ${meta.sourcePath}` : null,
+].filter(Boolean);
+---
+<BaseLayout title={title} description={description} ogType="article">
+  <article>
+    <header>
+      <p class="breadcrumb">
+        <a href={`/series/${seriesContext.parentSlug}`}>{seriesContext.parentTitle}</a>
+        {' / '}
+        <a href={`/series/${seriesContext.parentSlug}/${seriesContext.childSlug}`}>
+          {seriesContext.childTitle}
+        </a>
+        {' / '}
+        <a href={`/posts/${post.slug}`}>{post.title}</a>
+      </p>
+      <h1>{title}</h1>
+      {badges.length > 0 && (
+        <ul class="meta">
+          {badges.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      )}
+    </header>
+    <slot />
+  </article>
+</BaseLayout>
+
+<style>
+  .breadcrumb {
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+  }
+
+  .breadcrumb a {
+    color: #666;
+  }
+
+  header h1 {
+    margin-top: 0;
+  }
+
+  .meta {
+    list-style: none;
+    padding: 0;
+    margin: 0.75rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    color: #666;
+    font-size: 0.875rem;
+  }
+
+  .meta li {
+    margin: 0;
+  }
+</style>

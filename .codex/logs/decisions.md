@@ -69,3 +69,9 @@ Issue `#191` is implemented as a Node-only extraction under `scripts/`, leaving 
 The repository now centralizes browser-title formatting and shared social metadata in `BaseLayout.astro`. The default title format is `{title} | Blog`, with the site root collapsing to just `Blog`, and pages can override `og:type` through a prop instead of duplicating meta tags.
 
 `PostLayout.astro` is the single place that marks post pages as `og:type=article`. This keeps page-level SEO intent explicit without spreading metadata conditionals across route files.
+
+## 2026-05-15 — Project-style examples attach to posts, not series
+
+Longer implementation walkthroughs live in a separate `examples` collection and route under `/posts/<slug>/examples/<example>`. They attach to exactly one post through frontmatter and remain optional, so the repository hierarchy stays parent → child → post rather than growing a new series-owned level.
+
+Visibility for examples follows the same build rule as posts: local development can inspect all statuses, while staged and production output include only `published` examples. Short explanatory snippets remain inline in the post body rather than moving into the `examples` collection.

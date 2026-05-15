@@ -55,8 +55,33 @@ function validPosts() {
   ];
 }
 
+function example(file, data) {
+  return {
+    file,
+    title: data.title,
+    post: data.post,
+    order: data.order,
+    status: data.status,
+  };
+}
+
+function validExamples() {
+  return [
+    example('what-is-a-database-index/index-basics-demo.md', {
+      title: 'Database Index Basics Demo',
+      post: 'what-is-a-database-index',
+      order: 1,
+      status: 'published',
+    }),
+  ];
+}
+
 test('validateContent accepts a valid parent/child content set', () => {
-  const { errors } = validateContent({ posts: validPosts(), indexes: validIndexes() });
+  const { errors } = validateContent({
+    posts: validPosts(),
+    examples: validExamples(),
+    indexes: validIndexes(),
+  });
   assert.deepEqual(errors, []);
 });
 
@@ -64,7 +89,7 @@ test('validateContent rejects order on a parent series', () => {
   const indexes = validIndexes();
   indexes[0].order = 1;
 
-  const { errors } = validateContent({ posts: validPosts(), indexes });
+  const { errors } = validateContent({ posts: validPosts(), examples: validExamples(), indexes });
 
   assert.ok(
     errors.some((message) =>
@@ -86,7 +111,7 @@ test('validateContent rejects duplicate child-series order under the same parent
     }),
   ];
 
-  const { errors } = validateContent({ posts: validPosts(), indexes });
+  const { errors } = validateContent({ posts: validPosts(), examples: validExamples(), indexes });
 
   assert.ok(
     errors.some((message) =>
@@ -113,7 +138,7 @@ test('validateContent rejects path/frontmatter mismatches for child indexes', ()
     }),
   ];
 
-  const { errors } = validateContent({ posts: [], indexes });
+  const { errors } = validateContent({ posts: [], examples: [], indexes });
 
   assert.ok(
     errors.some((message) =>
@@ -134,7 +159,7 @@ test('validateContent rejects numeric title-prefix mismatch against post order',
     }),
   ];
 
-  const { errors } = validateContent({ posts, indexes: validIndexes() });
+  const { errors } = validateContent({ posts, examples: validExamples(), indexes: validIndexes() });
 
   assert.ok(
     errors.some((message) => /title prefix '02' does not match explicit order 1/.test(message))
@@ -150,7 +175,7 @@ test('validateContent rejects stale series graph alias', () => {
   const indexes = validIndexes();
   indexes[1].aliases = ['series:database-internals'];
 
-  const { errors } = validateContent({ posts: validPosts(), indexes });
+  const { errors } = validateContent({ posts: validPosts(), examples: validExamples(), indexes });
 
   assert.ok(
     errors.some((message) =>
@@ -163,11 +188,88 @@ test('validateContent rejects stale series graph tag', () => {
   const indexes = validIndexes();
   indexes[0].tags = ['graph/child-series'];
 
-  const { errors } = validateContent({ posts: validPosts(), indexes });
+  const { errors } = validateContent({ posts: validPosts(), examples: validExamples(), indexes });
 
   assert.ok(
     errors.some((message) =>
       /tags must be exactly \['graph\/parent-series'\]/.test(message)
+    )
+  );
+});
+
+test('validateContent rejects examples that reference missing posts', () => {
+  const examples = [
+    example('missing-post/demo.md', {
+      title: 'Missing Post Demo',
+      post: 'missing-post',
+      order: 1,
+      status: 'draft',
+    }),
+  ];
+
+  const { errors } = validateContent({ posts: validPosts(), examples, indexes: validIndexes() });
+
+  assert.ok(
+    errors.some((message) =>
+      /example references missing post 'missing-post'/.test(message)
+    )
+  );
+});
+
+test('validateContent rejects example path/frontmatter mismatches', () => {
+  const examples = [
+    example('other-post/demo.md', {
+      title: 'Path Mismatch Demo',
+      post: 'what-is-a-database-index',
+      order: 1,
+      status: 'draft',
+    }),
+  ];
+
+  const { errors } = validateContent({ posts: validPosts(), examples, indexes: validIndexes() });
+
+  assert.ok(
+    errors.some((message) =>
+      /example path directory 'other-post' must match post 'what-is-a-database-index'/.test(message)
+    )
+  );
+});
+
+test('validateContent rejects duplicate published example order for the same post', () => {
+  const examples = [
+    ...validExamples(),
+    example('what-is-a-database-index/second-demo.md', {
+      title: 'Second Demo',
+      post: 'what-is-a-database-index',
+      order: 1,
+      status: 'published',
+    }),
+  ];
+
+  const { errors } = validateContent({ posts: validPosts(), examples, indexes: validIndexes() });
+
+  assert.ok(
+    errors.some((message) =>
+      /example order 1 for post 'what-is-a-database-index' is used by both/.test(message)
+    )
+  );
+});
+
+test('validateContent rejects missing example status', () => {
+  const examples = [
+    example('what-is-a-database-index/demo.md', {
+      title: 'Missing Status Demo',
+      post: 'what-is-a-database-index',
+      order: 1,
+      status: undefined,
+    }),
+  ];
+
+  const { errors } = validateContent({ posts: validPosts(), examples, indexes: validIndexes() });
+
+  assert.ok(
+    errors.some((message) =>
+      /missing required 'status' field — committed examples must set/.test(message)
     )
   );
 });
