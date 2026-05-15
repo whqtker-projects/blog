@@ -116,12 +116,13 @@ Clarification:
 - parent series indexes may link to child series files
 - child series indexes may link to their parent series file
 - sibling child-series cross-links are optional, not the default pattern
-- child series indexes must not become manual post inventories
-- the site still auto-generates the real post inventory; index-body links are for parent/child navigation visibility rather than page rendering
+- child series indexes may include ordered post wikilinks so the owning posts are visible directly from the child-series note in Obsidian
+- the site still auto-generates the real post inventory; index-body links are for Obsidian authoring visibility rather than page rendering
 
 Recommended graph link syntax:
 - parent series file: `[[series_indexes/<parent>]]`
 - child series file: `[[series_indexes/<parent>/<child>]]`
+- post sequence inside a child series: `[[post-slug]]` or `[[post-slug|display title]]`
 
 `[[series:<parent>]]` and `[[series:<parent>/<child>]]` remain converter-supported syntax, but series authoring docs treat actual `series_indexes/...` file links as the default graph-wiring form inside the Obsidian vault.
 

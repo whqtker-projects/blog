@@ -18,6 +18,7 @@ import { listMarkdownFilesRecursive, parseSimpleFrontmatter } from './node-conte
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const SERIES_INDEXES_DIR = join(ROOT, 'src/content/series_indexes');
+const POSTS_DIR = join(ROOT, 'src/content/posts');
 const OBSIDIAN_GRAPH_FILE = join(ROOT, 'src/content/.obsidian/graph.json');
 const GRAPH_COLOR_GROUPS = [
   {
@@ -73,6 +74,10 @@ function seriesIndexLink(index, title = index.data.title) {
   return `[[${target}|${title}]]`;
 }
 
+function postLink(post) {
+  return `[[${post.slug}|${post.data.title}]]`;
+}
+
 function replaceYamlList(frontmatter, key, values) {
   const lines = frontmatter.split(/\r?\n/);
   const output = [];
@@ -120,7 +125,7 @@ export function syncSeriesGraphMetadata(content, body = null) {
   return `${parsed.open}${frontmatter}${parsed.close}${body ?? parsed.body}`;
 }
 
-export function buildSeriesIndexBody(index, children, parent) {
+export function buildSeriesIndexBody(index, children, parent, posts) {
   if (!index.data.parent) {
     const lines = ['관련 시리즈:'];
     children.forEach((child, childIndex) => {
@@ -133,7 +138,19 @@ export function buildSeriesIndexBody(index, children, parent) {
     throw new Error(`missing parent index for child series '${index.data.series}'`);
   }
 
-  return `관련 링크:\n- 상위 시리즈: ${seriesIndexLink(parent)}\n`;
+  const lines = [
+    '관련 링크:',
+    `- 상위 시리즈: ${seriesIndexLink(parent)}`,
+  ];
+
+  if (posts.length > 0) {
+    lines.push('', '게시글 순서:');
+    posts.forEach((post, postIndex) => {
+      lines.push(`${postIndex + 1}. ${postLink(post)}`);
+    });
+  }
+
+  return `${lines.join('\n')}\n`;
 }
 
 function syncGraphSettings() {
@@ -150,8 +167,14 @@ function syncGraphSettings() {
 function main() {
   let changed = 0;
   const indexFiles = listMarkdownFilesRecursive(SERIES_INDEXES_DIR);
+  const postFiles = listMarkdownFilesRecursive(POSTS_DIR);
   const indexes = indexFiles.map((file) => ({
     file,
+    ...parseFrontmatter(readFileSync(file, 'utf8')),
+  }));
+  const posts = postFiles.map((file) => ({
+    file,
+    slug: relative(POSTS_DIR, file).replace(/\.md$/, '').split(sep).join('/'),
     ...parseFrontmatter(readFileSync(file, 'utf8')),
   }));
   const parents = indexes
@@ -162,6 +185,7 @@ function main() {
     .sort((a, b) => a.data.parent.localeCompare(b.data.parent) || a.data.order - b.data.order);
   const indexBySeries = new Map(indexes.map((index) => [index.data.series, index]));
   const childrenByParent = new Map();
+  const postsBySeries = new Map();
 
   for (const child of children) {
     const list = childrenByParent.get(child.data.parent) ?? [];
@@ -173,10 +197,25 @@ function main() {
     list.sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title));
   }
 
+  for (const post of posts) {
+    const list = postsBySeries.get(post.data.series) ?? [];
+    list.push(post);
+    postsBySeries.set(post.data.series, list);
+  }
+
+  for (const list of postsBySeries.values()) {
+    list.sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title));
+  }
+
   for (const index of [...parents, ...children]) {
     const original = readFileSync(index.file, 'utf8');
     const parent = index.data.parent ? indexBySeries.get(index.data.parent) : null;
-    const body = buildSeriesIndexBody(index, childrenByParent.get(index.data.series) ?? [], parent);
+    const body = buildSeriesIndexBody(
+      index,
+      childrenByParent.get(index.data.series) ?? [],
+      parent,
+      postsBySeries.get(index.data.series) ?? []
+    );
     const next = syncSeriesGraphMetadata(original, body);
     if (next === original) continue;
 

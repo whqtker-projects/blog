@@ -672,3 +672,15 @@ Astro 쪽에서는 post ordering을 `src/utils/post-ordering.ts`로 공통화하
 `scripts/node-content-helpers.mjs`가 repository validation과 sync script의 공통 기반이므로, helper 자체 계약을 직접 고정하는 `scripts/node-content-helpers.test.mjs`를 추가했다. 테스트는 frontmatter scalar/list parsing, nested markdown discovery, normalized relative record 반환을 temp directory 기반으로 검증한다.
 
 `package.json`의 `pnpm test:repo`에도 이 테스트를 포함해 helper 변경이 다른 script 테스트에 간접적으로만 의존하지 않도록 했다.
+
+## 2026-05-15 — Restore child-series post inventories for Obsidian visibility
+
+사용자 요구에 맞춰 `pnpm sync:series-graph`가 child series index body의 ordered post wikilink 목록을 다시 생성하도록 복구했다. 이제 `src/content/series_indexes/spring-framework/spring-core.md` 같은 child index note 안에서 소속 게시글을 바로 볼 수 있고, Obsidian graph/authoring 흐름에서도 series membership이 드러난다.
+
+`scripts/sync-series-graph-metadata.mjs`는 child series별 post를 `order`와 `title` 기준으로 정렬해 `게시글 순서:` 블록을 쓴다. 관련 문서(`docs/content-model.md`, `docs/series-index-authoring.md`, `docs/first-content-readiness.md`)도 child index의 ordered post links를 허용하는 현재 의도에 맞게 수정했다.
+
+검증:
+- `pnpm sync:series-graph`
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`

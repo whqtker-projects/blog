@@ -59,7 +59,7 @@ test('buildSeriesIndexBody renders parent series links only for parent indexes',
   );
 });
 
-test('buildSeriesIndexBody omits post inventory for child indexes', () => {
+test('buildSeriesIndexBody includes ordered post inventory for child indexes', () => {
   const body = buildSeriesIndexBody(
     seriesIndex({
       series: 'network-protocols',
@@ -67,17 +67,31 @@ test('buildSeriesIndexBody omits post inventory for child indexes', () => {
       title: '네트워크 프로토콜',
     }),
     [],
-    seriesIndex({ series: 'computer-networks', title: '컴퓨터 네트워크' })
+    seriesIndex({ series: 'computer-networks', title: '컴퓨터 네트워크' }),
+    [
+      {
+        slug: 'dns-resolution',
+        data: { title: 'DNS and Name Resolution' },
+      },
+      {
+        slug: 'what-is-http',
+        data: { title: 'What Is HTTP?' },
+      },
+    ]
   );
 
   assert.equal(
     body,
-    ['관련 링크:', '- 상위 시리즈: [[series_indexes/computer-networks|컴퓨터 네트워크]]', ''].join(
-      '\n'
-    )
+    [
+      '관련 링크:',
+      '- 상위 시리즈: [[series_indexes/computer-networks|컴퓨터 네트워크]]',
+      '',
+      '게시글 순서:',
+      '1. [[dns-resolution|DNS and Name Resolution]]',
+      '2. [[what-is-http|What Is HTTP?]]',
+      '',
+    ].join('\n')
   );
-  assert.doesNotMatch(body, /게시글 순서/);
-  assert.doesNotMatch(body, /\[\[(?!series_indexes\/)/);
 });
 
 test('buildSeriesIndexBody rejects a child index without a parent document', () => {
@@ -90,7 +104,8 @@ test('buildSeriesIndexBody rejects a child index without a parent document', () 
           title: '네트워크 프로토콜',
         }),
         [],
-        null
+        null,
+        []
       ),
     /missing parent index/
   );

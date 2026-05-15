@@ -15,8 +15,7 @@ Language-policy note:
 Graph-link note:
 - generic `[[wikilinks]]` are reserved for post links
 - Obsidian graph links to series use `[[series_indexes/<parent>]]` or `[[series_indexes/<parent>/<child>]]`
-- series graph wiring is limited to parent/child series index relationships
-- child series indexes must not become manual post inventories
+- child series indexes may include ordered post wikilinks for Obsidian authoring visibility
 - post stubs remain valid without graph-link blocks
 - `order` remains canonical for post sequencing
 

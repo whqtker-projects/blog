@@ -71,7 +71,7 @@ Graph-friendly internal-link policy:
 - Obsidian graph links to series use actual vault paths such as `[[series_indexes/<parent>]]` and `[[series_indexes/<parent>/<child>]]`
 - `[[series:<parent>]]` and `[[series:<parent>/<child>]]` remain supported converter syntax, but they are not used for graph wiring because Obsidian may treat them as unresolved path-like links
 - use `|display text` when the reader-facing label should differ from the slug target
-- series graph wiring is limited to parent/child series index relationships
+- series graph wiring primarily lives in series index bodies
 - post bodies are not required to carry graph-link blocks
 - `order` remains the structural source of truth for post sequencing
 
@@ -140,8 +140,8 @@ Series index body-link policy:
 - parent series index bodies may include actual child-series file links for graph-friendly navigation context
 - child series index bodies may link to their parent series file
 - sibling child-series links are optional, not the default pattern
-- child series index bodies must not become manual post inventories
-- the site still auto-generates the real post list; index-body links are only for parent/child series navigation context
+- child series index bodies may include an ordered post wikilink list so Obsidian authoring and graph view reveal which posts belong to that series
+- the site still auto-generates the real post list; index-body links are an Obsidian-facing authoring aid, not the rendering source of truth
 
 ---
 
@@ -196,7 +196,7 @@ Post title-prefix rule:
 - When a numeric prefix is present, repository validation requires it to match the post's explicit `order`.
 - Post pages do not add a second visible `#order` breadcrumb cue on top of the title.
 
-Series pages still rely on generated listings rather than any links written in the index body.
+Series pages still rely on generated listings rather than the links written in the index body.
 
 ---
 
