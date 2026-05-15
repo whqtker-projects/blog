@@ -10,9 +10,10 @@
  * Run via: pnpm sync:series-graph
  */
 
-import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { listMarkdownFilesRecursive, parseSimpleFrontmatter } from './node-content-helpers.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -42,40 +43,10 @@ const GRAPH_COLOR_GROUPS = [
   },
 ];
 
-function readMdFilesRecursive(dir) {
-  const files = [];
-
-  function walk(currentDir) {
-    for (const entry of readdirSync(currentDir, { withFileTypes: true })) {
-      const absolutePath = join(currentDir, entry.name);
-      if (entry.isDirectory()) {
-        walk(absolutePath);
-        continue;
-      }
-
-      if (entry.isFile() && entry.name.endsWith('.md')) {
-        files.push(absolutePath);
-      }
-    }
-  }
-
-  walk(dir);
-  return files;
-}
-
 function parseFrontmatter(content) {
   const match = content.match(/^(---\r?\n)([\s\S]*?)(\r?\n---\r?\n?)([\s\S]*)$/);
   if (!match) {
     throw new Error('missing frontmatter');
-  }
-
-  const data = {};
-  const lines = match[2].split(/\r?\n/);
-  for (const line of lines) {
-    const scalar = line.match(/^(\w+):\s*(.+)$/);
-    if (!scalar) continue;
-    const value = scalar[2].replace(/^["']|["']$/g, '').trim();
-    data[scalar[1]] = /^\d+$/.test(value) ? Number(value) : value;
   }
 
   return {
@@ -83,7 +54,7 @@ function parseFrontmatter(content) {
     frontmatter: match[2],
     close: match[3],
     body: match[4],
-    data,
+    data: parseSimpleFrontmatter(content),
   };
 }
 
@@ -178,7 +149,7 @@ function syncGraphSettings() {
 
 function main() {
   let changed = 0;
-  const indexFiles = readMdFilesRecursive(SERIES_INDEXES_DIR);
+  const indexFiles = listMarkdownFilesRecursive(SERIES_INDEXES_DIR);
   const indexes = indexFiles.map((file) => ({
     file,
     ...parseFrontmatter(readFileSync(file, 'utf8')),

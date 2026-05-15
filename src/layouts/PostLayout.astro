@@ -21,7 +21,7 @@ interface Props {
 }
 const { title, description, seriesContext, prev, next } = Astro.props;
 ---
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} ogType="article">
   <article>
     <header>
       <p class="breadcrumb">

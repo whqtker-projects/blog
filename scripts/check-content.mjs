@@ -15,67 +15,13 @@
  *   10. Series graph aliases and graph tags match derived parent/child metadata
  */
 
-import { readFileSync, readdirSync } from 'node:fs';
-import { join, dirname, relative, sep } from 'node:path';
+import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { readMarkdownFrontmatterRecords } from './node-content-helpers.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const ALLOWED_POST_STATUSES = new Set(['idea', 'draft', 'published']);
-
-export function parseFrontmatter(content) {
-  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
-  if (!match) return {};
-  const fm = {};
-  const lines = match[1].split(/\r?\n/);
-  for (let i = 0; i < lines.length; i += 1) {
-    const line = lines[i];
-    const m = line.match(/^(\w+):\s*(.+)/);
-    if (m) {
-      fm[m[1]] = m[2].replace(/^["']|["']$/g, '').trim();
-      continue;
-    }
-
-    const list = line.match(/^(\w+):\s*$/);
-    if (!list) continue;
-
-    const values = [];
-    while (i + 1 < lines.length) {
-      const item = lines[i + 1].match(/^\s+-\s*(.+)$/);
-      if (!item) break;
-      values.push(item[1].replace(/^["']|["']$/g, '').trim());
-      i += 1;
-    }
-    fm[list[1]] = values;
-  }
-  if (fm.order !== undefined) fm.order = Number(fm.order);
-  return fm;
-}
-
-export function readMdFilesRecursive(dir) {
-  const files = [];
-
-  function walk(currentDir) {
-    for (const entry of readdirSync(currentDir, { withFileTypes: true })) {
-      const absolutePath = join(currentDir, entry.name);
-      if (entry.isDirectory()) {
-        walk(absolutePath);
-        continue;
-      }
-
-      if (!entry.isFile() || !entry.name.endsWith('.md')) continue;
-
-      const content = readFileSync(absolutePath, 'utf-8');
-      files.push({
-        file: relative(dir, absolutePath).split(sep).join('/'),
-        ...parseFrontmatter(content),
-      });
-    }
-  }
-
-  walk(dir);
-  return files;
-}
 
 function splitIndexPath(index) {
   return index.file.replace(/\.md$/, '').split('/');
@@ -328,8 +274,8 @@ export function loadRepositoryContent() {
   const indexesDir = join(ROOT, 'src/content/series_indexes');
 
   return {
-    posts: readMdFilesRecursive(postsDir),
-    indexes: readMdFilesRecursive(indexesDir),
+    posts: readMarkdownFrontmatterRecords(postsDir),
+    indexes: readMarkdownFrontmatterRecords(indexesDir),
   };
 }
 

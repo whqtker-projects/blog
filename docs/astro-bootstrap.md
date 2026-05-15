@@ -1,7 +1,7 @@
 # Astro Bootstrap Documentation
 
 **Status:** Active — Astro skeleton initialized 2026-05-07.  
-**Last updated:** 2026-05-09
+**Last updated:** 2026-05-15
 
 Quick reference for working with the Astro project in this repository.
 
@@ -176,6 +176,12 @@ status: idea | draft | published
 ```
 
 **Build-time visibility (D-33, D-54, D-55):** Local development includes all posts so in-progress work can be inspected. Staged and production builds include only posts with `status: published`; posts with `status: idea` or `status: draft` are excluded from build output.
+
+Visibility behavior is currently fixed rather than environment-configurable:
+- `src/utils/post-visibility.js` treats `import.meta.env.DEV` as the switch.
+- `src/pages/series/[parent]/[child].astro` uses that rule when building child-series post lists.
+- `src/pages/posts/[slug].astro` uses the same rule when deciding which post routes and prev/next links exist in the current build.
+- There is no `CONTENT_VISIBILITY` env var today; changing visibility policy would be a separate implementation decision.
 
 Concepts are loaded separately from `src/content/concepts/`. They require `title` and may include `aliases`; they do not use `series`, `order`, or `status`.
 

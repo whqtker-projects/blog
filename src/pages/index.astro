@@ -1,54 +1,26 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SeriesList from '../components/SeriesList.astro';
 import { buildSeriesHierarchy, parentSeriesPath } from '../utils/series-hierarchy';
 
 const seriesIndexes = await getCollection('series_indexes');
 const { parentIndexes } = buildSeriesHierarchy(seriesIndexes);
+const items = parentIndexes.map((idx) => ({
+  title: idx.data.title,
+  href: parentSeriesPath(idx.data.series),
+  description: idx.data.description,
+}));
 ---
 <BaseLayout title="Blog">
   <main>
     <h1>Series</h1>
-    <ul>
-      {parentIndexes.map((idx) => (
-        <li>
-          <a href={parentSeriesPath(idx.data.series)}>{idx.data.title}</a>
-          {idx.data.description && <p class="description">{idx.data.description}</p>}
-        </li>
-      ))}
-    </ul>
+    <SeriesList items={items} />
   </main>
 </BaseLayout>
 
 <style>
   h1 {
     margin-bottom: 2rem;
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  li {
-    padding: 0.5rem 0;
-    margin: 0 0 0.75rem;
-  }
-
-  li a {
-    text-decoration: none;
-    font-weight: 600;
-  }
-
-  li a:hover {
-    text-decoration: underline;
-    opacity: 1;
-  }
-
-  .description {
-    font-size: 0.875rem;
-    color: #666;
-    margin: 0.2rem 0 0;
   }
 </style>

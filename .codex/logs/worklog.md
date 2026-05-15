@@ -642,3 +642,27 @@ Post 원본의 `관련 링크:` 블록은 Obsidian graph view에서 시리즈와
 `docs/first-content-readiness.md`의 `idea` 상태 안내에서 post body graph link를 선택적으로 허용하거나 권장하는 뉘앙스를 제거했다. 현재 정책에 맞게 `idea` 상태의 핵심은 required frontmatter 충족이며, frontmatter-only stub 또는 최소 본문 메모만으로도 유효하다고 다시 명시했다.
 
 또한 `status`는 초기 작성 단계에서도 명시적으로 필요하고, `status: published`만 staged/production에 포함되므로 `idea` 글은 공개 사이트에 나오지 않는다는 설명만 남겼다.
+## 2026-05-15 — Remove obsolete related-links remark plugin and extract Node content helpers
+
+Removed `remark-hide-obsidian-related-links` from the Astro markdown pipeline, deleted its implementation and test, and updated `package.json` so repository tests no longer reference the retired plugin.
+
+Added `scripts/node-content-helpers.mjs` as a shared Node-only helper for recursive Markdown traversal and simple frontmatter parsing. Migrated `scripts/check-content.mjs` and `scripts/sync-series-graph-metadata.mjs` to the shared helper, and updated `scripts/obsidian-to-astro.mjs` to reuse the shared recursive Markdown file listing while keeping its existing frontmatter-splitting behavior unchanged.
+
+Verification:
+- `pnpm test:repo`
+- `pnpm test:convert`
+- `pnpm check:content`
+- `pnpm build`
+
+## 2026-05-15 — Finish repository-maintenance backlog issues #186–#193
+
+`scripts/print_series_relationships.py`에 대한 Python `unittest` 기반 테스트를 추가하고, 제목 기반 `TARGET` 해석이 parent/child/post 사이에서 모호할 때 slug 사용을 요구하는 명확한 에러를 내도록 바꿨다. 테스트 실행용 `pnpm test:python`도 `package.json`에 노출했다.
+
+Astro 쪽에서는 post ordering을 `src/utils/post-ordering.ts`로 공통화하고, 홈/parent series 목록 UI를 `src/components/SeriesList.astro`로 추출했다. 동시에 `BaseLayout.astro`가 site-name suffix, `og:site_name`, configurable `og:type`을 관리하도록 정리하고, post pages는 `og:type=article`을 사용하도록 맞췄다. Visibility 문서는 `docs/astro-bootstrap.md`와 `src/utils/post-visibility.js` 기준으로 고정 동작을 명시했다.
+
+검증:
+- `pnpm test:python`
+- `pnpm test:repo`
+- `pnpm test:convert`
+- `pnpm check:content`
+- `pnpm build`

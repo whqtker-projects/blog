@@ -58,3 +58,14 @@ Obsidian graph color separation should use explicit frontmatter tags rather than
 ## 2026-05-11 — Posts link to child series, not parent series
 
 For graph readability, post notes should not link directly to parent series notes. Parent series nodes connect to child series nodes, and child series nodes connect to their posts. Draft post graph blocks therefore include the child series and adjacent posts only.
+## 2026-05-15 — Script helper consolidation stays Node-only and preserves converter-specific parsing
+
+Issue `#191` is implemented as a Node-only extraction under `scripts/`, leaving `scripts/print_series_relationships.py` independent. Shared helpers now cover recursive Markdown traversal and the simple frontmatter parsing already used by repository validation and series-graph sync.
+
+`scripts/obsidian-to-astro.mjs` keeps its own frontmatter splitter because its current contract is string-preserving and directly tested. Replacing that with the structured parser would widen scope and risk conversion behavior changes unrelated to the helper extraction.
+
+## 2026-05-15 — Base layout owns site-name titles and per-page OpenGraph type
+
+The repository now centralizes browser-title formatting and shared social metadata in `BaseLayout.astro`. The default title format is `{title} | Blog`, with the site root collapsing to just `Blog`, and pages can override `og:type` through a prop instead of duplicating meta tags.
+
+`PostLayout.astro` is the single place that marks post pages as `og:type=article`. This keeps page-level SEO intent explicit without spreading metadata conditionals across route files.

@@ -25,6 +25,7 @@
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync } from 'node:fs';
 import { join, basename, extname } from 'node:path';
 import { parseArgs } from 'node:util';
+import { listMarkdownFilesRecursive } from './node-content-helpers.mjs';
 
 // D-15: lowercase kebab-case, English only, .md extension
 const VALID_FILENAME_RE = /^[a-z0-9]+(-[a-z0-9]+)*\.md$/;
@@ -116,27 +117,6 @@ export function buildConceptAliasMap(conceptsDir) {
   return aliasMap;
 }
 
-function readMarkdownFilesRecursive(dir) {
-  const files = [];
-
-  function walk(currentDir) {
-    for (const entry of readdirSync(currentDir, { withFileTypes: true })) {
-      const absolutePath = join(currentDir, entry.name);
-      if (entry.isDirectory()) {
-        walk(absolutePath);
-        continue;
-      }
-
-      if (entry.isFile() && extname(entry.name) === '.md') {
-        files.push(absolutePath);
-      }
-    }
-  }
-
-  walk(dir);
-  return files;
-}
-
 function imageExistsInSourceDir(imageSourceDir, imageFile) {
   if (!existsSync(imageSourceDir)) return false;
 
@@ -177,7 +157,7 @@ export function buildSeriesTargetSet(seriesIndexesDir) {
   const targets = new Set();
   if (!existsSync(seriesIndexesDir)) return targets;
 
-  for (const file of readMarkdownFilesRecursive(seriesIndexesDir)) {
+  for (const file of listMarkdownFilesRecursive(seriesIndexesDir)) {
     const raw = readFileSync(file, 'utf8');
     const { frontmatter } = parseFrontmatter(raw);
     if (!frontmatter) continue;

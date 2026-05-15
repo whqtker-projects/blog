@@ -8,7 +8,7 @@ import subprocess
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterable
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -36,6 +36,12 @@ class Post:
     order: int | None
     status: str | None
     headings: list[str]
+
+
+@dataclass(frozen=True)
+class TitleMatchGroup:
+    kind: str
+    slugs: list[str]
 
 
 def parse_frontmatter(text: str) -> dict[str, Any]:
@@ -249,11 +255,11 @@ def resolve_filters(
     posts: list[Post],
 ) -> tuple[str | None, str | None, str | None]:
     parent_by_slug = {i.series: i for i in indexes if not i.parent}
-    parent_by_title = {i.title.lower(): i.series for i in indexes if not i.parent}
     child_by_slug = {i.series: i for i in indexes if i.parent}
-    child_by_title = {i.title.lower(): i.series for i in indexes if i.parent}
     post_by_slug = {p.slug: p for p in posts}
-    post_by_title = {p.title.lower(): p.slug for p in posts}
+    parent_titles = _build_title_lookup((i.title, i.series) for i in indexes if not i.parent)
+    child_titles = _build_title_lookup((i.title, i.series) for i in indexes if i.parent)
+    post_titles = _build_title_lookup((p.title, p.slug) for p in posts)
 
     parent_slug: str | None = None
     child_slug: str | None = None
@@ -261,19 +267,91 @@ def resolve_filters(
 
     for target in targets:
         lower = target.lower()
-        if target in parent_by_slug or lower in parent_by_title:
-            parent_slug = target if target in parent_by_slug else parent_by_title[lower]
-        elif target in child_by_slug or lower in child_by_title:
-            child_slug = target if target in child_by_slug else child_by_title[lower]
-        elif target in post_by_slug or lower in post_by_title:
-            post_slug = target if target in post_by_slug else post_by_title[lower]
-        else:
+        if target in parent_by_slug:
+            parent_slug = target
+            continue
+        if target in child_by_slug:
+            child_slug = target
+            continue
+        if target in post_by_slug:
+            post_slug = target
+            continue
+
+        title_matches = _resolve_title_matches(
+            target,
+            lower,
+            parent_titles,
+            child_titles,
+            post_titles,
+        )
+        if not title_matches:
             raise SystemExit(
                 f"Unknown target: {target!r}\n"
                 "Expected a parent-series slug/title, child-series slug/title, or post slug/title."
             )
 
+        _raise_for_ambiguous_title(target, title_matches)
+        match = title_matches[0]
+        slug = match.slugs[0]
+        if match.kind == "parent series":
+            parent_slug = slug
+        elif match.kind == "child series":
+            child_slug = slug
+        else:
+            post_slug = slug
+
     return parent_slug, child_slug, post_slug
+
+
+def _build_title_lookup(entries: Iterable[tuple[str, str]]) -> dict[str, list[str]]:
+    lookup: dict[str, list[str]] = {}
+    for title, slug in entries:
+        normalized = str(title).strip().lower()
+        if not normalized:
+            continue
+        lookup.setdefault(normalized, []).append(str(slug))
+    return lookup
+
+
+def _resolve_title_matches(
+    target: str,
+    lower: str,
+    parent_titles: dict[str, list[str]],
+    child_titles: dict[str, list[str]],
+    post_titles: dict[str, list[str]],
+) -> list[TitleMatchGroup]:
+    del target
+    matches: list[TitleMatchGroup] = []
+    if lower in parent_titles:
+        matches.append(TitleMatchGroup("parent series", parent_titles[lower]))
+    if lower in child_titles:
+        matches.append(TitleMatchGroup("child series", child_titles[lower]))
+    if lower in post_titles:
+        matches.append(TitleMatchGroup("post", post_titles[lower]))
+    return matches
+
+
+def _raise_for_ambiguous_title(
+    target: str, matches: list[TitleMatchGroup]
+) -> None:
+    duplicate_groups = [match for match in matches if len(match.slugs) > 1]
+    if duplicate_groups:
+        details = "; ".join(
+            f"{match.kind}: {', '.join(match.slugs)}" for match in duplicate_groups
+        )
+        raise SystemExit(
+            f"Ambiguous title target: {target!r}\n"
+            f"Multiple {details} share that title. Use a slug instead."
+        )
+
+    if len(matches) > 1:
+        details = "; ".join(
+            f"{match.kind}: {match.slugs[0]}" for match in matches
+        )
+        raise SystemExit(
+            f"Ambiguous title target: {target!r}\n"
+            f"That title matches multiple content types ({details}). Use a slug instead."
+        )
 
 
 def filter_tree(
