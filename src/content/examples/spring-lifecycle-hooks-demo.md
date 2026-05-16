@@ -5,6 +5,11 @@ order: 1
 status: published
 description: "A minimal project-style example that shows bean lifecycle callbacks with a small Spring Boot app."
 ---
+관련 링크:
+
+- 소속 시리즈: [[series_indexes/spring-framework/spring-core|스프링 코어]]
+- 소속 게시글: [[posts/bean-lifecycle-and-scope|빈 생명주기와 스코프]]
+
 This is a small pilot example page for the repository structure. It is intentionally short and exists to prove the `examples` content model, routing, and post attachment flow.
 
 ## Project Shape

@@ -12,6 +12,7 @@ tags:
 - 소속 시리즈: [[series_indexes/spring-framework/spring-core|스프링 코어]]
 - 이전 글: [[what-is-spring-framework|스프링 프레임워크란 무엇인가]]
 - 다음 글: [[bean-container-and-application-context|빈 컨테이너와 ApplicationContext]]
+- 예제: [[examples/ioc-di-order-service-demo|IoC와 DI 예제]]
 
 ## IoC란
 
