@@ -599,6 +599,14 @@ Post 원본의 `관련 링크:` 블록은 Obsidian graph view에서 시리즈와
 - `pnpm test:repo`
 - `pnpm check:content`
 - `pnpm build`
+
+## 2026-05-16 — Add IoC/DI example outline stub
+
+`src/content/examples/ioc-di-order-service-demo.md`를 추가해 `ioc-and-di` 게시글에 연결되는 draft example stub를 만들었다. 본문 설명은 쓰지 않고, project example로 확장할 때 채울 수 있도록 목차 수준의 heading만 넣었다.
+
+검증:
+- `pnpm check:content`
+- `pnpm build`
 - `pnpm test:convert`
 - `rg -n "관련 링크" dist || true`
 
