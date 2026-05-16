@@ -4,9 +4,6 @@ post: bean-lifecycle-and-scope
 order: 1
 status: published
 description: "A minimal project-style example that shows bean lifecycle callbacks with a small Spring Boot app."
-language: java
-framework: spring-boot
-sourcePath: examples/bean-lifecycle-and-scope/spring-lifecycle-hooks-demo
 ---
 This is a small pilot example page for the repository structure. It is intentionally short and exists to prove the `examples` content model, routing, and post attachment flow.
 

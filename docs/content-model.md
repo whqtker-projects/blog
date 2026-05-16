@@ -107,15 +107,13 @@ status: string   # one of idea, draft, published
 **Optional frontmatter:**
 ```yaml
 description: string
-language: string
-framework: string
-sourcePath: string
 ```
 
 Example attachment rules:
 - each example attaches to exactly one post through `post`
 - a post may have zero or more examples
 - examples do not attach directly to parent series or child series
+- example files live directly under `src/content/examples/`
 - local development shows `idea`, `draft`, and `published` examples
 - staged and production builds show only `published` examples
 - example pages are routed under their owning post as `/posts/<slug>/examples/<example>`

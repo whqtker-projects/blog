@@ -192,15 +192,13 @@ status: idea | draft | published
 **Optional example fields:**
 ```yaml
 description: string
-language: string
-framework: string
-sourcePath: string
 ```
 
 Example visibility follows the same build contract as posts:
 - local development includes `idea`, `draft`, and `published` examples
 - staged and production builds include only `published` examples
 - example pages are generated only when their owning post is present in the current build
+- example files live directly under `src/content/examples/`
 
 Series index documents are loaded recursively from `src/content/series_indexes/` via `**/*.md`. There must be exactly one per parent or child series slug. They are authored manually (not converted from Obsidian).
 

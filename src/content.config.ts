@@ -24,9 +24,6 @@ const examples = defineCollection({
     order: z.number(),
     status: z.enum(['idea', 'draft', 'published']),
     description: z.string().optional(),
-    language: z.string().optional(),
-    framework: z.string().optional(),
-    sourcePath: z.string().optional(),
   }),
 });
 

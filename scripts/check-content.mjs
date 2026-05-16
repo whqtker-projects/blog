@@ -14,7 +14,7 @@
  *   9. Numeric post title prefixes, when present, must match post order
  *   10. Series graph aliases and graph tags match derived parent/child metadata
  *   11. Every example attaches to an existing post
- *   12. Example file paths match the post-attached layout contract
+ *   12. Example files live directly under src/content/examples/
  *   13. No two explicitly published examples attached to the same post share the same order value
  *   14. Example status values are explicit and use the simplified vocabulary
  */
@@ -286,20 +286,12 @@ export function validateContent({ posts, examples = [], indexes }) {
     }
   });
 
-  runCheck('Check 12: example file paths match the post-attached layout contract', (fail) => {
+  runCheck('Check 12: example files live directly under src/content/examples/', (fail) => {
     for (const example of examples) {
       const pathParts = example.file.replace(/\.md$/, '').split('/');
-      if (pathParts.length !== 2) {
+      if (pathParts.length !== 1) {
         fail(
-          `${example.file}: examples must live at src/content/examples/<post-slug>/<example-slug>.md`
-        );
-        continue;
-      }
-
-      const [postDir] = pathParts;
-      if (example.post && postDir !== example.post) {
-        fail(
-          `${example.file}: example path directory '${postDir}' must match post '${example.post}'`
+          `${example.file}: examples must live at src/content/examples/<example-slug>.md`
         );
       }
     }

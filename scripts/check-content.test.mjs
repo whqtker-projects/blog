@@ -67,7 +67,7 @@ function example(file, data) {
 
 function validExamples() {
   return [
-    example('what-is-a-database-index/index-basics-demo.md', {
+    example('index-basics-demo.md', {
       title: 'Database Index Basics Demo',
       post: 'what-is-a-database-index',
       order: 1,
@@ -199,7 +199,7 @@ test('validateContent rejects stale series graph tag', () => {
 
 test('validateContent rejects examples that reference missing posts', () => {
   const examples = [
-    example('missing-post/demo.md', {
+    example('missing-post-demo.md', {
       title: 'Missing Post Demo',
       post: 'missing-post',
       order: 1,
@@ -216,10 +216,10 @@ test('validateContent rejects examples that reference missing posts', () => {
   );
 });
 
-test('validateContent rejects example path/frontmatter mismatches', () => {
+test('validateContent rejects nested example paths', () => {
   const examples = [
-    example('other-post/demo.md', {
-      title: 'Path Mismatch Demo',
+    example('what-is-a-database-index/demo.md', {
+      title: 'Nested Path Demo',
       post: 'what-is-a-database-index',
       order: 1,
       status: 'draft',
@@ -230,7 +230,7 @@ test('validateContent rejects example path/frontmatter mismatches', () => {
 
   assert.ok(
     errors.some((message) =>
-      /example path directory 'other-post' must match post 'what-is-a-database-index'/.test(message)
+      /examples must live at src\/content\/examples\/<example-slug>\.md/.test(message)
     )
   );
 });
@@ -238,7 +238,7 @@ test('validateContent rejects example path/frontmatter mismatches', () => {
 test('validateContent rejects duplicate published example order for the same post', () => {
   const examples = [
     ...validExamples(),
-    example('what-is-a-database-index/second-demo.md', {
+    example('second-demo.md', {
       title: 'Second Demo',
       post: 'what-is-a-database-index',
       order: 1,
@@ -257,7 +257,7 @@ test('validateContent rejects duplicate published example order for the same pos
 
 test('validateContent rejects missing example status', () => {
   const examples = [
-    example('what-is-a-database-index/demo.md', {
+    example('demo.md', {
       title: 'Missing Status Demo',
       post: 'what-is-a-database-index',
       order: 1,

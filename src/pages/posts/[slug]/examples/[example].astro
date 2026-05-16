@@ -53,11 +53,6 @@ const { Content } = await render(example);
   description={example.data.description}
   seriesContext={seriesContext}
   post={{ slug: post.id, title: post.data.title }}
-  meta={{
-    language: example.data.language,
-    framework: example.data.framework,
-    sourcePath: example.data.sourcePath,
-  }}
 >
   <Content />
 </ExampleLayout>

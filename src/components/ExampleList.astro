@@ -3,8 +3,6 @@ interface ExampleListItem {
   title: string;
   href: string;
   description?: string;
-  language?: string;
-  framework?: string;
 }
 
 interface Props {
@@ -18,11 +16,6 @@ const { items } = Astro.props;
     <li>
       <a href={item.href}>{item.title}</a>
       {item.description && <p class="description">{item.description}</p>}
-      {(item.language || item.framework) && (
-        <p class="meta">
-          {[item.framework, item.language].filter(Boolean).join(' · ')}
-        </p>
-      )}
     </li>
   ))}
 </ul>
@@ -53,8 +46,7 @@ const { items } = Astro.props;
     opacity: 1;
   }
 
-  .description,
-  .meta {
+  .description {
     color: #666;
     margin: 0.25rem 0 0;
     font-size: 0.875rem;
