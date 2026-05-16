@@ -13,7 +13,10 @@ const { items } = Astro.props;
 <ul class="example-list">
   {items.map((item) => (
     <li>
-      <a href={item.href}>{item.title}</a>
+      <a href={item.href}>
+        <span>{item.title}</span>
+        <span class="icon" aria-hidden="true">↗</span>
+      </a>
     </li>
   ))}
 </ul>
@@ -35,6 +38,9 @@ const { items } = Astro.props;
   }
 
   .example-list a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
     text-decoration: none;
     font-weight: 600;
   }
@@ -42,5 +48,10 @@ const { items } = Astro.props;
   .example-list a:hover {
     text-decoration: underline;
     opacity: 1;
+  }
+
+  .icon {
+    font-size: 0.9em;
+    line-height: 1;
   }
 </style>
