@@ -2,7 +2,6 @@
 interface ExampleListItem {
   title: string;
   href: string;
-  description?: string;
 }
 
 interface Props {
@@ -15,7 +14,6 @@ const { items } = Astro.props;
   {items.map((item) => (
     <li>
       <a href={item.href}>{item.title}</a>
-      {item.description && <p class="description">{item.description}</p>}
     </li>
   ))}
 </ul>
@@ -44,11 +42,5 @@ const { items } = Astro.props;
   .example-list a:hover {
     text-decoration: underline;
     opacity: 1;
-  }
-
-  .description {
-    color: #666;
-    margin: 0.25rem 0 0;
-    font-size: 0.875rem;
   }
 </style>

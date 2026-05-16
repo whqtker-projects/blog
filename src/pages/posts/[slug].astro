@@ -57,7 +57,6 @@ const { Content } = await render(post);
 const exampleItems = examples.map((example) => ({
   title: example.data.title,
   href: `/posts/${post.id}/examples/${example.id.split('/').pop()}`,
-  description: example.data.description,
 }));
 ---
 <PostLayout
@@ -70,10 +69,7 @@ const exampleItems = examples.map((example) => ({
   <Content />
   {exampleItems.length > 0 && (
     <section class="examples">
-      <h2>Project Examples</h2>
-      <p class="examples-intro">
-        Longer implementation walkthroughs, project structure notes, and command-level examples for this post.
-      </p>
+      <h2>예제</h2>
       <ExampleList items={exampleItems} />
     </section>
   )}
@@ -82,10 +78,5 @@ const exampleItems = examples.map((example) => ({
 <style>
   .examples {
     margin-top: 3rem;
-  }
-
-  .examples-intro {
-    color: #555;
-    margin-bottom: 1rem;
   }
 </style>
