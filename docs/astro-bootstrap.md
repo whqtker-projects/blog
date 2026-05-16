@@ -199,6 +199,9 @@ Example visibility follows the same build contract as posts:
 - staged and production builds include only `published` examples
 - example pages are generated only when their owning post is present in the current build
 - example files live directly under `src/content/examples/`
+- when an example exists, add a matching Obsidian `관련 링크:` entry in the owning post that points to `[[examples/<example-slug>|...]]`
+- example files should link back to their owning post in their own Obsidian `관련 링크:` block
+- these Obsidian-only related-link blocks are suppressed in the web output
 
 Series index documents are loaded recursively from `src/content/series_indexes/` via `**/*.md`. There must be exactly one per parent or child series slug. They are authored manually (not converted from Obsidian).
 

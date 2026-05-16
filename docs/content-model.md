@@ -117,6 +117,9 @@ Example attachment rules:
 - local development shows `idea`, `draft`, and `published` examples
 - staged and production builds show only `published` examples
 - example pages are routed under their owning post as `/posts/<slug>/examples/<example>`
+- when an example exists, the owning post should add an Obsidian-facing `관련 링크:` entry such as `[[examples/<example-slug>|...]]`
+- example pages should include reciprocal Obsidian-facing links back to their owning post
+- these Obsidian-only related-link blocks are hidden in the web render
 
 ---
 

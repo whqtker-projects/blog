@@ -12,6 +12,7 @@ tags:
 - 소속 시리즈: [[series_indexes/spring-framework/spring-core|스프링 코어]]
 - 이전 글: [[ioc-and-di|IoC와 DI]]
 - 다음 글: [[bean-lifecycle-and-scope|빈 생명주기와 스코프]]
+- 예제: [[examples/bean-container-application-context-demo|Bean 컨테이너와 ApplicationContext 예제]]
 
 ## 스프링 빈이란
 
