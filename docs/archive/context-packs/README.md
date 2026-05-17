@@ -1,5 +1,7 @@
 # Context Packs
 
+> Archived document. Context packs were used during early planning. Current work should use the active document map in [`../../README.md`](../../README.md).
+
 **Status:** Active  
 **Last updated:** 2026-05-06
 
@@ -109,8 +111,8 @@ Stale packs are worse than no pack — an agent acting on outdated confirmed inp
 
 ## Related Documents
 
-- [`docs/README.md`](../README.md) — document map
-- [`docs/confirmed-decisions.md`](../confirmed-decisions.md) — source for confirmed inputs
-- [`docs/open-questions.md`](../open-questions.md) — source for unresolved items
-- [`docs/retrieval-workflow.md`](../retrieval-workflow.md) — retrieval-first loading policy (issue #20)
-- [`docs/agent-architecture.md`](../agent-architecture.md) — agent model
+- [`docs/README.md`](../../README.md) — document map
+- [`docs/confirmed-decisions.md`](../../confirmed-decisions.md) — source for confirmed inputs
+- [`docs/open-questions.md`](../../open-questions.md) — source for unresolved items
+- [`docs/archive/retrieval-workflow.md`](../retrieval-workflow.md) — archived retrieval-first loading policy
+- [`docs/agent-architecture.md`](../../agent-architecture.md) — agent model

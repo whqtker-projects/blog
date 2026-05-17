@@ -82,4 +82,4 @@ See `docs/agent-architecture.md` for the full agent model and role boundaries.
 - [agent-architecture.md](agent-architecture.md) — agent model and role boundaries
 - [first-content-readiness.md](first-content-readiness.md) — content creation workflow
 - [confirmed-decisions.md](confirmed-decisions.md) — all confirmed decisions
-- [open-questions.md](open-questions.md) — resolved planning items
+- [open-questions.md](open-questions.md) — active tracker for future unresolved planning items

@@ -2,7 +2,7 @@
 
 This directory holds all planning, decision, and workflow documents for the Obsidian-based technical blog project.
 
-The repository is in the **active content-creation stage**. The Astro build, conversion script, and five published posts are in place. All structural decisions are finalized. The current ongoing work is writing and publishing posts.
+The repository is in the **active content-creation stage**. The Astro build, conversion script, parent/child series routes, and published content are in place. All structural decisions are finalized. The current ongoing work is writing, reviewing, and publishing posts.
 
 ---
 
@@ -15,7 +15,7 @@ The repository is in the **active content-creation stage**. The Astro build, con
 | [project-overview.md](project-overview.md) | High-level purpose, scope, and current stage of the project |
 | [agent-architecture.md](agent-architecture.md) | Agent model, role boundaries, and candidate-agent dispositions |
 | [confirmed-decisions.md](confirmed-decisions.md) | Stable record of all confirmed project decisions |
-| [open-questions.md](open-questions.md) | All planning questions — currently all resolved |
+| [open-questions.md](open-questions.md) | Active tracker for future unresolved planning questions |
 | [decision-log.md](decision-log.md) | Chronological record of planning discussions and their outcomes |
 | [documentation-workflow.md](documentation-workflow.md) | How to update planning documents correctly |
 
@@ -28,7 +28,6 @@ The repository is in the **active content-creation stage**. The Astro build, con
 | [obsidian-conversion-contract.md](obsidian-conversion-contract.md) | Conversion script input requirements, wikilink rules, output policy |
 | [status-lifecycle.md](status-lifecycle.md) | Post status vocabulary and production build behavior |
 | [first-post-outline-template.md](first-post-outline-template.md) | Fill-in-the-blank Obsidian template for starting a new post |
-| [pilot-record.md](pilot-record.md) | Record of the first-content pilot run |
 
 ### Post and content reference
 
@@ -47,22 +46,17 @@ The repository is in the **active content-creation stage**. The Astro build, con
 | [astro-bootstrap.md](astro-bootstrap.md) | Astro project setup, commands, and build contract |
 | [deployment-workflow.md](deployment-workflow.md) | Production and staging deployment workflow, branch model, and CI gate |
 | [file-naming-conventions.md](file-naming-conventions.md) | Confirmed file naming rules (D-15, D-16) |
-| [publishing-workflow.md](publishing-workflow.md) | Confirmed publishing platform and conversion workflow (D-17, D-18) |
+| [publishing-workflow.md](publishing-workflow.md) | Current publishing model and conversion/deployment handoff |
 | [github-issue-workflow.md](github-issue-workflow.md) | How to create GitHub issues and proceed with implementation |
 | [series-index-authoring.md](series-index-authoring.md) | Series index document rules, required fields, and operating invariants |
 | [content-model.md](content-model.md) | Role boundaries for posts, examples, and series indexes; homepage and series page behavior |
 
-### UI direction
-
-| File | Purpose |
-|---|---|
-| [reading-ui-direction.md](reading-ui-direction.md) | Reading-focused UI direction: current state, design goals, page roles, open questions |
-
-### Decision records (ADR)
+### Decision records and archive
 
 | File | Purpose |
 |---|---|
 | [decisions/ADR-001-project-foundations.md](decisions/ADR-001-project-foundations.md) | Foundational decisions from the initial planning session |
+| [archive/](archive/) | Historical planning, context-pack, and design documents no longer used as current operating guidance |
 
 ---
 

@@ -1,73 +1,56 @@
 # Publishing Workflow
 
-**Status:** Resolved — decisions recorded in `confirmed-decisions.md` (D-17, D-18) and `decision-log.md` (DL-003).  
-**Decided:** 2026-05-06  
-**Platform:** Astro (static site generator). **Conversion:** automated script (wikilinks → standard links).
+**Status:** Active reference — decisions recorded in `confirmed-decisions.md` (D-17, D-18).  
+**Platform:** Astro static site.  
+**Conversion:** automated Obsidian Markdown conversion script.
 
-Both decisions are now resolved. This document is a reference record of the constraints, candidate approaches, and evaluation criteria that informed the decision. See `confirmed-decisions.md` (D-17, D-18) and `decision-log.md` (DL-003) for the full decision record.
+This document summarizes the current publishing model. Detailed command and deployment behavior lives in the related implementation documents.
 
----
+## Current Model
 
-## Constraints That Drove the Decision
+Content is authored in the local Obsidian vault, converted into committed Markdown under `src/content/posts/`, then built by Astro.
 
-These confirmed facts shaped which approaches were viable:
+```
+Obsidian vault
+  -> pnpm convert --input <vault/posts> --strict
+  -> src/content/posts/
+  -> pnpm build
+  -> dist/
+```
 
-- **Source format is Obsidian Markdown.** Documents must render correctly inside Obsidian during the writing and review phase.
-- **The conversion path is Obsidian → blog.** Obsidian is the source of truth; there is no separate writing environment for the blog.
-- **Post format includes code blocks, embedded examples, and a quiz section.** The platform must render these elements correctly.
+The Astro build does not read directly from the live vault. It builds whatever converted content is committed in the repository.
 
----
+## Conversion Contract
 
-## Decided Approach
+The converter is implemented in `scripts/obsidian-to-astro.mjs`.
 
-### Platform (Q-1): Astro
+Current behavior includes:
 
-Astro was selected as the static site generator. It supports content collections for post management, MDX for component-based quiz implementation, and built-in code highlighting.
+- validates post filenames as lowercase English kebab-case
+- preserves frontmatter
+- converts post wikilinks to `/posts/<slug>` links
+- converts supported series links
+- converts Obsidian image wikilinks to content-relative Markdown image paths
+- rejects deprecated `[[concept:...]]` links
+- supports `--strict` to fail on unresolved links
 
-**Candidate approaches reviewed:**
+## Publication Gate
 
-| Approach | Examples | Notes |
-|---|---|---|
-| **Static site generator** ✓ | **Astro** | Markdown-native; high control; requires build pipeline |
-| Obsidian-native publishing | Obsidian Publish | Tight integration; limited customization; subscription cost |
-| Hosted platform | Ghost, Hashnode, dev.to | Lower maintenance; less control over rendering |
-| Custom setup | Self-hosted SSG + VPS | Maximum control; highest maintenance |
+Only posts with `status: published` are included in staged and production builds. Local development includes unpublished content for author review.
 
----
+Before promoting content, run:
 
-### Conversion Method (Q-2): Automated script
-
-Conversion is handled by an automated script that transforms Obsidian wikilinks into standard Markdown links before the Astro build step. Specific script design details (language, trigger mechanism, edge cases) are not yet defined and will be addressed during implementation.
-
-**Conversion methods reviewed:**
-
-| Method | Description | Notes |
-|---|---|---|
-| Manual copy-paste | Copy content from Obsidian into the publishing platform by hand | No tooling required; error-prone at scale |
-| **Script-based conversion** ✓ | **Custom script transforms wikilinks before build** | Flexible; requires maintenance |
-| Plugin-based export | Obsidian plugin exports to target format | Depends on plugin ecosystem; variable quality |
-| Direct sync | Platform reads from the Obsidian vault directory | Requires platform support or middleware |
-
----
-
-## Evaluation Criteria
-
-Criteria used to evaluate the candidates:
-
-| Criterion | Why It Matters |
-|---|---|
-| Markdown compatibility | Obsidian-flavored Markdown includes wikilinks and callouts; standard Markdown renderers may not support these |
-| Internal link handling | `[[wikilinks]]` must either be converted to standard links or the platform must support them |
-| Code block rendering | Syntax highlighting and copy-button behavior affects reader experience |
-| Image handling | Images stored in the Obsidian vault must be accessible from the published post |
-| Quiz rendering | The quiz section at the end of each post requires at least basic interactivity or styled formatting |
-| Maintainability | How much ongoing effort is required to publish a new post |
-| Automation complexity | Whether automation is worth building given the expected publishing frequency |
-
----
+```bash
+pnpm convert --input <vault/posts> --strict
+pnpm test:convert
+pnpm build
+```
 
 ## Related Documents
 
-- [`docs/confirmed-decisions.md`](confirmed-decisions.md) — D-17 (Astro), D-18 (automated script)
-- [`docs/decision-log.md`](decision-log.md) — DL-003 (context and alternatives)
-- [`docs/open-questions.md`](open-questions.md) — Q-1 and Q-2 (both resolved)
+- [`astro-bootstrap.md`](astro-bootstrap.md) — project commands, routes, and build contract
+- [`obsidian-conversion-contract.md`](obsidian-conversion-contract.md) — converter input/output behavior
+- [`deployment-workflow.md`](deployment-workflow.md) — staging and production flow
+- [`confirmed-decisions.md`](confirmed-decisions.md) — D-17, D-18
+- [`decision-log.md`](decision-log.md) — DL-003
+

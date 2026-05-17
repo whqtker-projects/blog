@@ -255,14 +255,12 @@ This document is the stable reference for decisions that have been explicitly ag
 
 ## Future Decisions
 
-The following areas are not yet decided. See `open-questions.md` for the current status.
-
-- No remaining pre-drafting planning decisions are open.
+No planning questions are currently open. Use `open-questions.md` only when a new planning or structural question cannot be resolved from existing guidance.
 
 ---
 
 ## Related documents
 
-- [open-questions.md](open-questions.md) — unresolved planning items
+- [open-questions.md](open-questions.md) — active tracker for future unresolved planning items
 - [decision-log.md](decision-log.md) — chronological record of how decisions were reached
 - [decisions/ADR-001-project-foundations.md](decisions/ADR-001-project-foundations.md) — foundational decision record

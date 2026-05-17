@@ -1,114 +1,48 @@
 # File Naming Conventions
 
-**Status:** Resolved — decision recorded in `confirmed-decisions.md` (D-15, D-16) and `decision-log.md` (DL-002).  
-**Decided:** 2026-05-06  
-**Convention:** All-lowercase kebab-case, English only, no filename prefix. Example: `transformer-attention-mechanism.md`
+**Status:** Active reference — decision recorded in `confirmed-decisions.md` (D-15, D-16) and `decision-log.md` (DL-002).  
+**Decided:** 2026-05-06
 
-Obsidian file names directly affect internal linking, search behavior, and the Obsidian-to-blog conversion path. This document lays out the decision points and available options.
+Markdown post filenames are stable identifiers. They become post slugs, drive Obsidian wikilink resolution, and must stay independent from reader-facing title language.
 
-Visible post titles are a separate concern. A post `title` may optionally include a numeric prefix such as `01. ...`, but that does not change the filename rule and does not make title numbering the structural source of truth.
+## Current Rule
 
-See the related open question in [`docs/open-questions.md`](open-questions.md).
+Post filenames must be:
 
----
+- all lowercase
+- English only
+- kebab-case
+- free of date, domain, series, or order prefixes
 
-## Why Naming Conventions Matter
+Valid examples:
 
-In Obsidian, file names are the primary identifier for internal links (`[[file-name]]`). In the blog conversion path, file names typically become URL slugs. A naming convention chosen now affects:
+- `b-plus-tree-index.md`
+- `binary-search-tree.md`
+- `transaction-propagation-and-isolation.md`
 
-- How Obsidian `[[wikilinks]]` resolve
-- What blog post URLs look like
-- Whether file names remain readable in the filesystem
-- How easy it is to sort, search, and organize posts by series or date
+Invalid examples:
 
-Changing conventions after many files exist is expensive — all internal links must be updated. Settling on a convention early prevents that cost.
+- `B-Plus-Tree-Index.md`
+- `b_plus_tree_index.md`
+- `트랜잭션.md`
+- `2026-05-06-b-plus-tree-index.md`
+- `01-b-plus-tree-index.md`
 
----
+## Title And Body Language
 
-## Decision Points
+Filename language and reader-facing language are separate:
 
-### 1. Language: Korean vs. English Filenames
+- filenames and slugs stay English-only identifiers
+- post `title` values may be Korean
+- post bodies are intended to be written in Korean
+- exact code, CLI commands, API names, and other technical identifiers may remain in their original form
 
-| Option | Example | Notes |
-|---|---|---|
-| English only | `transformer-attention.md` | URL-safe by default; most static site generators expect ASCII slugs |
-| Korean allowed | `트랜스포머-어텐션.md` | Obsidian supports this; URLs require encoding, may break some tools |
-| Korean titles, English filenames | title in frontmatter, filename in English | Separates display name from file identifier |
+Numeric prefixes such as `01. ...` are allowed only in the `title` frontmatter. They do not affect the filename or slug. When a numeric title prefix is present, repository validation requires it to match the post's explicit `order`.
 
-**Consideration:** The Obsidian-to-blog conversion tool (not yet decided) may or may not handle Korean filenames in URLs gracefully.
+## Related Documents
 
----
+- [`post-metadata.md`](post-metadata.md) — post frontmatter rules
+- [`obsidian-conversion-contract.md`](obsidian-conversion-contract.md) — conversion behavior and filename validation
+- [`confirmed-decisions.md`](confirmed-decisions.md) — D-15, D-16
+- [`decision-log.md`](decision-log.md) — DL-002
 
-### 2. Slug Format
-
-| Option | Example | Notes |
-|---|---|---|
-| kebab-case | `transformer-attention-mechanism.md` | Most common for web URLs; highly compatible |
-| snake_case | `transformer_attention_mechanism.md` | Common in some ecosystems; less conventional for URLs |
-| CamelCase | `TransformerAttentionMechanism.md` | Readable but URL-unfriendly without normalization |
-| Spaces | `Transformer Attention Mechanism.md` | Natural in Obsidian; requires encoding in URLs |
-
----
-
-### 3. Case: Lowercase vs. Title Case
-
-| Option | Example | Notes |
-|---|---|---|
-| All lowercase | `transformer-attention.md` | Avoids case-sensitivity issues across OS (macOS is case-insensitive by default; Linux is not) |
-| Title case | `Transformer-Attention.md` | More readable as a filename; can cause cross-OS issues |
-
----
-
-### 4. Series Prefix in Filenames
-
-| Option | Example | Notes |
-|---|---|---|
-| No prefix | `attention-mechanism.md` | Clean; relies on folder structure for organization |
-| Domain prefix | `ai-attention-mechanism.md` | Makes domain visible in filename; may conflict with numbered index |
-| Numbered series prefix | `ai-01-attention-mechanism.md` | Encodes reading order; brittle when order changes |
-
----
-
-### 5. Date Prefix in Filenames
-
-| Option | Example | Notes |
-|---|---|---|
-| No date | `attention-mechanism.md` | Timeless; better for evergreen concept posts |
-| ISO date prefix | `2026-05-06-attention-mechanism.md` | Useful for time-ordered content (journals, changelogs); adds noise to concept posts |
-
----
-
-## Proposals (Not Chosen)
-
-These are illustrative options only. The user selects the actual convention.
-
-**Option A — Simple kebab, no prefix:**  
-`transformer-attention-mechanism.md`  
-Clean, URL-safe, no coupling to series or date. Relies on folders for organization.
-
-**Option B — Domain-prefixed kebab:**  
-`ai-transformer-attention-mechanism.md`  
-Domain is visible in the filename; no reading order encoded.
-
-**Option C — Numbered series prefix:**  
-`ai-03-transformer-attention-mechanism.md`  
-Encodes domain and order; brittle when posts are inserted or reordered.
-
----
-
-## Current Clarification
-
-The resolved filename rule is:
-- filenames stay all-lowercase kebab-case, English only, with no filename prefix
-
-This does not prohibit visible numeric prefixes in the post `title` frontmatter. Under the current repository policy:
-- numeric title prefixes are optional
-- they are rendered as-is when present
-- post `order` remains the structural source of truth
-- validation requires a numeric title prefix to match `order` when such a prefix is present
-
-Filename and slug rules are separate from reader-facing language policy:
-- filenames and slugs remain English-only identifiers
-- visible series titles and post titles may be Korean
-- post bodies are intended to be written in Korean, while exact code, CLI commands, API names, and other technical identifiers may remain in their original form when needed
-- this repository does not treat an English filename or slug as a signal that the rendered content must also be English

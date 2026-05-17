@@ -8,7 +8,7 @@ How planning sessions with agents should update the documentation system.
 
 | Document | Role |
 |---|---|
-| `open-questions.md` | Source of all unresolved planning items |
+| `open-questions.md` | Active tracker for unresolved planning items |
 | `confirmed-decisions.md` | Stable record of explicitly agreed decisions |
 | `decision-log.md` | Chronological record of how decisions were reached |
 | `project-overview.md` | High-level summary of project direction (not a decision log) |
@@ -21,8 +21,8 @@ How planning sessions with agents should update the documentation system.
 
 Update when:
 - A new planning question surfaces that has not been answered.
-- An existing question's status changes (`open` → `under discussion` → `decided`).
-- A resolved question needs to be marked and referenced before removal.
+- An existing open question needs clarification or status context.
+- A resolved question needs to be removed after the decision is recorded.
 
 Do not:
 - Resolve a question by assumption. Ambiguous items stay `open` until the user confirms.
@@ -63,7 +63,7 @@ Do not:
 
 When a planning session produces an ambiguous or partially discussed item, follow this order:
 
-1. **Check `open-questions.md`** — the item may already be tracked.
+1. **Check `open-questions.md`** — the item may already be tracked as open.
 2. **Check `confirmed-decisions.md`** — the item may already be resolved.
 3. **If still ambiguous, use `AskUserQuestion`** to surface the question before proceeding.
 4. **Do not guess.** Do not infer a decision from related confirmed decisions.
@@ -101,11 +101,11 @@ New item surfaces
         │
         ├─ Already confirmed? ──► No update needed. Reference confirmed-decisions.md.
         │
-        ├─ Unresolved? ──────────► Add to open-questions.md (status: open)
+        ├─ Unresolved? ──────────► Add to open-questions.md
         │
         └─ User confirms now? ───► 1. Append entry to decision-log.md
                                    2. Add decision to confirmed-decisions.md
-                                   3. Update open-questions.md (status: decided)
+                                   3. Remove the resolved item from open-questions.md
 ```
 
 ---

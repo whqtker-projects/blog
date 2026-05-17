@@ -1,5 +1,7 @@
 # Context Pack: Series Structure
 
+> Archived document. Q-3 and Q-5 are resolved; see [`../../series-backlog.md`](../../series-backlog.md) and [`../../content-model.md`](../../content-model.md) for current guidance.
+
 **Scope:** Prepare options for defining series names and groupings within the confirmed topic domains (Q-3).  
 **Related open question(s):** Q-3, Q-5  
 **Last updated:** 2026-05-06
@@ -34,9 +36,9 @@ Q-9 (audience segmentation per series) is also open and may affect how series ar
 
 ## Related Documents
 
-- [`docs/series-backlog.md`](../series-backlog.md) — candidate series entries for each confirmed domain
-- [`docs/open-questions.md`](../open-questions.md) — Q-3, Q-5, Q-9 entries
-- [`docs/confirmed-decisions.md`](../confirmed-decisions.md) — D-9, D-10, D-12, D-13
+- [`docs/series-backlog.md`](../../series-backlog.md) — current series inventory
+- [`docs/open-questions.md`](../../open-questions.md) — active tracker for future unresolved planning items
+- [`docs/confirmed-decisions.md`](../../confirmed-decisions.md) — D-9, D-10, D-12, D-13
 
 ---
 

@@ -78,4 +78,4 @@ Detailed post content is decided by the user personally. This document only reco
 - [`docs/confirmed-decisions.md`](confirmed-decisions.md) — D-6, D-7, D-8, D-26, D-27, D-28, D-29
 - [`docs/decision-log.md`](decision-log.md) — DL-008 (Q-6, Q-7, Q-8, Q-9 decisions with alternatives)
 - [`docs/first-post-outline-template.md`](first-post-outline-template.md) — reusable writing template
-- [`docs/open-questions.md`](open-questions.md) — Q-6, Q-7, Q-8, Q-9 (all resolved)
+- [`docs/confirmed-decisions.md`](confirmed-decisions.md) — resolved Q-6, Q-7, Q-8, Q-9 outcomes
