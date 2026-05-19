@@ -11,7 +11,7 @@
 | 1 | `database-foundations` | 4 draft |
 | 2 | `data-modeling-and-design` | 5 draft |
 | 3 | `relational-queries-and-joins` | 4 draft |
-| 4 | `database-internals` | 5 published posts |
+| 4 | `database-internals` | 4 published, 1 draft |
 
 Current child indexes:
 - `src/content/series_indexes/database-systems/database-foundations.md`
@@ -23,7 +23,7 @@ Current child indexes:
 
 This parent now has two distinct layers:
 - three new sibling child series cover foundations, relational modeling, and query semantics in `draft` state
-- `database-internals` remains the most mature child series in the repository, with five `published` posts and occupied post orders `1` through `5`
+- `database-internals` remains the most mature child series in the repository, with four `published` posts, one `draft`, and occupied post orders `1` through `5`
 - the parent therefore functions as both a stable reader-facing anchor and a controlled growth area for earlier-stage database material
 
 ## Next Expansion Points

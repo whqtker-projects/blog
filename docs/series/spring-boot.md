@@ -1,4 +1,4 @@
-# 스프링 부트
+# Spring Boot
 
 ## Purpose
 

@@ -162,7 +162,7 @@ Role rules:
 
 Series display policy:
 - `series` and `parent` remain English kebab-case identifiers
-- `title` is the reader-facing display name and may be Korean
+- `title` and `description` are reader-facing display text and may be Korean
 - identifier fields and display text must not be conflated
 
 Series index body-link policy:

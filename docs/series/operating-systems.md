@@ -1,4 +1,4 @@
-# 운영체제
+# Operating Systems
 
 ## Purpose
 

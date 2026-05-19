@@ -1,103 +1,56 @@
 # Blog Project Planning
 
-> Archived document. This is an initial planning snapshot and is not current operating guidance. See [`../README.md`](../README.md) and [`../project-overview.md`](../project-overview.md) for current project state.
+> Archived document. This file is the 2026-05-06 planning snapshot and is not current operating guidance. For the live repository state, start with [`../README.md`](../README.md) and [`../project-overview.md`](../project-overview.md).
 
-**Status:** Early planning stage — structure and decisions are being documented before any posts are drafted.  
-**Last updated:** 2026-05-06
-
----
-
-## 1. Project Overview
-
-This project builds a technical blog backed by an Obsidian vault.
-
-- **Obsidian** is the internal knowledge repository where notes, drafts, and reference materials live.
-- **The blog** is the reader-facing output derived from those Obsidian documents.
-- The conversion path is direct: Obsidian documents are the source of truth, and posts are published from them without maintaining a separate writing environment.
-
-The blog is concept-driven — it explains how things work, from definition level through internal mechanisms. It is not primarily a troubleshooting or how-to reference.
-
-The current planning stage is focused on establishing structure, series organization, planning documents, and decision records. No posts are being drafted yet.
+**Status:** Historical snapshot — early planning stage as of 2026-05-06  
+**Last updated:** 2026-05-19
 
 ---
 
-## 2. Confirmed Decisions
+## What This File Preserves
 
-See [`docs/decisions/`](../decisions/) for individual decision records. See [`docs/github-issue-workflow.md`](../github-issue-workflow.md) for the issue-driven development workflow.
+This archive keeps the original pre-implementation planning frame:
 
-| Decision | Status |
-|---|---|
-| Blog is concept-explanation focused, not troubleshooting | Confirmed |
-| Target audience spans beginner to practitioner | Confirmed |
-| Each post covers definition-level and operational-principle level | Confirmed |
-| Examples are included inside posts as much as possible | Confirmed |
-| Each post ends with a quiz | Confirmed |
-| Obsidian is the knowledge repository | Confirmed |
-| Blog is the reader-facing artifact | Confirmed |
-| Obsidian → blog is a direct conversion workflow | Confirmed |
-| Document format uses Obsidian Markdown | Confirmed |
-| User defines the detailed content of each post personally | Confirmed |
-| Documentation and structure come before article drafting | Confirmed |
-| Topic domains: CS fundamentals, AI/ML/LLM, backend/systems, software engineering (extensible) | Confirmed |
+- the project was still deciding structure and workflow details
+- no production-ready post pipeline had been implemented yet
+- several publishing and organization questions were still open
+
+It is retained for traceability only. It should not be used to infer the current Astro routes, conversion workflow, published-post count, or live documentation priorities.
 
 ---
 
-## 3. Scope and Positioning
+## Historical Summary
 
-**What this blog produces:**
-- Concept explanation posts at two depths: (1) what something is, (2) how it works internally
-- Posts with concrete examples embedded in the body
-- Posts with a quiz section at the end
+At the time of this snapshot, the repository direction was:
 
-**What this blog is not primarily focused on:**
-- Troubleshooting guides or debugging walkthroughs
-- Step-by-step how-to tutorials without conceptual grounding
-- News or opinion pieces (not ruled out, but not the core format)
+- an Obsidian-backed technical blog
+- concept-first writing rather than troubleshooting
+- a planning-first phase before regular post production
+- unresolved decisions around platform, structure, and workflow
 
-**Topic domains** (confirmed, extensible):
-- CS fundamentals and algorithms
-- AI / ML / LLM
-- Backend and systems
-- Software engineering
+That planning phase later concluded. The current repository now has implemented Astro routes, committed converted content, deployment workflow, and active content operations documented elsewhere.
 
 ---
 
-## 4. Role Separation
+## Historical Open-Question Context
 
-| Actor | Responsibility |
-|---|---|
-| Obsidian | Source vault — notes, drafts, reference material, internal links |
-| Blog | Published output — reader-facing posts converted from Obsidian documents |
-| User | Decides detailed content, topic selection, post structure, and publication timing |
-| Planning/documentation agent | Helps with structure, series organization, planning documents, and decision tracking |
+The original planning snapshot tracked unresolved questions such as:
 
-The planning agent does not decide post content, select the first series, or set a publication schedule unless the user initiates that discussion.
+- publishing platform choice
+- series/category grouping
+- post template structure
+- file naming rules
+- publishing workflow shape
+- audience segmentation
 
----
-
-## 5. Current Planning Priorities
-
-1. **Establish this planning document** — captures the project direction so every future conversation starts with shared context.
-2. **Define series/category structure** — group topic domains into navigable series before drafting begins.
-3. **Create post templates** — standardize the definition → operational-principle → examples → quiz format.
-4. **Document open questions** — track what is still unresolved so nothing is silently assumed.
-
-Documentation and structure come first because:
-- Decisions made now shape the structure of every future post.
-- A clear taxonomy prevents duplication and gaps across series.
-- Planning records make the project maintainable when returning after a break.
+Those questions are no longer current. Their outcomes were incorporated into the active decision and workflow documents under `docs/`.
 
 ---
 
-## 6. Open Questions
+## Current Authoritative Replacements
 
-See [`docs/open-questions.md`](../open-questions.md) for the current open question tracker.
-
-| Topic | Status |
-|---|---|
-| Publishing platform | Unresolved — format is Obsidian Markdown; platform TBD |
-| Series/category names and groupings | Not yet defined |
-| Post template structure | Not yet defined |
-| Naming conventions for Obsidian files | Not yet defined |
-| Publishing workflow (manual vs. automated conversion) | Not yet defined |
-| Audience segmentation per series | Not yet defined |
+- [`../README.md`](../README.md) — active document map
+- [`../project-overview.md`](../project-overview.md) — current project state
+- [`../confirmed-decisions.md`](../confirmed-decisions.md) — stable decisions
+- [`../publishing-workflow.md`](../publishing-workflow.md) — implemented publishing model
+- [`../obsidian-conversion-contract.md`](../obsidian-conversion-contract.md) — current converter contract

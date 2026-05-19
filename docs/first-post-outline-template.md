@@ -19,10 +19,10 @@ Example: `b-plus-tree-index.md`, `tcp-three-way-handshake.md`
 
 ```yaml
 ---
-title: "[Post title — Korean or English]"
+title: "[Post title — Korean]"
 series: [series-slug]
 order: [integer, position in series starting from 1]
-status: draft   # optional — omit if not tracking status in Obsidian
+status: draft   # required — use idea, draft, or published
 ---
 ```
 
@@ -147,5 +147,5 @@ Section titles and ordering are chosen per post (D-26). The three content areas 
 
 - Section count is not fixed. Add more sections if the topic requires it — definition and operational principles can each span multiple sections.
 - Examples can be inline code blocks, diagrams (as Obsidian embeds), or step-by-step walkthroughs — whatever makes the concept clearest.
-- The quiz answer is hidden in Obsidian using `<details>` / `<summary>`. The Astro build step will convert this to an interactive component.
+- The quiz answer is hidden in Obsidian using `<details>` / `<summary>`. The Astro build keeps this HTML structure intact for the rendered post.
 - Do not add `domain` to the frontmatter — it is inferred from `series` at build time.

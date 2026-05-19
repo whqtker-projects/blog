@@ -1,4 +1,4 @@
-# 스프링 프레임워크
+# Spring Framework
 
 ## Purpose
 
@@ -8,7 +8,7 @@
 
 | Order | Child series slug | Display name | Current posture |
 |---|---|---|---|
-| 1 | `spring-core` | 스프링 코어 | 5 draft |
+| 1 | `spring-core` | 스프링 코어 | 5 published |
 | 2 | `spring-aop-and-transactions` | 스프링 AOP와 트랜잭션 | 5 draft |
 | 3 | `spring-web-mvc` | 스프링 웹 MVC | 6 draft |
 
@@ -19,8 +19,9 @@ Current child indexes:
 
 ## Backlog Posture
 
-This parent starts as a backlog-first framework track:
-- every current post in the parent is `status: draft`
+This parent is now a mixed-maturity framework track:
+- `spring-core` is the second published child series in the repository, with five `published` posts
+- `spring-aop-and-transactions` and `spring-web-mvc` remain `draft` backlog children
 - child ordering is explicit across container fundamentals, cross-cutting runtime behavior, and MVC request flow
 - the parent boundary intentionally excludes Spring Boot startup, auto-configuration, and operational tooling
 

@@ -16,7 +16,7 @@ Keep the planning document system internally consistent:
 - Fix broken or missing cross-links between documents
 - Keep `docs/README.md` aligned with actual files in the repository
 - Correct wording inconsistencies that do not change meaning
-- Keep `docs/first-content-readiness.md` aligned with committed posts
+- Keep workflow docs and series operating docs aligned with the current repository state
 - Validate decision document consistency (see below)
 - Run cleanup passes after major document additions
 
@@ -30,7 +30,7 @@ Read only what is in scope for the specific task. Typical starting points:
 - For cross-link fixes: the two documents whose links need aligning
 - For document-map accuracy: `docs/README.md` + `ls docs/`
 - For decision doc stability: `docs/confirmed-decisions.md`, `docs/open-questions.md`, `docs/decision-log.md`
-- For content-adjacent alignment: `docs/first-content-readiness.md` + `ls src/content/posts/`
+- For content-adjacent alignment: `docs/first-content-readiness.md` + the relevant `docs/series/*.md` file + `ls src/content/posts/`
 
 Consult `docs/documentation-workflow.md` when the task involves updating how documents relate to each other.
 
@@ -55,7 +55,7 @@ The document map should list every active planning document. Add entries for new
 
 ### Content-adjacent alignment
 
-`docs/first-content-readiness.md` maintains a candidate post list for the `database-internals` series. After new posts are committed to `src/content/posts/`, check that the candidate list still matches the actual committed files. Flag discrepancies to the user; do not edit the candidate list without user confirmation.
+`docs/first-content-readiness.md` is the reusable workflow document, not the live backlog inventory. Current post status and per-parent posture should be checked against `src/content/posts/` frontmatter and the relevant files under `docs/series/`.
 
 ### Decision document stability
 
@@ -96,6 +96,6 @@ After a large batch of documents or posts is added, run a pass to verify:
 - [`docs/agent-architecture.md`](../../docs/agent-architecture.md) — full agent model
 - [`docs/README.md`](../../docs/README.md) — document map
 - [`docs/documentation-workflow.md`](../../docs/documentation-workflow.md) — how documents are updated
-- [`docs/first-content-readiness.md`](../../docs/first-content-readiness.md) — candidate post list and content workflow
+- [`docs/first-content-readiness.md`](../../docs/first-content-readiness.md) — content workflow and readiness criteria
 - [`docs/confirmed-decisions.md`](../../docs/confirmed-decisions.md) — confirmed decisions (stable reference)
 - [`docs/decision-log.md`](../../docs/decision-log.md) — append-only decision record

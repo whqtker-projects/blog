@@ -2,6 +2,8 @@
 
 This directory holds all planning, decision, and workflow documents for the Obsidian-based technical blog project.
 
+Agent-facing operating docs in this directory are English-first. Reader-facing post content is intended to be Korean, and `codebase-manual.html` is the explicit Korean manual exception inside `docs/`.
+
 The repository is in the **active content-creation stage**. The Astro build, conversion script, parent/child series routes, and published content are in place. All structural decisions are finalized. The current ongoing work is writing, reviewing, and publishing posts.
 
 ---

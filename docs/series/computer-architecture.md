@@ -1,4 +1,4 @@
-# 컴퓨터구조론
+# Computer Architecture
 
 ## Purpose
 

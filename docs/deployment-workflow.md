@@ -36,7 +36,7 @@ The CI workflow (`.github/workflows/ci.yml`) runs on every push and pull_request
 
 **Build contract:** Vercel runs `pnpm build` against the committed `src/content/` files. Conversion from Obsidian is not part of the CI or deployment — content must be converted and committed locally before pushing. See `docs/astro-bootstrap.md` for the full content workflow.
 
-**Output:** `dist/` — 12 static HTML pages plus assets. `dist/` is gitignored; Vercel builds it fresh on every deployment.
+**Output:** `dist/` — static HTML pages plus assets. The exact page count changes as published posts, published examples, and series pages change over time. `dist/` is gitignored; Vercel builds it fresh on every deployment.
 
 ---
 
@@ -86,7 +86,8 @@ The typical author workflow before publishing a post:
 Before opening a PR from `develop` → `master`, verify the Vercel Preview Deployment URL for `develop`:
 
 - [ ] Homepage (`/`) renders — series list loads without layout errors
-- [ ] Series page (`/series/<series>`) renders — post list appears in order
+- [ ] Parent series page (`/series/<parent>`) renders — child series list appears in order
+- [ ] Child series page (`/series/<parent>/<child>`) renders — post list appears in order
 - [ ] Post page (`/posts/<slug>`) renders — content, breadcrumb, and code blocks display correctly
 - [ ] Prev/next post navigation links are present and point to the correct posts
 - [ ] Quiz `<details>` elements open and close correctly
@@ -121,7 +122,9 @@ Common causes:
 - Astro build error — reproduce locally with `pnpm build` first
 - Dependency install failure — check `pnpm-lock.yaml` is committed and up to date
 
-**CI failure (GitHub Actions):** Check the failing step in the Actions tab. The two CI steps are `pnpm test:convert` and `pnpm build`. Both must pass before merging to `master`.
+**CI failure (GitHub Actions):** Check the failing step in the Actions tab. The repository CI currently runs `pnpm test:convert` and `pnpm build`. Both must pass before merging to `master`.
+
+**Local-only validation:** CI does not currently run `pnpm check:content` or `pnpm test:repo`. Run those locally when changing content contracts, series hierarchy, validation helpers, or repository-level remark/content utilities.
 
 **Rollback:** Vercel keeps all previous production deployments. To roll back, go to the Vercel dashboard → Deployments → select the previous successful deployment → Promote to Production.
 

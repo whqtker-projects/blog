@@ -1,7 +1,7 @@
 # Project Overview
 
 **Last updated:** 2026-05-08  
-**Current stage:** Active content creation — five posts published, full workflow in place.
+**Current stage:** Active content creation — nine posts published across two child series, full workflow in place.
 
 ---
 
@@ -55,7 +55,7 @@ The following domains are confirmed. Additional domains may be added as the proj
 
 ## Current stage
 
-All structural decisions are finalized (series structure, file naming, publishing workflow, post format, status lifecycle). The Astro build and Obsidian-to-Astro conversion script are implemented and tested. Five posts in the `database-internals` series are published.
+All structural decisions are finalized (series structure, file naming, publishing workflow, post format, status lifecycle). The Astro build and Obsidian-to-Astro conversion script are implemented and tested. Nine posts are currently published: four in `database-internals` and five in `spring-core`.
 
 The current work is writing and publishing posts. The content drafting and review workflow is fully documented in `docs/first-content-readiness.md` and `docs/review-checklist.md`.
 

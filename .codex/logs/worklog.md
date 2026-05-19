@@ -771,3 +771,11 @@ GitHub issue #194의 구현 방향을 코드베이스 매뉴얼 작성으로 정
 `docs/codebase-manual.html`이 이미 존재하는 상태에서 issue #194 수용 기준을 다시 대조했다. 문서 자체는 대체로 맞았지만, routine command 목록에 `pnpm preview`가 빠져 있었고 major directory 설명에서 `src/content/examples/`, `src/content/series_indexes/`, `public/images/`의 역할이 덜 직접적으로 드러났다.
 
 그래서 매뉴얼에 누락된 명령과 디렉터리 역할을 보강하고, repository validation이 실제로 확인하는 relationship 제약도 한 문단으로 추가했다. 이 보완으로 이슈의 “routine development commands”, “major directory roles”, “relationships and validation expectations” 수용 기준을 문서상에서 더 명확하게 충족하도록 정리했다.
+
+## 2026-05-19 — Resolve stale documentation issues #195-#202
+
+남아 있던 documentation cleanup 이슈들을 현재 repository 상태와 다시 대조했다. 그 결과 `project-overview`, `deployment-workflow`, `first-post-outline-template`, `first-content-readiness`, archive 문서, series operating docs, 그리고 `.claude/.codex` agent guides 일부에 실제 구현과 어긋나는 표현이 남아 있었다.
+
+이번 정리에서는 세 가지 원칙을 고정했다. 첫째, agent-facing docs와 운영 문서는 English-first로 유지한다. 둘째, reader-facing post/content는 Korean 정책을 유지한다. 셋째, live status와 published count는 문서 추정이 아니라 `src/content/posts/` frontmatter를 source of truth로 본다.
+
+이에 따라 stale published-count 문구를 9 published 기준으로 갱신했고, `first-content-readiness.md`에서 오래된 backlog/status inventory를 제거해 workflow 전용 문서로 되돌렸다. `PLANNING.md`와 `reading-ui-direction.md`는 현재 가이드가 아니라 historical archive라는 점이 본문 구조 자체에서 드러나도록 축약했고, agent guides는 새 workflow/document-language policy와 현재 검증 흐름에 맞게 정리했다.

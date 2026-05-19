@@ -25,7 +25,7 @@ Support the author through each post-creation stage:
 | Request | Action |
 |---|---|
 | Start a new post | Produce a minimum-frontmatter stub in Obsidian vault Markdown format |
-| Advance to `outline` | Add section headings and bullet notes; confirm scope matches the series plan in `docs/first-content-readiness.md` |
+| Advance to `outline` | Add section headings and bullet notes; confirm scope matches the relevant parent-series operating doc in `docs/series/` |
 | Check draft → review readiness | Run through `docs/review-checklist.md` Draft → Review section; report each item pass/fail |
 | Check review → published readiness | Run through `docs/review-checklist.md` Review → Published section + Pre-Publication Self-Review in `docs/first-content-readiness.md` |
 | Pre-publication build verify | Run `pnpm convert --input <vault> --strict`, then `pnpm build`; report any errors before proceeding |
@@ -76,7 +76,7 @@ When the user asks to verify a post before publication:
    - If the build fails: report the error and stop
 3. Inspect `dist/posts/<slug>/index.html`:
    - Code blocks carry `class="astro-code"` (Shiki highlighting applied)
-   - Images resolve to `/images/<filename>` and the file exists in `public/images/`
+   - Image references are emitted correctly with no broken attachment links
    - Internal links resolve to `/posts/<slug>`
    - `<details>/<summary>` quiz blocks are present and intact
 
