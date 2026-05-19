@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "examples/configuration-class-and-component-scan-demo.md",
+                "file": "series_indexes/mybatis/mybatis-foundations.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "configuration-class-and-component-scan-demo"
+              "title": "mybatis-foundations"
             }
           }
         ]
@@ -78,8 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 295.5,
-    "collapsed": true
+    "width": 295.5
   },
   "right": {
     "id": "1aa836f50c145f4d",
@@ -183,38 +182,40 @@
   },
   "active": "2d0a66317cb227d7",
   "lastOpenFiles": [
-    "posts/configuration-class-and-component-scan.md",
-    "posts/bean-lifecycle-and-scope.md",
-    "examples/spring-lifecycle-hooks-demo.md",
-    "examples/spring-lifecycle-hooks-demo.md.tmp.34821.e5aeb21513c5",
-    "posts/bean-container-and-application-context.md",
-    "examples/bean-container-application-context-demo.md",
-    "series_indexes/spring-framework/spring-core.md",
-    "posts/ioc-and-di.md",
-    "examples/ioc-di-order-service-demo.md",
-    "posts/what-is-spring-framework.md",
-    "examples/configuration-class-and-component-scan-demo.md",
+    "posts/mybatis-vs-jdbc.md",
+    "series_indexes/mybatis/mybatis-foundations.md",
+    "posts/what-is-mybatis.md",
+    "series_indexes/mybatis.md",
     "series_indexes/spring-framework.md",
-    "series_indexes/spring-framework/spring-web-mvc.md",
-    "posts/spring-mvc-request-flow.md",
-    "series_indexes/spring-framework/spring-aop-and-transactions.md",
-    "posts/what-is-spring-aop.md",
-    "examples/bean-lifecycle-and-scope/spring-lifecycle-hooks-demo.md",
+    "posts/mybatis-spring-boot.md",
+    "posts/mybatis-mapper-scan.md",
+    "posts/mybatis-spring-overview.md",
+    "posts/mybatis-plugin.md",
+    "posts/mybatis-cache.md",
+    "posts/mybatis-executor.md",
+    "posts/mybatis-dynamic-sql-foreach.md",
+    "posts/mybatis-dynamic-sql-choose-where-set-trim.md",
+    "posts/mybatis-dynamic-sql-if.md",
+    "posts/mybatis-association-and-collection.md",
+    "posts/mybatis-result-mapping.md",
+    "posts/mybatis-parameter-binding.md",
+    "posts/mybatis-mapper-interface-and-xml.md",
+    "posts/mybatis-configuration.md",
+    "posts/sql-session-factory-and-sql-session.md",
+    "series_indexes/mybatis/mybatis-spring.md",
+    "series_indexes/mybatis/mybatis-internals.md",
+    "series_indexes/mybatis/mybatis-dynamic-sql.md",
+    "series_indexes/mybatis/mybatis-mapping.md",
+    "series_indexes/mybatis",
+    "series_indexes/spring-framework/spring-core.md",
+    "posts/configuration-class-and-component-scan.md",
+    "examples/spring-lifecycle-hooks-demo.md.tmp.34821.e5aeb21513c5",
     "examples/bean-lifecycle-and-scope",
     "examples",
     "attachments/Pasted image 20260514231915.png",
     "attachments/Pasted image 20260514231320.png",
     "attachments/Pasted image 20260514230959.png",
     "attachments/Pasted image 20260513162746.png",
-    "series_indexes/computer-architecture/memory-systems.md",
-    "이미지-경로.md",
-    "posts/spring-framework-vs-spring-boot.md",
-    "series_indexes/spring-boot/spring-boot-basics.md",
-    "series_indexes/transport-and-reliability.md",
-    "series_indexes/network-protocols.md",
-    "series_indexes/naming-and-routing.md",
-    "series_indexes/database-internals.md",
-    "series_indexes/data-structures.md",
     "attachments/Pasted image 20260511192831.png",
     "무제.canvas",
     "images",
@@ -224,7 +225,6 @@
     "무제.base",
     "attachments/Pasted image 20260511171546.png",
     "series_indexes/spring-boot",
-    "series_indexes/spring-framework",
-    "series_indexes/operating-systems"
+    "series_indexes/spring-framework"
   ]
 }

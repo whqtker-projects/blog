@@ -74,6 +74,11 @@ Domain is not stored as a frontmatter field. It is inferred from `series` via th
 | `spring-boot-configuration` | `backend-systems` |
 | `spring-boot-testing-and-operations` | `backend-systems` |
 | `backend-design` | `backend-systems` |
+| `mybatis-foundations` | `backend-systems` |
+| `mybatis-mapping` | `backend-systems` |
+| `mybatis-dynamic-sql` | `backend-systems` |
+| `mybatis-internals` | `backend-systems` |
+| `mybatis-spring` | `backend-systems` |
 | `data-structures` | `cs-fundamentals` |
 | `algorithms` | `cs-fundamentals` |
 | `operating-systems-overview` | `cs-fundamentals` |

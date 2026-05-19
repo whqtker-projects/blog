@@ -24,7 +24,7 @@ Each post covers a topic at two depths:
 1. **Definition level** — what something is
 2. **Operational level** — how it works internally
 
-Concrete examples are included inside posts as much as possible. Each post ends with a quiz section.
+Concrete examples are included inside posts as much as possible. Self-check or quiz sections are optional and used only when they materially help the post.
 
 ---
 

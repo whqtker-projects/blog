@@ -779,3 +779,9 @@ GitHub issue #194의 구현 방향을 코드베이스 매뉴얼 작성으로 정
 이번 정리에서는 세 가지 원칙을 고정했다. 첫째, agent-facing docs와 운영 문서는 English-first로 유지한다. 둘째, reader-facing post/content는 Korean 정책을 유지한다. 셋째, live status와 published count는 문서 추정이 아니라 `src/content/posts/` frontmatter를 source of truth로 본다.
 
 이에 따라 stale published-count 문구를 9 published 기준으로 갱신했고, `first-content-readiness.md`에서 오래된 backlog/status inventory를 제거해 workflow 전용 문서로 되돌렸다. `PLANNING.md`와 `reading-ui-direction.md`는 현재 가이드가 아니라 historical archive라는 점이 본문 구조 자체에서 드러나도록 축약했고, agent guides는 새 workflow/document-language policy와 현재 검증 흐름에 맞게 정리했다.
+
+## 2026-05-19 — Restructure MyBatis stubs with headings
+
+`mybatis` 계열 17개 `idea` 상태 게시글의 한 줄 스텁을 실제 `##` 헤딩 기반 구조로 교체했다. 각 파일은 기존 게시글 패턴에 맞춰 정의, 동작 원리, 예시/주의점 중심의 개요 섹션으로 나눴고, 별도의 목차 목록이나 퀴즈 섹션은 두지 않았다.
+
+관련 문서도 함께 정리했다. 초안 구조는 standalone 목차가 아니라 실제 Markdown 헤딩으로 잡는다는 원칙을 `docs/post-template.md`, `docs/first-post-outline-template.md`, `docs/first-content-readiness.md`, `docs/review-checklist.md`에 반영했고, 퀴즈는 repository-wide 필수가 아니라 선택 요소라는 쪽으로 `docs/confirmed-decisions.md`, `docs/decision-log.md`, `docs/rendering-compatibility.md`, `docs/deployment-workflow.md`를 맞췄다.

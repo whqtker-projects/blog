@@ -95,7 +95,9 @@ status: idea
 Recommended minimal body for an idea stub:
 
 ```md
-아이디어 단계 메모.
+## [Section title]
+
+- [핵심 메모]
 ```
 
 Minimum fields at `idea` state:
@@ -135,9 +137,6 @@ A `draft`-state post body may still be outline-only:
 ## Example
 - concrete lookup trace: root → internal → leaf
 - show key comparisons at each level
-
-## Quiz
-Topic: properties of B+Tree vs. binary search tree
 ```
 
 Begin writing prose when ready. The post does not need to be complete — `draft` means active work is in progress, whether that work is structural or prose-level.
@@ -150,19 +149,12 @@ The conversion script (`pnpm convert`) is not needed during Obsidian writing. Ru
 
 Use this while writing a post in `draft` state. Each item maps to a confirmed decision.
 
-### Required content areas (D-6, D-7, D-8)
+### Required content areas (D-6, D-7)
 
 - [ ] Definition-level explanation written — what the topic is; accessible without prior knowledge
 - [ ] Operational principles written — how it works internally; not just surface behavior
 - [ ] At least one concrete example included inline (not a link to an external resource)
-- [ ] Quiz section present and placed last
-
-### Quiz (D-27)
-
-- [ ] Exactly 5 MCQ questions
-- [ ] Each question has exactly 4 answer options
-- [ ] Each question has exactly 1 correct answer
-- [ ] Each answer includes a brief explanation inside `<details>`
+- [ ] Working structure is expressed with actual Markdown headings, not only a table-of-contents list
 
 ### File and metadata (D-15, D-16, D-25)
 
@@ -184,14 +176,9 @@ Use this while writing a post in `draft` state. Each item maps to a confirmed de
 A post is ready to move from `draft` to `published` when all of the following are true:
 
 **Content**
-- Every required content area (definition, operational principles, examples, quiz) is complete — no `[Write here]` placeholders or stubs remain.
+- Every required content area (definition, operational principles, examples) is complete — no `[Write here]` placeholders or stubs remain.
 - Technical claims are accurate to the best of the author's knowledge.
 - The post covers the topic at the two required depths (definition-level and operational-principles-level) without significant gaps.
-
-**Quiz**
-- All 5 questions test concepts that appear in the post body. No quiz question tests a fact not covered in the post.
-- All 4 answer options per question are plausible distractors or correct; no obviously throwaway options.
-- Answer explanations are complete sentences — not just "correct" or "see above."
 
 **Readability**
 - Reading the post end-to-end as a reader (not as the author) produces no confusion about the main argument or sequence.
@@ -217,13 +204,7 @@ Run through this checklist in a single sitting after the `docs/review-checklist.
 - [ ] The opening paragraph answers "what is this topic" for a reader who knows nothing about it
 - [ ] The operational principles section explains the mechanism, not just the outcome
 - [ ] The transition between sections is logical — the post does not jump without context
-- [ ] The final paragraph before the quiz leaves the reader with a clear takeaway
-
-### Quiz pass
-
-- [ ] Each question is unambiguous — a careful reader knows exactly what is being asked
-- [ ] The correct answer cannot be guessed by elimination alone (distractors are plausible)
-- [ ] Answer explanations add information beyond restating the question
+- [ ] The final paragraph leaves the reader with a clear takeaway
 
 ### Technical accuracy pass
 
@@ -235,7 +216,7 @@ Run through this checklist in a single sitting after the `docs/review-checklist.
 
 - [ ] Run `pnpm convert --input <vault-dir> --strict` — no errors or unresolved wikilinks
 - [ ] Run `pnpm build` — no build errors
-- [ ] Check the rendered post at `/posts/<slug>`: code blocks highlighted, images load, quiz `<details>` toggle correctly
+- [ ] Check the rendered post at `/posts/<slug>`: code blocks highlighted and images load correctly
 
 ### Final gate
 
@@ -248,7 +229,7 @@ Run through this checklist in a single sitting after the `docs/review-checklist.
 
 ## Related Documents
 
-- [`docs/post-template.md`](post-template.md) — confirmed post structure rules (D-6, D-7, D-8, D-26–D-28)
+- [`docs/post-template.md`](post-template.md) — confirmed post structure rules (D-6, D-7, D-26–D-28)
 - [`docs/first-post-outline-template.md`](first-post-outline-template.md) — fill-in-the-blank Obsidian template
 - [`docs/review-checklist.md`](review-checklist.md) — draft-readiness and publish checks
 - [`docs/status-lifecycle.md`](status-lifecycle.md) — status vocabulary and update policy (D-30–D-33)

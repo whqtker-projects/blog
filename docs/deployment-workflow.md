@@ -90,7 +90,7 @@ Before opening a PR from `develop` → `master`, verify the Vercel Preview Deplo
 - [ ] Child series page (`/series/<parent>/<child>`) renders — post list appears in order
 - [ ] Post page (`/posts/<slug>`) renders — content, breadcrumb, and code blocks display correctly
 - [ ] Prev/next post navigation links are present and point to the correct posts
-- [ ] Quiz `<details>` elements open and close correctly
+- [ ] Optional quiz/self-check `<details>` elements, when present, open and close correctly
 
 These five checks cover the main rendering and interaction surface for a content-focused static site. Mobile layout check is optional but recommended for the first post in a new series.
 

@@ -41,7 +41,7 @@ status: draft
 
 ## Post Body
 
-Section titles and ordering are chosen per post (D-26). The three content areas below must be present in some form; their titles and sequence adapt to the topic's natural flow. The Quiz section is always last (D-8).
+Section titles and ordering are chosen per post (D-26). Use real Markdown headings from the start instead of a separate table-of-contents list. The core content areas below must be present in some form, and their titles and sequence should adapt to the topic's natural flow.
 
 ---
 
@@ -67,79 +67,6 @@ Section titles and ordering are chosen per post (D-26). The three content areas 
 
 [Write here]
 
----
-
-## Quiz
-
-*(Required, always last: D-8. Exactly 5 MCQ. 4 options per question, 1 correct answer: D-27.)*
-
-**Q1.** [Question text]
-
-- A) [Option]
-- B) [Option]
-- C) [Option]
-- D) [Option]
-
-<details>
-<summary>Answer</summary>
-[Correct option letter]. [Brief explanation]
-</details>
-
----
-
-**Q2.** [Question text]
-
-- A) [Option]
-- B) [Option]
-- C) [Option]
-- D) [Option]
-
-<details>
-<summary>Answer</summary>
-[Correct option letter]. [Brief explanation]
-</details>
-
----
-
-**Q3.** [Question text]
-
-- A) [Option]
-- B) [Option]
-- C) [Option]
-- D) [Option]
-
-<details>
-<summary>Answer</summary>
-[Correct option letter]. [Brief explanation]
-</details>
-
----
-
-**Q4.** [Question text]
-
-- A) [Option]
-- B) [Option]
-- C) [Option]
-- D) [Option]
-
-<details>
-<summary>Answer</summary>
-[Correct option letter]. [Brief explanation]
-</details>
-
----
-
-**Q5.** [Question text]
-
-- A) [Option]
-- B) [Option]
-- C) [Option]
-- D) [Option]
-
-<details>
-<summary>Answer</summary>
-[Correct option letter]. [Brief explanation]
-</details>
 
 ---
 
@@ -147,5 +74,5 @@ Section titles and ordering are chosen per post (D-26). The three content areas 
 
 - Section count is not fixed. Add more sections if the topic requires it — definition and operational principles can each span multiple sections.
 - Examples can be inline code blocks, diagrams (as Obsidian embeds), or step-by-step walkthroughs — whatever makes the concept clearest.
-- The quiz answer is hidden in Obsidian using `<details>` / `<summary>`. The Astro build keeps this HTML structure intact for the rendered post.
+- A self-check or quiz section is optional. Add it only if it helps the reader consolidate the topic.
 - Do not add `domain` to the frontmatter — it is inferred from `series` at build time.

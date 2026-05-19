@@ -21,7 +21,7 @@ The target audience spans from beginners to practitioners. Posts should be acces
 
 ### Post structure elements
 - Concrete examples must be included inside each post as much as possible.
-- Each post ends with a quiz section.
+- Self-check or quiz sections are optional and used only when they materially improve the post.
 
 ### Topic domains
 Confirmed domains: CS fundamentals and algorithms, AI/ML/LLM, backend and systems, software engineering. Additional domains may be added as the project grows.

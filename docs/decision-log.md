@@ -128,24 +128,23 @@ File naming affects Obsidian wikilink resolution, filesystem search, and the Obs
 
 ### Context
 
-Q-1 (publishing platform) and Q-2 (conversion tooling) were discussed together because they are coupled — the right conversion approach depends on the platform. The key confirmed constraints were: Obsidian Markdown source, local readability required (D-4), posts include code blocks, examples, and a quiz section (D-6, D-7, D-8), and the conversion path is direct Obsidian → blog (D-3).
+Q-1 (publishing platform) and Q-2 (conversion tooling) were discussed together because they are coupled — the right conversion approach depends on the platform. The key confirmed constraints were: Obsidian Markdown source, local readability required (D-4), posts include code blocks and examples (D-6, D-7), and the conversion path is direct Obsidian → blog (D-3).
 
 ### Alternatives considered
 
-- **Obsidian Publish:** Wikilinks work natively, but limited layout control, subscription cost, and quiz rendering requires workarounds. Rejected.
+- **Obsidian Publish:** Wikilinks work natively, but limited layout control and subscription cost remain drawbacks. Rejected.
 - **Hosted platform (Ghost, Hashnode, dev.to):** Lower operational burden, but Obsidian Markdown compatibility varies and rendering control is limited. Rejected.
-- **Hugo:** Fastest build times, but quiz section interactivity requires separate JS and lacks native component model. Not selected.
+- **Hugo:** Fastest build times, but content-format flexibility and rendering control were weaker fits for the chosen workflow. Not selected.
 - **Manual conversion:** No tooling setup required, but impractical as post count grows. Rejected in favor of automated script.
 
 ### Decision
 
-- **Q-1:** Astro is the static site generator. Content collections manage posts; MDX support enables quiz component implementation; code highlighting is built in.
+- **Q-1:** Astro is the static site generator. Content collections manage posts, and code highlighting is built in.
 - **Q-2:** Conversion is automated via a script that transforms Obsidian wikilinks to standard Markdown links before the Astro build step.
 
 ### Follow-up
 
 - The specific conversion script design (language, trigger mechanism, wikilink edge cases) is not yet defined and will be addressed when implementation begins.
-- Quiz component rendering approach in Astro (MDX component vs. plain HTML/JS) is not yet specified — Q-7 (quiz format) remains open.
 
 ### References
 
@@ -286,7 +285,7 @@ Posts need a machine-readable frontmatter schema for Astro content collections t
 
 ### Context
 
-The four remaining open questions about post format were addressed together as part of issue #25. The confirmed content areas (definition, operational principles, examples, quiz) were already settled (D-6, D-7, D-8), but section titles, ordering, quiz details, length, and audience segmentation were not.
+The remaining post-format questions were originally addressed together as part of issue #25. The confirmed content areas (definition, operational principles, examples) remained stable, while later authoring work showed that fixed quiz requirements were unnecessarily rigid for early structure work and backlog posts.
 
 ### Alternatives considered
 
@@ -294,13 +293,11 @@ The four remaining open questions about post format were addressed together as p
 - Fixed order with standard English titles ("Definition" / "How It Works" / "Examples" / "Quiz"): Provides consistency but forces a rigid layout even when topic flow suggests a different order. Rejected.
 - Fixed order with question-style titles ("What Is X?" / "How Does It Work?"): More reader-friendly tone but still inflexible. Rejected.
 - Fixed order with per-post titles: Preserves sequence; titles customized. Rejected in favor of full flexibility.
-- Flexible (chosen): Titles and ordering decided per post. Quiz remains last (D-8 constraint). Required content areas (D-6, D-7) must still be present.
+- Flexible (chosen): Titles and ordering decided per post. Required content areas (D-6, D-7) must still be present, and structural drafts should use real headings from the start.
 
 **Q-7 (quiz):**
-- 3 MCQ: Lighter; may not adequately cover the topic. Rejected.
-- 3 MCQ + 2 short answer: Richer assessment; Astro rendering complexity increases for free-text input. Rejected.
-- Per-post decision: No standard; inconsistent reader experience. Rejected.
-- 5 MCQ (chosen): Consistent, self-contained, straightforward Astro component implementation.
+- Mandatory per-post quiz: Consistent, but too rigid for early structure work and not always valuable for concept posts. Rejected.
+- Optional per-post self-check (chosen): Lets the author add reinforcement only where it helps the post.
 
 **Q-8 (length):**
 - Word count targets (1,500–2,500 or 2,500–4,000): Adds a metric to manage; can conflict with topic depth. Rejected.
@@ -313,14 +310,13 @@ The four remaining open questions about post format were addressed together as p
 
 ### Decision
 
-- D-26: Flexible section titles and ordering; Quiz always last.
-- D-27: 5 MCQ per post, 4 options each, one correct answer.
+- D-26: Flexible section titles and ordering; use real headings for working structure instead of a standalone outline list.
+- D-27: Quiz/self-check sections are optional and have no repository-wide fixed format.
 - D-28: No word count limit; length is topic-driven.
 - D-29: All series target beginner-to-practitioner (same as D-9).
 
 ### Follow-up
 
-- The Astro MCQ quiz component design (rendering, interaction) is an implementation concern tracked in Issue #28 sub-issues.
 - A reusable first-post outline template is defined in `docs/first-post-outline-template.md` (Issue #43).
 
 ### References

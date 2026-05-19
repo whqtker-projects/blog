@@ -30,7 +30,7 @@ This document is the stable reference for decisions that have been explicitly ag
 | D-5 | The blog focuses on concept explanation, not troubleshooting or step-by-step how-to content. |
 | D-6 | Each post covers a topic at two depths: (1) definition-level explanation, (2) operational principles. |
 | D-7 | Concrete examples must be included inside posts as much as possible. |
-| D-8 | Each post ends with a quiz section. |
+| D-8 | Quiz or self-check sections are optional and added only when they materially improve the post. |
 
 ---
 
@@ -129,8 +129,8 @@ This document is the stable reference for decisions that have been explicitly ag
 
 | # | Decision |
 |---|---|
-| D-26 | Post section titles and ordering are flexible and decided per post. The required content areas (definition-level explanation, operational principles, examples — D-6, D-7) can appear in any order under any heading. The Quiz section must always be last (D-8). |
-| D-27 | Each post ends with exactly 5 multiple-choice questions (MCQ). Each question has 4 answer options with one correct answer. |
+| D-26 | Post section titles and ordering are flexible and decided per post. The required content areas (definition-level explanation, operational principles, examples — D-6, D-7) can appear in any order under any heading. Working structure should be expressed with real Markdown headings rather than a standalone table-of-contents list. |
+| D-27 | A self-check or quiz section is optional. Add it only when it materially improves the post; there is no repository-wide fixed question count or answer format requirement. |
 | D-28 | There is no word count limit. Post length is determined by the topic's requirements — long enough to cover it fully, no longer. |
 | D-29 | All series target the same audience: beginner to practitioner (D-9). No per-series audience segmentation. |
 

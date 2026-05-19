@@ -19,11 +19,11 @@
 | D-5 | Blog content is concept explanation, not troubleshooting. |
 | D-6 | Each post covers definition-level and operational-principle-level content. |
 | D-7 | Concrete examples are embedded in posts. |
-| D-8 | Each post ends with a quiz section. |
+| D-8 | Quiz or self-check sections are optional and added only when they materially improve the post. |
 
 Key constraints from confirmed decisions:
 - The platform must render Obsidian Markdown correctly, or the conversion tool must handle the transformation.
-- Code blocks, embedded examples, and a quiz section are required rendering features.
+- Code blocks and embedded examples are required rendering features; optional quiz/self-check sections should also render when used.
 - Obsidian wikilinks (`[[...]]`) need either native platform support or conversion to standard links.
 
 ---

@@ -51,6 +51,11 @@ The repository now uses the parent-child structure in committed content. The rea
 | `spring-boot` | 스프링 부트 | `spring-boot-basics` | 스프링 부트 기초 |
 | `spring-boot` | 스프링 부트 | `spring-boot-configuration` | 스프링 부트 설정 |
 | `spring-boot` | 스프링 부트 | `spring-boot-testing-and-operations` | 스프링 부트 테스트와 운영 |
+| `mybatis` | MyBatis | `mybatis-foundations` | 마이바티스 기초 |
+| `mybatis` | MyBatis | `mybatis-mapping` | 마이바티스 매핑 |
+| `mybatis` | MyBatis | `mybatis-dynamic-sql` | 마이바티스 동적 SQL |
+| `mybatis` | MyBatis | `mybatis-internals` | 마이바티스 내부 동작 |
+| `mybatis` | MyBatis | `mybatis-spring` | 마이바티스와 스프링 연동 |
 | `data-structures-and-algorithms` | Data Structures and Algorithms | `data-structures` | Data Structures |
 
 Existing child slugs are preserved during migration, including `network-protocols`.
@@ -63,6 +68,7 @@ Series operating documents:
 - [`docs/series/operating-systems.md`](series/operating-systems.md)
 - [`docs/series/spring-framework.md`](series/spring-framework.md)
 - [`docs/series/spring-boot.md`](series/spring-boot.md)
+- [`docs/series/mybatis.md`](series/mybatis.md)
 
 ---
 
@@ -87,6 +93,11 @@ Series operating documents:
 | `spring-boot-basics` | 스프링 부트 기초 | Spring Boot backlog | Boot overview, Boot vs Spring, startup flow, starters, and embedded server behavior |
 | `spring-boot-configuration` | 스프링 부트 설정 | Spring Boot backlog | Auto-configuration, externalized configuration, profiles, `application.yml`, and `@ConfigurationProperties` |
 | `spring-boot-testing-and-operations` | 스프링 부트 테스트와 운영 | Spring Boot backlog | `@SpringBootTest`, test slices, MockMvc, Testcontainers integration, Actuator, logging, and metrics |
+| `mybatis-foundations` | 마이바티스 기초 | MyBatis backlog | MyBatis 정의·등장 배경·핵심 컴포넌트·환경 설정 |
+| `mybatis-mapping` | 마이바티스 매핑 | MyBatis backlog | Mapper 인터페이스, 파라미터·결과 매핑, 연관 관계 |
+| `mybatis-dynamic-sql` | 마이바티스 동적 SQL | MyBatis backlog | 조건·반복·재사용 태그(if, choose, where, foreach 등) |
+| `mybatis-internals` | 마이바티스 내부 동작 | MyBatis backlog | Executor, 1·2차 캐시, 플러그인(Interceptor) |
+| `mybatis-spring` | 마이바티스와 스프링 연동 | MyBatis backlog | mybatis-spring, 매퍼 스캔, Spring Boot Starter |
 | `backend-design` | Backend Design | Confirmed | API design, concurrency patterns, service architecture |
 
 ### CS Fundamentals (domain slug: `cs-fundamentals`)

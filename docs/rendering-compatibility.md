@@ -132,7 +132,7 @@ Astro processes the relative image reference during build; no `public/images/` c
 
 ## Quiz Section Rendering
 
-Quiz sections use the `<details>`/`<summary>` HTML pattern. This renders correctly as a native disclosure widget with no client-side JavaScript.
+Optional quiz or self-check sections can use the `<details>`/`<summary>` HTML pattern. This renders correctly as a native disclosure widget with no client-side JavaScript.
 
 Astro's Markdown renderer passes raw HTML blocks through unchanged. MDX is not required.
 
@@ -142,7 +142,7 @@ Astro's Markdown renderer passes raw HTML blocks through unchanged. MDX is not r
 
 **MDX is not adopted at this stage.**
 
-Rationale: all current content constructs (code blocks, quiz `<details>`, standard Markdown) render correctly with plain `.md` files. MDX would add build complexity and migration overhead without providing a benefit given the current post format.
+Rationale: all current content constructs (code blocks, optional quiz `<details>`, standard Markdown) render correctly with plain `.md` files. MDX would add build complexity and migration overhead without providing a benefit given the current post format.
 
 This decision is revisited if interactive components or component composition become required.
 
@@ -152,5 +152,5 @@ This decision is revisited if interactive components or component composition be
 
 - D-17: Astro is the static site generator.
 - D-18: Conversion is automated via script; wikilinks are the minimum required transformation.
-- D-26–D-28: Post format (flexible sections, quiz last, 5 MCQ, no length limit).
-- D-27: Quiz section uses `<details>` HTML — no MDX required.
+- D-26–D-28: Post format (flexible sections, optional quiz/self-check, no length limit).
+- D-27: Optional quiz/self-check sections can use `<details>` HTML — no MDX required.
