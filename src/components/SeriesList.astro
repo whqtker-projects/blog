@@ -1,0 +1,50 @@
+---
+interface SeriesListItem {
+  title: string;
+  href: string;
+  description?: string;
+}
+
+interface Props {
+  items: SeriesListItem[];
+}
+
+const { items } = Astro.props;
+---
+<ul class="series-list">
+  {items.map((item) => (
+    <li>
+      <a href={item.href}>{item.title}</a>
+      {item.description && <p class="description">{item.description}</p>}
+    </li>
+  ))}
+</ul>
+
+<style>
+  .series-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .series-list li {
+    padding: 0.5rem 0;
+    margin: 0 0 0.75rem;
+  }
+
+  .series-list a {
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .series-list a:hover {
+    text-decoration: underline;
+    opacity: 1;
+  }
+
+  .description {
+    font-size: 0.875rem;
+    color: #666;
+    margin: 0.2rem 0 0;
+  }
+</style>

@@ -1,36 +1,40 @@
 ---
 import '../styles/global.css';
 
+const SITE_NAME = 'Blog';
 const SITE_DESCRIPTION = 'CS 기초, AI/ML, 백엔드 시스템을 원리부터 설명하는 기술 블로그.';
 
 interface Props {
   title: string;
   description?: string;
+  ogType?: 'website' | 'article';
 }
-const { title, description = SITE_DESCRIPTION } = Astro.props;
+const { title, description = SITE_DESCRIPTION, ogType = 'website' } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const fullTitle = title === SITE_NAME ? SITE_NAME : `${title} | ${SITE_NAME}`;
 ---
 <!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title}</title>
+    <title>{fullTitle}</title>
     <link rel="canonical" href={canonicalURL} />
     <meta name="description" content={description} />
     <!-- OpenGraph -->
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:url" content={canonicalURL} />
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content={title} />
+    <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
   </head>
   <body>
     <header class="site-header">
-      <a href="/">Blog</a>
+      <a href="/">{SITE_NAME}</a>
     </header>
     <slot />
   </body>

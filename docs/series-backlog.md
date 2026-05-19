@@ -135,4 +135,4 @@ Series operating documents:
 
 - [`docs/confirmed-decisions.md`](confirmed-decisions.md) — D-19, D-20, D-21, D-22
 - [`docs/decision-log.md`](decision-log.md) — DL-004 (series structure), DL-005 (first series)
-- [`docs/open-questions.md`](open-questions.md) — Q-3, Q-5 (both resolved)
+- [`docs/confirmed-decisions.md`](confirmed-decisions.md) — resolved Q-3 and Q-5 outcomes

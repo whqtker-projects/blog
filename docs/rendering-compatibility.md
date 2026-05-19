@@ -18,21 +18,21 @@ Image rendering validated: `public/images/btree-structure.svg` is committed and 
 
 | Construct | Obsidian syntax | Output | Status |
 |-----------|----------------|--------|--------|
-| Fenced code block (with language) | ` ```sql ... ``` ` | Shiki (`github-dark`) `<pre>` block; `sql`, `python`, `javascript` validated (#66, #67) | ✅ Supported |
-| Inline code | `` `code` `` | `<code>` element | ✅ Supported |
-| Headings (H1–H3) | `# ## ###` | `<h1>`–`<h3>` with auto-generated `id` anchors | ✅ Supported |
-| Bold / italic | `**bold**` / `*italic*` | `<strong>` / `<em>` | ✅ Supported |
-| Unordered lists | `- item` | `<ul><li>` | ✅ Supported |
-| Horizontal rule | `---` | `<hr>` | ✅ Supported |
-| HTML blocks (`<details>`) | `<details><summary>…</summary>…</details>` | Passed through as raw HTML | ✅ Supported |
-| Post wikilink | `[[page-name]]` | `[page-name](/posts/page-name)` via conversion script; routes validated (#69) | ✅ Supported (via script) |
-| Post wikilink with alias | `[[page-name\|alias]]` | `[alias](/posts/page-name)` via conversion script | ✅ Supported (via script) |
-| Post wikilink with heading | `[[page-name#heading]]` | `[page-name](/posts/page-name#heading)`; anchor validated (#69) | ✅ Supported (via script) |
-| Image wikilink | `![[image.png]]` | `![image.png](../attachments/image.png)` via conversion script | ✅ Supported (via script) |
-| Image wikilink with alt | `![[image.png\|alt]]` | `![alt](../attachments/image.png)` via conversion script | ✅ Supported (via script) |
-| Callouts / admonitions | `> [!NOTE]` | Not natively rendered | ⛔ Not used — avoid |
-| Embedded queries (Dataview) | ` ```dataview ... ``` ` | Rendered as plain text | ⛔ Not used — avoid |
-| Obsidian tags | `#tag` in body | Rendered as `<h1>tag` (Markdown heading) | ⛔ Not used — use frontmatter only |
+| Fenced code block (with language) | ` ```sql ... ``` ` | Shiki (`github-dark`) `<pre>` block; `sql`, `python`, `javascript` validated (#66, #67) | Supported |
+| Inline code | `` `code` `` | `<code>` element | Supported |
+| Headings (H1-H3) | `# ## ###` | `<h1>`-`<h3>` with auto-generated `id` anchors | Supported |
+| Bold / italic | `**bold**` / `*italic*` | `<strong>` / `<em>` | Supported |
+| Unordered lists | `- item` | `<ul><li>` | Supported |
+| Horizontal rule | `---` | `<hr>` | Supported |
+| HTML blocks (`<details>`) | `<details><summary>…</summary>…</details>` | Passed through as raw HTML | Supported |
+| Post wikilink | `[[page-name]]` | `[page-name](/posts/page-name)` via conversion script; routes validated (#69) | Supported via script |
+| Post wikilink with alias | `[[page-name\|alias]]` | `[alias](/posts/page-name)` via conversion script | Supported via script |
+| Post wikilink with heading | `[[page-name#heading]]` | `[page-name](/posts/page-name#heading)`; anchor validated (#69) | Supported via script |
+| Image wikilink | `![[image.png]]` | Markdown image with relative path `../attachments/image.png` via conversion script | Supported via script |
+| Image wikilink with alt | `![[image.png\|alt]]` | Markdown image with alt text and relative path `../attachments/image.png` via conversion script | Supported via script |
+| Callouts / admonitions | `> [!NOTE]` | Not natively rendered | Not used; avoid |
+| Embedded queries (Dataview) | ` ```dataview ... ``` ` | Rendered as plain text | Not used; avoid |
+| Obsidian tags | `#tag` in body | Rendered as `<h1>tag` (Markdown heading) | Not used; use frontmatter only |
 
 ---
 
@@ -98,7 +98,7 @@ Astro generates heading `id` attributes using the following normalisation, which
 - Spaces → hyphens
 - Non-word characters removed
 
-Example: `## How It Works` → `id="how-it-works"` → wikilink `[[post#How It Works]]` resolves to `/posts/post#how-it-works`. ✅
+Example: `## How It Works` -> `id="how-it-works"` -> wikilink `[[post#How It Works]]` resolves to `/posts/post#how-it-works`.
 
 ---
 
@@ -110,9 +110,9 @@ Two committed sample fixtures cross-link each other. The table below traces each
 
 | Source post | Obsidian source (vault) | Converted Markdown | Rendered `href` | Destination exists |
 |---|---|---|---|---|
-| `what-is-a-database-index.md` | `[[b-plus-tree-index]]` | `[B+Tree Index Structure](/posts/b-plus-tree-index)` | `/posts/b-plus-tree-index` | ✅ |
-| `b-plus-tree-index.md` | `[[what-is-a-database-index]]` | `[What Is a Database Index?](/posts/what-is-a-database-index)` | `/posts/what-is-a-database-index` | ✅ |
-| `b-plus-tree-index.md` | `[[what-is-a-database-index#Example]]` | `[…](/posts/what-is-a-database-index#example)` | `/posts/what-is-a-database-index#example` | ✅ |
+| `what-is-a-database-index.md` | `[[b-plus-tree-index]]` | `[B+Tree Index Structure](/posts/b-plus-tree-index)` | `/posts/b-plus-tree-index` | Yes |
+| `b-plus-tree-index.md` | `[[what-is-a-database-index]]` | `[What Is a Database Index?](/posts/what-is-a-database-index)` | `/posts/what-is-a-database-index` | Yes |
+| `b-plus-tree-index.md` | `[[what-is-a-database-index#Example]]` | `[…](/posts/what-is-a-database-index#example)` | `/posts/what-is-a-database-index#example` | Yes |
 
 All three links are `<a href="…">` elements in the rendered HTML. No broken links (`404`) remain in the validated fixture set.
 
@@ -134,7 +134,7 @@ Astro processes the relative image reference during build; no `public/images/` c
 
 Quiz sections use the `<details>`/`<summary>` HTML pattern. This renders correctly as a native disclosure widget with no client-side JavaScript.
 
-Astro's Markdown renderer passes raw HTML blocks through unchanged. MDX is not required. ✅
+Astro's Markdown renderer passes raw HTML blocks through unchanged. MDX is not required.
 
 ---
 

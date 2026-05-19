@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with th
 
 ## Project State
 
-The repository is in the **active content-creation stage**. The Astro build is set up, the Obsidian-to-Astro conversion script is implemented, and five posts are published in `src/content/posts/`. The content drafting and review workflow is fully documented.
+The repository is in the **active content-creation stage**. The Astro build is set up, the Obsidian-to-Astro conversion script is implemented, parent/child series routes are in place, and published content exists in `src/content/posts/`. The content drafting and review workflow is fully documented.
 
 All structural and platform decisions are finalized (Q-1 through Q-9 resolved). The primary ongoing work is writing and publishing posts.
 
@@ -22,7 +22,7 @@ Start here when beginning a session:
 docs/README.md                    # Document map — read first
 docs/agent-architecture.md        # Agent model and role boundaries
 docs/confirmed-decisions.md       # All confirmed project decisions
-docs/open-questions.md            # Resolved planning items (all decided)
+docs/open-questions.md            # Active tracker for future unresolved planning items
 docs/documentation-workflow.md    # How to update planning documents correctly
 ```
 
@@ -47,9 +47,9 @@ docs/decisions/                   # ADR files for foundational decisions
 ## Planning Conventions
 
 - **Confirmed decisions** live in `docs/confirmed-decisions.md` and individual ADR files under `docs/decisions/`.
-- All open questions are resolved. If a new structural question arises, add it to `docs/open-questions.md` and surface it to the user — do not resolve by assumption.
+- No planning questions are currently open. If a new structural question arises, add it to `docs/open-questions.md` and surface it to the user — do not resolve by assumption.
 - When a decision is made: update `docs/confirmed-decisions.md`, log it in `docs/decision-log.md`, and update `docs/open-questions.md`.
-- All documents are written in English (Obsidian Markdown format).
+- Documents are written in English by default. `docs/codebase-manual.html` is the Korean standalone HTML manual exception requested by the user.
 
 ## Role Boundaries
 

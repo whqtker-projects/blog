@@ -10,9 +10,10 @@
  * Run via: pnpm sync:series-graph
  */
 
-import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { listMarkdownFilesRecursive, parseSimpleFrontmatter } from './node-content-helpers.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -43,40 +44,10 @@ const GRAPH_COLOR_GROUPS = [
   },
 ];
 
-function readMdFilesRecursive(dir) {
-  const files = [];
-
-  function walk(currentDir) {
-    for (const entry of readdirSync(currentDir, { withFileTypes: true })) {
-      const absolutePath = join(currentDir, entry.name);
-      if (entry.isDirectory()) {
-        walk(absolutePath);
-        continue;
-      }
-
-      if (entry.isFile() && entry.name.endsWith('.md')) {
-        files.push(absolutePath);
-      }
-    }
-  }
-
-  walk(dir);
-  return files;
-}
-
 function parseFrontmatter(content) {
   const match = content.match(/^(---\r?\n)([\s\S]*?)(\r?\n---\r?\n?)([\s\S]*)$/);
   if (!match) {
     throw new Error('missing frontmatter');
-  }
-
-  const data = {};
-  const lines = match[2].split(/\r?\n/);
-  for (const line of lines) {
-    const scalar = line.match(/^(\w+):\s*(.+)$/);
-    if (!scalar) continue;
-    const value = scalar[2].replace(/^["']|["']$/g, '').trim();
-    data[scalar[1]] = /^\d+$/.test(value) ? Number(value) : value;
   }
 
   return {
@@ -84,7 +55,7 @@ function parseFrontmatter(content) {
     frontmatter: match[2],
     close: match[3],
     body: match[4],
-    data,
+    data: parseSimpleFrontmatter(content),
   };
 }
 
@@ -154,7 +125,7 @@ export function syncSeriesGraphMetadata(content, body = null) {
   return `${parsed.open}${frontmatter}${parsed.close}${body ?? parsed.body}`;
 }
 
-function buildSeriesIndexBody(index, children, parent, posts) {
+export function buildSeriesIndexBody(index, children, parent, posts) {
   if (!index.data.parent) {
     const lines = ['관련 시리즈:'];
     children.forEach((child, childIndex) => {
@@ -163,36 +134,23 @@ function buildSeriesIndexBody(index, children, parent, posts) {
     return `${lines.join('\n')}\n`;
   }
 
+  if (!parent) {
+    throw new Error(`missing parent index for child series '${index.data.series}'`);
+  }
+
   const lines = [
     '관련 링크:',
     `- 상위 시리즈: ${seriesIndexLink(parent)}`,
-    '',
-    '게시글 순서:',
   ];
-  posts.forEach((post, postIndex) => {
-    lines.push(`${postIndex + 1}. ${postLink(post)}`);
-  });
-  return `${lines.join('\n')}\n`;
-}
 
-function buildPostBody(post, child, parent, seriesPosts) {
-  if (post.data.status !== 'draft') return post.body;
-
-  const index = seriesPosts.findIndex((candidate) => candidate.slug === post.slug);
-  const prev = index > 0 ? seriesPosts[index - 1] : null;
-  const next = index >= 0 && index < seriesPosts.length - 1 ? seriesPosts[index + 1] : null;
-  let body = post.body.replace(/^\s+/, '');
-  while (body.startsWith('관련 링크:')) {
-    body = body.replace(/^관련 링크:\r?\n(?:- [^\r\n]*(?:\r?\n|$))+\r?\n*/, '').replace(/^\s+/, '');
+  if (posts.length > 0) {
+    lines.push('', '게시글 순서:');
+    posts.forEach((post, postIndex) => {
+      lines.push(`${postIndex + 1}. ${postLink(post)}`);
+    });
   }
-  const lines = [
-    '관련 링크:',
-    `- 소속 시리즈: ${seriesIndexLink(child)}`,
-  ];
-  if (prev) lines.push(`- 이전 글: ${postLink(prev)}`);
-  if (next) lines.push(`- 다음 글: ${postLink(next)}`);
 
-  return `${lines.join('\n')}\n\n${body.replace(/^\s+/, '')}`;
+  return `${lines.join('\n')}\n`;
 }
 
 function syncGraphSettings() {
@@ -208,8 +166,8 @@ function syncGraphSettings() {
 
 function main() {
   let changed = 0;
-  const indexFiles = readMdFilesRecursive(SERIES_INDEXES_DIR);
-  const postFiles = readMdFilesRecursive(POSTS_DIR);
+  const indexFiles = listMarkdownFilesRecursive(SERIES_INDEXES_DIR);
+  const postFiles = listMarkdownFilesRecursive(POSTS_DIR);
   const indexes = indexFiles.map((file) => ({
     file,
     ...parseFrontmatter(readFileSync(file, 'utf8')),
@@ -235,14 +193,14 @@ function main() {
     childrenByParent.set(child.data.parent, list);
   }
 
+  for (const list of childrenByParent.values()) {
+    list.sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title));
+  }
+
   for (const post of posts) {
     const list = postsBySeries.get(post.data.series) ?? [];
     list.push(post);
     postsBySeries.set(post.data.series, list);
-  }
-
-  for (const list of childrenByParent.values()) {
-    list.sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title));
   }
 
   for (const list of postsBySeries.values()) {
@@ -264,22 +222,6 @@ function main() {
     writeFileSync(index.file, next);
     changed += 1;
     console.log(`updated ${relative(ROOT, index.file).split(sep).join('/')}`);
-  }
-
-  for (const post of posts) {
-    if (post.data.status !== 'draft') continue;
-
-    const child = indexBySeries.get(post.data.series);
-    if (!child) continue;
-    const parent = indexBySeries.get(child.data.parent);
-    const body = buildPostBody(post, child, parent, postsBySeries.get(post.data.series) ?? []);
-    const next = `${post.open}${post.frontmatter}${post.close}${body}`;
-    const original = readFileSync(post.file, 'utf8');
-    if (next === original) continue;
-
-    writeFileSync(post.file, next);
-    changed += 1;
-    console.log(`updated ${relative(ROOT, post.file).split(sep).join('/')}`);
   }
 
   if (syncGraphSettings()) {

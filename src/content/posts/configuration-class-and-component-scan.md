@@ -11,6 +11,7 @@ tags:
 
 - 소속 시리즈: [[series_indexes/spring-framework/spring-core|스프링 코어]]
 - 이전 글: [[bean-lifecycle-and-scope|빈 생명주기와 스코프]]
+- 예제: [[examples/configuration-class-and-component-scan-demo|구성 클래스와 컴포넌트 스캔 예제]]
 
 ## @Configuration이란
 
@@ -56,7 +57,7 @@ public class AppConfig {
 
 같은 설정 클래스 안에서 `@Bean` 메서드를 직접 호출하는 코드입니다.
 
-코드만 보면 `orderService()`가 `orderRepository()`를 직접 호출하므로, 호출할 때마다 새로운 `JdbcOrderRepository` 객체가 만들어질 것처럼 보일 수 있습니다. 하지만 `@Configuration`이 적용된 설정 클래스에서는 스프링이 설정 클래스를 프록시로 감싸고, 이미 컨테이너에 등록된 빈이 있으면 해당 빈을 반환하도록 처리합니다.
+코드만 보면 `orderService()`가 `orderRepository()`를 직접 호출하므로, 호출할 때마다 새로운 `JdbcOrderRepository` 객체가 만들어질 것처럼 보일 수 있습니다. 그러나 `@Configuration`이 적용된 설정 클래스에서는 스프링이 설정 클래스를 프록시로 감싸고, 이미 컨테이너에 등록된 빈이 있으면 해당 빈을 반환하도록 처리합니다.
 
 따라서 싱글톤 스코프의 빈은 설정 클래스 내부에서 여러 번 호출되더라도 컨테이너가 관리하는 동일한 인스턴스로 유지됩니다.
 

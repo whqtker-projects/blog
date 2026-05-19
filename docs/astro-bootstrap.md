@@ -1,7 +1,7 @@
 # Astro Bootstrap Documentation
 
 **Status:** Active — Astro skeleton initialized 2026-05-07.  
-**Last updated:** 2026-05-09
+**Last updated:** 2026-05-16
 
 Quick reference for working with the Astro project in this repository.
 
@@ -33,14 +33,14 @@ pnpm preview      # Preview the production build locally
 # Content conversion (requires Obsidian vault to be available locally)
 pnpm convert --input <path/to/vault/posts>           # Sync vault posts → src/content/posts/
 pnpm convert --input <path/to/vault/posts> --strict  # Same; exit 1 on unresolved wikilinks
-pnpm convert --input <path/to/vault/posts> --concepts <path/to/vault/concepts>
-                                                    # Sync vault posts + concepts
 pnpm test:convert                                    # Run conversion script unit tests
 ```
 
 > `pnpm build` does **not** auto-run conversion. It builds from whatever `.md` files are currently committed in `src/content/posts/`. Run `pnpm convert` first whenever vault content has changed, then commit the updated files.
 
 > `src/content/posts/` is reserved for real publishable content candidates. Validation fixtures belong under `test/fixtures/obsidian-vault/` and should be converted only into a temporary or test-only output location when rendering checks are needed.
+
+> `src/content/examples/` is for manually authored project-style implementation examples attached to posts. It is separate from the Obsidian conversion flow.
 
 ---
 
@@ -49,14 +49,13 @@ pnpm test:convert                                    # Run conversion script uni
 Content moves from the Obsidian vault to the published site in three explicit steps:
 
 ```
-Obsidian vault (posts/, concepts/)
+Obsidian vault (posts/)
        │
-       │  1. pnpm convert --input <vault/posts> [--concepts <vault/concepts>] [--strict]
+       │  1. pnpm convert --input <vault/posts> [--strict]
        ▼
 src/content/posts/          ← committed to git; review diff before committing
-src/content/concepts/       ← committed to git when concept files change
        │
-       │  2. git add src/content/posts/ src/content/concepts/ && git commit
+       │  2. git add src/content/posts/ && git commit
        ▼
 git repository
        │
@@ -70,7 +69,6 @@ dist/                       ← gitignored; deploy this
 | Situation | Action |
 |-----------|--------|
 | Wrote or edited a post in Obsidian | `pnpm convert --input <vault/posts>` then commit |
-| Wrote or edited a concept in Obsidian | `pnpm convert --input <vault/posts> --concepts <vault/concepts>` then commit |
 | Starting the dev server with fresh content | `pnpm convert` first, then `pnpm dev` |
 | Production build in CI | Not needed — `src/content/posts/` is already committed |
 | Previewing changes without committing | `pnpm convert` then `pnpm dev` (don't commit yet) |
@@ -89,9 +87,9 @@ There are two distinct freshness layers in this model:
 "Up-to-date converted content" in this repository means: the latest converted Markdown that has been intentionally synced from the vault and committed to git. CI does not and cannot validate against the author's live vault; it builds the committed artifact by design.
 
 The required author workflow before publishing is:
-1. `pnpm convert --input <vault/posts> --concepts <vault/concepts> --strict` — sync and fail on broken links
-2. `git diff src/content/posts/ src/content/concepts/` — review the converted output
-3. `git add src/content/posts/ src/content/concepts/ && git commit` — commit the converted artifact
+1. `pnpm convert --input <vault/posts> --strict` — sync and fail on broken links
+2. `git diff src/content/posts/` — review the converted output
+3. `git add src/content/posts/ && git commit` — commit the converted artifact
 4. `pnpm build` — verify the committed content builds without errors
 
 ### Conversion trigger
@@ -109,13 +107,10 @@ Conversion is **manual and explicit**. There is no prebuild hook and no automati
 pnpm convert --input ~/my-vault/posts
 pnpm dev              # or review diff and commit first
 
-# When concept pages changed too
-pnpm convert --input ~/my-vault/posts --concepts ~/my-vault/concepts
-
 # Before committing
-pnpm convert --input ~/my-vault/posts --concepts ~/my-vault/concepts --strict
-git diff src/content/posts/ src/content/concepts/
-git add src/content/posts/ src/content/concepts/ && git commit
+pnpm convert --input ~/my-vault/posts --strict
+git diff src/content/posts/
+git add src/content/posts/ && git commit
 
 # Production build (no vault needed)
 pnpm build
@@ -130,7 +125,7 @@ new_blog/
 ├── docs/                        # Planning documents (not part of Astro build)
 ├── src/
 │   ├── content/
-│   │   ├── concepts/            # Converted Markdown for concept reference pages
+│   │   ├── examples/            # Manual project-style examples attached to posts
 │   │   ├── posts/               # Converted Markdown for real publishable posts
 │   │   └── series_indexes/      # Parent indexes at root; child indexes nested under parent dirs
 │   ├── content.config.ts        # Content collection schema
@@ -139,10 +134,11 @@ new_blog/
 │   │   └── PostLayout.astro     # Post page wrapper (title, series, content)
 │   └── pages/
 │       ├── index.astro          # Home — parent-series directory
-│       ├── concepts/
-│       │   └── [slug].astro     # Concept route — /concepts/<slug>
 │       ├── posts/
-│       │   └── [slug].astro     # Post route — /posts/<slug>
+│       │   ├── [slug].astro     # Post route — /posts/<slug>
+│       │   └── [slug]/
+│       │       └── examples/
+│       │           └── [example].astro # Example route — /posts/<slug>/examples/<example>
 │       └── series/
 │           ├── [parent].astro   # Parent series route — /series/<parent>
 │           └── [parent]/
@@ -177,7 +173,35 @@ status: idea | draft | published
 
 **Build-time visibility (D-33, D-54, D-55):** Local development includes all posts so in-progress work can be inspected. Staged and production builds include only posts with `status: published`; posts with `status: idea` or `status: draft` are excluded from build output.
 
-Concepts are loaded separately from `src/content/concepts/`. They require `title` and may include `aliases`; they do not use `series`, `order`, or `status`.
+Visibility behavior is currently fixed rather than environment-configurable:
+- `src/utils/post-visibility.js` treats `import.meta.env.DEV` as the switch.
+- `src/pages/series/[parent]/[child].astro` uses that rule when building child-series post lists.
+- `src/pages/posts/[slug].astro` uses the same rule when deciding which post routes and prev/next links exist in the current build.
+- There is no `CONTENT_VISIBILITY` env var today; changing visibility policy would be a separate implementation decision.
+
+Examples are loaded separately from `src/content/examples/`. They are manually authored rather than converted from Obsidian and attach to posts instead of series.
+
+**Required example fields:**
+```yaml
+title: string
+post: string
+order: number
+status: idea | draft | published
+```
+
+**Optional example fields:**
+```yaml
+description: string
+```
+
+Example visibility follows the same build contract as posts:
+- local development includes `idea`, `draft`, and `published` examples
+- staged and production builds include only `published` examples
+- example pages are generated only when their owning post is present in the current build
+- example files live directly under `src/content/examples/`
+- when an example exists, add a matching Obsidian `관련 링크:` entry in the owning post that points to `[[examples/<example-slug>|...]]`
+- example files should link back to their owning post in their own Obsidian `관련 링크:` block
+- these Obsidian-only related-link blocks are suppressed in the web output
 
 Series index documents are loaded recursively from `src/content/series_indexes/` via `**/*.md`. There must be exactly one per parent or child series slug. They are authored manually (not converted from Obsidian).
 
@@ -220,7 +244,7 @@ Post ordering contract:
 | `/series/[parent]` | `src/pages/series/[parent].astro` | Parent series title + description + child-series listing |
 | `/series/[parent]/[child]` | `src/pages/series/[parent]/[child].astro` | Child series title + description + ordered list of visible posts for the current environment |
 | `/posts/[slug]` | `src/pages/posts/[slug].astro` | Individual post page; local dev includes all posts, staged/production builds include only `published` posts |
-| `/concepts/[slug]` | `src/pages/concepts/[slug].astro` | Individual concept reference page |
+| `/posts/[slug]/examples/[example]` | `src/pages/posts/[slug]/examples/[example].astro` | Optional project-style example page attached to one post; follows the same visibility contract as posts |
 
 Slug is derived from the Markdown file name (e.g., `b-plus-tree.md` → `/posts/b-plus-tree`).
 
@@ -231,8 +255,8 @@ Series routes are generated from `series_indexes`. Parent pages are created from
 ## Adding a Post
 
 1. Write the post in the Obsidian vault (`posts/` directory in the vault)
-2. Run `pnpm convert --input <vault/posts> --concepts <vault/concepts> --strict` when posts or concept links changed
-3. Review the diff in `src/content/posts/` and `src/content/concepts/` — verify wikilinks converted correctly
+2. Run `pnpm convert --input <vault/posts> --strict` when posts changed; legacy `[[concept:...]]` links now fail conversion and must be removed intentionally
+3. Review the diff in `src/content/posts/` — verify wikilinks converted correctly and no `/concepts/...` links were regenerated
 4. Set `status: published` in frontmatter when the post is ready to go live
 5. Run `pnpm build` to verify no schema errors
 6. Commit `src/content/posts/<filename>.md`

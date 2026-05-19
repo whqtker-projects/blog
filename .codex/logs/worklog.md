@@ -599,6 +599,14 @@ Post 원본의 `관련 링크:` 블록은 Obsidian graph view에서 시리즈와
 - `pnpm test:repo`
 - `pnpm check:content`
 - `pnpm build`
+
+## 2026-05-16 — Add IoC/DI example outline stub
+
+`src/content/examples/ioc-di-order-service-demo.md`를 추가해 `ioc-and-di` 게시글에 연결되는 draft example stub를 만들었다. 본문 설명은 쓰지 않고, project example로 확장할 때 채울 수 있도록 목차 수준의 heading만 넣었다.
+
+검증:
+- `pnpm check:content`
+- `pnpm build`
 - `pnpm test:convert`
 - `rg -n "관련 링크" dist || true`
 
@@ -612,3 +620,148 @@ Post 원본의 `관련 링크:` 블록은 Obsidian graph view에서 시리즈와
 - `pnpm test:repo`
 - `pnpm build`
 - `rg -n "!\\[\\[|_astro/" dist/posts/configuration-class-and-component-scan/index.html dist/posts/bean-lifecycle-and-scope/index.html`
+
+## 2026-05-15 — Create repository-maintenance backlog issues for series tooling and rendering
+
+코드베이스 레벨 개선 항목만 대상으로 기존 open issue 중복 여부를 먼저 확인한 뒤, 시리즈 그래프 동기화 정책 정렬, 문서 동기화, Python relationship printer 테스트, 타이틀 기반 필터 ambiguity 처리, post ordering 유틸 추출, SeriesList 컴포넌트 추출, `remark-hide-obsidian-related-links` 유지 여부 검토, script helper 통합, SEO metadata 개선, visibility 모드 문서화에 대한 GitHub issue 10건을 생성했다.
+
+모호한 설계 선택은 issue 본문에서 모두 `Decision required`로 분리했고, 구현 범위와 acceptance criteria는 결정 이후 바로 작업 가능한 수준으로 구체화했다. 생성된 이슈는 `#184`부터 `#193`까지다.
+
+## 2026-05-15 — Narrow series graph sync to series-index relationships only
+
+`#184` 결정에 따라 `scripts/sync-series-graph-metadata.mjs`는 이제 series index frontmatter(`aliases`, `tags`), parent/child series index body links, `src/content/.obsidian/graph.json` color groups만 관리한다. child series index body에 들어가던 `게시글 순서` inventory 생성과 draft post 본문 `관련 링크:` 주입 로직은 제거했다.
+
+동시에 `docs/content-model.md`와 `docs/series-index-authoring.md`의 직접 충돌 문구를 줄여 현재 정책과 스크립트 동작이 어긋나지 않도록 맞췄고, `scripts/sync-series-graph-metadata.test.mjs`를 추가해 child body가 parent link만 유지하고 post inventory를 다시 만들지 않음을 고정했다. `pnpm sync:series-graph` 실행으로 child series index 본문에 남아 있던 generated post inventory도 정리됐다.
+
+검증:
+- `pnpm sync:series-graph`
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`
+
+## 2026-05-15 — Synchronize series authoring docs with series-index-only graph policy
+
+`#185` 결정에 따라 series graph authoring 표준 예시는 `[[series_indexes/<parent>]]`, `[[series_indexes/<parent>/<child>]]` 형태의 실제 Obsidian file link로 통일했다. `docs/content-model.md`, `docs/series-index-authoring.md`, `docs/post-template.md`, `docs/first-content-readiness.md`에서 child series index의 ordered post wikilink 허용, post body graph block 기대, sibling child link를 기본처럼 읽히게 하는 문구를 제거하거나 축소했다.
+
+문서 전반에서 현재 정책을 명시적으로 맞췄다: parent index는 child index를 링크할 수 있고, child index는 parent index를 링크할 수 있으며, sibling child link는 선택적이다. post stub은 frontmatter와 최소 본문만으로 유효하고 graph-link block이 필요하지 않다. `[[series:...]]` 표기는 converter-supported syntax로만 남기고 기본 graph wiring 예시에서는 제외했다.
+
+## 2026-05-15 — Tighten idea-state stub guidance in first-content-readiness
+
+`docs/first-content-readiness.md`의 `idea` 상태 안내에서 post body graph link를 선택적으로 허용하거나 권장하는 뉘앙스를 제거했다. 현재 정책에 맞게 `idea` 상태의 핵심은 required frontmatter 충족이며, frontmatter-only stub 또는 최소 본문 메모만으로도 유효하다고 다시 명시했다.
+
+또한 `status`는 초기 작성 단계에서도 명시적으로 필요하고, `status: published`만 staged/production에 포함되므로 `idea` 글은 공개 사이트에 나오지 않는다는 설명만 남겼다.
+## 2026-05-15 — Remove obsolete related-links remark plugin and extract Node content helpers
+
+Removed `remark-hide-obsidian-related-links` from the Astro markdown pipeline, deleted its implementation and test, and updated `package.json` so repository tests no longer reference the retired plugin.
+
+Added `scripts/node-content-helpers.mjs` as a shared Node-only helper for recursive Markdown traversal and simple frontmatter parsing. Migrated `scripts/check-content.mjs` and `scripts/sync-series-graph-metadata.mjs` to the shared helper, and updated `scripts/obsidian-to-astro.mjs` to reuse the shared recursive Markdown file listing while keeping its existing frontmatter-splitting behavior unchanged.
+
+Verification:
+- `pnpm test:repo`
+- `pnpm test:convert`
+- `pnpm check:content`
+- `pnpm build`
+
+## 2026-05-15 — Finish repository-maintenance backlog issues #186–#193
+
+`scripts/print_series_relationships.py`에 대한 Python `unittest` 기반 테스트를 추가하고, 제목 기반 `TARGET` 해석이 parent/child/post 사이에서 모호할 때 slug 사용을 요구하는 명확한 에러를 내도록 바꿨다. 테스트 실행용 `pnpm test:python`도 `package.json`에 노출했다.
+
+Astro 쪽에서는 post ordering을 `src/utils/post-ordering.ts`로 공통화하고, 홈/parent series 목록 UI를 `src/components/SeriesList.astro`로 추출했다. 동시에 `BaseLayout.astro`가 site-name suffix, `og:site_name`, configurable `og:type`을 관리하도록 정리하고, post pages는 `og:type=article`을 사용하도록 맞췄다. Visibility 문서는 `docs/astro-bootstrap.md`와 `src/utils/post-visibility.js` 기준으로 고정 동작을 명시했다.
+
+검증:
+- `pnpm test:python`
+- `pnpm test:repo`
+- `pnpm test:convert`
+- `pnpm check:content`
+- `pnpm build`
+
+## 2026-05-15 — Add direct tests for shared Node content helpers
+
+`scripts/node-content-helpers.mjs`가 repository validation과 sync script의 공통 기반이므로, helper 자체 계약을 직접 고정하는 `scripts/node-content-helpers.test.mjs`를 추가했다. 테스트는 frontmatter scalar/list parsing, nested markdown discovery, normalized relative record 반환을 temp directory 기반으로 검증한다.
+
+`package.json`의 `pnpm test:repo`에도 이 테스트를 포함해 helper 변경이 다른 script 테스트에 간접적으로만 의존하지 않도록 했다.
+
+## 2026-05-15 — Restore child-series post inventories for Obsidian visibility
+
+사용자 요구에 맞춰 `pnpm sync:series-graph`가 child series index body의 ordered post wikilink 목록을 다시 생성하도록 복구했다. 이제 `src/content/series_indexes/spring-framework/spring-core.md` 같은 child index note 안에서 소속 게시글을 바로 볼 수 있고, Obsidian graph/authoring 흐름에서도 series membership이 드러난다.
+
+`scripts/sync-series-graph-metadata.mjs`는 child series별 post를 `order`와 `title` 기준으로 정렬해 `게시글 순서:` 블록을 쓴다. 관련 문서(`docs/content-model.md`, `docs/series-index-authoring.md`, `docs/first-content-readiness.md`)도 child index의 ordered post links를 허용하는 현재 의도에 맞게 수정했다.
+
+검증:
+- `pnpm sync:series-graph`
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`
+
+## 2026-05-15 — Add optional project-style examples as post-attached pages
+
+`examples` collection과 `/posts/<slug>/examples/<example>` route를 추가해 긴 구현 예시를 post 본문 밖의 별도 페이지로 분리할 수 있게 했다. Inline snippet은 여전히 post body에 남고, project-style example만 `src/content/examples/<post-slug>/<example-slug>.md`에 수동 authoring하는 구조다.
+
+Validation도 확장했다. 각 example은 정확히 하나의 post slug를 가리켜야 하고, file path의 상위 디렉터리도 그 post slug와 일치해야 하며, published example끼리는 같은 post 아래에서 `order`가 중복되면 안 된다. Visibility는 posts와 동일하게 local dev에서는 `idea`/`draft`/`published`, staged/production에서는 `published`만 노출되도록 맞췄다.
+
+검증:
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`
+
+## 2026-05-16 — Remove standalone concept pages and concept collection support
+
+`concepts` collection, `/concepts/[slug]` route, committed concept seed files, 그리고 `docs/concept-authoring-workflow.md`를 삭제했다. 활성 콘텐츠 타입은 이제 `posts`, `examples`, `series_indexes`만 남고, `[[concept:slug]]`는 더 이상 지원하지 않는다.
+
+`scripts/obsidian-to-astro.mjs`도 `--concepts` / `--concepts-output` 옵션과 개념 링크 변환을 제거했다. 대신 legacy `[[concept:...]]`를 만나면 해당 파일 변환을 즉시 실패시키고, inline definition text나 normal post link로 바꾸라고 명시적으로 안내한다. 남아 있던 `/concepts/...` 실제 참조는 `src/content/posts/what-is-http.md`에서 최소 수정으로 제거했다.
+
+검증:
+- `pnpm test:convert`
+- `pnpm check:content`
+- `pnpm build`
+
+## 2026-05-16 — Flatten example files and reduce example frontmatter
+
+`examples`는 더 이상 `src/content/examples/<post-slug>/<example-slug>.md` 구조를 강제하지 않는다. 파일은 `src/content/examples/<example-slug>.md`에 바로 두고, post 소속 관계는 frontmatter의 `post` 필드만으로 표현하도록 단순화했다.
+
+예제 frontmatter도 `title`, `post`, `order`, `status`를 기본으로 두고, optional은 `description`만 남겼다. `language`, `framework`, `sourcePath`는 schema, validation, example list UI, example layout에서 제거했고, pilot example도 평면 경로로 옮겼다.
+
+검증:
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`
+
+## 2026-05-16 — Document reciprocal Obsidian links between posts and examples
+
+`bean-container-and-application-context`용 example stub를 만들 때 post 본문에 Obsidian 예제 위키링크를 추가하는 규칙이 문서에 충분히 드러나지 않아 연결이 빠졌다. `ioc-and-di`와 같은 방식으로 owning post의 `관련 링크:`에 `[[examples/<example-slug>|...]]`를 넣고, example은 owning post로 되돌아가는 reciprocal link를 유지하도록 현재 authoring contract를 명시했다.
+
+`docs/content-model.md`와 `docs/astro-bootstrap.md`에 이 규칙을 추가했고, 관련 링크 블록은 Obsidian 전용이며 웹 렌더에서는 숨겨진다는 점도 함께 적었다.
+
+검증:
+- `pnpm check:content`
+- `pnpm build`
+
+## 2026-05-16 — Session checkpoint
+
+### 완료한 작업
+`bean-container-and-application-context` 게시글에 Obsidian용 예제 위키링크를 추가했고, `src/content/examples/bean-container-application-context-demo.md` example stub를 생성해 커밋 `3b2da78`로 정리했다. `docs/content-model.md`와 `docs/astro-bootstrap.md`에는 post-example reciprocal link 규칙과 해당 블록이 웹 렌더에서 숨겨진다는 계약을 명시했다.
+
+### 미완료
+- `src/content/.obsidian/workspace.json` 수정이 작업트리에 남아 있음
+- `src/content/examples/spring-lifecycle-hooks-demo.md` 삭제 상태가 작업트리에 남아 있음
+
+### 주요 결정
+example이 존재하면 owning post의 `관련 링크:`에 `[[examples/<example-slug>|...]]`를 넣고, example은 owning post로 역링크하는 규칙을 current authoring contract로 취급한다. 웹의 예제 목록 노출은 계속 `published` status 기준이고, Obsidian용 위키링크와는 별개다.
+
+## 2026-05-17 — Archive legacy planning documents
+
+현재 운영 문서와 과거 기획 산출물을 분리했다. `PLANNING.md`, Q-4 pilot record, 첫 reading UI 방향 문서, retrieval-first loading policy, resolved context pack 문서를 `docs/archive/` 아래로 옮기고 archive index를 추가했다.
+
+운영 문서는 현재 기준에 맞게 줄였다. `docs/file-naming-conventions.md`는 선택지 비교 대신 현재 파일명 규칙만 남겼고, `docs/publishing-workflow.md`는 Astro와 구현된 converter 중심의 현재 publishing flow로 정리했다. `docs/open-questions.md`는 future unresolved planning item tracker로 축소했다.
+
+관련 링크와 문서 맵도 갱신했다. `docs/README.md`, `CLAUDE.md`, `AGENTS.md`, `docs/documentation-workflow.md`, `docs/confirmed-decisions.md`, `docs/decision-log.md`, `docs/post-template.md`, `docs/series-backlog.md`에서 archive 이동과 새 open-question 정책에 맞춰 참조를 조정했다.
+
+## 2026-05-17 — Add Korean HTML codebase manual
+
+GitHub issue #194의 구현 방향을 코드베이스 매뉴얼 작성으로 정리하고, 사용자 지시에 맞춰 매뉴얼 산출물을 한국어 standalone HTML 문서로 추가했다. `docs/codebase-manual.html`은 repository 목적, route 구조, content model, frontmatter 계약, 변환/검증 명령, 흔한 작업별 수정 위치, published post 보호 규칙을 한 문서에서 볼 수 있게 구성했다.
+
+`docs/README.md`에는 codebase reference 섹션을 추가했고, `CLAUDE.md`에는 기본 문서 언어는 English이지만 `docs/codebase-manual.html`만 Korean HTML manual 예외라는 점을 명시했다.
+
+## 2026-05-19 — Align component-scan example code blocks
+
+`src/content/examples/configuration-class-and-component-scan-demo.md`의 코드블럭을 실제 예제 프로젝트인 `/Users/whqtker/Documents/workspace/examples/configuration-class-and-component-scan`와 맞췄다. `AppConfig` 예시에 `orderService()` 빈 등록을 추가하고, 컴포넌트 스캔 예시에 `ScanDiscountPolicy`와 실제 생성자 주입 필드 대입을 반영했다.

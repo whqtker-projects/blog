@@ -1,5 +1,7 @@
 # Retrieval-First Loading Policy
 
+> Archived document. This policy was written for an earlier planning-agent workflow and is not current operating guidance.
+
 **Status:** Active  
 **Last updated:** 2026-05-06
 
@@ -158,7 +160,7 @@ If the task cannot proceed without information that is not in any loaded documen
 
 ## Related Documents
 
-- [`docs/README.md`](README.md) — document map
-- [`docs/context-packs/README.md`](context-packs/README.md) — context pack structure and usage
-- [`docs/documentation-workflow.md`](documentation-workflow.md) — how planning documents are updated
-- [`docs/agent-architecture.md`](agent-architecture.md) — agent model and handoff rules
+- [`docs/README.md`](../README.md) — document map
+- [`docs/archive/context-packs/README.md`](context-packs/README.md) — archived context pack structure and usage
+- [`docs/documentation-workflow.md`](../documentation-workflow.md) — how planning documents are updated
+- [`docs/agent-architecture.md`](../agent-architecture.md) — agent model and handoff rules

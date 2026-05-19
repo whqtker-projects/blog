@@ -1,5 +1,7 @@
 # Blog Project Planning
 
+> Archived document. This is an initial planning snapshot and is not current operating guidance. See [`../README.md`](../README.md) and [`../project-overview.md`](../project-overview.md) for current project state.
+
 **Status:** Early planning stage — structure and decisions are being documented before any posts are drafted.  
 **Last updated:** 2026-05-06
 
@@ -21,7 +23,7 @@ The current planning stage is focused on establishing structure, series organiza
 
 ## 2. Confirmed Decisions
 
-See [`docs/decisions/`](docs/decisions/) for individual decision records. See [`docs/github-issue-workflow.md`](docs/github-issue-workflow.md) for the issue-driven development workflow.
+See [`docs/decisions/`](../decisions/) for individual decision records. See [`docs/github-issue-workflow.md`](../github-issue-workflow.md) for the issue-driven development workflow.
 
 | Decision | Status |
 |---|---|
@@ -89,7 +91,7 @@ Documentation and structure come first because:
 
 ## 6. Open Questions
 
-See [`docs/open-questions.md`](docs/open-questions.md) for the full list.
+See [`docs/open-questions.md`](../open-questions.md) for the current open question tracker.
 
 | Topic | Status |
 |---|---|

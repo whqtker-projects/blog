@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-`src/pages/` contains Astro routes: `index.astro` lists published posts and `posts/[slug].astro` renders each post. Shared page shells live in `src/layouts/`. Blog content and its schema live in `src/content/posts/` and `src/content.config.ts`. Static assets such as diagrams belong in `public/images/`. Conversion and validation utilities live in `scripts/`, and planning or ADR material stays under `docs/`. Repository-local agent guidance is mirrored in `.claude/agents/` and `.codex/agents/`, while project work logs live under `.claude/logs/` and `.codex/logs/`.
+`src/pages/` contains Astro routes: `index.astro` lists parent series, `series/[parent].astro` and `series/[parent]/[child].astro` render series navigation, and `posts/[slug].astro` renders each post. Shared page shells live in `src/layouts/`. Blog content and its schema live in `src/content/posts/` and `src/content.config.ts`. Static assets such as diagrams belong in `public/images/`. Conversion and validation utilities live in `scripts/`, and planning or ADR material stays under `docs/`. Repository-local agent guidance is mirrored in `.claude/agents/` and `.codex/agents/`, while project work logs live under `.claude/logs/` and `.codex/logs/`.
 
 ## Build, Test, and Development Commands
 Use `pnpm install` with Node `>=22.12.0` first. Key commands:

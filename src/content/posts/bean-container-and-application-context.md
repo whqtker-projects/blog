@@ -12,6 +12,7 @@ tags:
 - 소속 시리즈: [[series_indexes/spring-framework/spring-core|스프링 코어]]
 - 이전 글: [[ioc-and-di|IoC와 DI]]
 - 다음 글: [[bean-lifecycle-and-scope|빈 생명주기와 스코프]]
+- 예제: [[examples/bean-container-application-context-demo|Bean 컨테이너와 ApplicationContext 예제]]
 
 ## 스프링 빈이란
 
@@ -20,6 +21,14 @@ tags:
 애플리케이션의 모든 객체가 스프링 빈이 되는 것은 아닙니다. **스프링 컨테이너에 등록된 객체만 스프링 빈**입니다. 보통 `@Component`, `@Service`, `@Repository`, `@Controller` 같은 어노테이션을 사용하거나, `@Bean` 메서드로 직접 등록합니다.
 
 스프링 빈으로 등록된 객체는 스프링 컨테이너가 생성하고 관리합니다. 컨테이너는 빈을 만들기만 하는 것이 아니라, **필요한 의존관계를 주입하고 초기화와 종료 같은 생명주기도 함께 관리**합니다. 또한 빈이 어떤 범위에서 동작해야 하는지에 따라 scope를 적용해 관리합니다.
+
+## BeanDefinition
+
+스프링 컨테이너는 설정 정보를 읽어 어떤 대상을 빈으로 등록할지 파악합니다. 빈을 설정하는 방식은 다양하지만, 스프링 컨테이너는 이 정보를 내부에서 공통된 형태로 다룹니다. 이때 사용되는 빈 설정 메타데이터를 `BeanDefinition`이라고 합니다.
+
+`BeanDefinition`은 빈을 생성하고 관리하는 데 필요한 설정 메타데이터입니다. `BeanDefinition`에는 빈으로 생성할 클래스, 빈 이름, 스코프, 생성자 인자, 프로퍼티 값, 초기화 메서드와 소멸 메서드 같은 정보가 포함될 수 있습니다.
+
+컨테이너는 등록된 `BeanDefinition`을 바탕으로 빈을 생성하고, 필요한 의존관계를 주입하며, 초기화와 종료 같은 생명주기 처리를 수행합니다.
 
 ## BeanFactory와 ApplicationContext
 
@@ -64,5 +73,3 @@ classpath에 있는 XML 설정 파일을 읽어 컨테이너를 구성하는 구
 ### GenericWebApplicationContext
 
 웹 환경에서 사용할 수 있는 `ApplicationContext` 구현체입니다. 서블릿 기반 웹 애플리케이션에서는 웹 환경에 맞는 컨텍스트가 사용됩니다.
-
-구현체마다 설정 방식과 실행 환경은 다르지만, 모두 스프링 빈을 생성하고 관리하며, 필요한 의존관계를 연결하는 컨테이너입니다.

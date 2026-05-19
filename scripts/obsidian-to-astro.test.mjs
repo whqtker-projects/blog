@@ -1,8 +1,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtempSync, writeFileSync, rmSync, mkdirSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import {
   validateFileName,
   fileNameToSlug,
@@ -11,11 +13,12 @@ import {
   extractImageFilenames,
   parseFrontmatter,
   convertFile,
-  convertConceptLinks,
-  buildConceptAliasMap,
+  findDeprecatedConceptLinks,
   convertSeriesLinks,
   buildSeriesTargetSet,
 } from './obsidian-to-astro.mjs';
+
+const scriptPath = fileURLToPath(new URL('./obsidian-to-astro.mjs', import.meta.url));
 
 // ── validateFileName ─────────────────────────────────────────────────────────
 
@@ -378,59 +381,26 @@ order: 1
   }
 });
 
-// ── convertConceptLinks ──────────────────────────────────────────────────────
+// ── findDeprecatedConceptLinks ───────────────────────────────────────────────
 
-test('convertConceptLinks: [[concept:tcp]]', () => {
-  const { result } = convertConceptLinks('See [[concept:tcp]] for details.');
-  assert.equal(result, 'See [tcp](/concepts/tcp) for details.');
+test('findDeprecatedConceptLinks: finds [[concept:tcp]]', () => {
+  const matches = findDeprecatedConceptLinks('See [[concept:tcp]] for details.');
+  assert.deepEqual(matches, ['[[concept:tcp]]']);
 });
 
-test('convertConceptLinks: [[concept:tcp|TCP]]', () => {
-  const { result } = convertConceptLinks('Read [[concept:tcp|TCP]] here.');
-  assert.equal(result, 'Read [TCP](/concepts/tcp) here.');
+test('findDeprecatedConceptLinks: finds [[concept:tcp|TCP]]', () => {
+  const matches = findDeprecatedConceptLinks('Read [[concept:tcp|TCP]] here.');
+  assert.deepEqual(matches, ['[[concept:tcp|TCP]]']);
 });
 
-test('convertConceptLinks: alias resolves to canonical slug', () => {
-  const aliasMap = new Map([['tcp', 'tcp'], ['transmission-control-protocol', 'tcp']]);
-  const { result } = convertConceptLinks('See [[concept:transmission-control-protocol]].', aliasMap);
-  assert.equal(result, 'See [transmission-control-protocol](/concepts/tcp).');
-});
-
-test('convertConceptLinks: uppercase alias resolves via lowercased lookup', () => {
-  const aliasMap = new Map([['tcp', 'tcp'], ['tcp', 'tcp']]);
-  const { result } = convertConceptLinks('See [[concept:TCP]].', aliasMap);
-  assert.equal(result, 'See [TCP](/concepts/tcp).');
-});
-
-test('convertConceptLinks: warns on unresolved concept when knownConceptSlugs provided', () => {
-  const known = new Set(['tcp']);
-  const { warnings } = convertConceptLinks('See [[concept:unknown]].', null, known);
-  assert.deepEqual(warnings, ['unknown']);
-});
-
-test('convertConceptLinks: no warning for resolved concept', () => {
-  const known = new Set(['tcp']);
-  const { warnings } = convertConceptLinks('See [[concept:tcp]].', null, known);
-  assert.deepEqual(warnings, []);
-});
-
-test('convertConceptLinks: no resolution check when knownConceptSlugs is null', () => {
-  const { warnings } = convertConceptLinks('See [[concept:anything]].', null, null);
-  assert.deepEqual(warnings, []);
-});
-
-test('convertConceptLinks: does not affect normal wikilinks', () => {
+test('findDeprecatedConceptLinks: does not affect normal wikilinks', () => {
   const input = 'See [[database-index]] and [[concept:tcp]].';
-  const { result } = convertConceptLinks(input);
-  assert.ok(result.includes('[[database-index]]'));
-  assert.ok(result.includes('[tcp](/concepts/tcp)'));
+  const matches = findDeprecatedConceptLinks(input);
+  assert.deepEqual(matches, ['[[concept:tcp]]']);
 });
 
-test('convertConceptLinks: no concept links passes content through unchanged', () => {
-  const input = 'Plain text with [[link]] only.';
-  const { result, warnings } = convertConceptLinks(input);
-  assert.equal(result, input);
-  assert.deepEqual(warnings, []);
+test('findDeprecatedConceptLinks: no concept links returns empty array', () => {
+  assert.deepEqual(findDeprecatedConceptLinks('Plain text with [[link]] only.'), []);
 });
 
 // ── convertSeriesLinks ───────────────────────────────────────────────────────
@@ -476,46 +446,6 @@ test('convertSeriesLinks: does not affect normal wikilinks', () => {
   assert.ok(result.includes('[operating-systems](/series/operating-systems)'));
 });
 
-// ── buildConceptAliasMap ─────────────────────────────────────────────────────
-
-test('buildConceptAliasMap: returns empty map for nonexistent dir', () => {
-  const map = buildConceptAliasMap('/nonexistent/path/xyz');
-  assert.equal(map.size, 0);
-});
-
-test('buildConceptAliasMap: slug maps to itself', () => {
-  const dir = mkdtempSync(join(tmpdir(), 'test-concepts-'));
-  try {
-    writeFileSync(join(dir, 'tcp.md'), '---\ntitle: TCP\n---\n');
-    const map = buildConceptAliasMap(dir);
-    assert.equal(map.get('tcp'), 'tcp');
-  } finally {
-    rmSync(dir, { recursive: true });
-  }
-});
-
-test('buildConceptAliasMap: aliases map to canonical slug', () => {
-  const dir = mkdtempSync(join(tmpdir(), 'test-concepts-'));
-  try {
-    writeFileSync(join(dir, 'tcp.md'), '---\ntitle: TCP\naliases: [TCP, tcp]\n---\n');
-    const map = buildConceptAliasMap(dir);
-    assert.equal(map.get('tcp'), 'tcp');
-  } finally {
-    rmSync(dir, { recursive: true });
-  }
-});
-
-test('buildConceptAliasMap: alias lookup is case-insensitive', () => {
-  const dir = mkdtempSync(join(tmpdir(), 'test-concepts-'));
-  try {
-    writeFileSync(join(dir, 'tcp.md'), '---\ntitle: TCP\naliases: [TCP]\n---\n');
-    const map = buildConceptAliasMap(dir);
-    assert.equal(map.get('tcp'), 'tcp');
-  } finally {
-    rmSync(dir, { recursive: true });
-  }
-});
-
 test('buildSeriesTargetSet: collects parent and child targets from series indexes', () => {
   const dir = mkdtempSync(join(tmpdir(), 'test-series-indexes-'));
   try {
@@ -532,9 +462,9 @@ test('buildSeriesTargetSet: collects parent and child targets from series indexe
   }
 });
 
-// ── concept links in convertFile ─────────────────────────────────────────────
+// ── deprecated concept links in convertFile ─────────────────────────────────
 
-test('convertFile: concept links in body are converted', () => {
+test('convertFile: rejects [[concept:tcp]]', () => {
   const input = `---
 title: Test
 series: network-protocols
@@ -543,23 +473,25 @@ order: 1
 
 See [[concept:tcp]] for details.`;
 
-  const { content } = convertFile(input, 'test.md');
-  assert.ok(content.includes('[tcp](/concepts/tcp)'));
-  assert.ok(!content.includes('[[concept:tcp]]'));
+  assert.throws(
+    () => convertFile(input, 'test.md'),
+    /concept links are no longer supported.*use inline definition text or link to a normal post/
+  );
 });
 
-test('convertFile: concept links convert before post wikilinks', () => {
+test('convertFile: rejects [[concept:tcp|TCP]]', () => {
   const input = `---
 title: Test
 series: network-protocols
 order: 1
 ---
 
-[[concept:tcp]] and [[what-is-http]].`;
+[[concept:tcp|TCP]] and [[what-is-http]].`;
 
-  const { content } = convertFile(input, 'test.md');
-  assert.ok(content.includes('[tcp](/concepts/tcp)'));
-  assert.ok(content.includes('[what-is-http](/posts/what-is-http)'));
+  assert.throws(
+    () => convertFile(input, 'test.md'),
+    /concept links are no longer supported.*use inline definition text or link to a normal post/
+  );
 });
 
 test('convertFile: series links convert before post wikilinks', () => {
@@ -577,8 +509,6 @@ order: 1
     input,
     'test.md',
     knownPosts,
-    null,
-    null,
     null,
     knownSeries,
   );
@@ -604,23 +534,48 @@ See [[series:computer-networks/missing-child]].`;
     'test.md',
     null,
     null,
-    null,
-    null,
     knownSeries,
   );
   assert.deepEqual(seriesWarnings, ['computer-networks/missing-child']);
 });
 
-test('convertFile: returns conceptWarnings for unresolved concept links', () => {
+test('convertFile: conversion result does not expose conceptWarnings', () => {
   const input = `---
 title: Test
 series: network-protocols
 order: 1
 ---
 
-See [[concept:unknown-concept]].`;
+See [[what-is-http]].`;
 
-  const known = new Set(['tcp']);
-  const { conceptWarnings } = convertFile(input, 'test.md', null, null, null, known);
-  assert.deepEqual(conceptWarnings, ['unknown-concept']);
+  const result = convertFile(input, 'test.md', new Set(['what-is-http']));
+  assert.ok(!('conceptWarnings' in result));
+  assert.ok(!('unsupportedConceptWarnings' in result));
+});
+
+// ── CLI behaviour ───────────────────────────────────────────────────────────
+
+test('CLI usage does not mention --concepts or concepts-output', () => {
+  const result = spawnSync(process.execPath, [scriptPath], { encoding: 'utf8' });
+  const output = `${result.stdout}\n${result.stderr}`;
+  assert.notEqual(result.status, 0);
+  assert.match(output, /Usage:/);
+  assert.doesNotMatch(output, /--concepts/);
+  assert.doesNotMatch(output, /concepts-output/);
+});
+
+test('CLI rejects deprecated --concepts option', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'test-posts-'));
+  try {
+    const result = spawnSync(
+      process.execPath,
+      [scriptPath, '--input', dir, '--concepts', dir],
+      { encoding: 'utf8' }
+    );
+    const output = `${result.stdout}\n${result.stderr}`;
+    assert.notEqual(result.status, 0);
+    assert.match(output, /Unknown option '--concepts'/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 });

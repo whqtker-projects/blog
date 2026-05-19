@@ -1,0 +1,57 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface SeriesContext {
+  parentSlug: string;
+  parentTitle: string;
+  childSlug: string;
+  childTitle: string;
+}
+
+interface PostLink {
+  slug: string;
+  title: string;
+}
+
+interface Props {
+  title: string;
+  description?: string;
+  seriesContext: SeriesContext;
+  post: PostLink;
+}
+
+const { title, description, seriesContext, post } = Astro.props;
+---
+<BaseLayout title={title} description={description} ogType="article">
+  <article>
+    <header>
+      <p class="breadcrumb">
+        <a href={`/series/${seriesContext.parentSlug}`}>{seriesContext.parentTitle}</a>
+        {' / '}
+        <a href={`/series/${seriesContext.parentSlug}/${seriesContext.childSlug}`}>
+          {seriesContext.childTitle}
+        </a>
+        {' / '}
+        <a href={`/posts/${post.slug}`}>{post.title}</a>
+      </p>
+      <h1>{title}</h1>
+    </header>
+    <slot />
+  </article>
+</BaseLayout>
+
+<style>
+  .breadcrumb {
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+  }
+
+  .breadcrumb a {
+    color: #666;
+  }
+
+  header h1 {
+    margin-top: 0;
+  }
+</style>

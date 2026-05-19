@@ -1,5 +1,7 @@
 # Reading UI Direction
 
+> Archived document. This records the first reading-focused UI planning pass and is not current UI guidance.
+
 **Status:** Resolved — first reading-focused UI phase implemented.  
 **Last updated:** 2026-05-08
 
@@ -10,6 +12,7 @@ This document defines the reading-focused UI direction that was implemented in t
 Hierarchy note:
 - This document is historical and reflects the pre-parent/child-series UI structure that existed during the first reading pass.
 - The current repository now uses `/series/<parent>` and `/series/<parent>/<child>` routes instead of the retired flat `/series/<series>` route.
+- Any concept-page references below are also historical only. Standalone concept pages were removed from the active repository model on 2026-05-16 and must not be treated as current authoring or routing guidance.
 
 ---
 
@@ -274,14 +277,14 @@ All four questions resolved 2026-05-08 via AskUserQuestion (Issue #117). Decisio
 
 ## Related Documents
 
-- [`src/layouts/BaseLayout.astro`](../src/layouts/BaseLayout.astro) — current HTML shell; no styles
-- [`src/layouts/PostLayout.astro`](../src/layouts/PostLayout.astro) — post page structure with prev/next nav
-- [`src/pages/index.astro`](../src/pages/index.astro) — homepage series grouping
+- [`src/layouts/BaseLayout.astro`](../../src/layouts/BaseLayout.astro) — current HTML shell; no styles
+- [`src/layouts/PostLayout.astro`](../../src/layouts/PostLayout.astro) — post page structure with prev/next nav
+- [`src/pages/index.astro`](../../src/pages/index.astro) — homepage series grouping
 - Historical flat series route: retired during the parent-child hierarchy migration.
-- [`src/pages/series/[parent].astro`](../src/pages/series/%5Bparent%5D.astro) — current parent series page
-- [`src/pages/series/[parent]/[child].astro`](../src/pages/series/%5Bparent%5D/%5Bchild%5D.astro) — current child series page
-- [`src/pages/posts/[slug].astro`](../src/pages/posts/%5Bslug%5D.astro) — post route
-- [`src/pages/concepts/[slug].astro`](../src/pages/concepts/%5Bslug%5D.astro) — concept page
-- [`docs/concept-authoring-workflow.md`](concept-authoring-workflow.md) — concept page authoring contract
-- [`docs/confirmed-decisions.md`](confirmed-decisions.md) — D-23 (series display names), D-17 (Astro), D-36 (URL structure)
-- [`docs/astro-bootstrap.md`](astro-bootstrap.md) — build commands and content workflow
+- [`src/pages/series/[parent].astro`](../../src/pages/series/%5Bparent%5D.astro) — current parent series page
+- [`src/pages/series/[parent]/[child].astro`](../../src/pages/series/%5Bparent%5D/%5Bchild%5D.astro) — current child series page
+- [`src/pages/posts/[slug].astro`](../../src/pages/posts/%5Bslug%5D.astro) — post route
+- `src/pages/concepts/[slug].astro` — removed historical route
+- `docs/concept-authoring-workflow.md` — removed historical authoring contract
+- [`docs/confirmed-decisions.md`](../confirmed-decisions.md) — D-23 (series display names), D-17 (Astro), D-36 (URL structure)
+- [`docs/astro-bootstrap.md`](../astro-bootstrap.md) — build commands and content workflow

@@ -12,6 +12,7 @@ tags:
 - 소속 시리즈: [[series_indexes/spring-framework/spring-core|스프링 코어]]
 - 이전 글: [[bean-container-and-application-context|빈 컨테이너와 ApplicationContext]]
 - 다음 글: [[configuration-class-and-component-scan|구성 클래스와 컴포넌트 스캔]]
+- 예제: [[examples/spring-lifecycle-hooks-demo|Spring Lifecycle Hooks Demo]]
 
 ## 빈 생명주기란
 
@@ -89,7 +90,7 @@ public class NetworkClient implements InitializingBean, DisposableBean {
 
 ## 빈 스코프
 
-빈 스코프는 스프링 컨테이너가 빈을 어떤 범위와 생명주기로 관리할지를 정하는 개념입니다.
+빈 스코프는 스프링 컨테이너가 빈을 어떤 범위와 생명주기로 관리할지를 결정하는 개념입니다.
 
 같은 클래스를 빈으로 등록하더라도, 스코프에 따라 하나의 객체를 계속 재사용할 수도 있고, 요청이 들어올 때마다 새로 만들 수도 있습니다. 어떤 스코프를 선택하느냐에 따라 빈의 생성 시점, 공유 범위, 생명주기가 달라집니다.
 
@@ -119,14 +120,25 @@ public class NetworkClient implements InitializingBean, DisposableBean {
 
 웹 스코프는 웹 환경에서만 사용할 수 있는 스코프입니다. HTTP 요청이나 세션처럼 웹 애플리케이션의 범위에 맞춰 빈을 관리합니다.
 
-대표적으로 다음과 같은 스코프가 있습니다.
+대표적으로 다음 네 가지 스코프가 있습니다.
 
-- request: 하나의 HTTP 요청 동안만 빈을 유지합니다.
-- session: 하나의 HTTP 세션 동안 빈을 유지합니다.
-- application: 웹 애플리케이션 범위에서 빈을 유지합니다.
-- websocket: 웹소켓 세션 범위에서 빈을 유지합니다.
+**request**: 하나의 HTTP 요청 동안만 빈을 유지합니다. 요청이 시작될 때 생성되고 요청이 끝나면 소멸됩니다. 요청별로 독립적인 데이터를 담아야 하는 객체에 적합합니다.
 
-예를 들어 request 스코프 빈은 요청이 시작될 때 생성되고 요청이 끝나면 함께 소멸됩니다. session 스코프 빈은 같은 사용자의 세션 동안 유지되다가 세션이 종료되면 함께 소멸됩니다.
+**session**: 하나의 HTTP 세션 동안 빈을 유지합니다. 같은 세션에서는 요청이 달라도 같은 인스턴스를 사용하고, 세션이 종료되면 소멸됩니다. 사용자 인증 정보나 장바구니처럼 세션 단위로 유지해야 하는 데이터에 적합합니다.
+
+**application**: 웹 애플리케이션 전체에서 빈을 유지합니다. `ServletContext`에 바인딩되며, 웹 컨텍스트가 살아 있는 동안 하나의 인스턴스를 공유합니다. 싱글톤과 비슷하지만, 웹 컨텍스트가 재시작되면 새 인스턴스가 만들어진다는 점이 다릅니다.
+
+**websocket**: WebSocket 세션 하나의 생명주기에 맞춰 빈을 유지합니다. WebSocket 연결이 열릴 때 생성되고, 연결이 닫힐 때 소멸됩니다. `spring-websocket` 의존성이 필요합니다.
+
+웹 스코프 빈을 등록할 때는 `@Scope`에 스코프 이름을 지정합니다.
+
+```java
+@Bean
+@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
+public RequestTracker requestTracker() {
+    return new RequestTracker();
+}
+```
 
 ---
 

@@ -1,6 +1,6 @@
 # Content Model
 
-This document defines the role boundaries for the three content types in this repository: `posts`, `concepts`, and `series_indexes`.
+This document defines the role boundaries for the three active content types in this repository: `posts`, `examples`, and `series_indexes`.
 
 It also serves as the authoritative information-architecture contract for the current parent-child series model.
 
@@ -10,14 +10,15 @@ Structural policy comes from `D-57` through `D-60`; page-role and attachment rul
 
 ## Content Types at a Glance
 
-| | `posts` | `concepts` | `series_indexes` |
+| | `posts` | `examples` | `series_indexes` |
 |---|---|---|---|
-| URL | `/posts/<slug>` | `/concepts/<slug>` | Parent: `/series/<parent>`; Child: `/series/<parent>/<child>` |
-| Location | `src/content/posts/` | `src/content/concepts/` | `src/content/series_indexes/` |
+| URL | `/posts/<slug>` | `/posts/<slug>/examples/<example>` | Parent: `/series/<parent>`; Child: `/series/<parent>/<child>` |
+| Location | `src/content/posts/` | `src/content/examples/` | `src/content/series_indexes/` |
 | Belongs to series | Yes (required; child series only) | No | Defines either a parent series or a child series |
-| Has `order` | Yes (required) | No | Child only |
-| Has `status` | Yes (required) | No | No |
-| Created via | `pnpm convert` from Obsidian | `pnpm convert` from Obsidian | Manual authoring |
+| Attaches to post | No | Yes (required; exactly one post) | No |
+| Has `order` | Yes (required) | Yes (required) | Child only |
+| Has `status` | Yes (required) | Yes (required) | No |
+| Created via | `pnpm convert` from Obsidian | Manual authoring | Manual authoring |
 | Appears on homepage | No | No | Parent series only |
 | Prev/next navigation | Yes | No | No |
 
@@ -33,7 +34,7 @@ The hierarchy is exactly:
 
 This repository does not allow a third level such as parent → middle → child. Parent series do not directly own posts. Child series are the only direct attachment point for posts.
 
-`concepts` remain outside this hierarchy. They continue to render as standalone reference pages and do not belong to any series level.
+`examples` are auxiliary pages attached to posts. They do not create a new series hierarchy level and do not change the parent → child → post structure.
 
 ---
 
@@ -43,7 +44,7 @@ Posts are in-depth explanations of a topic within a child series. Each post belo
 
 **Create a post when** you want to explain a concept in depth with examples and progression, as part of a named series.
 
-**Do not use a post for** one-paragraph reference definitions (use a concept) or series introductions (use a series index).
+**Do not use a post for** series introductions (use a series index). Short term definitions stay inline inside post bodies. If a term needs a full standalone explanation, write it as a normal post in the relevant child series.
 
 **Required frontmatter:**
 ```yaml
@@ -57,6 +58,7 @@ Post attachment rules:
 - A post's `series` value must resolve to a child series, not a parent series.
 - A post does not attach to multiple child series.
 - A post page keeps its own `/posts/<slug>` URL, but it is understood in the context of one child series for breadcrumbs, prev/next navigation, and series back-links.
+- A post may have zero or more attached project-style examples.
 
 Post language policy:
 - filenames and slugs stay English-only identifiers
@@ -67,31 +69,57 @@ Post language policy:
 
 Graph-friendly internal-link policy:
 - generic `[[wikilinks]]` remain post-only and resolve to `/posts/<slug>`
-- `[[concept:slug]]` links remain concept-only and resolve to `/concepts/<slug>`
 - Obsidian graph links to series use actual vault paths such as `[[series_indexes/<parent>]]` and `[[series_indexes/<parent>/<child>]]`
 - `[[series:<parent>]]` and `[[series:<parent>/<child>]]` remain supported converter syntax, but they are not used for graph wiring because Obsidian may treat them as unresolved path-like links
+- `[[concept:slug]]` is no longer supported
 - use `|display text` when the reader-facing label should differ from the slug target
-- draft and idea-stage posts may include their child-series link plus previous/next post wikilinks for graph visibility
-- posts do not link directly to parent series when graph view should show only parent -> child -> post structure
-- `order` remains the structural source of truth even when posts also carry previous/next wikilinks
-- a leading `관련 링크:` block is Obsidian-only graph metadata and is stripped from rendered web pages by the Markdown pipeline
+- series graph wiring primarily lives in series index bodies
+- post bodies are not required to carry graph-link blocks
+- `order` remains the structural source of truth for post sequencing
+
+Definition policy:
+- short definitions stay inline inside post bodies
+- if a term needs a full explanation, create a normal post in the relevant child series instead of a standalone glossary page
+
+Example policy:
+- short code snippets remain inline inside post bodies
+- longer implementation walkthroughs may move into separate `examples` pages
+- project-style examples are optional and do not affect whether a post is valid
 
 ---
 
-## `concepts`
+## `examples`
 
-Concepts are short reference definitions for individual technical terms. They are linked from posts using `[[concept:slug]]` syntax and render at `/concepts/<slug>`.
+Examples are optional project-style implementation pages attached to exactly one post. They exist for longer demonstrations that may need project structure, multiple files, commands, tests, or outputs without expanding the main post body into a full walkthrough.
 
-**Create a concept when** a term recurs across posts and would benefit from a one-paragraph definition at a stable URL.
+**Create an example when** the implementation artifact is large enough that it would distract from the explanatory flow of the post.
 
-**Do not use a concept for** multi-section explanations or series-specific content (use a post).
+**Do not use an example for** short inline snippets that directly support a paragraph or section inside the post.
 
 **Required frontmatter:**
 ```yaml
 title: string
+post: string     # must match a post slug in src/content/posts/
+order: number    # position among examples attached to that post
+status: string   # one of idea, draft, published
 ```
 
-Concepts remain outside the parent-child series hierarchy. They are not parent series, not child series, and not attached to either one.
+**Optional frontmatter:**
+```yaml
+description: string
+```
+
+Example attachment rules:
+- each example attaches to exactly one post through `post`
+- a post may have zero or more examples
+- examples do not attach directly to parent series or child series
+- example files live directly under `src/content/examples/`
+- local development shows `idea`, `draft`, and `published` examples
+- staged and production builds show only `published` examples
+- example pages are routed under their owning post as `/posts/<slug>/examples/<example>`
+- when an example exists, the owning post should add an Obsidian-facing `관련 링크:` entry such as `[[examples/<example-slug>|...]]`
+- example pages should include reciprocal Obsidian-facing links back to their owning post
+- these Obsidian-only related-link blocks are hidden in the web render
 
 ---
 
@@ -140,8 +168,9 @@ Series display policy:
 Series index body-link policy:
 - parent series index bodies may include actual child-series file links for graph-friendly navigation context
 - child series index bodies may link to their parent series file
-- child series index bodies may include an ordered post wikilink list for graph visibility
-- the site still auto-generates the real post list; the index-body links are an authoring aid for Obsidian graph view, not the rendering source of truth
+- sibling child-series links are optional, not the default pattern
+- child series index bodies may include an ordered post wikilink list so Obsidian authoring and graph view reveal which posts belong to that series
+- the site still auto-generates the real post list; index-body links are an Obsidian-facing authoring aid, not the rendering source of truth
 
 ---
 
@@ -196,7 +225,7 @@ Post title-prefix rule:
 - When a numeric prefix is present, repository validation requires it to match the post's explicit `order`.
 - Post pages do not add a second visible `#order` breadcrumb cue on top of the title.
 
-You may write ordered post links manually in the series index body for Obsidian graph visibility, but page rendering still relies on generated listings rather than those links.
+Series pages still rely on generated listings rather than the links written in the index body.
 
 ---
 
@@ -233,6 +262,5 @@ Do not commit posts in a child series before both the parent and child series in
 ## Related Documents
 
 - [`docs/series-index-authoring.md`](series-index-authoring.md) — rules and workflow for series index documents
-- [`docs/concept-authoring-workflow.md`](concept-authoring-workflow.md) — rules and workflow for concept pages
 - [`docs/astro-bootstrap.md`](astro-bootstrap.md) — build commands, routes, and directory structure
 - [`docs/post-metadata.md`](post-metadata.md) — full post frontmatter field definitions

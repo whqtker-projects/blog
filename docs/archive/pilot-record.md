@@ -1,5 +1,7 @@
 # Agent Workflow Pilot Record — Q-4 File Naming Convention
 
+> Archived document. This records a historical agent workflow pilot. The file naming convention is now resolved; see [`../file-naming-conventions.md`](../file-naming-conventions.md) for current guidance.
+
 **Date:** 2026-05-06  
 **Open question:** Q-4 — What are the Obsidian file naming conventions?  
 **Status:** Pilot complete. Decision not finalized — user input required.

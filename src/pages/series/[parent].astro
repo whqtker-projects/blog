@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import SeriesList from '../../components/SeriesList.astro';
 import {
   buildSeriesHierarchy,
   childSeriesPath,
@@ -20,6 +21,11 @@ export async function getStaticPaths() {
 }
 
 const { parentIndex, childIndexes } = Astro.props;
+const items = childIndexes.map((childIndex) => ({
+  title: childIndex.data.title,
+  href: childSeriesPath(parentIndex.data.series, childIndex.data.series),
+  description: childIndex.data.description,
+}));
 ---
 <BaseLayout title={parentIndex.data.title} description={parentIndex.data.description}>
   <main>
@@ -27,18 +33,7 @@ const { parentIndex, childIndexes } = Astro.props;
     {parentIndex.data.description && (
       <p class="description">{parentIndex.data.description}</p>
     )}
-    <ul>
-      {childIndexes.map((childIndex) => (
-        <li>
-          <a href={childSeriesPath(parentIndex.data.series, childIndex.data.series)}>
-            {childIndex.data.title}
-          </a>
-          {childIndex.data.description && (
-            <p class="description">{childIndex.data.description}</p>
-          )}
-        </li>
-      ))}
-    </ul>
+    <SeriesList items={items} />
   </main>
 </BaseLayout>
 
@@ -53,28 +48,7 @@ const { parentIndex, childIndexes } = Astro.props;
     margin: 0 0 1.75rem;
   }
 
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  li {
-    padding: 0.5rem 0;
-    margin: 0 0 0.75rem;
-  }
-
-  li a {
-    text-decoration: none;
-    font-weight: 600;
-  }
-
-  li a:hover {
-    text-decoration: underline;
-    opacity: 1;
-  }
-
-  li .description {
+  :global(.series-list .description) {
     font-size: 0.875rem;
     margin: 0.25rem 0 0;
   }

@@ -1,5 +1,7 @@
 # Context Pack: Publishing Platform and Conversion Workflow
 
+> Archived document. Q-1 and Q-2 are resolved; see [`../../publishing-workflow.md`](../../publishing-workflow.md), [`../../astro-bootstrap.md`](../../astro-bootstrap.md), and [`../../obsidian-conversion-contract.md`](../../obsidian-conversion-contract.md) for current guidance.
+
 **Scope:** Prepare options and tradeoffs for choosing a publishing platform (Q-1) and an Obsidian-to-blog conversion approach (Q-2).  
 **Related open question(s):** Q-1, Q-2  
 **Last updated:** 2026-05-06
@@ -39,9 +41,9 @@ Q-1 and Q-2 are coupled: the right conversion approach depends on the platform, 
 
 ## Related Documents
 
-- [`docs/publishing-workflow.md`](../publishing-workflow.md) — platform candidates, conversion methods, and evaluation criteria
-- [`docs/open-questions.md`](../open-questions.md) — Q-1 and Q-2 entries
-- [`docs/confirmed-decisions.md`](../confirmed-decisions.md) — D-1 through D-8
+- [`docs/publishing-workflow.md`](../../publishing-workflow.md) — current publishing workflow summary
+- [`docs/open-questions.md`](../../open-questions.md) — active tracker for future unresolved planning items
+- [`docs/confirmed-decisions.md`](../../confirmed-decisions.md) — D-1 through D-8
 
 ---
 

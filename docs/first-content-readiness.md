@@ -1,7 +1,7 @@
 # First-Content Readiness
 
 **Status:** Active — produced by Issue #30.  
-**Last updated:** 2026-05-09
+**Last updated:** 2026-05-16
 
 This document defines the artifacts and criteria needed to move from planning into active content creation. It covers the candidate post set for the first series, the process for starting a post, the drafting checklist, the quality bar for publication, and the pre-publication self-review checklist.
 
@@ -15,9 +15,16 @@ Language-policy note:
 Graph-link note:
 - generic `[[wikilinks]]` are reserved for post links
 - Obsidian graph links to series use `[[series_indexes/<parent>]]` or `[[series_indexes/<parent>/<child>]]`
-- child series indexes may include ordered post wikilinks so graph view shows post membership and sequence
-- draft and idea-stage posts may include child series links plus previous/next post links, but `order` remains canonical
-- posts should not link directly to parent series when graph view should preserve the parent → child → post shape
+- child series indexes may include ordered post wikilinks for Obsidian authoring visibility
+- `[[concept:slug]]` is not supported
+- post stubs remain valid without graph-link blocks
+- `order` remains canonical for post sequencing
+
+Example note:
+- short explanatory snippets stay inside the post body
+- short term definitions also stay inline inside the post body
+- project-style implementation examples may later be added as separate example pages attached to a post
+- a post remains valid without any attached example pages
 
 Current operating documents:
 - [`docs/series/database-systems.md`](series/database-systems.md)
@@ -381,7 +388,7 @@ write-ahead-log.md
 
 ### Step 2 — Write the minimum frontmatter for `idea` state
 
-A post in `idea` state must set the required frontmatter. Frontmatter-only stubs or minimal-body notes remain valid, but optional graph links to the child series or adjacent posts are allowed when they improve Obsidian visibility. All three D-25 required fields must be set even at `idea` state, because the conversion script and Astro schema both require them.
+A post in `idea` state must set the required frontmatter. Frontmatter-only stubs or minimal-body notes remain valid. All three D-25 required fields must be set even at `idea` state, because the conversion script and Astro schema both require them.
 
 ```yaml
 ---
@@ -407,7 +414,7 @@ Minimum fields at `idea` state:
 | `order` | Yes (D-25) | Intended position in the series (integer) |
 | `status` | Yes (D-32) | `idea` — marks the post as not yet written |
 
-No other frontmatter fields are required at `idea` state. `status` must still be set explicitly even for early drafts so lifecycle and visibility remain unambiguous. Under D-33, only `status: published` is included in staged and production output, so `idea` posts stay off the public site. Graph-friendly body links remain recommended even when the rest of the post body is still a stub.
+No other frontmatter fields are required at `idea` state. `status` must still be set explicitly even for early drafts so lifecycle and visibility remain unambiguous. Under D-33, only `status: published` is included in staged and production output, so `idea` posts stay off the public site.
 
 ### Step 3 — Advance to `draft`
 

@@ -39,4 +39,4 @@ See `docs/confirmed-decisions.md` for full wording and `docs/decision-log.md` DL
 - [`docs/confirmed-decisions.md`](../confirmed-decisions.md) — D-15, D-16
 - [`docs/decision-log.md`](../decision-log.md) — DL-002 (context and alternatives)
 - [`docs/file-naming-conventions.md`](../file-naming-conventions.md) — full options history
-- [`docs/pilot-record.md`](../pilot-record.md) — tradeoff summary from the Q-4 agent workflow pilot
+- [`docs/archive/pilot-record.md`](../archive/pilot-record.md) — archived tradeoff summary from the Q-4 agent workflow pilot

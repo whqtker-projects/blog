@@ -11,7 +11,7 @@ A series index document defines either a parent series or a child series and dri
 - Parent series appear on the homepage at `/`
 - Series routes are generated from the parent/child index structure
 
-Series index documents are distinct from posts and concepts. They are authored manually and committed under `src/content/series_indexes/` — they are not converted from Obsidian.
+Series index documents are distinct from posts and examples. They are authored manually and committed under `src/content/series_indexes/` — they are not converted from Obsidian.
 
 ---
 
@@ -112,18 +112,21 @@ Clarification:
 
 **Create the parent and child indexes before the first post.** Without them, the child-series route and post breadcrumb context cannot be generated correctly from day one.
 
-**Body links are allowed for graph view.** Series index bodies may contain actual series-index file links and ordered post links for graph-friendly navigation:
+**Body links are allowed for graph view.** Series index bodies may contain actual series-index file links for graph-friendly navigation:
 - parent series indexes may link to child series files
 - child series indexes may link to their parent series file
-- child series indexes may include ordered post wikilinks so Obsidian graph view shows membership and sequence
-- the site still auto-generates the real post inventory; index-body links are for authoring visibility rather than page rendering
+- sibling child-series cross-links are optional, not the default pattern
+- child series indexes may include ordered post wikilinks so the owning posts are visible directly from the child-series note in Obsidian
+- the site still auto-generates the real post inventory; index-body links are for Obsidian authoring visibility rather than page rendering
 
 Recommended graph link syntax:
 - parent series file: `[[series_indexes/<parent>]]`
 - child series file: `[[series_indexes/<parent>/<child>]]`
 - post sequence inside a child series: `[[post-slug]]` or `[[post-slug|display title]]`
 
-Generic `[[wikilinks]]` remain post-only, and `[[concept:slug]]` remains concept-only.
+`[[series:<parent>]]` and `[[series:<parent>/<child>]]` remain converter-supported syntax, but series authoring docs treat actual `series_indexes/...` file links as the default graph-wiring form inside the Obsidian vault.
+
+Generic `[[wikilinks]]` remain post-only. `[[concept:slug]]` is not supported.
 
 ---
 
@@ -165,6 +168,6 @@ description: "How relational databases store, index, and retrieve data — from 
 
 ## Related Documents
 
-- [`docs/content-model.md`](content-model.md) — role boundaries for all three content types
+- [`docs/content-model.md`](content-model.md) — role boundaries for all active content types
 - [`docs/astro-bootstrap.md`](astro-bootstrap.md) — build commands and directory structure
 - [`src/content.config.ts`](../src/content.config.ts) — Zod schema for `series_indexes`

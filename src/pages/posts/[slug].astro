@@ -2,7 +2,12 @@
 import { getCollection } from 'astro:content';
 import { render } from 'astro:content';
 import PostLayout from '../../layouts/PostLayout.astro';
-import { visiblePostsForCurrentBuild } from '../../utils/post-visibility.js';
+import ExampleList from '../../components/ExampleList.astro';
+import {
+  visibleExamplesForCurrentBuild,
+  visiblePostsForCurrentBuild,
+} from '../../utils/post-visibility.js';
+import { postsForSeries, prevNextPosts } from '../../utils/post-ordering.ts';
 import {
   buildSeriesHierarchy,
   requireParentIndex,
@@ -10,8 +15,10 @@ import {
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('posts');
+  const allExamples = await getCollection('examples');
   const allIndexes = await getCollection('series_indexes');
   const visiblePosts = visiblePostsForCurrentBuild(allPosts);
+  const visibleExamples = visibleExamplesForCurrentBuild(allExamples);
   const { seriesBySlug } = buildSeriesHierarchy(allIndexes);
 
   return visiblePosts.map((post) => {
@@ -23,12 +30,8 @@ export async function getStaticPaths() {
     }
 
     const parentIndex = requireParentIndex(childIndex, seriesBySlug);
-    const seriesPosts = visiblePosts
-      .filter((p) => p.data.series === post.data.series)
-      .sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title));
-    const idx = seriesPosts.findIndex((p) => p.id === post.id);
-    const prevPost = idx > 0 ? seriesPosts[idx - 1] : null;
-    const nextPost = idx < seriesPosts.length - 1 ? seriesPosts[idx + 1] : null;
+    const seriesPosts = postsForSeries(visiblePosts, post.data.series);
+    const { prev: prevPost, next: nextPost } = prevNextPosts(seriesPosts, post.id);
     return {
       params: { slug: post.id },
       props: {
@@ -39,6 +42,9 @@ export async function getStaticPaths() {
           childSlug: childIndex.data.series,
           childTitle: childIndex.data.title,
         },
+        examples: visibleExamples
+          .filter((example) => example.data.post === post.id)
+          .sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title)),
         prev: prevPost ? { slug: prevPost.id, title: prevPost.data.title } : null,
         next: nextPost ? { slug: nextPost.id, title: nextPost.data.title } : null,
       },
@@ -46,8 +52,12 @@ export async function getStaticPaths() {
   });
 }
 
-const { post, seriesContext, prev, next } = Astro.props;
+const { post, seriesContext, examples, prev, next } = Astro.props;
 const { Content } = await render(post);
+const exampleItems = examples.map((example) => ({
+  title: example.data.title,
+  href: `/posts/${post.id}/examples/${example.id.split('/').pop()}`,
+}));
 ---
 <PostLayout
   title={post.data.title}
@@ -57,4 +67,16 @@ const { Content } = await render(post);
   next={next}
 >
   <Content />
+  {exampleItems.length > 0 && (
+    <section class="examples">
+      <h2>예제</h2>
+      <ExampleList items={exampleItems} />
+    </section>
+  )}
 </PostLayout>
+
+<style>
+  .examples {
+    margin-top: 3rem;
+  }
+</style>

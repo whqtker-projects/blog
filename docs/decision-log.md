@@ -93,7 +93,7 @@ The following remain unresolved and are tracked in `open-questions.md`:
 
 ### Context
 
-File naming affects Obsidian wikilink resolution, filesystem search, and the Obsidian-to-blog URL conversion path. A consistent convention needs to be set before posts are created to avoid retroactive renaming across all internal links. Q-4 was prepared through a full agent-workflow pilot (see `docs/pilot-record.md`), which produced a tradeoff summary across five dimensions.
+File naming affects Obsidian wikilink resolution, filesystem search, and the Obsidian-to-blog URL conversion path. A consistent convention needs to be set before posts are created to avoid retroactive renaming across all internal links. Q-4 was prepared through a full agent-workflow pilot (now archived at `docs/archive/pilot-record.md`), which produced a tradeoff summary across five dimensions.
 
 ### Alternatives considered
 
@@ -417,7 +417,7 @@ Decision recorded as D-39 in `confirmed-decisions.md`.
 
 ### Context
 
-The reading-focused UI phase (`docs/reading-ui-direction.md`) identified four design questions that could not be resolved by assumption. These were collected from the user via AskUserQuestion as Issue #117.
+The reading-focused UI phase (`docs/archive/reading-ui-direction.md`) identified four design questions that could not be resolved by assumption. These were collected from the user via AskUserQuestion as Issue #117.
 
 ### Alternatives considered
 
@@ -442,7 +442,7 @@ The reading-focused UI phase (`docs/reading-ui-direction.md`) identified four de
 ### References
 
 - `confirmed-decisions.md`: D-40, D-41, D-42, D-43
-- `docs/reading-ui-direction.md` — Open Questions Summary
+- `docs/archive/reading-ui-direction.md` — Open Questions Summary
 - Issue #117, #122
 
 ---
@@ -877,7 +877,7 @@ After the hierarchy and ordering rollout, `order` drives both child-series and p
 
 - Remove `#{order}` from `src/layouts/PostLayout.astro` breadcrumb template.
 - Verify `src/pages/series/[parent].astro` does not add numbering to child series list items (currently does not — no change needed).
-- Update `docs/reading-ui-direction.md` if it references breadcrumb numbering.
+- Update `docs/archive/reading-ui-direction.md` if it references breadcrumb numbering.
 
 ### References
 
@@ -1121,4 +1121,4 @@ Post stubs added during bulk intake are structurally connected through `series`,
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions
-- [open-questions.md](open-questions.md) — unresolved planning items
+- [open-questions.md](open-questions.md) — active tracker for future unresolved planning items
