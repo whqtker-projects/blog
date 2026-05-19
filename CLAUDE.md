@@ -49,7 +49,7 @@ docs/decisions/                   # ADR files for foundational decisions
 - **Confirmed decisions** live in `docs/confirmed-decisions.md` and individual ADR files under `docs/decisions/`.
 - No planning questions are currently open. If a new structural question arises, add it to `docs/open-questions.md` and surface it to the user — do not resolve by assumption.
 - When a decision is made: update `docs/confirmed-decisions.md`, log it in `docs/decision-log.md`, and update `docs/open-questions.md`.
-- All documents are written in English (Obsidian Markdown format).
+- Documents are written in English by default. `docs/codebase-manual.html` is the Korean standalone HTML manual exception requested by the user.
 
 ## Role Boundaries
 

@@ -755,3 +755,13 @@ example이 존재하면 owning post의 `관련 링크:`에 `[[examples/<example-
 운영 문서는 현재 기준에 맞게 줄였다. `docs/file-naming-conventions.md`는 선택지 비교 대신 현재 파일명 규칙만 남겼고, `docs/publishing-workflow.md`는 Astro와 구현된 converter 중심의 현재 publishing flow로 정리했다. `docs/open-questions.md`는 future unresolved planning item tracker로 축소했다.
 
 관련 링크와 문서 맵도 갱신했다. `docs/README.md`, `CLAUDE.md`, `AGENTS.md`, `docs/documentation-workflow.md`, `docs/confirmed-decisions.md`, `docs/decision-log.md`, `docs/post-template.md`, `docs/series-backlog.md`에서 archive 이동과 새 open-question 정책에 맞춰 참조를 조정했다.
+
+## 2026-05-17 — Add Korean HTML codebase manual
+
+GitHub issue #194의 구현 방향을 코드베이스 매뉴얼 작성으로 정리하고, 사용자 지시에 맞춰 매뉴얼 산출물을 한국어 standalone HTML 문서로 추가했다. `docs/codebase-manual.html`은 repository 목적, route 구조, content model, frontmatter 계약, 변환/검증 명령, 흔한 작업별 수정 위치, published post 보호 규칙을 한 문서에서 볼 수 있게 구성했다.
+
+`docs/README.md`에는 codebase reference 섹션을 추가했고, `CLAUDE.md`에는 기본 문서 언어는 English이지만 `docs/codebase-manual.html`만 Korean HTML manual 예외라는 점을 명시했다.
+
+## 2026-05-19 — Align component-scan example code blocks
+
+`src/content/examples/configuration-class-and-component-scan-demo.md`의 코드블럭을 실제 예제 프로젝트인 `/Users/whqtker/Documents/workspace/examples/configuration-class-and-component-scan`와 맞췄다. `AppConfig` 예시에 `orderService()` 빈 등록을 추가하고, 컴포넌트 스캔 예시에 `ScanDiscountPolicy`와 실제 생성자 주입 필드 대입을 반영했다.

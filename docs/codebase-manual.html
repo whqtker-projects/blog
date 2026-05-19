@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>코드베이스 매뉴얼</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5f6b76;
+      --line: #d8ddd9;
+      --accent: #0f766e;
+      --code: #f1f5f4;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+
+    main {
+      width: min(1040px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 48px 0 72px;
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 2rem;
+      line-height: 1.2;
+    }
+
+    h2 {
+      border-top: 1px solid var(--line);
+      margin: 36px 0 14px;
+      padding-top: 28px;
+      font-size: 1.35rem;
+    }
+
+    h3 {
+      margin: 24px 0 8px;
+      font-size: 1.05rem;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    ul,
+    ol {
+      margin: 8px 0 18px;
+      padding-left: 24px;
+    }
+
+    li {
+      margin: 5px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 22px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eef3f1;
+      font-weight: 700;
+    }
+
+    code {
+      background: var(--code);
+      border: 1px solid #dfe6e3;
+      border-radius: 4px;
+      padding: 0.1em 0.35em;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    pre {
+      overflow-x: auto;
+      background: #17202a;
+      color: #edf5f2;
+      border-radius: 6px;
+      padding: 16px;
+      line-height: 1.55;
+    }
+
+    pre code {
+      background: transparent;
+      border: 0;
+      padding: 0;
+      color: inherit;
+    }
+
+    .lede {
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .note {
+      background: var(--panel);
+      border-left: 4px solid var(--accent);
+      padding: 14px 16px;
+      margin: 16px 0 22px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin: 14px 0 20px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 16px;
+    }
+
+    .card h3 {
+      margin-top: 0;
+    }
+
+    @media (max-width: 720px) {
+      main {
+        width: min(100% - 24px, 1040px);
+        padding-top: 32px;
+      }
+
+      table {
+        display: block;
+        overflow-x: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>코드베이스 매뉴얼</h1>
+      <p class="lede">
+        이 문서는 현재 Astro 기반 블로그 저장소를 이해하고 작업하기 위한 한국어 매뉴얼이다.
+        사이트 기능을 추가하는 문서가 아니라, 저장소 구조와 작업 흐름을 빠르게 파악하기 위한 운영 참고 문서다.
+      </p>
+      <p>관련 문서 맵은 <a href="README.md">docs/README.md</a>에서 확인한다.</p>
+    </header>
+
+    <section>
+      <h2>저장소가 하는 일</h2>
+      <p>
+        이 저장소는 Obsidian vault에서 작성한 기술 글을 Astro 정적 사이트로 빌드한다.
+        Obsidian은 원본 작성 공간이고, 이 저장소의 <code>src/content/posts/</code>는 변환되어 커밋되는 산출물이다.
+      </p>
+      <pre><code>Obsidian vault
+  -&gt; pnpm convert --input &lt;vault/posts&gt; --strict
+  -&gt; src/content/posts/
+  -&gt; pnpm build
+  -&gt; dist/</code></pre>
+      <div class="note">
+        <p>
+          <code>pnpm build</code>는 Obsidian vault를 읽지 않는다. 빌드는 저장소에 이미 커밋된 Markdown과 source code만 사용한다.
+          vault 변경사항을 반영하려면 먼저 <code>pnpm convert</code>를 명시적으로 실행해야 한다.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>주요 디렉터리</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>경로</th>
+            <th>역할</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>src/pages/</code></td>
+            <td>Astro route를 정의한다. 홈, series, post, example 페이지가 여기에 있다.</td>
+          </tr>
+          <tr>
+            <td><code>src/layouts/</code></td>
+            <td>공통 HTML shell과 post/example page wrapper를 둔다.</td>
+          </tr>
+          <tr>
+            <td><code>src/components/</code></td>
+            <td>반복되는 UI 조각을 둔다. 현재는 series list와 example list가 있다.</td>
+          </tr>
+          <tr>
+            <td><code>src/content/</code></td>
+            <td>Astro content collections의 실제 Markdown과 attachment를 둔다.</td>
+          </tr>
+          <tr>
+            <td><code>src/utils/</code></td>
+            <td>정렬, visibility, series hierarchy, remark 변환 helper를 둔다.</td>
+          </tr>
+          <tr>
+            <td><code>scripts/</code></td>
+            <td>Obsidian 변환, content validation, series graph metadata sync 같은 repository 작업 도구를 둔다.</td>
+          </tr>
+          <tr>
+            <td><code>docs/</code></td>
+            <td>운영 문서, 결정 기록, workflow 문서를 둔다. 현재 기준 문서는 archive 밖에 있는 문서다.</td>
+          </tr>
+          <tr>
+            <td><code>docs/archive/</code></td>
+            <td>과거 계획과 superseded 문서를 보관한다. 새 작업의 기준 문서로 사용하지 않는다.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Route 구조</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>URL</th>
+            <th>파일</th>
+            <th>역할</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>/</code></td>
+            <td><code>src/pages/index.astro</code></td>
+            <td>parent series 목록을 보여주는 홈이다.</td>
+          </tr>
+          <tr>
+            <td><code>/series/[parent]</code></td>
+            <td><code>src/pages/series/[parent].astro</code></td>
+            <td>parent series 설명과 child series 목록을 보여준다.</td>
+          </tr>
+          <tr>
+            <td><code>/series/[parent]/[child]</code></td>
+            <td><code>src/pages/series/[parent]/[child].astro</code></td>
+            <td>child series에 속한 visible post 목록을 보여준다.</td>
+          </tr>
+          <tr>
+            <td><code>/posts/[slug]</code></td>
+            <td><code>src/pages/posts/[slug].astro</code></td>
+            <td>개별 post를 렌더링한다. prev/next navigation은 같은 child series의 <code>order</code>를 기준으로 한다.</td>
+          </tr>
+          <tr>
+            <td><code>/posts/[slug]/examples/[example]</code></td>
+            <td><code>src/pages/posts/[slug]/examples/[example].astro</code></td>
+            <td>post에 붙은 project-style example을 별도 페이지로 렌더링한다.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>콘텐츠 모델</h2>
+      <div class="grid">
+        <article class="card">
+          <h3><code>posts</code></h3>
+          <p>
+            개념을 깊게 설명하는 본문이다. 파일은 <code>src/content/posts/</code>에 있으며,
+            Obsidian vault의 <code>posts/</code>에서 변환된다. 각 post는 정확히 하나의 child series에 속한다.
+          </p>
+        </article>
+        <article class="card">
+          <h3><code>examples</code></h3>
+          <p>
+            긴 구현 예시를 post 본문 밖으로 분리한 수동 작성 문서다.
+            파일은 <code>src/content/examples/</code> 바로 아래에 두며, frontmatter의 <code>post</code>로 owning post를 가리킨다.
+          </p>
+        </article>
+        <article class="card">
+          <h3><code>series_indexes</code></h3>
+          <p>
+            parent series와 child series를 정의한다. parent index는 root에 두고,
+            child index는 <code>src/content/series_indexes/&lt;parent&gt;/&lt;child&gt;.md</code>에 둔다.
+          </p>
+        </article>
+      </div>
+      <p>
+        자세한 정보 구조 계약은 <a href="content-model.md">docs/content-model.md</a>를 기준으로 한다.
+      </p>
+    </section>
+
+    <section>
+      <h2>Frontmatter 계약</h2>
+      <p>
+        실제 schema는 <code>src/content.config.ts</code>가 정의한다. 문서나 예시가 schema와 다르면
+        <code>src/content.config.ts</code>와 validation script를 기준으로 판단한다.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Collection</th>
+            <th>필수 필드</th>
+            <th>선택 필드</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>posts</code></td>
+            <td><code>title</code>, <code>series</code>, <code>order</code>, <code>status</code></td>
+            <td><code>description</code>, <code>tags</code></td>
+          </tr>
+          <tr>
+            <td><code>examples</code></td>
+            <td><code>title</code>, <code>post</code>, <code>order</code>, <code>status</code></td>
+            <td><code>description</code></td>
+          </tr>
+          <tr>
+            <td><code>series_indexes</code></td>
+            <td><code>title</code>, <code>series</code></td>
+            <td><code>parent</code>, <code>order</code>, <code>description</code>, <code>aliases</code>, <code>tags</code></td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        <code>status</code>는 <code>idea</code>, <code>draft</code>, <code>published</code>만 허용한다.
+        local dev는 unpublished content를 볼 수 있지만 staged/production build는 <code>published</code>만 노출한다.
+      </p>
+    </section>
+
+    <section>
+      <h2>변환과 검증</h2>
+      <h3>자주 쓰는 명령</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>명령</th>
+            <th>사용 시점</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>pnpm install</code></td>
+            <td>처음 checkout했거나 dependency가 바뀌었을 때 실행한다.</td>
+          </tr>
+          <tr>
+            <td><code>pnpm dev</code></td>
+            <td>local Astro dev server를 띄운다.</td>
+          </tr>
+          <tr>
+            <td><code>pnpm convert --input &lt;vault/posts&gt; --strict</code></td>
+            <td>Obsidian post 변경을 repository content로 동기화한다.</td>
+          </tr>
+          <tr>
+            <td><code>pnpm check:content</code></td>
+            <td>series hierarchy, status, order, example attachment 같은 repository content 계약을 검사한다.</td>
+          </tr>
+          <tr>
+            <td><code>pnpm test:convert</code></td>
+            <td>Obsidian-to-Astro converter를 수정했을 때 실행한다.</td>
+          </tr>
+          <tr>
+            <td><code>pnpm test:repo</code></td>
+            <td>content helper, ordering, visibility, series validation, remark plugin을 수정했을 때 실행한다.</td>
+          </tr>
+          <tr>
+            <td><code>pnpm build</code></td>
+            <td>schema, route, layout, content 변경 후 production build를 확인한다.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        변환 세부 계약은 <a href="obsidian-conversion-contract.md">docs/obsidian-conversion-contract.md</a>,
+        publishing 흐름은 <a href="publishing-workflow.md">docs/publishing-workflow.md</a>를 따른다.
+      </p>
+    </section>
+
+    <section>
+      <h2>흔한 작업별 위치</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>작업</th>
+            <th>수정 위치</th>
+            <th>검증</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>새 post 추가</td>
+            <td>Obsidian vault에서 작성 후 <code>pnpm convert</code>로 <code>src/content/posts/</code>에 반영</td>
+            <td><code>pnpm check:content</code>, <code>pnpm build</code></td>
+          </tr>
+          <tr>
+            <td>새 example 추가</td>
+            <td><code>src/content/examples/</code>에 수동 작성하고 <code>post</code> frontmatter로 owning post 지정</td>
+            <td><code>pnpm check:content</code>, <code>pnpm build</code></td>
+          </tr>
+          <tr>
+            <td>새 series 추가</td>
+            <td><code>src/content/series_indexes/</code>에 parent/child index 작성</td>
+            <td><code>pnpm check:content</code>, <code>pnpm build</code></td>
+          </tr>
+          <tr>
+            <td>변환기 수정</td>
+            <td><code>scripts/obsidian-to-astro.mjs</code>와 관련 test</td>
+            <td><code>pnpm test:convert</code>, <code>pnpm build</code></td>
+          </tr>
+          <tr>
+            <td>content validation 수정</td>
+            <td><code>scripts/check-content.mjs</code>와 helper/test</td>
+            <td><code>pnpm test:repo</code>, <code>pnpm check:content</code></td>
+          </tr>
+          <tr>
+            <td>route 또는 UI 수정</td>
+            <td><code>src/pages/</code>, <code>src/layouts/</code>, <code>src/components/</code>, <code>src/styles/</code></td>
+            <td><code>pnpm build</code></td>
+          </tr>
+          <tr>
+            <td>문서 수정</td>
+            <td><code>docs/</code>와 필요한 경우 <code>CLAUDE.md</code>, <code>AGENTS.md</code></td>
+            <td>상대 링크 검사, 관련 repository 검증</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>주의 규칙</h2>
+      <ul>
+        <li><code>status: published</code>인 post는 사용자 명시 요청 없이 수정하지 않는다.</li>
+        <li><code>src/content/posts/</code>는 변환 산출물이지만 git에 커밋되는 source of truth다. 직접 수정이 필요하면 원본 또는 converter와의 관계를 먼저 확인한다.</li>
+        <li>post filename과 slug는 lowercase English kebab-case를 유지한다. 한국어 제목은 <code>title</code>에 둔다.</li>
+        <li><code>docs/archive/</code>는 보관소다. 현재 작업 기준은 archive 밖 활성 문서에서 찾는다.</li>
+        <li>series의 구조적 순서는 frontmatter의 <code>order</code>가 기준이다. 제목 숫자 prefix는 표시 보조일 뿐이다.</li>
+        <li>new structural decision이 필요하면 추정으로 확정하지 말고 <code>docs/open-questions.md</code>와 decision workflow를 따른다.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>관련 활성 문서</h2>
+      <ul>
+        <li><a href="README.md">docs/README.md</a>: 전체 문서 맵</li>
+        <li><a href="content-model.md">docs/content-model.md</a>: posts, examples, series indexes 역할 계약</li>
+        <li><a href="astro-bootstrap.md">docs/astro-bootstrap.md</a>: Astro 명령과 route/build 계약</li>
+        <li><a href="publishing-workflow.md">docs/publishing-workflow.md</a>: publishing과 conversion 흐름</li>
+        <li><a href="file-naming-conventions.md">docs/file-naming-conventions.md</a>: filename과 slug 규칙</li>
+        <li><a href="post-metadata.md">docs/post-metadata.md</a>: post frontmatter 정의</li>
+        <li><a href="status-lifecycle.md">docs/status-lifecycle.md</a>: status 값과 build visibility</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

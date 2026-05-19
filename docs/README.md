@@ -8,6 +8,12 @@ The repository is in the **active content-creation stage**. The Astro build, con
 
 ## Document Map
 
+### Codebase reference
+
+| File | Purpose |
+|---|---|
+| [codebase-manual.html](codebase-manual.html) | Korean standalone HTML manual for understanding and working in the current codebase |
+
 ### Session start
 
 | File | Purpose |
