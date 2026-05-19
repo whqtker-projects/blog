@@ -225,6 +225,14 @@
             <td>Astro content collections의 실제 Markdown과 attachment를 둔다.</td>
           </tr>
           <tr>
+            <td><code>src/content/examples/</code></td>
+            <td>post에 부속되는 example 문서를 수동 작성하는 위치다. 각 example은 <code>post</code> frontmatter로 정확히 하나의 post에 연결된다.</td>
+          </tr>
+          <tr>
+            <td><code>src/content/series_indexes/</code></td>
+            <td>parent/child series index를 둔다. 경로 구조와 frontmatter가 함께 series 계층을 정의한다.</td>
+          </tr>
+          <tr>
             <td><code>src/utils/</code></td>
             <td>정렬, visibility, series hierarchy, remark 변환 helper를 둔다.</td>
           </tr>
@@ -235,6 +243,10 @@
           <tr>
             <td><code>docs/</code></td>
             <td>운영 문서, 결정 기록, workflow 문서를 둔다. 현재 기준 문서는 archive 밖에 있는 문서다.</td>
+          </tr>
+          <tr>
+            <td><code>public/images/</code></td>
+            <td>content collection 바깥에서 직접 참조할 정적 이미지 자산을 둔다.</td>
           </tr>
           <tr>
             <td><code>docs/archive/</code></td>
@@ -350,6 +362,10 @@
         <code>status</code>는 <code>idea</code>, <code>draft</code>, <code>published</code>만 허용한다.
         local dev는 unpublished content를 볼 수 있지만 staged/production build는 <code>published</code>만 노출한다.
       </p>
+      <p>
+        추가로 repository validation은 post의 <code>series</code>가 child series를 가리키는지, example의 <code>post</code>가 실제 post slug를 가리키는지,
+        child series의 <code>parent</code>와 <code>order</code>가 맞는지, 숫자 제목 prefix가 있으면 명시적 <code>order</code>와 일치하는지까지 검사한다.
+      </p>
     </section>
 
     <section>
@@ -370,6 +386,10 @@
           <tr>
             <td><code>pnpm dev</code></td>
             <td>local Astro dev server를 띄운다.</td>
+          </tr>
+          <tr>
+            <td><code>pnpm preview</code></td>
+            <td><code>pnpm build</code> 결과물을 production과 가까운 형태로 로컬에서 확인한다.</td>
           </tr>
           <tr>
             <td><code>pnpm convert --input &lt;vault/posts&gt; --strict</code></td>

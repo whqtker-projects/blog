@@ -765,3 +765,9 @@ GitHub issue #194의 구현 방향을 코드베이스 매뉴얼 작성으로 정
 ## 2026-05-19 — Align component-scan example code blocks
 
 `src/content/examples/configuration-class-and-component-scan-demo.md`의 코드블럭을 실제 예제 프로젝트인 `/Users/whqtker/Documents/workspace/examples/configuration-class-and-component-scan`와 맞췄다. `AppConfig` 예시에 `orderService()` 빈 등록을 추가하고, 컴포넌트 스캔 예시에 `ScanDiscountPolicy`와 실제 생성자 주입 필드 대입을 반영했다.
+
+## 2026-05-19 — Tighten issue #194 acceptance coverage
+
+`docs/codebase-manual.html`이 이미 존재하는 상태에서 issue #194 수용 기준을 다시 대조했다. 문서 자체는 대체로 맞았지만, routine command 목록에 `pnpm preview`가 빠져 있었고 major directory 설명에서 `src/content/examples/`, `src/content/series_indexes/`, `public/images/`의 역할이 덜 직접적으로 드러났다.
+
+그래서 매뉴얼에 누락된 명령과 디렉터리 역할을 보강하고, repository validation이 실제로 확인하는 relationship 제약도 한 문단으로 추가했다. 이 보완으로 이슈의 “routine development commands”, “major directory roles”, “relationships and validation expectations” 수용 기준을 문서상에서 더 명확하게 충족하도록 정리했다.
