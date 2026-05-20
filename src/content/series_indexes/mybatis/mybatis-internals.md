@@ -1,5 +1,5 @@
 ---
-title: 마이바티스 내부 동작
+title: MyBatis 내부 동작
 series: mybatis-internals
 parent: mybatis
 order: 4

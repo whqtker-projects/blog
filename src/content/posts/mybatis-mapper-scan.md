@@ -4,6 +4,11 @@ series: mybatis-spring
 order: 2
 status: idea
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/mybatis/mybatis-spring|MyBatis와 스프링 연동]]
+- 이전 글: [[mybatis-spring-overview|mybatis-spring 개요와 SqlSessionFactoryBean]]
+- 다음 글: [[mybatis-spring-boot|Spring Boot에서의 MyBatis]]
+
 ## 매퍼 빈 등록 문제
 
 - Mapper를 스프링 빈으로 일일이 등록해야 하는 번거로움을 설명한다.

@@ -4,6 +4,11 @@ series: mybatis-mapping
 order: 3
 status: idea
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/mybatis/mybatis-mapping|MyBatis 매핑]]
+- 이전 글: [[mybatis-parameter-binding|파라미터 바인딩과 #{}·${}]]
+- 다음 글: [[mybatis-association-and-collection|연관 매핑(association·collection)]]
+
 ## 결과 매핑이란
 
 - 조회 결과를 자바 객체로 옮기는 과정이 왜 중요한지부터 설명한다.

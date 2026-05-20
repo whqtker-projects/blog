@@ -4,6 +4,10 @@ series: mybatis-internals
 order: 1
 status: idea
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/mybatis/mybatis-internals|MyBatis 내부 동작]]
+- 다음 글: [[mybatis-cache|1차 캐시와 2차 캐시]]
+
 ## Executor란
 
 - Mapper 호출 뒤 실제 실행을 담당하는 내부 컴포넌트로 위치를 설명한다.

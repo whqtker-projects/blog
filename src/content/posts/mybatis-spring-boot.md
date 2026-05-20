@@ -4,6 +4,10 @@ series: mybatis-spring
 order: 3
 status: idea
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/mybatis/mybatis-spring|MyBatis와 스프링 연동]]
+- 이전 글: [[mybatis-mapper-scan|매퍼 스캔과 @MapperScan]]
+
 ## Spring Boot에서의 MyBatis 구성
 
 - Boot 환경에서 MyBatis를 붙이는 전체 흐름을 먼저 정리한다.

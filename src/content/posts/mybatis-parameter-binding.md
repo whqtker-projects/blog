@@ -4,6 +4,11 @@ series: mybatis-mapping
 order: 2
 status: idea
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/mybatis/mybatis-mapping|MyBatis 매핑]]
+- 이전 글: [[mybatis-mapper-interface-and-xml|Mapper 인터페이스와 XML]]
+- 다음 글: [[mybatis-result-mapping|결과 매핑(resultType·resultMap)]]
+
 ## 파라미터 전달 방식
 
 - 단일 값, 객체, `Map`, 여러 파라미터 전달 방식을 구분한다.

@@ -1,5 +1,5 @@
 ---
-title: 마이바티스 매핑
+title: MyBatis 매핑
 series: mybatis-mapping
 parent: mybatis
 order: 2

@@ -4,6 +4,11 @@ series: mybatis-foundations
 order: 3
 status: idea
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/mybatis/mybatis-foundations|MyBatis 기초]]
+- 이전 글: [[mybatis-vs-jdbc|JDBC와 MyBatis 비교]]
+- 다음 글: [[mybatis-configuration|MyBatis 환경 설정]]
+
 ## SqlSessionFactory란
 
 - MyBatis 실행 환경을 초기화하고 세션 생성을 담당하는 객체로 설명한다.

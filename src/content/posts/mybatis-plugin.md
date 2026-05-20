@@ -4,6 +4,10 @@ series: mybatis-internals
 order: 3
 status: idea
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/mybatis/mybatis-internals|MyBatis 내부 동작]]
+- 이전 글: [[mybatis-cache|1차 캐시와 2차 캐시]]
+
 ## 플러그인이란
 
 - MyBatis 내부 동작을 가로채 확장하는 메커니즘으로 정의한다.

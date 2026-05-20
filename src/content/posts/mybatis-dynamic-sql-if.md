@@ -4,6 +4,10 @@ series: mybatis-dynamic-sql
 order: 1
 status: idea
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/mybatis/mybatis-dynamic-sql|MyBatis 동적 SQL]]
+- 다음 글: [[mybatis-dynamic-sql-choose-where-set-trim|choose·where·set·trim]]
+
 ## 동적 SQL이 필요한 이유
 
 - 검색 조건 조합이 많아질 때 정적 SQL만으로 대응하기 어려운 이유를 설명한다.

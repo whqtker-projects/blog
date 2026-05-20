@@ -4,6 +4,10 @@ series: mybatis-mapping
 order: 1
 status: idea
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/mybatis/mybatis-mapping|MyBatis 매핑]]
+- 다음 글: [[mybatis-parameter-binding|파라미터 바인딩과 #{}·${}]]
+
 ## Mapper란
 
 - Mapper가 DAO 역할을 어떻게 대체하는지부터 잡는다.

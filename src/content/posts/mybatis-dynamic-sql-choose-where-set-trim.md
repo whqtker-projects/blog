@@ -4,6 +4,11 @@ series: mybatis-dynamic-sql
 order: 2
 status: idea
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/mybatis/mybatis-dynamic-sql|MyBatis 동적 SQL]]
+- 이전 글: [[mybatis-dynamic-sql-if|동적 SQL의 필요성과 if]]
+- 다음 글: [[mybatis-dynamic-sql-foreach|foreach와 SQL 조각 재사용]]
+
 ## choose의 분기 처리
 
 - 여러 조건 중 하나만 선택해야 할 때의 흐름을 설명한다.

@@ -4,6 +4,10 @@ series: mybatis-dynamic-sql
 order: 3
 status: idea
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/mybatis/mybatis-dynamic-sql|MyBatis 동적 SQL]]
+- 이전 글: [[mybatis-dynamic-sql-choose-where-set-trim|choose·where·set·trim]]
+
 ## foreach의 역할
 
 - 반복 가능한 데이터를 SQL 조각으로 확장하는 태그로 정의한다.

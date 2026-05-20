@@ -1,5 +1,5 @@
 ---
-title: 마이바티스 기초
+title: MyBatis 기초
 series: mybatis-foundations
 parent: mybatis
 order: 1

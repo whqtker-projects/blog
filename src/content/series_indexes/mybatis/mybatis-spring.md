@@ -1,5 +1,5 @@
 ---
-title: 마이바티스와 스프링 연동
+title: MyBatis와 스프링 연동
 series: mybatis-spring
 parent: mybatis
 order: 5

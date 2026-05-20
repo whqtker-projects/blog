@@ -4,6 +4,10 @@ series: mybatis-spring
 order: 1
 status: idea
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/mybatis/mybatis-spring|MyBatis와 스프링 연동]]
+- 다음 글: [[mybatis-mapper-scan|매퍼 스캔과 @MapperScan]]
+
 ## mybatis-spring이 필요한 이유
 
 - 순수 MyBatis 자원 관리와 스프링 컨테이너를 연결해야 하는 배경을 설명한다.

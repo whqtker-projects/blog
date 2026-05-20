@@ -1,5 +1,5 @@
 ---
-title: 마이바티스 동적 SQL
+title: MyBatis 동적 SQL
 series: mybatis-dynamic-sql
 parent: mybatis
 order: 3

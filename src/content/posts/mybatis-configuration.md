@@ -4,6 +4,10 @@ series: mybatis-foundations
 order: 4
 status: idea
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/mybatis/mybatis-foundations|MyBatis 기초]]
+- 이전 글: [[sql-session-factory-and-sql-session|SqlSessionFactory와 SqlSession]]
+
 ## 설정 파일의 역할
 
 - MyBatis 전체 동작을 결정하는 설정 파일의 책임 범위를 설명한다.

@@ -4,6 +4,11 @@ series: mybatis-internals
 order: 2
 status: idea
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/mybatis/mybatis-internals|MyBatis 내부 동작]]
+- 이전 글: [[mybatis-executor|Executor와 명령 실행 흐름]]
+- 다음 글: [[mybatis-plugin|플러그인(Interceptor)의 동작 원리]]
+
 ## 1차 캐시란
 
 - 세션 단위 캐시가 어떤 범위에서 동작하는지 설명한다.

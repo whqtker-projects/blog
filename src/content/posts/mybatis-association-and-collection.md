@@ -4,6 +4,10 @@ series: mybatis-mapping
 order: 4
 status: idea
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/mybatis/mybatis-mapping|MyBatis 매핑]]
+- 이전 글: [[mybatis-result-mapping|결과 매핑(resultType·resultMap)]]
+
 ## 연관 매핑이 필요한 이유
 
 - 객체 그래프와 조인 결과를 1:1로 대응하기 어려운 이유를 설명한다.

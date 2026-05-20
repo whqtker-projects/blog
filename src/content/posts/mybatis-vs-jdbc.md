@@ -4,6 +4,11 @@ series: mybatis-foundations
 order: 2
 status: idea
 ---
+관련 링크:
+- 소속 시리즈: [[series_indexes/mybatis/mybatis-foundations|MyBatis 기초]]
+- 이전 글: [[what-is-mybatis|MyBatis란 무엇인가]]
+- 다음 글: [[sql-session-factory-and-sql-session|SqlSessionFactory와 SqlSession]]
+
 ## JDBC의 작업 방식
 
 - 연결 획득, SQL 실행, 결과 매핑까지 직접 처리하는 흐름을 정리한다.
