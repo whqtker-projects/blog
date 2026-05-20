@@ -791,3 +791,9 @@ GitHub issue #194의 구현 방향을 코드베이스 매뉴얼 작성으로 정
 `src/content/series_indexes/` 아래 parent/child series index frontmatter의 영문 `description` 값을 한글로 통일했다. 함께 관리되는 문서 예시인 `docs/series-index-authoring.md`와 `docs/github-issue-workflow.md`의 `description:` 예시도 같은 기준으로 수정했다.
 
 검증은 `pnpm build`로 수행했고 정상 통과했다.
+
+## 2026-05-20 — Add floating back-to-top button
+
+게시글과 예제 페이지 공통으로 사용할 플로팅 `맨 위로` 버튼 컴포넌트를 추가하고, `PostLayout`과 `ExampleLayout`에 연결했다. 버튼은 첫 화면 높이 이상 스크롤했을 때만 우하단에 나타나며, 기본은 부드럽게 상단으로 이동하고 `prefers-reduced-motion` 환경에서는 즉시 이동하도록 처리했다.
+
+검증은 `pnpm build`로 수행했다.

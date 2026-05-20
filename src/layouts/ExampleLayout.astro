@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import BackToTopButton from '../components/BackToTopButton.astro';
 
 interface SeriesContext {
   parentSlug: string;
@@ -38,6 +39,7 @@ const { title, description, seriesContext, post } = Astro.props;
     </header>
     <slot />
   </article>
+  <BackToTopButton />
 </BaseLayout>
 
 <style>

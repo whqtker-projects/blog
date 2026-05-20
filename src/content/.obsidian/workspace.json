@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "posts/proxy-based-aop-in-spring.md",
+                "file": "posts/proxy-and-transaction-pitfalls.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "proxy-based-aop-in-spring"
+              "title": "proxy-and-transaction-pitfalls"
             }
           }
         ]
@@ -182,8 +182,13 @@
   },
   "active": "2d0a66317cb227d7",
   "lastOpenFiles": [
-    "series_indexes/spring-framework/spring-aop-and-transactions.md",
+    "posts/transaction-propagation-and-isolation.md",
+    "posts/proxy-and-transaction-pitfalls.md",
+    "posts/transaction-abstraction-in-spring.md",
     "posts/proxy-based-aop-in-spring.md",
+    "attachments/Pasted image 20260520182511.png",
+    "attachments/Pasted image 20260520182259.png",
+    "series_indexes/spring-framework/spring-aop-and-transactions.md",
     "posts/what-is-spring-aop.md",
     "series_indexes/spring-framework.md",
     "series_indexes/spring-framework/spring-core.md",
@@ -205,10 +210,7 @@
     "series_indexes/mybatis/mybatis-foundations.md",
     "posts/mybatis-vs-jdbc.md",
     "posts/mybatis-configuration.md",
-    "posts/sql-session-factory-and-sql-session.md",
-    "posts/what-is-mybatis.md",
     "attachments/Pasted image 20260520102211.png",
-    "posts/what-is-spring-boot.md",
     "series_indexes/mybatis",
     "examples/spring-lifecycle-hooks-demo.md.tmp.34821.e5aeb21513c5",
     "examples/bean-lifecycle-and-scope",

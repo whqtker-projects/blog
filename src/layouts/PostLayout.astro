@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import BackToTopButton from '../components/BackToTopButton.astro';
 interface NavLink {
   slug: string;
   title: string;
@@ -39,6 +40,7 @@ const { title, description, seriesContext, prev, next } = Astro.props;
       {next && <a class="next" href={`/posts/${next.slug}`}>{next.title} →</a>}
     </nav>
   </article>
+  <BackToTopButton />
 </BaseLayout>
 
 <style>
