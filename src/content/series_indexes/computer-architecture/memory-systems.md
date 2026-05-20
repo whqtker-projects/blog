@@ -3,7 +3,7 @@ title: "Memory Systems"
 series: memory-systems
 parent: computer-architecture
 order: 5
-description: "How computer memory is organized, from semiconductor cells and main memory to cache hierarchies and modern nonvolatile designs."
+description: "반도체 셀과 주기억장치부터 캐시 계층과 현대적 비휘발성 메모리 설계까지 컴퓨터 메모리가 어떻게 구성되는지 다룹니다."
 tags:
   - graph/child-series
 aliases:

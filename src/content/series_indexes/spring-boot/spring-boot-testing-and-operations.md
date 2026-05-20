@@ -3,7 +3,7 @@ title: "스프링 부트 테스트와 운영"
 series: spring-boot-testing-and-operations
 parent: spring-boot
 order: 3
-description: "How Spring Boot supports application testing, focused test slices, infrastructure-backed integration tests, and operational visibility."
+description: "스프링 부트가 애플리케이션 테스트, 슬라이스 테스트, 인프라 기반 통합 테스트, 운영 가시성을 어떻게 지원하는지 설명합니다."
 tags:
   - graph/child-series
 aliases:

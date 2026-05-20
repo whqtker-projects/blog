@@ -3,7 +3,7 @@ title: "Data Modeling and Design"
 series: data-modeling-and-design
 parent: database-systems
 order: 2
-description: "How database schemas are modeled and refined through ERD, integrity constraints, functional dependency, and normalization."
+description: "ERD, 무결성 제약, 함수 종속, 정규화를 통해 데이터베이스 스키마를 어떻게 모델링하고 다듬는지 다룹니다."
 tags:
   - graph/child-series
 aliases:

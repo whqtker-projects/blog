@@ -3,7 +3,7 @@ title: "Network Foundations"
 series: network-foundations
 parent: computer-networks
 order: 1
-description: "How computer networks are organized at a high level, from layering and encapsulation to the basic technologies that move data between hosts."
+description: "계층 구조와 캡슐화부터 호스트 사이에서 데이터를 이동시키는 기본 기술까지 컴퓨터 네트워크가 큰 틀에서 어떻게 구성되는지 다룹니다."
 tags:
   - graph/child-series
 aliases:

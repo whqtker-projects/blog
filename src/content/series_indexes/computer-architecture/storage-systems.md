@@ -3,7 +3,7 @@ title: "Storage Systems"
 series: storage-systems
 parent: computer-architecture
 order: 6
-description: "How disks and solid-state storage persist data, including access costs and reliability structures such as RAID."
+description: "디스크와 반도체 기반 저장장치가 접근 비용과 RAID 같은 신뢰성 구조를 포함해 데이터를 어떻게 저장하는지 다룹니다."
 tags:
   - graph/child-series
 aliases:

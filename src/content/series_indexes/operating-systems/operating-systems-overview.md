@@ -3,7 +3,7 @@ title: "운영체제 개요"
 series: operating-systems-overview
 parent: operating-systems
 order: 1
-description: "How operating systems are introduced through computer-system structure, kernel responsibilities, and the user-kernel boundary."
+description: "컴퓨터 시스템 구조, 커널의 책임, 사용자와 커널의 경계를 통해 운영체제를 어떻게 이해할지 설명합니다."
 tags:
   - graph/child-series
 aliases:

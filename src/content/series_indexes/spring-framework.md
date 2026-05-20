@@ -1,7 +1,7 @@
 ---
 title: 스프링 프레임워크
 series: spring-framework
-description: Spring Framework
+description: 스프링 프레임워크의 핵심 구조와 동작 원리를 다루는 시리즈
 tags:
   - graph/parent-series
 aliases:

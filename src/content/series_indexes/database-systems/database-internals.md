@@ -3,7 +3,7 @@ title: "Database Internals"
 series: database-internals
 parent: database-systems
 order: 4
-description: "How relational databases store, index, and retrieve data — from on-disk structures to query execution."
+description: "온디스크 구조부터 쿼리 실행까지 관계형 데이터베이스가 데이터를 저장하고 인덱싱하며 조회하는 방식을 다룹니다."
 tags:
   - graph/child-series
 aliases:

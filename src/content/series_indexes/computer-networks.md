@@ -1,7 +1,7 @@
 ---
 title: 컴퓨터 네트워크
 series: computer-networks
-description: Computer Networks
+description: 컴퓨터 네트워크의 구조와 통신 원리를 다루는 시리즈
 tags:
   - graph/parent-series
 aliases:

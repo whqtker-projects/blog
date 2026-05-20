@@ -156,7 +156,7 @@ Create `.claude/skills/fix-issue/SKILL.md`:
 ```markdown
 ---
 name: fix-issue
-description: Work a GitHub issue from read to PR
+description: GitHub 이슈를 읽는 단계부터 PR까지 처리
 disable-model-invocation: true
 ---
 Analyze and resolve GitHub issue: $ARGUMENTS

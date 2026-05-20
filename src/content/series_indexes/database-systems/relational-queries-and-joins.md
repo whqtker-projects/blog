@@ -3,7 +3,7 @@ title: "Relational Queries and Joins"
 series: relational-queries-and-joins
 parent: database-systems
 order: 3
-description: "How relational operations shape result sets, from join types and grouping semantics to query composition patterns."
+description: "조인 종류와 그룹화 의미론부터 쿼리 조합 패턴까지 관계 연산이 결과 집합을 어떻게 만드는지 다룹니다."
 tags:
   - graph/child-series
 aliases:

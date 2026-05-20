@@ -3,7 +3,7 @@ title: "스프링 부트 기초"
 series: spring-boot-basics
 parent: spring-boot
 order: 1
-description: "How Spring Boot packages an application, starts the runtime, manages starters, and provides an embedded-server development model."
+description: "스프링 부트가 애플리케이션을 패키징하고 런타임을 시작하며 스타터를 관리하고 내장 서버 기반 개발 모델을 제공하는 방식을 설명합니다."
 tags:
   - graph/child-series
 aliases:

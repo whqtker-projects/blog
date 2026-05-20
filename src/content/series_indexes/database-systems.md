@@ -1,7 +1,7 @@
 ---
 title: 데이터베이스
 series: database-systems
-description: Database Systems
+description: 데이터베이스 시스템의 개념과 내부 동작을 다루는 시리즈
 tags:
   - graph/parent-series
 aliases:

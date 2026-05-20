@@ -1,7 +1,7 @@
 ---
 title: 스프링 부트
 series: spring-boot
-description: Spring Boot
+description: 스프링 부트의 핵심 개념과 활용 방식을 다루는 시리즈
 tags:
   - graph/parent-series
 aliases:

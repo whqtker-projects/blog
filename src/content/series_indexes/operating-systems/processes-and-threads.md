@@ -3,7 +3,7 @@ title: "프로세스와 스레드"
 series: processes-and-threads
 parent: operating-systems
 order: 2
-description: "How execution units are represented and coordinated, from process state and context switching to multithreading and IPC."
+description: "프로세스 상태와 문맥 교환부터 멀티스레딩과 IPC까지 실행 단위가 어떻게 표현되고 조정되는지 설명합니다."
 tags:
   - graph/child-series
 aliases:

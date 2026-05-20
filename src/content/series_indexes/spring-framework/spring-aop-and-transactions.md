@@ -3,7 +3,7 @@ title: "스프링 AOP와 트랜잭션"
 series: spring-aop-and-transactions
 parent: spring-framework
 order: 2
-description: "How Spring handles cross-cutting concerns through proxies, AOP advice, transaction abstraction, and transactional runtime boundaries."
+description: "스프링이 프록시, AOP 어드바이스, 트랜잭션 추상화, 트랜잭션 실행 경계를 통해 횡단 관심사를 어떻게 처리하는지 설명합니다."
 tags:
   - graph/child-series
 aliases:

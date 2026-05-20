@@ -3,7 +3,7 @@ title: "Transport and Reliability"
 series: transport-and-reliability
 parent: computer-networks
 order: 2
-description: "How endpoints establish transport sessions, recover from loss, and balance delivery guarantees against latency."
+description: "종단점이 전송 세션을 맺고 손실을 복구하며 전달 보장과 지연 시간 사이의 균형을 어떻게 맞추는지 다룹니다."
 tags:
   - graph/child-series
 aliases:

@@ -3,7 +3,7 @@ title: "Control Unit"
 series: control-unit
 parent: computer-architecture
 order: 4
-description: "How the control unit turns instructions into timed control signals through hardwired logic or microprogramming."
+description: "제어 장치가 하드와이어드 로직이나 마이크로프로그램을 통해 명령어를 시간 순서의 제어 신호로 바꾸는 과정을 다룹니다."
 tags:
   - graph/child-series
 aliases:

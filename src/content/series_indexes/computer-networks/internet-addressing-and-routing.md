@@ -3,7 +3,7 @@ title: "Internet Addressing and Routing"
 series: internet-addressing-and-routing
 parent: computer-networks
 order: 3
-description: "How the internet layer identifies hosts, resolves next-hop delivery, and chooses paths across networks."
+description: "인터넷 계층이 호스트를 식별하고 다음 홉 전달을 결정하며 네트워크 경로를 선택하는 방식을 다룹니다."
 tags:
   - graph/child-series
 aliases:

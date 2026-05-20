@@ -3,7 +3,7 @@ title: "스프링 부트 설정"
 series: spring-boot-configuration
 parent: spring-boot
 order: 2
-description: "How Spring Boot uses auto-configuration, property sources, profiles, YAML files, and type-safe binding to shape application behavior."
+description: "스프링 부트가 자동 구성, 프로퍼티 소스, 프로필, YAML 파일, 타입 안전 바인딩을 이용해 애플리케이션 동작을 구성하는 방식을 설명합니다."
 tags:
   - graph/child-series
 aliases:

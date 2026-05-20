@@ -3,7 +3,7 @@ title: "Network Protocols"
 series: network-protocols
 parent: computer-networks
 order: 4
-description: "How applications use protocols such as DNS, HTTP, TLS, and newer HTTP versions to find services and exchange meaning over the network."
+description: "애플리케이션이 DNS, HTTP, TLS, 최신 HTTP 버전 같은 프로토콜을 사용해 서비스를 찾고 네트워크 위에서 의미 있는 데이터를 주고받는 방식을 다룹니다."
 tags:
   - graph/child-series
 aliases:

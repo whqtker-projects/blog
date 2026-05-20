@@ -3,7 +3,7 @@ title: "Computer Arithmetic"
 series: computer-arithmetic
 parent: computer-architecture
 order: 3
-description: "How hardware represents numbers and performs integer and floating-point arithmetic inside the ALU."
+description: "하드웨어가 수를 어떻게 표현하고 ALU 내부에서 정수와 부동소수점 연산을 어떻게 수행하는지 다룹니다."
 tags:
   - graph/child-series
 aliases:

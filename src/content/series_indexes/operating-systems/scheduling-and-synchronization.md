@@ -3,7 +3,7 @@ title: "스케줄링과 동기화"
 series: scheduling-and-synchronization
 parent: operating-systems
 order: 3
-description: "How the operating system shares CPU time and coordinates concurrent execution without races or unresolved resource waits."
+description: "운영체제가 경쟁 상태나 미해결 자원 대기 없이 CPU 시간을 어떻게 나누고 동시 실행을 조정하는지 설명합니다."
 tags:
   - graph/child-series
 aliases:

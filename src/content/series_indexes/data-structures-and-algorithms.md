@@ -1,7 +1,7 @@
 ---
 title: 자료구조와 알고리즘
 series: data-structures-and-algorithms
-description: Data Structures and Algorithms
+description: 자료구조와 알고리즘의 핵심 개념을 다루는 시리즈
 tags:
   - graph/parent-series
 aliases:

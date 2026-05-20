@@ -3,7 +3,7 @@ title: "Bus, I/O, and Interrupts"
 series: bus-io-and-interrupts
 parent: computer-architecture
 order: 7
-description: "How system components communicate over buses and how I/O, interrupts, and DMA move data efficiently."
+description: "시스템 구성 요소가 버스로 어떻게 통신하고, I/O, 인터럽트, DMA가 데이터를 어떻게 효율적으로 이동시키는지 다룹니다."
 tags:
   - graph/child-series
 aliases:

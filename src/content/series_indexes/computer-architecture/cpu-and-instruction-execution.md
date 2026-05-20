@@ -3,7 +3,7 @@ title: "CPU and Instruction Execution"
 series: cpu-and-instruction-execution
 parent: computer-architecture
 order: 2
-description: "How CPUs fetch, decode, and execute instructions, from the basic cycle to pipelines and multi-core design."
+description: "CPU가 기본 실행 사이클부터 파이프라인과 멀티코어 구조까지 명령어를 어떻게 가져오고 해석하고 실행하는지 다룹니다."
 tags:
   - graph/child-series
 aliases:

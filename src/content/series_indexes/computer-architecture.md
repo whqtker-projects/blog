@@ -1,7 +1,7 @@
 ---
 title: 컴퓨터구조론
 series: computer-architecture
-description: Computer Architecture
+description: 컴퓨터 시스템의 구조와 동작 원리를 다루는 시리즈
 tags:
   - graph/parent-series
 aliases:

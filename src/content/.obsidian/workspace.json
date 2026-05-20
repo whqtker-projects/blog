@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "series_indexes/mybatis.md",
+                "file": "posts/proxy-based-aop-in-spring.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "mybatis"
+              "title": "proxy-based-aop-in-spring"
             }
           }
         ]
@@ -182,9 +182,15 @@
   },
   "active": "2d0a66317cb227d7",
   "lastOpenFiles": [
+    "series_indexes/spring-framework/spring-aop-and-transactions.md",
+    "posts/proxy-based-aop-in-spring.md",
+    "posts/what-is-spring-aop.md",
+    "series_indexes/spring-framework.md",
+    "series_indexes/spring-framework/spring-core.md",
+    "series_indexes/spring-boot.md",
+    "series_indexes/mybatis.md",
     "series_indexes/database-systems.md",
     "series_indexes/operating-systems.md",
-    "series_indexes/mybatis.md",
     "series_indexes/operating-systems/operating-systems-overview.md",
     "series_indexes/operating-systems/file-systems-and-storage.md",
     "series_indexes/mybatis/mybatis-dynamic-sql.md",
@@ -203,12 +209,6 @@
     "posts/what-is-mybatis.md",
     "attachments/Pasted image 20260520102211.png",
     "posts/what-is-spring-boot.md",
-    "posts/what-is-spring-aop.md",
-    "posts/what-is-spring-framework.md",
-    "series_indexes/mybatis/mybatis-spring.md",
-    "series_indexes/mybatis/mybatis-internals.md",
-    "series_indexes/spring-framework.md",
-    "posts/mybatis-spring-boot.md",
     "series_indexes/mybatis",
     "examples/spring-lifecycle-hooks-demo.md.tmp.34821.e5aeb21513c5",
     "examples/bean-lifecycle-and-scope",

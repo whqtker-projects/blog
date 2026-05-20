@@ -60,7 +60,7 @@ order: 1
 ```yaml
 parent: database-systems
 order: 1
-description: "How relational databases store, index, and retrieve data."
+description: "관계형 데이터베이스가 데이터를 저장하고 인덱싱하며 조회하는 방식을 한 줄로 요약합니다."
 tags:
   - graph/child-series
 aliases:
@@ -148,7 +148,7 @@ Parent example: `src/content/series_indexes/database-systems.md`
 ---
 title: "Database Systems"
 series: database-systems
-description: "Storage engines, query processing, and the structures that make databases durable and fast."
+description: "스토리지 엔진, 쿼리 처리, 그리고 데이터베이스를 빠르고 안정적으로 만드는 구조를 다룹니다."
 ---
 ```
 
@@ -160,7 +160,7 @@ title: "Database Internals"
 series: database-internals
 parent: database-systems
 order: 1
-description: "How relational databases store, index, and retrieve data — from on-disk structures to query execution."
+description: "온디스크 구조부터 쿼리 실행까지 관계형 데이터베이스가 데이터를 저장하고 인덱싱하며 조회하는 방식을 다룹니다."
 ---
 ```
 

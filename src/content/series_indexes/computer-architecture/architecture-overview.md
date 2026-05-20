@@ -3,7 +3,7 @@ title: "Architecture Overview"
 series: architecture-overview
 parent: computer-architecture
 order: 1
-description: "How computers are organized at a high level, from information representation to the links between CPU, memory, and I/O."
+description: "정보 표현부터 CPU, 메모리, I/O의 연결 구조까지 컴퓨터가 큰 틀에서 어떻게 구성되는지 다룹니다."
 tags:
   - graph/child-series
 aliases:

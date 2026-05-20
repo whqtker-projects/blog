@@ -1,7 +1,7 @@
 ---
 title: 운영체제
 series: operating-systems
-description: Operating Systems
+description: 운영체제의 구조와 자원 관리 원리를 다루는 시리즈
 tags:
   - graph/parent-series
 aliases:

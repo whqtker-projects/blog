@@ -785,3 +785,9 @@ GitHub issue #194의 구현 방향을 코드베이스 매뉴얼 작성으로 정
 `mybatis` 계열 17개 `idea` 상태 게시글의 한 줄 스텁을 실제 `##` 헤딩 기반 구조로 교체했다. 각 파일은 기존 게시글 패턴에 맞춰 정의, 동작 원리, 예시/주의점 중심의 개요 섹션으로 나눴고, 별도의 목차 목록이나 퀴즈 섹션은 두지 않았다.
 
 관련 문서도 함께 정리했다. 초안 구조는 standalone 목차가 아니라 실제 Markdown 헤딩으로 잡는다는 원칙을 `docs/post-template.md`, `docs/first-post-outline-template.md`, `docs/first-content-readiness.md`, `docs/review-checklist.md`에 반영했고, 퀴즈는 repository-wide 필수가 아니라 선택 요소라는 쪽으로 `docs/confirmed-decisions.md`, `docs/decision-log.md`, `docs/rendering-compatibility.md`, `docs/deployment-workflow.md`를 맞췄다.
+
+## 2026-05-20 — Translate description fields to Korean
+
+`src/content/series_indexes/` 아래 parent/child series index frontmatter의 영문 `description` 값을 한글로 통일했다. 함께 관리되는 문서 예시인 `docs/series-index-authoring.md`와 `docs/github-issue-workflow.md`의 `description:` 예시도 같은 기준으로 수정했다.
+
+검증은 `pnpm build`로 수행했고 정상 통과했다.

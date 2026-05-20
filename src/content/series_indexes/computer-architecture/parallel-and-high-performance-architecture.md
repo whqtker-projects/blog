@@ -3,7 +3,7 @@ title: "Parallel and High-Performance Architecture"
 series: parallel-and-high-performance-architecture
 parent: computer-architecture
 order: 8
-description: "How modern systems scale performance through parallel execution, multiprocessors, GPUs, and high-bandwidth memory."
+description: "현대 시스템이 병렬 실행, 다중 프로세서, GPU, 고대역폭 메모리를 통해 성능을 어떻게 확장하는지 다룹니다."
 tags:
   - graph/child-series
 aliases:

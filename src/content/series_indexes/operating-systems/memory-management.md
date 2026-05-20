@@ -3,7 +3,7 @@ title: "메모리 관리"
 series: memory-management
 parent: operating-systems
 order: 4
-description: "How memory is allocated, translated, protected, and virtualized from address binding through paging and replacement."
+description: "주소 바인딩부터 페이징과 교체 정책까지 메모리가 어떻게 할당되고 변환되며 보호되고 가상화되는지 설명합니다."
 tags:
   - graph/child-series
 aliases:

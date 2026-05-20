@@ -3,7 +3,7 @@ title: "파일 시스템과 저장장치"
 series: file-systems-and-storage
 parent: operating-systems
 order: 5
-description: "How operating systems expose persistent data through file-system interfaces, on-disk structures, and storage-device coordination."
+description: "운영체제가 파일 시스템 인터페이스, 온디스크 구조, 저장장치 제어를 통해 영속 데이터를 어떻게 다루는지 설명합니다."
 tags:
   - graph/child-series
 aliases:

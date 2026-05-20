@@ -3,7 +3,7 @@ title: "Database Foundations"
 series: database-foundations
 parent: database-systems
 order: 1
-description: "How databases are defined at a basic level, from core vocabulary and keys to the high-level role of relational and NoSQL systems."
+description: "핵심 용어와 키 개념부터 관계형 데이터베이스와 NoSQL 시스템의 큰 역할까지 데이터베이스의 기초를 다룹니다."
 tags:
   - graph/child-series
 aliases:
