@@ -1,13 +1,13 @@
 ---
 title: "프록시와 트랜잭션의 흔한 함정"
-series: spring-aop-and-transactions
-order: 5
+series: spring-transactions
+order: 3
 status: draft
 tags:
   - graph/post
 ---
 관련 링크:
-- 소속 시리즈: [[series_indexes/spring-framework/spring-aop-and-transactions|스프링 AOP와 트랜잭션]]
+- 소속 시리즈: [[series_indexes/spring-framework/spring-transactions|스프링 트랜잭션]]
 - 이전 글: [[transaction-propagation-and-isolation|트랜잭션 전파와 격리 수준]]
 
 ## @Transactional이 적용되는 조건

@@ -1,20 +1,20 @@
 ---
 title: "스프링 AOP란 무엇인가"
-series: spring-aop-and-transactions
+series: spring-aop
 order: 1
 status: draft
 tags:
   - graph/post
 ---
 관련 링크:
-- 소속 시리즈: [[series_indexes/spring-framework/spring-aop-and-transactions|스프링 AOP와 트랜잭션]]
+- 소속 시리즈: [[series_indexes/spring-framework/spring-aop|스프링 AOP]]
 - 다음 글: [[proxy-based-aop-in-spring|스프링의 프록시 기반 AOP]]
 
 ## AOP가 필요한 이유
 
-애플리케이션 코드는 보통 핵심 기능과 부가 기능이 함께 실행됩니다. 주문을 생성하는 기능을 예로 들면, 핵심 기능은 주문을 검증하고 저장하는 로직입니다. 여기에 실행 시간 측정, 로깅, 권한 검사, 트랜잭션 처리 같은 부가 기능이 함께 들어갈 수 있습니다.
+서비스 메서드에는 비즈니스 로직 앞뒤로 실행되는 코드가 같이 작성될 수 있습니다. 메서드 실행 시간을 측정하는 상황을 예로 들어보겠습니다.
 
-문제는 이런 부가 기능이 여러 서비스 메서드에 반복될 수 있다는 점입니다.
+주문을 생성하는 기능에서는 주문을 검증하고 저장하는 코드가 핵심 로직입니다. 여기에 실행 시간 측정 코드가 붙으면 다음처럼 핵심 로직이 측정 코드의 `try/finally` 블록 안에서 실행됩니다.
 
 ```java
 public void createOrder(OrderRequest request) {

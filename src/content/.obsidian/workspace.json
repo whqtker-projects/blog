@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "posts/filter-interceptor-and-argument-resolver.md",
+                "file": "posts/what-is-spring-aop.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "filter-interceptor-and-argument-resolver"
+              "title": "what-is-spring-aop"
             }
           }
         ]
@@ -78,7 +78,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 357.5
+    "width": 357.5,
+    "collapsed": true
   },
   "right": {
     "id": "1aa836f50c145f4d",
@@ -182,7 +183,11 @@
   },
   "active": "2d0a66317cb227d7",
   "lastOpenFiles": [
+    "series_indexes/spring-framework/spring-aop.md",
+    "series_indexes/spring-framework/spring-core.md",
     "series_indexes/spring-framework/spring-web-mvc.md",
+    "series_indexes/spring-framework/spring-aop-and-transactions.md",
+    "series_indexes/spring-framework/spring-transactions.md",
     "posts/filter-interceptor-and-argument-resolver.md",
     "posts/exception-handling-in-spring-mvc.md",
     "posts/validation-and-binding-in-spring-mvc.md",
@@ -207,14 +212,10 @@
     "series_indexes/spring-boot/spring-boot-basics.md",
     "series_indexes/spring-boot/spring-boot-configuration.md",
     "series_indexes/spring-boot/spring-boot-testing-and-operations.md",
-    "series_indexes/spring-framework/spring-aop-and-transactions.md",
-    "series_indexes/spring-framework/spring-core.md",
     "series_indexes/spring-boot.md",
     "series_indexes/spring-framework.md",
     "posts/proxy-and-transaction-pitfalls.md",
     "posts/transaction-propagation-and-isolation.md",
-    "posts/transaction-abstraction-in-spring.md",
-    "posts/proxy-based-aop-in-spring.md",
     "attachments/Pasted image 20260520182511.png",
     "attachments/Pasted image 20260520182259.png",
     "attachments/Pasted image 20260520102211.png",

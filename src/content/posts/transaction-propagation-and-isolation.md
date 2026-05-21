@@ -1,13 +1,13 @@
 ---
 title: "트랜잭션 전파와 격리 수준"
-series: spring-aop-and-transactions
-order: 4
+series: spring-transactions
+order: 2
 status: draft
 tags:
   - graph/post
 ---
 관련 링크:
-- 소속 시리즈: [[series_indexes/spring-framework/spring-aop-and-transactions|스프링 AOP와 트랜잭션]]
+- 소속 시리즈: [[series_indexes/spring-framework/spring-transactions|스프링 트랜잭션]]
 - 이전 글: [[transaction-abstraction-in-spring|스프링의 트랜잭션 추상화]]
 - 다음 글: [[proxy-and-transaction-pitfalls|프록시와 트랜잭션의 흔한 함정]]
 

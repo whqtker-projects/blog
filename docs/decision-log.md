@@ -1148,6 +1148,30 @@ The parent-child hierarchy worked well for large concept directions such as netw
 
 ---
 
+## DL-025 — Split Spring AOP and transaction child series
+
+**Date:** 2026-05-21
+**Status:** confirmed
+
+### Context
+
+`spring-aop-and-transactions` originally grouped proxy-based AOP and transaction behavior because declarative transactions are applied through Spring AOP proxies. As the backlog became more concrete, the combined child series mixed two learning goals: understanding AOP as a cross-cutting mechanism, and understanding transaction semantics such as abstraction, propagation, isolation, and rollback behavior.
+
+### Decision
+
+- D-81 is updated so `spring-framework` uses `spring-core`, `spring-aop`, `spring-transactions`, and `spring-web-mvc`.
+- `what-is-spring-aop` and `proxy-based-aop-in-spring` move to `spring-aop`.
+- `transaction-abstraction-in-spring`, `transaction-propagation-and-isolation`, and `proxy-and-transaction-pitfalls` move to `spring-transactions`.
+- `spring-web-mvc` moves from child order 3 to order 4.
+
+### References
+
+- `confirmed-decisions.md`: D-81
+- `docs/series/spring-framework.md`
+- `src/content/series_indexes/spring-framework/`
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions

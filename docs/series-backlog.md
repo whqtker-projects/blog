@@ -46,7 +46,8 @@ The repository now uses the parent-child structure in committed content. The rea
 | `operating-systems` | 운영체제 | `memory-management` | 메모리 관리 |
 | `operating-systems` | 운영체제 | `file-systems-and-storage` | 파일 시스템과 저장장치 |
 | `spring-framework` | 스프링 프레임워크 | `spring-core` | 스프링 코어 |
-| `spring-framework` | 스프링 프레임워크 | `spring-aop-and-transactions` | 스프링 AOP와 트랜잭션 |
+| `spring-framework` | 스프링 프레임워크 | `spring-aop` | 스프링 AOP |
+| `spring-framework` | 스프링 프레임워크 | `spring-transactions` | 스프링 트랜잭션 |
 | `spring-framework` | 스프링 프레임워크 | `spring-web-mvc` | 스프링 웹 MVC |
 | `spring-boot` | 스프링 부트 | `spring-boot-basics` | 스프링 부트 기초 |
 | `spring-boot` | 스프링 부트 | `spring-boot-configuration` | 스프링 부트 설정 |
@@ -88,7 +89,8 @@ Series operating documents:
 | `internet-addressing-and-routing` | Internet Addressing and Routing | Computer Networks backlog | IP addressing, subnetting, ARP, ICMP, NAT, fragmentation, and routing protocols |
 | `network-protocols` | Network Protocols | **In progress** | DNS, HTTP, TLS, HTTP/2, HTTP/3, and application/web protocol behavior |
 | `spring-core` | 스프링 코어 | Spring Framework backlog | Spring overview, IoC/DI, bean container, bean lifecycle/scope, and configuration/component scanning |
-| `spring-aop-and-transactions` | 스프링 AOP와 트랜잭션 | Spring Framework backlog | AOP basics, proxies, transaction abstraction, propagation/isolation, and common proxy pitfalls |
+| `spring-aop` | 스프링 AOP | Spring Framework backlog | AOP basics, proxy-based AOP, advice, pointcuts, and cross-cutting behavior |
+| `spring-transactions` | 스프링 트랜잭션 | Spring Framework backlog | Transaction abstraction, propagation/isolation, proxy-based application conditions, and common transaction pitfalls |
 | `spring-web-mvc` | 스프링 웹 MVC | Spring Framework backlog | DispatcherServlet, controller model, binding, validation, exception handling, filters/interceptors, and argument resolvers |
 | `spring-boot-basics` | 스프링 부트 기초 | Spring Boot backlog | Boot overview, Boot vs Spring, startup flow, starters, and embedded server behavior |
 | `spring-boot-configuration` | 스프링 부트 설정 | Spring Boot backlog | Auto-configuration, externalized configuration, profiles, `application.yml`, and `@ConfigurationProperties` |

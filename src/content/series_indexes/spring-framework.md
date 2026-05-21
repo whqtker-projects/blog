@@ -9,5 +9,6 @@ aliases:
 ---
 관련 시리즈:
 1. [[series_indexes/spring-framework/spring-core|스프링 코어]]
-2. [[series_indexes/spring-framework/spring-aop-and-transactions|스프링 AOP와 트랜잭션]]
-3. [[series_indexes/spring-framework/spring-web-mvc|스프링 웹 MVC]]
+2. [[series_indexes/spring-framework/spring-aop|스프링 AOP]]
+3. [[series_indexes/spring-framework/spring-transactions|스프링 트랜잭션]]
+4. [[series_indexes/spring-framework/spring-web-mvc|스프링 웹 MVC]]

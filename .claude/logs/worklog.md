@@ -294,3 +294,14 @@ Verification:
 - `pnpm test:repo`
 - `pnpm check:content`
 - `pnpm build`
+
+## 2026-05-21 — Split Spring AOP and transaction series
+
+Split the `spring-aop-and-transactions` child series under `spring-framework` into `spring-aop` and `spring-transactions`.
+
+Moved the AOP concept/proxy posts into `spring-aop`, moved the transaction abstraction/propagation/pitfall posts into `spring-transactions`, and shifted `spring-web-mvc` to child order 4. Updated the parent index, operating docs, backlog, post metadata, and decision records to match.
+
+Verification:
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`
