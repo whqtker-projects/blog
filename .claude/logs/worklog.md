@@ -272,3 +272,25 @@ Added the parent operating document at `docs/series/operating-systems.md`, updat
 Verification:
 - `pnpm check:content`
 - `pnpm build`
+
+## 2026-05-21 — Allow terminal parent series without child series
+
+Expanded the content model so a parent series with no child series may directly own posts. A parent that has child series still cannot own posts directly; validation keeps that shape exclusive.
+
+Updated parent series rendering, post/example breadcrumbs, validation tests, graph metadata sync behavior, and the content-model decision docs.
+
+Verification:
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`
+
+## 2026-05-21 — Import legacy Troubleshooting/TIL posts
+
+Imported the seven active legacy posts from `/Users/whqtker/Documents/workspace/blog/whqtker.github.io/_posts/Troubleshooting__TIL/` into the current Astro content model.
+
+Created the `troubleshooting` parent series and attached all imported posts directly to it with `status: draft`. Converted Jekyll frontmatter to the current schema and copied six referenced images into `src/content/attachments/`, using relative `../attachments/...` Markdown image paths. No `public/images` path was used.
+
+Verification:
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`

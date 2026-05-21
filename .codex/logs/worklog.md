@@ -797,3 +797,27 @@ GitHub issue #194의 구현 방향을 코드베이스 매뉴얼 작성으로 정
 게시글과 예제 페이지 공통으로 사용할 플로팅 `맨 위로` 버튼 컴포넌트를 추가하고, `PostLayout`과 `ExampleLayout`에 연결했다. 버튼은 첫 화면 높이 이상 스크롤했을 때만 우하단에 나타나며, 기본은 부드럽게 상단으로 이동하고 `prefers-reduced-motion` 환경에서는 즉시 이동하도록 처리했다.
 
 검증은 `pnpm build`로 수행했다.
+
+## 2026-05-21 — Allow terminal parent series without child series
+
+소 시리즈가 없는 대 시리즈는 직접 글을 소유할 수 있도록 콘텐츠 모델을 확장했다. 대 시리즈에 소 시리즈가 하나라도 있으면 기존처럼 글은 소 시리즈에만 붙도록 검증한다.
+
+부모 시리즈 페이지는 소 시리즈가 있으면 기존처럼 소 시리즈 목록을 렌더링하고, 소 시리즈가 없으면 해당 parent series에 직접 붙은 글 목록을 렌더링한다. 게시글/예제 breadcrumb도 child segment가 없는 terminal parent series를 처리하도록 수정했다.
+
+관련 문서와 결정 기록도 함께 갱신했다.
+
+검증:
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`
+
+## 2026-05-21 — Import legacy Troubleshooting/TIL posts
+
+`/Users/whqtker/Documents/workspace/blog/whqtker.github.io/_posts/Troubleshooting__TIL/`의 활성 원본 글 7개를 현재 저장소로 이관했다. 새 `troubleshooting` parent series를 만들고, 모든 글은 `series: troubleshooting`, `status: draft`로 추가했다.
+
+Jekyll frontmatter의 `date`, `categories`는 제거하고 현재 Astro 스키마에 맞춰 `title`, `series`, `order`, `status`, `tags`만 남겼다. 원문 이미지 6개는 `public/images`를 사용하지 않고 `src/content/attachments/`로 복사한 뒤, 본문 이미지는 `../attachments/...` 상대 경로로 연결했다.
+
+검증:
+- `pnpm test:repo`
+- `pnpm check:content`
+- `pnpm build`

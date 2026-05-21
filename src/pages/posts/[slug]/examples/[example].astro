@@ -2,7 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import ExampleLayout from '../../../../layouts/ExampleLayout.astro';
 import { visibleExamplesForCurrentBuild, visiblePostsForCurrentBuild } from '../../../../utils/post-visibility.js';
-import { buildSeriesHierarchy, requireParentIndex } from '../../../../utils/series-hierarchy';
+import { buildSeriesContext, buildSeriesHierarchy } from '../../../../utils/series-hierarchy';
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('posts');
@@ -17,14 +17,12 @@ export async function getStaticPaths() {
     const attachedPost = visiblePostsBySlug.get(example.data.post);
     if (!attachedPost) return [];
 
-    const childIndex = seriesBySlug.get(attachedPost.data.series);
-    if (!childIndex) {
+    const seriesIndex = seriesBySlug.get(attachedPost.data.series);
+    if (!seriesIndex) {
       throw new Error(
-        `Example '${example.id}' references post '${attachedPost.id}', but that post references missing child series '${attachedPost.data.series}'.`
+        `Example '${example.id}' references post '${attachedPost.id}', but that post references missing series '${attachedPost.data.series}'.`
       );
     }
-
-    const parentIndex = requireParentIndex(childIndex, seriesBySlug);
 
     return {
       params: {
@@ -34,12 +32,7 @@ export async function getStaticPaths() {
       props: {
         example,
         post: attachedPost,
-        seriesContext: {
-          parentSlug: parentIndex.data.series,
-          parentTitle: parentIndex.data.title,
-          childSlug: childIndex.data.series,
-          childTitle: childIndex.data.title,
-        },
+        seriesContext: buildSeriesContext(seriesIndex, seriesBySlug),
       },
     };
   });

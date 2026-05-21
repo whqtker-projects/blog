@@ -132,7 +132,7 @@ Series operating documents:
 ## Structure Rules
 
 - **One post, one series:** Cross-series membership is not allowed (D-20).
-- **Posts attach to child series only:** Parent series are grouping and navigation units, not post owners.
+- **Posts attach to terminal series only:** Parent series are grouping and navigation units when they have child series. A parent with no child series may directly own posts.
 - **Multiple series per domain:** Domains are not collapsed into single series (D-19).
 - **Two levels only:** Parent series → child series → posts. No third hierarchy layer is allowed.
 - **Slug format:** all-lowercase kebab-case, English only (D-15, D-16).

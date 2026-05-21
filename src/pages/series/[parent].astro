@@ -2,6 +2,8 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SeriesList from '../../components/SeriesList.astro';
+import { visiblePostsForCurrentBuild } from '../../utils/post-visibility.js';
+import { postsForSeries } from '../../utils/post-ordering.ts';
 import {
   buildSeriesHierarchy,
   childSeriesPath,
@@ -9,18 +11,25 @@ import {
 
 export async function getStaticPaths() {
   const allIndexes = await getCollection('series_indexes');
+  const allPosts = await getCollection('posts');
+  const visiblePosts = visiblePostsForCurrentBuild(allPosts);
   const { parentIndexes, childrenByParent } = buildSeriesHierarchy(allIndexes);
 
-  return parentIndexes.map((parentIndex) => ({
-    params: { parent: parentIndex.data.series },
-    props: {
-      parentIndex,
-      childIndexes: childrenByParent.get(parentIndex.data.series) ?? [],
-    },
-  }));
+  return parentIndexes.map((parentIndex) => {
+    const childIndexes = childrenByParent.get(parentIndex.data.series) ?? [];
+
+    return {
+      params: { parent: parentIndex.data.series },
+      props: {
+        parentIndex,
+        childIndexes,
+        posts: childIndexes.length === 0 ? postsForSeries(visiblePosts, parentIndex.data.series) : [],
+      },
+    };
+  });
 }
 
-const { parentIndex, childIndexes } = Astro.props;
+const { parentIndex, childIndexes, posts } = Astro.props;
 const items = childIndexes.map((childIndex) => ({
   title: childIndex.data.title,
   href: childSeriesPath(parentIndex.data.series, childIndex.data.series),
@@ -33,7 +42,17 @@ const items = childIndexes.map((childIndex) => ({
     {parentIndex.data.description && (
       <p class="description">{parentIndex.data.description}</p>
     )}
-    <SeriesList items={items} />
+    {items.length > 0 ? (
+      <SeriesList items={items} />
+    ) : (
+      <ol>
+        {posts.map((post) => (
+          <li>
+            <a href={`/posts/${post.id}`}>{post.data.title}</a>
+          </li>
+        ))}
+      </ol>
+    )}
   </main>
 </BaseLayout>
 
@@ -51,5 +70,24 @@ const items = childIndexes.map((childIndex) => ({
   :global(.series-list .description) {
     font-size: 0.875rem;
     margin: 0.25rem 0 0;
+  }
+
+  ol {
+    padding-left: 1.75rem;
+    margin: 0;
+  }
+
+  li {
+    padding: 0.4rem 0;
+    margin: 0;
+  }
+
+  li a {
+    text-decoration: none;
+  }
+
+  li a:hover {
+    text-decoration: underline;
+    opacity: 1;
   }
 </style>

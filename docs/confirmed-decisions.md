@@ -8,7 +8,7 @@ This document is the stable reference for decisions that have been explicitly ag
 - When a new decision is confirmed, add it here and remove it from `open-questions.md`.
 - For the full decision record with context and rationale, see `decision-log.md`.
 
-**Last updated:** 2026-05-16 (D-43 updated: standalone concept pages removed)
+**Last updated:** 2026-05-21 (D-61 through D-64 updated: parent series may directly own posts when it has no child series)
 
 ---
 
@@ -201,10 +201,10 @@ This document is the stable reference for decisions that have been explicitly ag
 | D-58 | URL structure: parent series → `/series/<parent-slug>`, child series → `/series/<parent-slug>/<child-slug>`. Two levels only — no third level is permitted. |
 | D-59 | The homepage lists parent series only. Child series and their posts are accessible through the parent series page, not directly from the homepage. |
 | D-60 | Existing flat series slugs are preserved as child series slugs during migration. The `network-protocols` slug is retained unchanged when placed under a parent. The old flat URL `/series/network-protocols` will no longer be generated after migration; no redirect is added. |
-| D-61 | A parent series is a navigation and information-architecture container for child series. It may have title/description metadata and its own landing page, but it does not own posts directly. |
-| D-62 | A child series belongs to exactly one parent series and is the terminal ordered content container. Posts attach directly to child series only. |
-| D-63 | The parent series page is responsible for introducing the parent direction and listing its child series. It does not render a mixed flat list of all descendant posts. |
-| D-64 | The child series page is responsible for listing visible posts in that child series and providing the series context used by post navigation and breadcrumbs. |
+| D-61 | A parent series may operate in one of two modes: a navigation container for child series, or a terminal ordered content container when it has no child series. A parent with child series does not own posts directly. |
+| D-62 | A child series belongs to exactly one parent series and is always a terminal ordered content container. Posts may attach directly to a child series, or to a parent series that has no child series. |
+| D-63 | The parent series page introduces the parent direction and either lists its child series or, when no child series exist, lists posts attached directly to that parent. It does not render a mixed flat list of descendant posts when child series exist. |
+| D-64 | A terminal series page, whether parent or child, lists visible posts for that series and provides the series context used by post navigation and breadcrumbs. |
 | D-65 | The `computer-networks` parent direction is currently split into three child series: `network-protocols`, `transport-and-reliability`, and `naming-and-routing`. |
 | D-66 | During the first backlog rebuild under `computer-networks`, the existing `network-protocols` child slug is retained and narrowed to the HTTP/TLS/HTTP2+/application-protocol portion of the backlog. Transport-focused and naming/routing-focused backlog items move into sibling child series. |
 | D-67 | The original 12-series flat inventory in D-21 remains the historical baseline, but the active child-series inventory may expand when a parent direction is rebuilt into multiple child series. |
@@ -246,7 +246,7 @@ This document is the stable reference for decisions that have been explicitly ag
 |---|---|
 | D-83 | The explicit syntax for series links is `[[series:<slug>]]` for parent series and `[[series:<parent>/<child>]]` for child series. This is a single namespaced form; there are no separate `[[parent:...]]` or `[[child:...]]` prefixes. |
 | D-84 | Generic `[[wikilinks]]` resolve to posts only. Linking to a series requires `[[series:...]]` syntax. Using a plain wikilink to reference a series index is not permitted. |
-| D-85 | Minimum internal-link expectations are soft guidelines, not validation rules. Recommended: posts may include links to their child series and adjacent posts; child series indexes link to their parent; parent series indexes link to their child series. Posts avoid direct parent-series links so the graph keeps the parent → child → post shape. Missing links are not a build or validation error. |
+| D-85 | Minimum internal-link expectations are soft guidelines, not validation rules. Recommended: posts may include links to their terminal series and adjacent posts; child series indexes link to their parent; parent series indexes link to child series when they exist, or to ordered posts when the parent is terminal. Missing links are not a build or validation error. |
 | D-86 | Series index bodies may include both `[[series:...]]` links and ordered post `[[wikilinks]]` for Obsidian graph visibility. These links are an authoring aid only; the site still treats frontmatter and generated listings as the rendering source of truth. |
 | D-87 | Series index `aliases` and graph `tags` are generated compatibility metadata derived from `series` and `parent`. Authors run `pnpm sync:series-graph`; `pnpm check:content` rejects stale aliases or graph tags. |
 | D-88 | Obsidian graph wiring uses actual series index file links such as `[[series_indexes/<parent>]]` and `[[series_indexes/<parent>/<child>]]`. The `series:*` syntax remains converter-supported, but graph-visible content uses real file links so nodes resolve and color groups apply correctly. |

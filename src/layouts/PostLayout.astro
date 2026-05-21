@@ -9,8 +9,8 @@ interface NavLink {
 interface SeriesContext {
   parentSlug: string;
   parentTitle: string;
-  childSlug: string;
-  childTitle: string;
+  childSlug?: string | null;
+  childTitle?: string | null;
 }
 
 interface Props {
@@ -27,10 +27,14 @@ const { title, description, seriesContext, prev, next } = Astro.props;
     <header>
       <p class="breadcrumb">
         <a href={`/series/${seriesContext.parentSlug}`}>{seriesContext.parentTitle}</a>
-        {' / '}
-        <a href={`/series/${seriesContext.parentSlug}/${seriesContext.childSlug}`}>
-          {seriesContext.childTitle}
-        </a>
+        {seriesContext.childSlug && seriesContext.childTitle && (
+          <>
+            {' / '}
+            <a href={`/series/${seriesContext.parentSlug}/${seriesContext.childSlug}`}>
+              {seriesContext.childTitle}
+            </a>
+          </>
+        )}
       </p>
       <h1>{title}</h1>
     </header>

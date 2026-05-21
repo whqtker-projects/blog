@@ -5,10 +5,10 @@
  * Checks:
  *   1. No two series_indexes documents share the same series value
  *   2. Parent-child hierarchy is structurally valid
- *   3. Every series value in posts/ has a matching child series index
+ *   3. Every series value in posts/ has a matching terminal series index
  *   4. Series index file paths match the parent-child layout contract
  *   5. Child-series ordering metadata is valid and parent series stay unordered
- *   6. No two explicitly published posts in the same child series share the same order value
+ *   6. No two explicitly published posts in the same terminal series share the same order value
  *   7. Fail when a post omits status, because committed posts must set status explicitly
  *   8. Fail when a post uses a status outside the simplified vocabulary
  *   9. Numeric post title prefixes, when present, must match post order
@@ -105,8 +105,12 @@ export function validateContent({ posts, examples = [], indexes }) {
     }
   });
 
-  runCheck('Check 3: every post series has a matching child series index', (fail) => {
+  runCheck('Check 3: every post series has a matching terminal series index', (fail) => {
+    const childParentSlugs = new Set(
+      indexes.filter((idx) => idx.parent).map((idx) => idx.parent)
+    );
     const postSeriesValues = new Set(posts.map((post) => post.series).filter(Boolean));
+
     for (const series of postSeriesValues) {
       const index = indexesBySeries.get(series);
       if (!index) {
@@ -116,9 +120,9 @@ export function validateContent({ posts, examples = [], indexes }) {
         continue;
       }
 
-      if (!index.parent) {
+      if (!index.parent && childParentSlugs.has(index.series)) {
         fail(
-          `series '${series}' is a parent series; posts must attach to a child series instead`
+          `series '${series}' is a parent series with child series; posts must attach to a child series instead`
         );
       }
     }
@@ -196,7 +200,7 @@ export function validateContent({ posts, examples = [], indexes }) {
   });
 
   runCheck(
-    'Check 6: no duplicate order values within a child series (explicitly published posts)',
+    'Check 6: no duplicate order values within a terminal series (explicitly published posts)',
     (fail) => {
       const publishedPosts = posts.filter((post) => post.status === 'published');
       const orderKeys = new Map();

@@ -5,8 +5,8 @@ import BackToTopButton from '../components/BackToTopButton.astro';
 interface SeriesContext {
   parentSlug: string;
   parentTitle: string;
-  childSlug: string;
-  childTitle: string;
+  childSlug?: string | null;
+  childTitle?: string | null;
 }
 
 interface PostLink {
@@ -28,10 +28,14 @@ const { title, description, seriesContext, post } = Astro.props;
     <header>
       <p class="breadcrumb">
         <a href={`/series/${seriesContext.parentSlug}`}>{seriesContext.parentTitle}</a>
-        {' / '}
-        <a href={`/series/${seriesContext.parentSlug}/${seriesContext.childSlug}`}>
-          {seriesContext.childTitle}
-        </a>
+        {seriesContext.childSlug && seriesContext.childTitle && (
+          <>
+            {' / '}
+            <a href={`/series/${seriesContext.parentSlug}/${seriesContext.childSlug}`}>
+              {seriesContext.childTitle}
+            </a>
+          </>
+        )}
         {' / '}
         <a href={`/posts/${post.slug}`}>{post.title}</a>
       </p>

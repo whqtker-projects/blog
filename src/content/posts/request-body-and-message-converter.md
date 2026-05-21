@@ -24,7 +24,3 @@ tags:
 ### MappingJackson2HttpMessageConverter
 
 ### StringHttpMessageConverter
-
-## 예시
-
-## Quiz

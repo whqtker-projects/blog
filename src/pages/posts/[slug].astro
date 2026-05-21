@@ -9,8 +9,8 @@ import {
 } from '../../utils/post-visibility.js';
 import { postsForSeries, prevNextPosts } from '../../utils/post-ordering.ts';
 import {
+  buildSeriesContext,
   buildSeriesHierarchy,
-  requireParentIndex,
 } from '../../utils/series-hierarchy';
 
 export async function getStaticPaths() {
@@ -22,26 +22,20 @@ export async function getStaticPaths() {
   const { seriesBySlug } = buildSeriesHierarchy(allIndexes);
 
   return visiblePosts.map((post) => {
-    const childIndex = seriesBySlug.get(post.data.series);
-    if (!childIndex) {
+    const seriesIndex = seriesBySlug.get(post.data.series);
+    if (!seriesIndex) {
       throw new Error(
-        `Post '${post.id}' references missing child series '${post.data.series}'.`
+        `Post '${post.id}' references missing series '${post.data.series}'.`
       );
     }
 
-    const parentIndex = requireParentIndex(childIndex, seriesBySlug);
     const seriesPosts = postsForSeries(visiblePosts, post.data.series);
     const { prev: prevPost, next: nextPost } = prevNextPosts(seriesPosts, post.id);
     return {
       params: { slug: post.id },
       props: {
         post,
-        seriesContext: {
-          parentSlug: parentIndex.data.series,
-          parentTitle: parentIndex.data.title,
-          childSlug: childIndex.data.series,
-          childTitle: childIndex.data.title,
-        },
+        seriesContext: buildSeriesContext(seriesIndex, seriesBySlug),
         examples: visibleExamples
           .filter((example) => example.data.post === post.id)
           .sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title)),

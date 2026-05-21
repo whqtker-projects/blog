@@ -85,6 +85,48 @@ test('validateContent accepts a valid parent/child content set', () => {
   assert.deepEqual(errors, []);
 });
 
+test('validateContent accepts posts attached directly to a parent series without child series', () => {
+  const indexes = [
+    index('troubleshooting.md', {
+      series: 'troubleshooting',
+      title: 'Troubleshooting',
+      aliases: ['series:troubleshooting'],
+      tags: ['graph/parent-series'],
+    }),
+  ];
+  const posts = [
+    post('flyway-validation-at-build-time.md', {
+      title: 'Flyway 검증을 빌드 시점에 수행하기',
+      series: 'troubleshooting',
+      order: 1,
+      status: 'draft',
+    }),
+  ];
+
+  const { errors } = validateContent({ posts, examples: [], indexes });
+
+  assert.deepEqual(errors, []);
+});
+
+test('validateContent rejects posts attached directly to a parent series that has child series', () => {
+  const posts = [
+    post('what-is-a-database-system.md', {
+      title: 'What Is a Database System?',
+      series: 'database-systems',
+      order: 1,
+      status: 'draft',
+    }),
+  ];
+
+  const { errors } = validateContent({ posts, examples: [], indexes: validIndexes() });
+
+  assert.ok(
+    errors.some((message) =>
+      /series 'database-systems' is a parent series with child series/.test(message)
+    )
+  );
+});
+
 test('validateContent rejects order on a parent series', () => {
   const indexes = validIndexes();
   indexes[0].order = 1;

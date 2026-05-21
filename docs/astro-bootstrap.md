@@ -1,12 +1,12 @@
 # Astro Bootstrap Documentation
 
 **Status:** Active — Astro skeleton initialized 2026-05-07.  
-**Last updated:** 2026-05-16
+**Last updated:** 2026-05-21
 
 Quick reference for working with the Astro project in this repository.
 
 Hierarchy note:
-- The repository now uses a two-level parent-child series model.
+- The repository uses a two-level parent-child series model, with a terminal-parent exception for parents that have no child series.
 - See [`docs/content-model.md`](content-model.md) for the authoritative parent/child contract behind the current routes.
 
 ---
@@ -140,7 +140,7 @@ new_blog/
 │       │       └── examples/
 │       │           └── [example].astro # Example route — /posts/<slug>/examples/<example>
 │       └── series/
-│           ├── [parent].astro   # Parent series route — /series/<parent>
+│           ├── [parent].astro   # Parent series route — /series/<parent>; lists child series or direct posts
 │           └── [parent]/
 │               └── [child].astro # Child series route — /series/<parent>/<child>
 ├── test/
@@ -162,8 +162,8 @@ Posts are loaded from `src/content/posts/` via a glob loader. Each `.md` file mu
 **Required fields (D-25):**
 ```yaml
 title: string
-series: string   # must match a confirmed slug from docs/series-backlog.md
-order: number    # position within the series, starting at 1
+series: string   # must match a terminal series slug
+order: number    # position within the terminal series, starting at 1
 ```
 
 **Required status field (D-32):**
@@ -175,6 +175,7 @@ status: idea | draft | published
 
 Visibility behavior is currently fixed rather than environment-configurable:
 - `src/utils/post-visibility.js` treats `import.meta.env.DEV` as the switch.
+- `src/pages/series/[parent].astro` uses that rule when building post lists for terminal parent series.
 - `src/pages/series/[parent]/[child].astro` uses that rule when building child-series post lists.
 - `src/pages/posts/[slug].astro` uses the same rule when deciding which post routes and prev/next links exist in the current build.
 - There is no `CONTENT_VISIBILITY` env var today; changing visibility policy would be a separate implementation decision.

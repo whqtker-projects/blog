@@ -59,6 +59,29 @@ test('buildSeriesIndexBody renders parent series links only for parent indexes',
   );
 });
 
+test('buildSeriesIndexBody includes ordered post inventory for parent indexes without children', () => {
+  const body = buildSeriesIndexBody(
+    seriesIndex({ series: 'troubleshooting', title: '트러블슈팅' }),
+    [],
+    null,
+    [
+      {
+        slug: 'flyway-validation-at-build-time',
+        data: { title: 'Flyway 검증을 빌드 시점에 수행하기' },
+      },
+    ]
+  );
+
+  assert.equal(
+    body,
+    [
+      '게시글 순서:',
+      '1. [[flyway-validation-at-build-time|Flyway 검증을 빌드 시점에 수행하기]]',
+      '',
+    ].join('\n')
+  );
+});
+
 test('buildSeriesIndexBody includes ordered post inventory for child indexes', () => {
   const body = buildSeriesIndexBody(
     seriesIndex({

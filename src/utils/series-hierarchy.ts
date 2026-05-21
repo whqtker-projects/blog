@@ -19,6 +19,15 @@ export function childSeriesPath(parentSlug: string, childSlug: string): string {
   return `${parentSeriesPath(parentSlug)}/${childSlug}`;
 }
 
+export function seriesIndexPath(index: SeriesIndex, seriesBySlug: Map<string, SeriesIndex>): string {
+  if (!index.data.parent) {
+    return parentSeriesPath(index.data.series);
+  }
+
+  const parentIndex = requireParentIndex(index, seriesBySlug);
+  return childSeriesPath(parentIndex.data.series, index.data.series);
+}
+
 export function buildSeriesHierarchy(indexes: SeriesIndex[]) {
   const seriesBySlug = new Map(indexes.map((idx) => [idx.data.series, idx]));
   const parentIndexes = indexes.filter((idx) => !idx.data.parent).sort(byTitleAsc);
@@ -39,6 +48,25 @@ export function buildSeriesHierarchy(indexes: SeriesIndex[]) {
   }
 
   return { seriesBySlug, parentIndexes, childIndexes, childrenByParent };
+}
+
+export function buildSeriesContext(index: SeriesIndex, seriesBySlug: Map<string, SeriesIndex>) {
+  if (!index.data.parent) {
+    return {
+      parentSlug: index.data.series,
+      parentTitle: index.data.title,
+      childSlug: null,
+      childTitle: null,
+    };
+  }
+
+  const parentIndex = requireParentIndex(index, seriesBySlug);
+  return {
+    parentSlug: parentIndex.data.series,
+    parentTitle: parentIndex.data.title,
+    childSlug: index.data.series,
+    childTitle: index.data.title,
+  };
 }
 
 export function requireParentIndex(childIndex: SeriesIndex, seriesBySlug: Map<string, SeriesIndex>) {

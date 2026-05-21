@@ -14,7 +14,7 @@ Structural policy comes from `D-57` through `D-60`; page-role and attachment rul
 |---|---|---|---|
 | URL | `/posts/<slug>` | `/posts/<slug>/examples/<example>` | Parent: `/series/<parent>`; Child: `/series/<parent>/<child>` |
 | Location | `src/content/posts/` | `src/content/examples/` | `src/content/series_indexes/` |
-| Belongs to series | Yes (required; child series only) | No | Defines either a parent series or a child series |
+| Belongs to series | Yes (required; terminal series only) | No | Defines either a parent series or a child series |
 | Attaches to post | No | Yes (required; exactly one post) | No |
 | Has `order` | Yes (required) | Yes (required) | Child only |
 | Has `status` | Yes (required) | Yes (required) | No |
@@ -26,13 +26,14 @@ Structural policy comes from `D-57` through `D-60`; page-role and attachment rul
 
 ## Hierarchy Contract
 
-The hierarchy is exactly:
+The hierarchy supports two valid shapes:
 
-1. Parent series
-2. Child series
-3. Posts attached to child series
+1. Parent series → child series → posts
+2. Parent series → posts
 
-This repository does not allow a third level such as parent → middle → child. Parent series do not directly own posts. Child series are the only direct attachment point for posts.
+A parent series may directly own posts only when it has no child series. Once a parent has one or more child series, posts must attach to those child series instead. This keeps each parent page in one mode: either a navigation layer over child series, or a terminal ordered content container.
+
+This repository does not allow a third level such as parent → middle → child.
 
 `examples` are auxiliary pages attached to posts. They do not create a new series hierarchy level and do not change the parent → child → post structure.
 
@@ -40,7 +41,7 @@ This repository does not allow a third level such as parent → middle → child
 
 ## `posts`
 
-Posts are in-depth explanations of a topic within a child series. Each post belongs to exactly one child series and holds an `order` position within that child series.
+Posts are in-depth explanations of a topic within a terminal series. Each post belongs to exactly one series and holds an `order` position within that series.
 
 **Create a post when** you want to explain a concept in depth with examples and progression, as part of a named series.
 
@@ -49,15 +50,16 @@ Posts are in-depth explanations of a topic within a child series. Each post belo
 **Required frontmatter:**
 ```yaml
 title: string
-series: string   # must match a child series_indexes document's series field
-order: number    # position within the child series, starting at 1
+series: string   # must match a terminal series_indexes document's series field
+order: number    # position within the terminal series, starting at 1
 status: string   # one of idea, draft, published
 ```
 
 Post attachment rules:
-- A post's `series` value must resolve to a child series, not a parent series.
-- A post does not attach to multiple child series.
-- A post page keeps its own `/posts/<slug>` URL, but it is understood in the context of one child series for breadcrumbs, prev/next navigation, and series back-links.
+- A post's `series` value must resolve to either a child series or a parent series with no child series.
+- A post must not attach directly to a parent series that already has child series.
+- A post does not attach to multiple series.
+- A post page keeps its own `/posts/<slug>` URL, but it is understood in the context of one terminal series for breadcrumbs, prev/next navigation, and series back-links.
 - A post may have zero or more attached project-style examples.
 
 Post language policy:
@@ -79,7 +81,7 @@ Graph-friendly internal-link policy:
 
 Definition policy:
 - short definitions stay inline inside post bodies
-- if a term needs a full explanation, create a normal post in the relevant child series instead of a standalone glossary page
+- if a term needs a full explanation, create a normal post in the relevant terminal series instead of a standalone glossary page
 
 Example policy:
 - short code snippets remain inline inside post bodies
@@ -130,6 +132,7 @@ Series index documents define both parent series and child series. They control 
 **Create a series index when** you are starting either:
 - a new parent series that groups related child series
 - a new child series that will directly own posts
+- a new parent series that will directly own posts without child series
 
 This must happen before writing posts in that child series.
 
@@ -196,12 +199,14 @@ This differs from the current flat model, where every `series_indexes` document 
 
 Parent page responsibilities:
 - introduce the broader direction represented by the parent series
-- list child series that belong to that parent
+- list child series that belong to that parent when child series exist
+- list posts directly when the parent has no child series
 - sort child series by `order` ascending, with `title` ascending only as a deterministic fallback
+- sort direct posts by `order` ascending, with `title` ascending only as a deterministic fallback
 - link each child series to `/series/<parent>/<child>`
-- avoid flattening all descendant posts into one mixed ordered list
+- avoid flattening descendant posts into one mixed ordered list when child series exist
 
-The parent page is a navigation layer, not the direct owner of posts.
+The parent page is either a navigation layer or a terminal ordered content container. It must not be both for the same parent series.
 
 ---
 

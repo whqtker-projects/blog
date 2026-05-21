@@ -1114,6 +1114,40 @@ Post stubs added during bulk intake are structurally connected through `series`,
 
 ---
 
+## DL-024 — Allow terminal parent series without child series
+
+**Date:** 2026-05-21
+**Status:** confirmed
+
+### Context
+
+The parent-child hierarchy worked well for large concept directions such as networks, operating systems, and Spring. However, smaller or looser collections such as troubleshooting notes can become awkward when forced to create a one-item child series only to satisfy the structure. The requested rule is to allow a parent series to directly contain posts when it has no child series.
+
+### Alternatives considered
+
+**Keep child-series-only ownership:**
+- Preserves the strict original model, but creates artificial child series for small collections. Rejected.
+
+**Allow every parent to own posts even when it has children:**
+- Flexible, but parent pages would mix navigation and post ownership. This weakens ordering, breadcrumbs, and graph shape. Rejected.
+
+**Allow direct parent-owned posts only when the parent has no children (chosen):**
+- Keeps the existing hierarchy for large directions while allowing a parent to act as the terminal series for compact collections. A parent is either a navigation container or a terminal post list, never both. Chosen.
+
+### Decision
+
+- D-61 through D-64 are updated: parent series may directly own posts only when they have no child series.
+- Validation rejects posts attached directly to a parent that has child series.
+- Parent series pages list child series when present; otherwise they list posts directly attached to the parent.
+
+### References
+
+- `confirmed-decisions.md`: D-61 through D-64
+- `docs/content-model.md`
+- `scripts/check-content.mjs`
+
+---
+
 ## Related documents
 
 - [confirmed-decisions.md](confirmed-decisions.md) — stable record of confirmed decisions

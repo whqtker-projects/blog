@@ -127,10 +127,16 @@ export function syncSeriesGraphMetadata(content, body = null) {
 
 export function buildSeriesIndexBody(index, children, parent, posts) {
   if (!index.data.parent) {
-    const lines = ['관련 시리즈:'];
-    children.forEach((child, childIndex) => {
-      lines.push(`${childIndex + 1}. ${seriesIndexLink(child)}`);
-    });
+    const lines = children.length > 0 ? ['관련 시리즈:'] : ['게시글 순서:'];
+    if (children.length > 0) {
+      children.forEach((child, childIndex) => {
+        lines.push(`${childIndex + 1}. ${seriesIndexLink(child)}`);
+      });
+    } else {
+      posts.forEach((post, postIndex) => {
+        lines.push(`${postIndex + 1}. ${postLink(post)}`);
+      });
+    }
     return `${lines.join('\n')}\n`;
   }
 
